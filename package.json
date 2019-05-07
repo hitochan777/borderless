@@ -1,0 +1,25 @@
+{
+  "name": "polyglot",
+  "version": "0.0.1",
+  "description": "Language learning platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hitochan777/polyglot.git"
+  },
+  "keywords": [
+    "language"
+  ],
+  "author": "Hitoshi Otsuki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hitochan777/polyglot/issues"
+  },
+  "homepage": "https://github.com/hitochan777/polyglot#readme",
+  "dependencies": {
+    "hyperapp": "^2.0.0-beta.10"
+  }
+}

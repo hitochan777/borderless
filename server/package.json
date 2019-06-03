@@ -4,7 +4,18 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "apollo-server": "^2.6.1",
     "graphql": "^14.3.1",
-    "nexus": "^0.11.7"
+    "nexus": "^0.11.7",
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.5.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
+  },
+  "scripts": {
+    "build:dev": "webpack --config webpack.dev.config.js",
+    "start:dev": "node dist/server"
   }
 }

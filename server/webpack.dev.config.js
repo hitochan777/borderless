@@ -2,8 +2,10 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-  entry: ["webpack/hot/poll?1000", "./index.ts"],
-  watch: true,
+  entry: [
+    // "webpack/hot/poll?1000",
+    "./index.ts"
+  ],
   target: "node",
   module: {
     rules: [
@@ -21,9 +23,9 @@ module.exports = {
   },
   mode: "development",
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".mjs"]
+    extensions: [".tsx", ".ts", ".js"]
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  // plugins: [new webpack.HotModuleReplacementPlugin()],
   output: {
     path: path.join(__dirname, "dist"),
     filename: "server.js"

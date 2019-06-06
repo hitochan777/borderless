@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-  entry: ["./index.ts"],
+  entry: ["webpack/hot/poll?1000", "./index.ts"],
   watch: true,
   target: "node",
   module: {

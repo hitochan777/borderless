@@ -18,6 +18,6 @@
   "scripts": {
     "build:dev": "webpack --config webpack.dev.config.js",
     "build:dev:watch": "webpack --config webpack.dev.config.js --watch",
-    "start:dev": "npm run build:dev:watch & nodemon"
+    "start:dev": "nodemon"
   }
 }

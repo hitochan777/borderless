@@ -1,5 +1,6 @@
 import sirv from "sirv";
 import polka from "polka";
+import { json } from "body-parser";
 import compression from "compression";
 import * as sapper from "@sapper/server";
 import * as admin from "firebase-admin";
@@ -23,6 +24,7 @@ function createStore() {
 
 polka() // You can also use Express
   .use(
+    json(),
     compression({ threshold: 0 }),
     sirv("static", { dev }),
     sapper.middleware({

@@ -7,7 +7,9 @@ export async function post(req, res) {
     const sessionCookie = await admin
       .auth()
       .createSessionCookie(idToken, { expiresIn });
-    const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+
+    // FIXME: secure should be true for security
+    const options = { maxAge: expiresIn, httpOnly: true, secure: false };
     res.cookie("session", sessionCookie, options);
     res.status(200).end();
   } catch (error) {

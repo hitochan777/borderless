@@ -15,19 +15,6 @@ admin.initializeApp({
   databaseURL: "https://polyglot-3f093.firebaseio.com"
 });
 
-function createStore() {
-  const initialState = {
-    user: 1
-  };
-  const { subscribe, set, update } = writable(initialState);
-
-  return {
-    subscribe,
-    loginUser: user => update(state => ({ ...state, user })),
-    reset: () => set(initialState)
-  };
-}
-
 const app = express();
 
 app
@@ -38,16 +25,12 @@ app
     sirv("static", { dev }),
     sapper.middleware({
       session: async (req, res) => {
+        let user = null;
         const sessionCookie = req.cookies.session || "";
         try {
-          console.log(req);
-          const user = await admin
-            .auth()
-            .verifySessionCookie(sessionCookie, true);
-        } catch (error) {
-          return { user: null };
-        }
-        return { user: "some value" };
+          user = await admin.auth().verifySessionCookie(sessionCookie, true);
+        } catch (error) {}
+        return { user };
       }
     })
   )

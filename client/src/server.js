@@ -1,13 +1,19 @@
 import sirv from "sirv";
-import polka from "polka";
+import express from "express";
 import { json } from "body-parser";
+import cookieParser from "cookie-parser";
 import compression from "compression";
 import * as sapper from "@sapper/server";
-import * as admin from "firebase-admin";
 import { writable } from "svelte/store";
+import * as admin from "firebase-admin";
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: "https://polyglot-3f093.firebaseio.com"
+});
 
 function createStore() {
   const initialState = {
@@ -22,17 +28,31 @@ function createStore() {
   };
 }
 
-polka() // You can also use Express
+const app = express();
+
+app
   .use(
     json(),
+    cookieParser(),
     compression({ threshold: 0 }),
     sirv("static", { dev }),
     sapper.middleware({
-      session: (req, res) => {
-        return { user: null };
+      session: async (req, res) => {
+        const sessionCookie = req.cookies.session || "";
+        try {
+          console.log(req);
+          const user = await admin
+            .auth()
+            .verifySessionCookie(sessionCookie, true);
+        } catch (error) {
+          return { user: null };
+        }
+        return { user: "some value" };
       }
     })
   )
   .listen(PORT, err => {
-    if (err) console.log("error", err);
+    if (err) {
+      console.log("error", err);
+    }
   });

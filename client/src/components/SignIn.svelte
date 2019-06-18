@@ -7,7 +7,10 @@
   const handleSignOut = async () => {
     try {
       await firebase.auth().signOut();
+      await ky.delete("/logout.json");
+      $session.user = null;
     } catch (error) {
+      console.log(error);
       console.error("Faild to sign out");
     }
   };
@@ -15,6 +18,7 @@
   const handleSignIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     await firebase.auth().signInWithRedirect(provider);
+    // FIXME: const csrfToken = getCookie("csrfToken");
   };
 </script>
 

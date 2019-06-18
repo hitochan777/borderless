@@ -19,8 +19,6 @@ if (firebase.apps.length === 0 && process.browser) {
       const token = await user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
       await ky.post("/login.json", { json: { token } });
-    } else {
-      await ky.delete("/logout.json");
     }
   });
 }

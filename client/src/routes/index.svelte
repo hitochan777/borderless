@@ -1,5 +1,5 @@
 <script>
-  import SignIn from "../components/SignIn";
+
 </script>
 
 <svelte:head>
@@ -18,7 +18,6 @@
     Try editing this file (src/routes/index.svelte) to test live reloading.
   </strong>
 </p>
-<SignIn />
 
 <style>
   h1,

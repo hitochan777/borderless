@@ -14,11 +14,4 @@ const firebaseConfig = {
 
 if (firebase.apps.length === 0 && process.browser) {
   firebase.initializeApp(firebaseConfig);
-  firebase.auth().onAuthStateChanged(async user => {
-    if (user) {
-      const token = await user.getIdToken();
-      // FIXME: const csrfToken = getCookie("csrfToken");
-      await ky.post("/login.json", { json: { token } });
-    }
-  });
 }

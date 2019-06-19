@@ -1,14 +1,16 @@
 <script>
   import Nav from "../components/Nav.svelte";
+  import WithAuth from "../components/withAuth";
 
   export let segment;
 </script>
 
-<Nav {segment} />
-
-<main>
-  <slot />
-</main>
+<WithAuth>
+  <Nav {segment} />
+  <main>
+    <slot />
+  </main>
+</WithAuth>
 
 <style>
   main {

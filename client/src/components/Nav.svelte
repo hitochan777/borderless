@@ -1,15 +1,14 @@
 <script>
   import firebase from "firebase/app";
-  import { stores } from "@sapper/app";
-  const ky = require("ky/umd").default;
 
-  const { session } = stores();
+  import { currentUser, setUser } from "../stores/session";
+  const ky = require("ky/umd").default;
 
   const handleSignOut = async () => {
     try {
       await firebase.auth().signOut();
       await ky.delete("/logout.json");
-      $session.user = null;
+      setUser(null);
     } catch (error) {
       console.log(error);
       console.error("Faild to sign out");
@@ -45,7 +44,7 @@
       </a>
     </li>
     <li>
-      {#if $session.user}
+      {#if $currentUser}
         <button on:click={handleSignOut}>Logout</button>
       {:else}
         <button on:click={handleSignIn}>Sign In</button>

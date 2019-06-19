@@ -5,10 +5,13 @@
 
   import firebase from "firebase/app";
   import "firebase/auth";
+  const { session } = stores();
+
+  import { setUser } from "../stores/session.js";
 
   const ky = require("ky/umd").default;
 
-  const { session } = stores();
+  setUser($session.user);
 
   onMount(() => {
     firebase.auth().onAuthStateChanged(async user => {
@@ -16,7 +19,7 @@
         const token = await user.getIdToken();
         // FIXME: const csrfToken = getCookie("csrfToken");
         await ky.post("/login.json", { json: { token } });
-        $session.user = user;
+        setUser(user);
       }
     });
   });

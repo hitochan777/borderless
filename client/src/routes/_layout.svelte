@@ -1,6 +1,6 @@
 <script>
   import Nav from "../components/Nav.svelte";
-  import WithAuth from "../components/withAuth";
+  import WithAuth from "../components/WithAuth";
   import Loading from "../components/Loading";
 
   import { loading } from "../stores/session";

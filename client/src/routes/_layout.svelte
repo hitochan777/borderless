@@ -1,6 +1,7 @@
 <script>
   import Nav from "../components/Nav.svelte";
   import WithAuth from "../components/withAuth";
+  import Loading from "../components/Loading";
 
   import { loading } from "../stores/session";
 
@@ -16,11 +17,20 @@
     margin: 0 auto;
     box-sizing: border-box;
   }
+  .loading {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
 
 <WithAuth>
   {#if $loading}
-    <span>Loading...</span>
+    <div class="loading">
+      <Loading />
+    </div>
   {:else}
     <Nav {segment} />
     <main>

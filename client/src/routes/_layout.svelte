@@ -8,6 +8,19 @@
   export let segment;
 </script>
 
+<WithAuth>
+  {#if $loading}
+    <div class="loading">
+      <Loading />
+    </div>
+  {:else}
+    <Nav {segment} />
+    <main>
+      <slot />
+    </main>
+  {/if}
+</WithAuth>
+
 <style>
   main {
     position: relative;
@@ -25,16 +38,3 @@
     justify-content: center;
   }
 </style>
-
-<WithAuth>
-  {#if $loading}
-    <div class="loading">
-      <Loading />
-    </div>
-  {:else}
-    <Nav {segment} />
-    <main>
-      <slot />
-    </main>
-  {/if}
-</WithAuth>

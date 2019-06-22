@@ -1,11 +1,13 @@
-import sirv from "sirv";
 import express from "express";
 import { json } from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
-import * as sapper from "@sapper/server";
 import { writable } from "svelte/store";
 import * as admin from "firebase-admin";
+// import sirv from "sirv"; FIXME: user import syntax
+const sirv = require("sirv");
+// import sapper from "@sapper/server"; FIXME: user import syntax
+const sapper = require("@sapper/server");
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
@@ -24,7 +26,7 @@ app
     compression({ threshold: 0 }),
     sirv("static", { dev }),
     sapper.middleware({
-      session: async (req, res) => {
+      session: async (req: express.Request, res: express.Response) => {
         let user = null;
         const sessionCookie = req.cookies.session || "";
         try {
@@ -34,8 +36,4 @@ app
       }
     })
   )
-  .listen(PORT, err => {
-    if (err) {
-      console.log("error", err);
-    }
-  });
+  .listen(PORT, () => {});

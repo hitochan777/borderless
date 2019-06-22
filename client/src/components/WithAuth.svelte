@@ -7,7 +7,7 @@
   import "firebase/auth";
   const { session } = stores();
 
-  import { setUser } from "../stores/session.js";
+  import { setUser, setLoading } from "../stores/session.js";
 
   const ky = require("ky/umd").default;
 
@@ -15,12 +15,15 @@
 
   onMount(() => {
     firebase.auth().onAuthStateChanged(async user => {
+      let waitLoading = Promise.resolve();
       if (user) {
         const token = await user.getIdToken();
         // FIXME: const csrfToken = getCookie("csrfToken");
-        await ky.post("/login.json", { json: { token } });
+        waitLoading = await ky.post("/login.json", { json: { token } });
         setUser(user);
       }
+      await waitLoading;
+      setLoading(false);
     });
   });
 </script>

@@ -2,15 +2,10 @@
   import Nav from "../components/Nav.svelte";
   import WithAuth from "../components/withAuth";
 
+  import { loading } from "../stores/session";
+
   export let segment;
 </script>
-
-<WithAuth>
-  <Nav {segment} />
-  <main>
-    <slot />
-  </main>
-</WithAuth>
 
 <style>
   main {
@@ -22,3 +17,14 @@
     box-sizing: border-box;
   }
 </style>
+
+<WithAuth>
+  {#if $loading}
+    <span>Loading...</span>
+  {:else}
+    <Nav {segment} />
+    <main>
+      <slot />
+    </main>
+  {/if}
+</WithAuth>

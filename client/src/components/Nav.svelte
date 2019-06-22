@@ -1,10 +1,11 @@
 <script>
   import firebase from "firebase/app";
 
-  import { currentUser, setUser } from "../stores/session";
+  import { currentUser, setUser, loading, setLoading } from "../stores/session";
   const ky = require("ky/umd").default;
 
   const handleSignOut = async () => {
+    setLoading(true);
     try {
       await firebase.auth().signOut();
       await ky.delete("/logout.json");
@@ -12,6 +13,8 @@
     } catch (error) {
       console.log(error);
       console.error("Faild to sign out");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,35 +26,6 @@
 
   export let segment;
 </script>
-
-<nav>
-  <ul>
-    <li>
-      <a class={segment === undefined ? 'selected' : ''} href=".">home</a>
-    </li>
-    <li>
-      <a class={segment === 'about' ? 'selected' : ''} href="about">about</a>
-    </li>
-
-    <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-		     the blog data when we hover over the link or tap it on a touchscreen -->
-    <li>
-      <a
-        rel="prefetch"
-        class={segment === 'blog' ? 'selected' : ''}
-        href="blog">
-        blog
-      </a>
-    </li>
-    <li>
-      {#if $currentUser}
-        <button on:click={handleSignOut}>Logout</button>
-      {:else}
-        <button on:click={handleSignIn}>Sign In</button>
-      {/if}
-    </li>
-  </ul>
-</nav>
 
 <style>
   nav {
@@ -98,3 +72,32 @@
     display: block;
   }
 </style>
+
+<nav>
+  <ul>
+    <li>
+      <a class={segment === undefined ? 'selected' : ''} href=".">home</a>
+    </li>
+    <li>
+      <a class={segment === 'about' ? 'selected' : ''} href="about">about</a>
+    </li>
+
+    <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
+		     the blog data when we hover over the link or tap it on a touchscreen -->
+    <li>
+      <a
+        rel="prefetch"
+        class={segment === 'blog' ? 'selected' : ''}
+        href="blog">
+        blog
+      </a>
+    </li>
+    <li>
+      {#if $currentUser}
+        <button on:click={handleSignOut}>Logout</button>
+      {:else}
+        <button on:click={handleSignIn}>Sign In</button>
+      {/if}
+    </li>
+  </ul>
+</nav>

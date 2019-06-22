@@ -94,9 +94,9 @@
     </li>
     <li>
       {#if $currentUser}
-        <button on:click={handleSignOut}>Logout</button>
+        <a href="#" on:click={handleSignOut}>Logout</a>
       {:else}
-        <button on:click={handleSignIn}>Sign In</button>
+        <a href="#" on:click={handleSignIn}>Sign In</a>
       {/if}
     </li>
   </ul>

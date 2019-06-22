@@ -28,4 +28,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
 
+      - run: sh ./apply-patch-sapper.sh
+
       - run: npm run test

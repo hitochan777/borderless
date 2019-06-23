@@ -1,28 +1,45 @@
 <script>
   // FIXME: This should not be a component but HOC
   import { onMount } from "svelte";
-  import { stores } from "@sapper/app";
+  import { stores, goto } from "@sapper/app";
 
   import firebase from "firebase/app";
   import "firebase/auth";
-  const { session } = stores();
+  const { session, page } = stores();
 
-  import { setUser, setLoading } from "../stores/session.js";
+  import {
+    setTmpUser,
+    currentUser,
+    setUser,
+    setLoading
+  } from "../stores/session.js";
 
   const ky = require("ky/umd").default;
 
   setUser($session.user);
 
-  onMount(() => {
+  onMount(async () => {
+    const result = await firebase.auth().getRedirectResult();
+    if (result.user) {
+      const token = await result.user.getIdToken();
+      // FIXME: const csrfToken = getCookie("csrfToken");
+      await ky.post("login.json", { json: { token } });
+    }
+
     firebase.auth().onAuthStateChanged(async user => {
-      let waitLoading = Promise.resolve();
+      setTmpUser(user);
       if (user) {
-        const token = await user.getIdToken();
-        // FIXME: const csrfToken = getCookie("csrfToken");
-        waitLoading = await ky.post("/login.json", { json: { token } });
-        setUser(user);
+        if (!$currentUser) {
+          setLoading(false);
+          if ($page.path === "/signup") {
+            // avoiding infinite loop
+            return;
+          }
+          goto("/signup");
+          return;
+        }
       }
-      await waitLoading;
+      setUser(user);
       setLoading(false);
     });
   });

@@ -13,4 +13,5 @@
 
 .envrc
 
-next-client
+node_modules
+.next

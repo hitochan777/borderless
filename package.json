@@ -1,0 +1,29 @@
+{
+  "name": "borderless",
+  "version": "1.0.0",
+  "description": "SNS for correcting writings of language learners",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hitochan777/polyglot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hitochan777/polyglot/issues"
+  },
+  "homepage": "https://github.com/hitochan777/polyglot#readme",
+  "dependencies": {
+    "@types/react": "^16.8.22",
+    "@zeit/next-typescript": "^1.1.1",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

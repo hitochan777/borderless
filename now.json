@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "builds": [{ "src": "server/**/*.ts", "use": "@now/node" }],
+  "builds": [{ "src": "server/index.ts", "use": "@now/node" }],
   "routes": [{ "src": "/graphql", "dest": "server/index.ts" }]
 }

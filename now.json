@@ -8,5 +8,8 @@
     },
     { "src": "client/package.json", "use": "@now/next" }
   ],
-  "routes": [{ "src": "/graphql", "dest": "server/index.ts" }]
+  "routes": [
+    { "src": "/graphql", "dest": "server/index.ts" },
+    { "src": "/(.*)", "dest": "client" }
+  ]
 }

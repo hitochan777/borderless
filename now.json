@@ -1,5 +1,11 @@
 {
   "version": 2,
-  "builds": [{ "src": "server/index.ts", "use": "@now/node" }],
+  "builds": [
+    {
+      "src": "server/index.ts",
+      "use": "@now/node",
+      "config": { "maxLambdaSize": "15mb" }
+    }
+  ],
   "routes": [{ "src": "/graphql", "dest": "server/index.ts" }]
 }

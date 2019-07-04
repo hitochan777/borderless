@@ -5,7 +5,8 @@
       "src": "server/index.ts",
       "use": "@now/node",
       "config": { "maxLambdaSize": "15mb" }
-    }
+    },
+    { "src": "client/package.json", "use": "@now/next" }
   ],
   "routes": [{ "src": "/graphql", "dest": "server/index.ts" }]
 }

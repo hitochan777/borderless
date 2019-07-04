@@ -4,7 +4,7 @@
   "description": "SNS for correcting writings of language learners",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev ./index.ts",
+    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "-jbuild": "next build",
     "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -30,7 +30,7 @@
     "firebase-admin": "^8.2.0",
     "ky": "^0.11.1",
     "micro": "^9.3.4",
-    "microrouter": "^3.1.3",
+    "microrouter": "hitochan777-misc/micro-router#fix-no-content",
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

@@ -1,4 +1,8 @@
-import { ApolloServer, gql, addMockFunctionsToSchema } from "apollo-server";
+import {
+  ApolloServer,
+  gql,
+  addMockFunctionsToSchema
+} from "apollo-server-micro";
 
 import { schema } from "./schema";
 
@@ -11,9 +15,4 @@ const server = new ApolloServer({
   }
 });
 
-const main = async () => {
-  const { url } = await server.listen({ port: 3001 });
-  console.log(`🚀  Server ready at ${url}`);
-};
-
-main();
+export default server.createHandler();

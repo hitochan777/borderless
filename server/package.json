@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.6.1",
+    "apollo-server-micro": "^2.6.7",
     "graphql": "^14.3.1",
     "next": "^8.1.0",
     "nexus": "^0.11.7",
@@ -13,11 +13,9 @@
     "typescript": "^3.5.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "micro-dev": "^3.0.0"
   },
   "scripts": {
-    "dev": "nodemon index.ts --exec ts-node",
-    "start": "nodemon index.ts --exec ts-node -T",
-    "micro:dev": "node -r ts-node/register/transpile-only node_modules/.bin/micro-dev ./index.ts"
+    "dev": "node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts"
   }
 }

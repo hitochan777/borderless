@@ -1,5 +1,13 @@
 import React from "react";
 
-const hoge = (a: number, b: number): number => a + b;
+import { useStateValue } from "../store";
 
-export default () => <div>hello{hoge(2, 3)}</div>;
+export default () => {
+  const { state, actions } = useStateValue();
+  return (
+    <>
+      <div>{state.currentUser ? "Logged in" : "NOT logged in"}</div>
+      <button onClick={() => actions.setCurrentUser(!state.currentUser)}>{state.currentUser ? "logout" : "login"}</button>
+    </>
+  );
+};

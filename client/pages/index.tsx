@@ -7,7 +7,9 @@ export default () => {
   return (
     <>
       <div>{state.currentUser ? "Logged in" : "NOT logged in"}</div>
-      <button onClick={() => actions.setCurrentUser(!state.currentUser)}>{state.currentUser ? "logout" : "login"}</button>
+      <button onClick={() => actions.setCurrentUser(!state.currentUser)}>
+        {state.currentUser ? "logout" : "login"}
+      </button>
     </>
   );
 };

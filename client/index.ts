@@ -1,10 +1,4 @@
-import {
-  router,
-  get,
-  post,
-  ServerRequest,
-  ServerResponse
-} from "microrouter";
+import { router, get, post, ServerRequest, ServerResponse } from "microrouter";
 import next from "next";
 import httpProxy from "http-proxy";
 
@@ -19,14 +13,9 @@ const GRAPHQL_PATH = "/graphql";
 const GRAPHQL_ENDPOINT = "http://localhost:3001";
 
 const graphqlProxyHandler = (req: ServerRequest, res: ServerResponse): any => {
-  proxy.web(
-    req,
-    res,
-    { target: GRAPHQL_ENDPOINT },
-    err => {
-      console.error(err);
-    }
-  );
+  proxy.web(req, res, { target: GRAPHQL_ENDPOINT }, err => {
+    console.error(err);
+  });
 };
 
 const createHandler = async () => {

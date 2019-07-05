@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { ActionDefs, Actions, useActionState } from "./useStateAction";
+import { Actions, useActionState } from "./useStateAction";
 
 type User = any;
 
@@ -27,7 +27,7 @@ const actionDefs = {
 
 export const StateContext = React.createContext<{
   state: State;
-  actions: Actions<State, ActionDefs<State>>;
+  actions: Actions<State, typeof actionDefs>;
 }>({
   state: {} as any,
   actions: {} as any
@@ -46,7 +46,7 @@ export const StateProvider = ({
   initialState?: State;
   children: any;
 }) => {
-  const { state, actions } = useActionState<State, ActionDefs<State>>(
+  const { state, actions } = useActionState<State, typeof actionDefs>(
     initialState,
     actionDefs
   );

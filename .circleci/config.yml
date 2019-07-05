@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: cypress/base:8
+      - image: circleci/node:12
         environment:
           ## this enables colors in the output
           TERM: xterm
@@ -27,7 +27,3 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
-
-      - run: sh ./apply-patch-sapper.sh
-
-      - run: npm run test

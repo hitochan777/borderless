@@ -1,38 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import firebase from "firebase";
-import ky from "ky";
+import React from "react";
 import App, { Container } from "next/app";
 
 import { StateProvider } from "../store";
+import { useAuthEffect } from "../useAuthEffect";
 
-// const useAuth = () => {
-//     const {setCurrentUser, setLoading, setTmpUser, currentUser} = useContext();
-//     useEffect( async () => {
-//     const result = await firebase.auth().getRedirectResult();
-//     if (result.user) {
-//       const token = await result.user.getIdToken();
-//       // FIXME: const csrfToken = getCookie("csrfToken");
-//       await ky.post("login.json", { json: { token } });
-//     }
-
-//     firebase.auth().onAuthStateChanged(async user => {
-//       setTmpUser(user);
-//       if (user) {
-//         if (!$currentUser) {
-//           setLoading(false);
-//         //   if ($page.path === "/signup") {
-//             // avoiding infinite loop
-//             return;
-//           }
-//           //   goto("/signup");
-//           return;
-//         }
-//       }
-//       setUser(user);
-//       setLoading(false);
-//     });
-//   });
-// }
+const AuthProvider = ({ children }) => {
+  useAuthEffect();
+  return children;
+};
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -50,9 +25,11 @@ class MyApp extends App {
 
     return (
       <StateProvider>
-        <Container>
-          <Component {...pageProps} />
-        </Container>
+        <AuthProvider>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        </AuthProvider>
       </StateProvider>
     );
   }

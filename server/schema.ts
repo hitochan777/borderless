@@ -9,6 +9,7 @@ import {
   makeSchema
 } from "nexus";
 import path from "path";
+import * as admin from "firebase-admin";
 
 const Node = interfaceType({
   name: "Node",
@@ -81,9 +82,48 @@ const Query = queryType({
       resolve(root, args, ctx) {
         return [];
       }
-    });
+    }),
+      t.field("signin", {
+        type: Boolean,
+        args: {
+          token: stringArg({ required: true })
+        },
+        resolve: async (root, { token }, { res }) => {
+          const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+          try {
+            const sessionCookie = await admin
+              .auth()
+              .createSessionCookie(token, { expiresIn });
+
+            const isNew = await isNewUser(token);
+            if (!isNew) {
+              // FIXME: secure should be true for security
+              const options = {
+                maxAge: expiresIn,
+                httpOnly: true,
+                secure: false
+              };
+              res.cookie("session", sessionCookie, options);
+            }
+          } catch (error) {
+            console.log(error);
+            throw new Error("UNAUTHORIZED");
+          }
+        }
+      });
   }
 });
+
+const findUser = async (uid: string) => {
+  return true; // TODO: implement
+};
+
+const isNewUser = async (token: string) => {
+  const decodedToken = await admin.auth().verifyIdToken(token);
+  let uid = decodedToken.uid;
+  const found = await findUser(uid);
+  return !found;
+};
 
 export const schema = makeSchema({
   types: [User, Node, Post, Line, Tweet, Query],

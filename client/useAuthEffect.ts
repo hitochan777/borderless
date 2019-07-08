@@ -9,7 +9,7 @@ const ky = require("ky/umd");
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {
     effect().catch(e => console.warn("useAsyncEffect error", e));
-  });
+  }, []);
 }
 
 export const useAuthEffect = () => {
@@ -24,8 +24,9 @@ export const useAuthEffect = () => {
       // FIXME: const csrfToken = getCookie("csrfToken");
       await ky.post("login.json", { json: { token } });
     }
-
+    console.log("listener added");
     firebase.auth().onAuthStateChanged(async user => {
+      console.log(user);
       setTmpUser(user);
       if (user) {
         if (!currentUser) {
@@ -35,7 +36,7 @@ export const useAuthEffect = () => {
             return;
           }
 
-          Router.push("/signup");
+          // Router.push("/signup");
           return;
         }
       }

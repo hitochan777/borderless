@@ -1,29 +1,31 @@
 import { useState } from "react";
 
-export type Actions<S, A extends ActionDefs<S>> = {
-  [K in keyof A]: (...args: Parameters<A[K]>) => void;
+type MaybePromise<T> = Promise<T> | T;
+
+export interface Actions {
+  [key: string]: (...args: any[]) => MaybePromise<any>
+}
+
+export type MaybeStateReturner<S, A extends Actions> = (state: S, actions: A) => MaybePromise<S | void>;
+
+export type ActionDefs<S, A extends Actions> = {
+  [K in keyof A]: (...args: Parameters<A[K]>) => MaybeStateReturner<S, A>;
 };
 
-export type MaybeStateReturner<T> = (state: T) => T | void;
-
-export type ActionDefs<T> = {
-  [key: string]: (...args: any[]) => MaybeStateReturner<T>;
-};
-
-export const useActionState = <S, A extends ActionDefs<S>>(
+export const useActionState = <S, A extends Actions>(
   initialState: S,
-  actionDefs: A
-): { state: S; actions: Actions<S, A> } => {
+  actionDefs: ActionDefs<S, A>
+): { state: S; actions: A } => {
   const [state, setState] = useState(initialState);
-  let actions = {} as Actions<S, A>;
+  let actions = {} as A
   for (const name in actionDefs) {
     const action = actionDefs[name];
-    actions[name] = (...args) => {
-      const result = action(...args)(state);
+    actions[name] = (async (...args: Parameters<A[Extract<keyof A, string>]>) => {
+      const result = await action(...args)(state, actions);
       if (result !== undefined) {
         setState(result);
       }
-    };
+    }) as A[typeof name];
   }
 
   return {

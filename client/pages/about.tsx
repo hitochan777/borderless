@@ -1,3 +1,5 @@
 import React from "react";
 
-export default () => <div>About</div>;
+import Layout from "../layout/default";
+
+export default () => <Layout>About</Layout>;

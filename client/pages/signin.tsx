@@ -1,4 +1,4 @@
-import { useStateValue } from "../store"
+import { useStateValue } from "../store";
 
 export default () => {
   const { actions } = useStateValue();

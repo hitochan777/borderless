@@ -1,23 +1,23 @@
 import React from "react";
-import styled from "styled-components"
+import styled from "styled-components";
 
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 
 const LoadingWrapper = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+`;
 
-const Layout = ({ children }: { children?: React.ReactNode}) => {
+const Layout = ({ children }: { children?: React.ReactNode }) => {
   const { state } = useStateValue();
   return state.loading ? (
     <LoadingWrapper>
-        <Loading />
+      <Loading />
     </LoadingWrapper>
   ) : (
     <>

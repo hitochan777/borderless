@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useStateValue } from "./store";
 
-const ky = require("ky/umd");
+const ky = require("ky/umd").default;
 
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {
@@ -24,9 +24,7 @@ export const useAuthEffect = () => {
       // FIXME: const csrfToken = getCookie("csrfToken");
       await ky.post("login.json", { json: { token } });
     }
-    console.log("listener added");
     firebase.auth().onAuthStateChanged(async user => {
-      console.log(user);
       setTmpUser(user);
       if (user) {
         if (!currentUser) {

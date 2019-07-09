@@ -1,6 +1,6 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-import { NextAppContext } from "next/app";
+import { AppContext } from "next/app";
 import Head from "next/head";
 import { getMarkupFromTree } from "react-apollo-hooks";
 import ApolloClient from "apollo-client";
@@ -15,7 +15,7 @@ const withApolloClient = (
   return class Apollo extends React.Component {
     static displayName = "withApollo(App)";
     apolloClient: ApolloClient<any>;
-    static async getInitialProps(ctx: NextAppContext) {
+    static async getInitialProps(ctx: AppContext) {
       const { Component, router } = ctx;
 
       let appProps = {};

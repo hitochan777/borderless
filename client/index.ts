@@ -30,7 +30,7 @@ const withAuthHandler = (handler: any) => async (
   ...restArgs: any[]
 ) => {
   try {
-    const sessionCookie = req.cookies.session;
+    const sessionCookie = req.cookies.session || "";
     const decodedIdToken = await admin
       .auth()
       .verifySessionCookie(sessionCookie, true);

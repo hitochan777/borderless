@@ -1,8 +1,8 @@
 import React from "react";
-import App, { Container, NextAppContext } from "next/app";
+import App, { Container, AppContext } from "next/app";
 import { ApolloProvider } from "react-apollo-hooks";
 import ApolloClient from "apollo-client";
-import { NextContext } from "next";
+import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
 import "../firebase";
@@ -23,7 +23,7 @@ import redirect from "../lib/redirect";
 
 const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about"];
 
-const auth = async (context: NextContext) => {
+const auth = async (context: NextPageContext) => {
   let user = null;
   const { session: sessionCookie } = nextCookie(context);
   if (!PUBLIC_PAGES.includes(context.pathname) && !sessionCookie) {
@@ -39,7 +39,7 @@ const withAuth = (
   App: React.ComponentType<any> & { getInitialProps?: Function }
 ) => {
   return class extends React.Component {
-    static async getInitialProps(context: NextAppContext) {
+    static async getInitialProps(context: AppContext) {
       const { ctx } = context;
       const { user } = await auth(ctx);
 
@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: { children: any }) => {
 };
 
 class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
-  static async getInitialProps({ Component, ctx }: NextAppContext) {
+  static async getInitialProps({ Component, ctx }: AppContext) {
     let pageProps = {};
 
     if (Component.getInitialProps) {

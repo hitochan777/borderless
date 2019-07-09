@@ -18,6 +18,7 @@
     "typescript": "^3.5.1"
   },
   "scripts": {
-    "dev": "node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts"
+    "dev": "node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
+    "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts"
   }
 }

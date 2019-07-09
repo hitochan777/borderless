@@ -2,12 +2,22 @@
 ### Do not make changes to this file directly
 
 
+type AuthData implements Node {
+  """Unique identifier for the resource"""
+  id: ID!
+  token: String!
+}
+
 type Line implements Node {
   """Unique identifier for the resource"""
   id: ID!
   post: Post!
   text: String!
   tweets: [Tweet!]!
+}
+
+type Mutation {
+  signin(token: String!): AuthData!
 }
 
 interface Node {

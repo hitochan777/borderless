@@ -9,6 +9,8 @@ import { parse } from "cookie";
 
 import { schema } from "./schema";
 import { Server } from "https";
+import { SlowBuffer } from "buffer";
+import console = require("console");
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -19,14 +21,14 @@ if (admin.apps.length === 0) {
 
 export const createContext = () => async ({ req, res }: { req: ExtendedServerRequest, res: ServerResponse }) => {
   let user = null;
-  const sessionCookie = req.cookies.token || ""
+  const sessionCookie = (req.cookies && req.cookies.token) || ""
   try {
     user = await admin.auth().verifySessionCookie(sessionCookie, true);
   } catch (error) {}
   return { user, res };
 };
 
-addMockFunctionsToSchema({ schema });
+// addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
   const context = await createContext();
@@ -41,13 +43,13 @@ const createServer = async () => {
   return server;
 };
 
-type Handler = (req: IncomingMessage, res: ServerResponse) => void
-type ExtendedServerRequest = IncomingMessage & {cookies: {[key: string]: string}}
+type Handler = (req: IncomingMessage, res: ServerResponse, ...restArgs: any[]) => void
+type ExtendedServerRequest = IncomingMessage & {cookies?: {[key: string]: string}}
 
-const cookie = (handler: Handler) => (req: IncomingMessage, res: ServerResponse) => {
-  const cookies = parse((req.headers && req.headers.cookie) || "");
-  const newReq: ExtendedServerRequest = Object.assign({}, req, { cookies });
-  return handler(newReq, res);
+const cookie = (handler: Handler) => (req: ExtendedServerRequest, res: ServerResponse, ...restArgs: any[]) => {
+  const cookies = parse((req.headers && req.headers.cookie) || "")
+  req.cookies = cookies
+  return handler(req, res, ...restArgs);
 };
 
 const createHandler = async () => {

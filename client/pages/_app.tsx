@@ -2,11 +2,61 @@ import React from "react";
 import App, { Container, NextAppContext } from "next/app";
 import { ApolloProvider } from "react-apollo-hooks";
 import ApolloClient from "apollo-client";
+import { NextContext } from "next";
+import nextCookie from "next-cookies";
 
 import "../firebase";
 import { StateProvider } from "../store";
 import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
+import redirect from "../lib/redirect";
+
+// const compose = (...components: React.ReactType<any>[]) => (
+//   Component: React.ReactType<any>
+// ) =>
+//   components
+//     .reverse()
+//     .reduce(
+//       (wrappedComponent, Wrapper) => <Wrapper>{wrappedComponent}</Wrapper>,
+//       <Component />
+//     );
+
+// const PUBLIC_PAGES = [
+//   "/",
+//   "/signin",
+//   "/signup",
+//   "/about"
+// ];
+
+// const auth = (context: NextContext) {
+//   const { token } = nextCookie(context);
+//   if (!PUBLIC_PAGES.includes(context.pathname) && !token) {
+//     return redirect(context, "/signin");
+//   }
+//   return token;
+// }
+
+// const withAuth = App => {
+//   return class Authorizer extends React.Component {
+//     static async getInitialProps(context: NextAppContext) {
+//       const { ctx } = context;
+//       const token = auth(ctx);
+
+//       const componentProps =
+//         App.getInitialProps && (await App.getInitialProps(context));
+
+//       return { ...componentProps, token };
+//     }
+
+//     constructor(props) {
+//       super(props);
+//     }
+
+//     render() {
+//       return <App {...this.props} />;
+//     }
+//   };
+// };
 
 const AuthProvider = ({ children }: { children: any }) => {
   useAuthEffect();
@@ -21,6 +71,9 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    if (ctx.res) {
+    }
+
     return { pageProps };
   }
 
@@ -30,11 +83,11 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
     return (
       <Container>
         <StateProvider>
-          <AuthProvider>
-            <ApolloProvider client={apolloClient}>
+          <ApolloProvider client={apolloClient}>
+            <AuthProvider>
               <Component {...pageProps} />
-            </ApolloProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </ApolloProvider>
         </StateProvider>
       </Container>
     );

@@ -1,10 +1,10 @@
 import * as firebase from "firebase";
 import Router from "next/router";
 import { useEffect } from "react";
+import gql from "graphql-tag";
+import { useMutation } from "react-apollo-hooks";
 
 import { useStateValue } from "./store";
-
-const ky = require("ky/umd").default;
 
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {
@@ -12,17 +12,26 @@ export function useAsyncEffect(effect: () => Promise<any>) {
   }, []);
 }
 
+const SIGNIN = gql`
+  mutation signin($token: String!) {
+    signin(token: $token) {
+      token
+    }
+  }
+`;
+
 export const useAuthEffect = () => {
   const { state, actions } = useStateValue();
   const { currentUser } = state;
   const { setCurrentUser, setLoading, setTmpUser } = actions;
+  const signin = useMutation(SIGNIN);
 
   useAsyncEffect(async () => {
     const result = await firebase.auth().getRedirectResult();
     if (result.user) {
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
-      await ky.post("login.json", { json: { token } });
+        await signin({ variables: { token } });
     }
     firebase.auth().onAuthStateChanged(async user => {
       setTmpUser(user);
@@ -34,7 +43,7 @@ export const useAuthEffect = () => {
             return;
           }
 
-          // Router.push("/signup");
+          Router.push("/signup");
           return;
         }
       }

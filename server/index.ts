@@ -3,14 +3,11 @@ import {
   gql,
   addMockFunctionsToSchema
 } from "apollo-server-micro";
-import {IncomingMessage, ServerResponse} from "http"
+import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import { parse } from "cookie";
 
 import { schema } from "./schema";
-import { Server } from "https";
-import { SlowBuffer } from "buffer";
-import console = require("console");
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -19,9 +16,15 @@ if (admin.apps.length === 0) {
   });
 }
 
-export const createContext = () => async ({ req, res }: { req: ExtendedServerRequest, res: ServerResponse }) => {
+export const createContext = () => async ({
+  req,
+  res
+}: {
+  req: ExtendedServerRequest;
+  res: ServerResponse;
+}) => {
   let user = null;
-  const sessionCookie = (req.cookies && req.cookies.token) || ""
+  const sessionCookie = (req.cookies && req.cookies.session) || "";
   try {
     user = await admin.auth().verifySessionCookie(sessionCookie, true);
   } catch (error) {}
@@ -43,12 +46,22 @@ const createServer = async () => {
   return server;
 };
 
-type Handler = (req: IncomingMessage, res: ServerResponse, ...restArgs: any[]) => void
-type ExtendedServerRequest = IncomingMessage & {cookies?: {[key: string]: string}}
+type Handler = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  ...restArgs: any[]
+) => void;
+type ExtendedServerRequest = IncomingMessage & {
+  cookies?: { [key: string]: string };
+};
 
-const cookie = (handler: Handler) => (req: ExtendedServerRequest, res: ServerResponse, ...restArgs: any[]) => {
-  const cookies = parse((req.headers && req.headers.cookie) || "")
-  req.cookies = cookies
+const cookie = (handler: Handler) => (
+  req: ExtendedServerRequest,
+  res: ServerResponse,
+  ...restArgs: any[]
+) => {
+  const cookies = parse((req.headers && req.headers.cookie) || "");
+  req.cookies = cookies;
   return handler(req, res, ...restArgs);
 };
 

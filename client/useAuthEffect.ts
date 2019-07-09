@@ -34,7 +34,7 @@ export const useAuthEffect = () => {
         await signin({ variables: { token } });
     }
     firebase.auth().onAuthStateChanged(async user => {
-      setTmpUser(user);
+      setTmpUser(user && user.uid);
       if (user) {
         if (!currentUser) {
           setLoading(false);
@@ -47,7 +47,7 @@ export const useAuthEffect = () => {
           return;
         }
       }
-      setCurrentUser(user);
+      setCurrentUser(user && user.uid);
       setLoading(false);
     });
   });

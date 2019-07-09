@@ -21,49 +21,50 @@ import redirect from "../lib/redirect";
 //       <Component />
 //     );
 
-// const PUBLIC_PAGES = [
-//   "/",
-//   "/signin",
-//   "/signup",
-//   "/about"
-// ];
+const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about"];
 
-// const auth = (context: NextContext) {
-//   const { token } = nextCookie(context);
-//   if (!PUBLIC_PAGES.includes(context.pathname) && !token) {
-//     return redirect(context, "/signin");
-//   }
-//   return token;
-// }
+const auth = async (context: NextContext) => {
+  let user = null;
+  const { session: sessionCookie } = nextCookie(context);
+  if (!PUBLIC_PAGES.includes(context.pathname) && !sessionCookie) {
+    redirect(context, "/signin");
+  }
+  if (context.req && sessionCookie) {
+    user = (context.req as any).decodedIdToken.email;
+  }
+  return { user };
+};
 
-// const withAuth = App => {
-//   return class Authorizer extends React.Component {
-//     static async getInitialProps(context: NextAppContext) {
-//       const { ctx } = context;
-//       const token = auth(ctx);
+const withAuth = (
+  App: React.ComponentType<any> & { getInitialProps?: Function }
+) => {
+  return class extends React.Component {
+    static async getInitialProps(context: NextAppContext) {
+      const { ctx } = context;
+      const { user } = await auth(ctx);
 
-//       const componentProps =
-//         App.getInitialProps && (await App.getInitialProps(context));
+      const componentProps =
+        App.getInitialProps && (await App.getInitialProps(context));
 
-//       return { ...componentProps, token };
-//     }
+      return { ...componentProps, user };
+    }
 
-//     constructor(props) {
-//       super(props);
-//     }
+    constructor(props: any) {
+      super(props);
+    }
 
-//     render() {
-//       return <App {...this.props} />;
-//     }
-//   };
-// };
+    render() {
+      return <App {...this.props} />;
+    }
+  };
+};
 
 const AuthProvider = ({ children }: { children: any }) => {
   useAuthEffect();
   return children;
 };
 
-class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
+class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
   static async getInitialProps({ Component, ctx }: NextAppContext) {
     let pageProps = {};
 
@@ -71,18 +72,16 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    if (ctx.res) {
-    }
-
     return { pageProps };
   }
 
   render() {
-    const { Component, pageProps, apolloClient } = this.props;
+    const { Component, pageProps, apolloClient, user } = this.props;
+    console.log(user);
 
     return (
       <Container>
-        <StateProvider>
+        <StateProvider initialState={{ currentUser: user }}>
           <ApolloProvider client={apolloClient}>
             <AuthProvider>
               <Component {...pageProps} />
@@ -94,4 +93,4 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
   }
 }
 
-export default withApolloClient(MyApp);
+export default withAuth(withApolloClient(MyApp));

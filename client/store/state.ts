@@ -1,6 +1,4 @@
-import * as firebase from "firebase";
-
-export type User = firebase.User | null;
+export type User = string | null;
 
 export interface State {
   currentUser: User;

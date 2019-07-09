@@ -4,7 +4,7 @@
   "description": "SNS for correcting writings of language learners",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
+    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev -c --ignore .next ./index.ts",
     "inspect": "TS_NODE_PROJECT=tsconfig.server.json node --inspect=127.0.0.1:9230 -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "build": "next build",
     "start": "next start",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/hitochan777/polyglot#readme",
   "dependencies": {
+    "@types/cookie": "^0.3.3",
     "@types/js-cookie": "^2.2.2",
     "@types/microrouter": "^3.1.0",
     "@types/next": "^8.0.5",

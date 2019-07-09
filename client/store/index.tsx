@@ -19,12 +19,13 @@ const defaultState: State = {
 };
 
 export const StateProvider = ({
-  initialState = defaultState,
+  initialState: partialInitialState = defaultState,
   children
 }: {
-  initialState?: State;
+  initialState?: Partial<State>;
   children: any;
 }) => {
+  const initialState = { ...defaultState, ...partialInitialState };
   const { state, actions } = useActionState<State, Actions>(
     initialState,
     actionDefs

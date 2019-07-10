@@ -30,13 +30,14 @@ const withAuthHandler = (handler: any) => async (
   ...restArgs: any[]
 ) => {
   try {
-    const sessionCookie = req.cookies.session || "";
-    const decodedIdToken = await admin
-      .auth()
-      .verifySessionCookie(sessionCookie, true);
-    req.decodedIdToken = decodedIdToken;
+    const sessionCookie = req.cookies.session;
+    if (sessionCookie) {
+      req.decodedIdToken = await admin
+        .auth()
+        .verifySessionCookie(sessionCookie, true);
+    }
   } catch (error) {
-    console.log(error)
+    console.error(error);
   }
   return handler(req, res, ...restArgs);
 };
@@ -80,6 +81,6 @@ const createHandler = async () => {
     get(GRAPHQL_PATH, graphqlProxyHandler),
     get("*", withAuthHandler(nextHandler))
   );
-  return cookie(routedHandler)
+  return cookie(routedHandler);
 };
-export default createHandler()
+export default createHandler();

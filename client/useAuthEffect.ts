@@ -1,5 +1,4 @@
 import * as firebase from "firebase";
-import Router from "next/router";
 import { useEffect } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
@@ -21,9 +20,8 @@ const SIGNIN = gql`
 `;
 
 export const useAuthEffect = () => {
-  const { state, actions } = useStateValue();
-  const { currentUser } = state;
-  const { setCurrentUser, setLoading, setTmpUser } = actions;
+  const { actions } = useStateValue();
+  const { setUser, setLoading } = actions;
   const signin = useMutation(SIGNIN);
 
   useAsyncEffect(async () => {
@@ -34,20 +32,8 @@ export const useAuthEffect = () => {
         await signin({ variables: { token } });
     }
     firebase.auth().onAuthStateChanged(async user => {
-      setTmpUser(user && user.uid);
-      if (user) {
-        if (!currentUser) {
-          setLoading(false);
-          if (Router.pathname === "/signup") {
-            //avoiding infinite loop
-            return;
-          }
-
-          Router.push("/signup");
-          return;
-        }
-      }
-      setCurrentUser(user && user.uid);
+      console.log("onAuthStateChanged called", user)
+      setUser(user && user.email);
       setLoading(false);
     });
   });

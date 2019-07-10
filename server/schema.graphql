@@ -17,6 +17,7 @@ type Line implements Node {
 }
 
 type Mutation {
+  logout: Boolean!
   signin(token: String!): AuthData!
 }
 

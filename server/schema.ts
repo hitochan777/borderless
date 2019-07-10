@@ -8,7 +8,7 @@ import {
 } from "nexus";
 import path from "path";
 import * as admin from "firebase-admin";
-import cookie from "cookie"
+import cookie from "cookie";
 
 const Node = interfaceType({
   name: "Node",
@@ -81,7 +81,6 @@ const AuthData = objectType({
   }
 });
 
-
 const Query = queryType({
   definition(t) {
     t.list.field("posts", {
@@ -96,38 +95,50 @@ const Query = queryType({
 
 const Mutation = mutationType({
   definition(t) {
-    t.field("signin", {
-      type: AuthData,
-      args: {
-        token: stringArg({ required: true })
-      },
-      resolve: async (root, { token }, { res }) => {
-        const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
-        try {
-          const sessionCookie = await admin
-            .auth()
-            .createSessionCookie(token, { expiresIn });
-
-          const isNew = await isNewUser(token);
-          if (!isNew) {
-            // FIXME: secure should be true for security
-            const options = {
-              maxAge: expiresIn,
-              httpOnly: true,
-              secure: false
-            };
-            res.setHeader('Set-Cookie', cookie.serialize("session", sessionCookie, options))
-          }
-          return {
-            token
-          }
-        } catch (error) {
-          console.log(error);
-          return {token}
-          throw new Error("UNAUTHORIZED");
-        }
+    t.field("logout", {
+      type: "Boolean",
+      resolve: async (root, args, { res }) => {
+        res.setHeader(
+          "Set-Cookie",
+          cookie.serialize("session", "", { maxAge: 0 })
+        );
+        return true
       }
-    });
+    }),
+      t.field("signin", {
+        type: AuthData,
+        args: {
+          token: stringArg({ required: true })
+        },
+        resolve: async (root, { token }, { res }) => {
+          const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+          try {
+            const sessionCookie = await admin
+              .auth()
+              .createSessionCookie(token, { expiresIn });
+
+            const isNew = await isNewUser(token);
+            if (!isNew) {
+              // FIXME: secure should be true for security
+              const options = {
+                maxAge: expiresIn,
+                httpOnly: true,
+                secure: false
+              };
+              res.setHeader(
+                "Set-Cookie",
+                cookie.serialize("session", sessionCookie, options)
+              );
+            }
+            return {
+              token
+            };
+          } catch (error) {
+            console.log(error);
+            throw new Error("UNAUTHORIZED");
+          }
+        }
+      });
   }
 });
 

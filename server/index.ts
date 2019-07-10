@@ -39,7 +39,7 @@ const createServer = async () => {
     schema,
     context,
     formatResponse: (response: ServerResponse) => {
-      console.log(response);
+      console.info(response);
       return response;
     }
   });

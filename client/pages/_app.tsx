@@ -77,11 +77,13 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
 
   render() {
     const { Component, pageProps, apolloClient, user } = this.props;
-    console.log(user);
 
+    const context = {
+      apolloClient
+    };
     return (
       <Container>
-        <StateProvider initialState={{ currentUser: user }}>
+        <StateProvider initialState={{ user: user }} context={context}>
           <ApolloProvider client={apolloClient}>
             <AuthProvider>
               <Component {...pageProps} />

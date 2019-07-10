@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useStateValue } from "../store";
 
 const Navbar = () => {
-  const { state } = useStateValue();
+  const { state, actions } = useStateValue();
+
   return (
     <ul>
-      {state.currentUser ? (
+      {state.user ? (
         <li>
-          <Link href="/logout">
-            <a>Logout</a>
+          <Link href="#">
+            <a onClick={actions.signOut}>Logout</a>
           </Link>
         </li>
       ) : (

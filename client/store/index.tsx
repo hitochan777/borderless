@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 
-import { useActionState } from "./useStateAction";
+import { useActionState } from "react-state-action-hooks";
 import { State } from "./state";
-import { actionDefs, Actions } from "./action";
+import { actionDefs, Actions, Context } from "./action";
 
 export const StateContext = React.createContext<{
   state: State;
@@ -13,23 +13,26 @@ export const StateContext = React.createContext<{
 });
 
 const defaultState: State = {
-  currentUser: null,
-  loading: true,
-  tmpUser: null
+  user: null,
+  loading: true
 };
 
 export const StateProvider = ({
   initialState: partialInitialState = defaultState,
+  context,
   children
 }: {
   initialState?: Partial<State>;
+  context: Context;
   children: any;
 }) => {
   const initialState = { ...defaultState, ...partialInitialState };
-  const { state, actions } = useActionState<State, Actions>(
+  const { state, actions } = useActionState<State, Actions, Context>(
     initialState,
-    actionDefs
+    actionDefs,
+    context
   );
+  console.log(state);
 
   return (
     <StateContext.Provider value={{ state, actions }}>

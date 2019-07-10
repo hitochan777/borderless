@@ -2,8 +2,6 @@ import * as firebase from "firebase";
 
 import { State, User } from "./state";
 
-const ky = require("ky/umd");
-
 export type Actions = {
   setCurrentUser: (currentUser: User | null) => void;
   setTmpUser: (tmpUser: User | null) => void;
@@ -33,7 +31,6 @@ export const actionDefs = {
     actions.setLoading(true);
     try {
       await firebase.auth().signOut();
-      // await ky.delete("/logout");
       actions.setCurrentUser(null);
     } catch (error) {
       console.log(error);

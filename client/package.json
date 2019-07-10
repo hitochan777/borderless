@@ -4,7 +4,7 @@
   "description": "SNS for correcting writings of language learners",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev -c --ignore .next ./index.ts",
+    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "inspect": "TS_NODE_PROJECT=tsconfig.server.json node --inspect=127.0.0.1:9230 -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "build": "next build",
     "start": "next start",
@@ -42,7 +42,6 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "js-cookie": "^2.2.0",
-    "ky": "^0.11.1",
     "micro": "^9.3.4",
     "microrouter": "hitochan777-misc/micro-router#fix-no-content",
     "next": "^9.0.0",

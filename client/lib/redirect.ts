@@ -1,7 +1,7 @@
-import { NextContext } from "next";
+import { NextPageContext } from "next";
 import Router from "next/router";
 
-export default (cxt: NextContext, target: string) => {
+export default (cxt: NextPageContext, target: string) => {
   if (cxt.res) {
     // For SSR
     cxt.res.writeHead(303, { Location: target });

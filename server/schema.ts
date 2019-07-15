@@ -102,7 +102,7 @@ const Mutation = mutationType({
           "Set-Cookie",
           cookie.serialize("session", "", { maxAge: 0 })
         );
-        return true
+        return true;
       }
     }),
       t.field("signin", {
@@ -117,19 +117,16 @@ const Mutation = mutationType({
               .auth()
               .createSessionCookie(token, { expiresIn });
 
-            const isNew = await isNewUser(token);
-            if (!isNew) {
-              // FIXME: secure should be true for security
-              const options = {
-                maxAge: expiresIn,
-                httpOnly: true,
-                secure: false
-              };
-              res.setHeader(
-                "Set-Cookie",
-                cookie.serialize("session", sessionCookie, options)
-              );
-            }
+            // FIXME: secure should be true for security
+            const options = {
+              maxAge: expiresIn,
+              httpOnly: true,
+              secure: false
+            };
+            res.setHeader(
+              "Set-Cookie",
+              cookie.serialize("session", sessionCookie, options)
+            );
             return {
               token
             };

@@ -29,11 +29,12 @@ export const useAuthEffect = () => {
     if (result.user) {
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
-        await signin({ variables: { token } });
+      await signin({ variables: { token } });
     }
     firebase.auth().onAuthStateChanged(async user => {
-      console.log("onAuthStateChanged called", user)
-      setUser(user && user.email);
+      setLoading(true);
+      console.log("onAuthStateChanged called", user);
+      setUser(user && user.uid);
       setLoading(false);
     });
   });

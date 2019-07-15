@@ -6,20 +6,11 @@ import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
 import "../firebase";
+import { State } from "../store/state";
 import { defaultState, actionDefs, StateProvider } from "../store";
 import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
 import redirect from "../lib/redirect";
-
-// const compose = (...components: React.ReactType<any>[]) => (
-//   Component: React.ReactType<any>
-// ) =>
-//   components
-//     .reverse()
-//     .reduce(
-//       (wrappedComponent, Wrapper) => <Wrapper>{wrappedComponent}</Wrapper>,
-//       <Component />
-//     );
 
 const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about"];
 
@@ -30,7 +21,7 @@ const auth = async (context: NextPageContext) => {
     redirect(context, "/signin");
   }
   if (context.req && sessionCookie) {
-    user = (context.req as any).decodedIdToken.email;
+    user = (context.req as any).decodedIdToken.uid;
   }
   return { user };
 };
@@ -92,6 +83,9 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
           initialState={initialState}
           actionDefs={actionDefs}
           context={context}
+          callback={(prevState: State, newState: State) => {
+            console.debug("[UPDATE]", prevState, newState);
+          }}
         >
           <ApolloProvider client={apolloClient}>
             <AuthProvider>

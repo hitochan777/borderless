@@ -7,5 +7,5 @@ export interface State {
 
 export const defaultState: State = {
   user: null,
-  loading: true
+  loading: false
 };

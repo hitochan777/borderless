@@ -6,7 +6,7 @@ import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
 import "../firebase";
-import { StateProvider } from "../store";
+import { defaultState, actionDefs, StateProvider } from "../store";
 import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
 import redirect from "../lib/redirect";
@@ -81,9 +81,18 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
     const context = {
       apolloClient
     };
+
+    const initialState = {
+      ...defaultState,
+      ...{ user: user }
+    };
     return (
       <Container>
-        <StateProvider initialState={{ user: user }} context={context}>
+        <StateProvider
+          initialState={initialState}
+          actionDefs={actionDefs}
+          context={context}
+        >
           <ApolloProvider client={apolloClient}>
             <AuthProvider>
               <Component {...pageProps} />

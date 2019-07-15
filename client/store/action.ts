@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 
 import { State, User } from "./state";
 
-export interface Context {
+export type Context = {
   apolloClient: ApolloClient<any>;
-}
+};
 
 export type Actions = {
   setUser: (user: User | null) => void;

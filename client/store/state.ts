@@ -4,3 +4,8 @@ export interface State {
   user: User;
   loading: boolean;
 }
+
+export const defaultState: State = {
+  user: null,
+  loading: true
+};

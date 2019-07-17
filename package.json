@@ -1,0 +1,23 @@
+{
+  "name": "y",
+  "version": "0.0.1",
+  "description": "SNS for correcting writings of language learners",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write ./**/*.{js,jsx,ts,tsx,md,html}"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hitochan777/polyglot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hitochan777/polyglot/issues"
+  },
+  "homepage": "https://github.com/hitochan777/polyglot#readme",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
+}

@@ -153,7 +153,7 @@ const Mutation = mutationType({
         if (!newUser) {
           throw new Error(`failed to create user with uid = ${id}`);
         }
-        console.log(newUser)
+        console.log(newUser);
         return {
           id: newUser.uid,
           email: newUser.email,
@@ -176,7 +176,7 @@ const Mutation = mutationType({
       ) => {
         const updatedUser = await userRepository.update(id, user);
         if (!updatedUser) {
-          throw new Error("failed to update user")
+          throw new Error("failed to update user");
         }
         return {
           id: updatedUser.uid,

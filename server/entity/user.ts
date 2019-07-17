@@ -1,4 +1,4 @@
-import {Language} from "../value/language"
+import { Language } from "../value/language";
 export class User {
   constructor(
     public uid: string,

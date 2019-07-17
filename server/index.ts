@@ -1,13 +1,16 @@
 import {
   ApolloServer,
-  gql,
-  addMockFunctionsToSchema
 } from "apollo-server-micro";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import { parse } from "cookie";
+import knex from "knex"
 
+import { GraphQLContext } from "./types";
+import db from "./db";
 import { schema } from "./schema";
+import { RepositoryContainer } from "./types"
+import { UserRepository } from "./infra/user_repository"
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -16,25 +19,33 @@ if (admin.apps.length === 0) {
   });
 }
 
-export const createContext = () => async ({
+const buildRepositoryContainer = (db: knex): RepositoryContainer => {
+  return {
+    userRepository: new UserRepository(db)
+  }
+}
+
+export const createContext = (db: knex) => async ({
   req,
   res
 }: {
   req: ExtendedServerRequest;
   res: ServerResponse;
-}) => {
-  let user = null;
+}): Promise<GraphQLContext> => {
+  
+  let uid = null;
   const sessionCookie = (req.cookies && req.cookies.session) || "";
   try {
-    user = await admin.auth().verifySessionCookie(sessionCookie, true);
+    const user = await admin.auth().verifySessionCookie(sessionCookie, true);
+    uid = user.uid;
   } catch (error) {}
-  return { user, res };
+  return { uid, res, repositories: buildRepositoryContainer(db) }
 };
 
 // addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
-  const context = await createContext();
+  const context = await createContext(db);
   const server = new ApolloServer({
     schema,
     context,

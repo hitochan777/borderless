@@ -2,9 +2,7 @@
 ### Do not make changes to this file directly
 
 
-type AuthData implements Node {
-  """Unique identifier for the resource"""
-  id: ID!
+type AuthData {
   token: String!
 }
 
@@ -19,6 +17,8 @@ type Line implements Node {
 type Mutation {
   logout: Boolean!
   signin(token: String!): AuthData!
+  userCreate(id: String!): User!
+  userUpdate(id: String!, user: UserInput!): User!
 }
 
 interface Node {
@@ -35,7 +35,9 @@ type Post implements Node {
 }
 
 type Query {
+  langs: [Post!]!
   posts: [Post!]!
+  viewer: User!
 }
 
 type Tweet implements Node {
@@ -49,9 +51,17 @@ type Tweet implements Node {
 
 type User implements Node {
   email: String!
+  fluentLangs: [Int!]!
 
   """Unique identifier for the resource"""
   id: ID!
-  password: String!
+  learningLangs: [Int!]!
   username: String!
+}
+
+input UserInput {
+  email: String
+  fluentLangs: [String!]
+  learningLangs: [String!]
+  username: String
 }

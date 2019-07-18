@@ -125,7 +125,7 @@ const Query = queryType({
         if (uid === null) {
           throw new Error("not logged in");
         }
-        const result = await userRepository.findByUid(uid);
+        const result = await userRepository.findByUid("some uid");
         if (result === null) {
           throw new Error("User not found");
         }

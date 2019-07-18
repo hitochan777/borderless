@@ -45,7 +45,7 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: "/graphql",
+  uri: "http://localhost:3000/graphql",
   credentials: "same-origin"
 });
 

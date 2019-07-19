@@ -29,19 +29,12 @@ const GET_VIEWER = gql(query(GetViewerQuery));
 
 interface Props {}
 
-const Layout: React.StatelessComponent<Props> = ({
-  children
-}: {
-  children?: React.ReactNode;
-}) => {
+const Layout: React.StatelessComponent<Props> = ({ children }) => {
   const { state } = useStateValue();
   const { data, error, loading: queryLoading } = useQuery<
     typeof GetViewerQuery
   >(GET_VIEWER);
-  const loading = state.loading || queryLoading;
-  if (error) {
-    throw error;
-  }
+  const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (
       <LoadingWrapper>
@@ -49,15 +42,20 @@ const Layout: React.StatelessComponent<Props> = ({
       </LoadingWrapper>
     );
   }
-  if (!data) {
-    throw new Error("Unexpected error");
-  }
-  const isInfoEmpty =
-    data.viewer.email.length === 0 || data.viewer.username.length === 0;
+  if (state.user) {
+    if (error) {
+      throw error;
+    }
+    if (!data) {
+      throw new Error("Unexpected error");
+    }
+    const isInfoEmpty =
+      data.viewer.email.length === 0 || data.viewer.username.length === 0;
 
-  if (isInfoEmpty) {
-    // TODO: use modal or something to show a form
-    return <span>You need to fill in info</span>;
+    if (state.user && isInfoEmpty) {
+      // TODO: use modal or something to show a form
+      return <span>You need to fill in info</span>;
+    }
   }
 
   return (

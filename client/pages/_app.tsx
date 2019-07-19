@@ -5,6 +5,7 @@ import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
+import "../assets/css/style.css";
 import "../firebase";
 import { State } from "../store/state";
 import { defaultState, actionDefs, StateProvider } from "../store";
@@ -12,7 +13,7 @@ import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
 import redirect from "../lib/redirect";
 
-const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about"];
+const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about", "/_error"];
 
 const auth = async (context: NextPageContext) => {
   let user = null;

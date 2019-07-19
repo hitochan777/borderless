@@ -1,5 +1,7 @@
-// next.config.js
-module.exports = {
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const withCSS = require("@zeit/next-css");
+
+module.exports = withCSS({
   target: "serverless",
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -12,7 +14,8 @@ module.exports = {
         tls: "empty"
       };
     }
+    config.plugins = [...config.plugins, new MiniCssExtractPlugin()];
 
     return config;
   }
-};
+});

@@ -123,9 +123,9 @@ const Query = queryType({
       args: {},
       async resolve(_, __, { uid, repositories: { userRepository } }) {
         if (uid === null) {
-          uid = "some uid";
+          throw new Error("uid is empty");
         }
-        const result = await userRepository.findByUid("some uid");
+        const result = await userRepository.findByUid(uid);
         if (result === null) {
           throw new Error("User not found");
         }
@@ -202,12 +202,19 @@ const Mutation = mutationType({
       args: {
         token: stringArg({ required: true })
       },
-      resolve: async (root, { token }, { res }) => {
+      resolve: async (
+        root,
+        { token },
+        { res, repositories: { userRepository } }
+      ) => {
         const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
         try {
           const sessionCookie = await admin
             .auth()
             .createSessionCookie(token, { expiresIn });
+
+          const decodedToken = await admin.auth().verifyIdToken(token);
+          await userRepository.findByIdOrCreate(decodedToken.uid);
 
           // FIXME: secure should be true for security
           const options = {

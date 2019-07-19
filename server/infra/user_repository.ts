@@ -38,6 +38,13 @@ export class UserRepository {
       [] // TODO
     );
   }
+  async findByIdOrCreate(uid: string): Promise<User | null> {
+    const user = await this.findByUid(uid);
+    if (user) {
+      return user;
+    }
+    return this.create(uid);
+  }
   async create(uid: string): Promise<User | null> {
     const ids = await this.users().insert(
       {

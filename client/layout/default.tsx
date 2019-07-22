@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { useQuery } from "react-apollo-hooks";
+import { query, types } from "typed-graphqlify";
+import gql from "graphql-tag";
 
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
@@ -13,15 +16,53 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-const Layout = ({ children }: { children?: React.ReactNode }) => {
+const GetViewerQuery = {
+  viewer: {
+    username: types.string,
+    email: types.string,
+    fluentLangs: [types.string],
+    learningLangs: [types.string]
+  }
+};
+
+const GET_VIEWER = gql(query(GetViewerQuery));
+
+interface Props {}
+
+const Layout: React.StatelessComponent<Props> = ({ children }) => {
   const { state } = useStateValue();
-  return state.loading ? (
-    <LoadingWrapper>
-      <Loading />
-    </LoadingWrapper>
-  ) : (
+  const { data, error, loading: queryLoading } = useQuery<
+    typeof GetViewerQuery
+  >(GET_VIEWER);
+  const loading = state.loading || (state.user && queryLoading);
+  if (loading) {
+    return (
+      <LoadingWrapper>
+        <Loading />
+      </LoadingWrapper>
+    );
+  }
+  let shouldShowFillInfoModal: boolean = false;
+  if (state.user) {
+    if (error) {
+      throw error;
+    }
+    if (!data) {
+      throw new Error("Unexpected error");
+    }
+    const isInfoEmpty =
+      data.viewer.email.length === 0 || data.viewer.username.length === 0;
+
+    if (state.user && isInfoEmpty) {
+      // TODO: use modal or something to show a form
+      shouldShowFillInfoModal = true;
+    }
+  }
+
+  return (
     <>
       <Navbar />
+      {shouldShowFillInfoModal && <span>You need to fill in info</span>}
       <main>{children}</main>
     </>
   );

@@ -12,7 +12,7 @@ import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
 import redirect from "../lib/redirect";
 
-const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about"];
+const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about", "/_error"];
 
 const auth = async (context: NextPageContext) => {
   let user = null;

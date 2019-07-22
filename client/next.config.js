@@ -1,4 +1,3 @@
-// next.config.js
 module.exports = {
   target: "serverless",
   webpack: (config, { isServer }) => {
@@ -12,6 +11,7 @@ module.exports = {
         tls: "empty"
       };
     }
+    config.plugins = [...config.plugins];
 
     return config;
   }

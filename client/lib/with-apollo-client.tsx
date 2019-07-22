@@ -26,7 +26,7 @@ const withApolloClient = (
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
       const apollo = initApollo();
-      if (isBrowser) {
+      if (!isBrowser) {
         try {
           // Run all GraphQL queries
           await getMarkupFromTree({

@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
+    "dev:fast": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register/transpile-only node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "inspect": "TS_NODE_PROJECT=tsconfig.server.json node --inspect=127.0.0.1:9230 -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "build": "next build",
     "start": "next start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write ./**/*.{js,jsx,ts,tsx,md,html}"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
+    "@types/rebass": "^3.0.4",
     "@types/styled-components": "^4.1.16",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
@@ -50,13 +51,14 @@
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.6",
     "react-state-action-hooks": "^1.1.0",
-    "styled-components": "^4.3.2"
+    "rebass": "^3.1.1",
+    "styled-components": "^4.3.2",
+    "typed-graphqlify": "^2.2.3"
   },
   "devDependencies": {
     "@types/http-proxy": "^1.17.0",
     "http-proxy": "^1.17.0",
     "micro-dev": "^3.0.0",
-    "prettier": "^1.18.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
   }

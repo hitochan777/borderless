@@ -19,5 +19,6 @@
   "homepage": "https://github.com/hitochan777/polyglot#readme",
   "devDependencies": {
     "prettier": "^1.18.2"
-  }
+  },
+  "dependencies": {}
 }

@@ -5,7 +5,6 @@ import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
-import "../assets/css/style.css";
 import "../firebase";
 import { State } from "../store/state";
 import { defaultState, actionDefs, StateProvider } from "../store";

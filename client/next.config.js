@@ -11,7 +11,7 @@ module.exports = {
         tls: "empty"
       };
     }
-    config.plugins = [...config.plugins, new MiniCssExtractPlugin()];
+    config.plugins = [...config.plugins];
 
     return config;
   }

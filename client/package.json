@@ -28,6 +28,7 @@
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
+    "@types/rebass": "^3.0.4",
     "@types/styled-components": "^4.1.16",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
@@ -50,6 +51,7 @@
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.6",
     "react-state-action-hooks": "^1.1.0",
+    "rebass": "^3.1.1",
     "styled-components": "^4.3.2",
     "typed-graphqlify": "^2.2.3"
   },

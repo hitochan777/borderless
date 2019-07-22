@@ -42,6 +42,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
       </LoadingWrapper>
     );
   }
+  let shouldShowFillInfoModal: boolean = false;
   if (state.user) {
     if (error) {
       throw error;
@@ -54,13 +55,14 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
 
     if (state.user && isInfoEmpty) {
       // TODO: use modal or something to show a form
-      return <span>You need to fill in info</span>;
+      shouldShowFillInfoModal = true;
     }
   }
 
   return (
     <>
       <Navbar />
+      {shouldShowFillInfoModal && <span>You need to fill in info</span>}
       <main>{children}</main>
     </>
   );

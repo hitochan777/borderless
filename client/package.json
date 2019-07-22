@@ -29,14 +29,12 @@
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
     "@types/styled-components": "^4.1.16",
-    "@zeit/next-css": "^1.0.1",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link": "^1.2.12",
     "apollo-link-context": "^1.0.18",
     "apollo-link-error": "^1.1.11",
     "apollo-link-http": "^1.5.15",
-    "autoprefixer": "^9.6.1",
     "babel-plugin-styled-components": "^1.10.6",
     "cookie": "^0.4.0",
     "firebase": "^6.2.4",
@@ -53,7 +51,6 @@
     "react-dom": "^16.8.6",
     "react-state-action-hooks": "^1.1.0",
     "styled-components": "^4.3.2",
-    "tailwindcss": "^1.0.5",
     "typed-graphqlify": "^2.2.3"
   },
   "devDependencies": {

@@ -21,7 +21,7 @@ const auth = async (context: NextPageContext) => {
     redirect(context, "/signin");
   }
   if (context.req && sessionCookie) {
-    user = (context.req as any).decodedIdToken.uid;
+    user = (context.req as any).headers.uid;
   }
   return { user };
 };

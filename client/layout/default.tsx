@@ -32,10 +32,9 @@ interface Props {}
 
 const Layout: React.StatelessComponent<Props> = ({ children }) => {
   const { state } = useStateValue();
-  console.log(state);
   const { data, error, loading: queryLoading } = useQuery<
     typeof GetViewerQuery
-  >(GET_VIEWER, { skip: !!state.user });
+  >(GET_VIEWER, { skip: !state.user });
   const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (

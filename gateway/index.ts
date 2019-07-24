@@ -20,16 +20,17 @@ if (admin.apps.length === 0) {
 const proxy = httpProxy.createProxyServer();
 
 const withAuthHandler = (handler: any) => async (
-  req: any,
-  res: any,
+  req: ExtendedServerRequest,
+  res: MicroServerResponse,
   ...restArgs: any[]
 ) => {
   try {
-    const sessionCookie = req.cookies.session;
+    const sessionCookie = req.cookies && req.cookies.session;
     if (sessionCookie) {
-      req.decodedIdToken = await admin
+      const decodedIdToken = await admin
         .auth()
         .verifySessionCookie(sessionCookie, true);
+      req.headers["uid"] = decodedIdToken.uid;
     }
   } catch (error) {
     console.error(error);

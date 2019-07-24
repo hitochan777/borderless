@@ -32,10 +32,10 @@ export const createContext = (db: knex) => async ({
 }): Promise<GraphQLContext> => {
   let uid = null;
   const sessionCookie = (req.cookies && req.cookies.session) || "";
-  try {
+  if (sessionCookie !== "") {
     const user = await admin.auth().verifySessionCookie(sessionCookie, true);
     uid = user.uid;
-  } catch (error) {}
+  }
   return { uid, res, repositories: buildRepositoryContainer(db) };
 };
 

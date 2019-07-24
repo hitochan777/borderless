@@ -27,15 +27,12 @@ export const useAuthEffect = () => {
   useAsyncEffect(async () => {
     const result = await firebase.auth().getRedirectResult();
     if (result.user) {
+      setLoading(true);
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
       await signin({ variables: { token } });
-    }
-    firebase.auth().onAuthStateChanged(async user => {
-      setLoading(true);
-      console.log("onAuthStateChanged called", user);
-      setUser(user && user.uid);
+      setUser(result.user.uid);
       setLoading(false);
-    });
+    }
   });
 };

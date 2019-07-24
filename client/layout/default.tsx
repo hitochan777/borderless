@@ -4,6 +4,7 @@ import { useQuery } from "react-apollo-hooks";
 import { query, types } from "typed-graphqlify";
 import gql from "graphql-tag";
 
+import { GlobalStyle } from "./global-style";
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
@@ -31,9 +32,10 @@ interface Props {}
 
 const Layout: React.StatelessComponent<Props> = ({ children }) => {
   const { state } = useStateValue();
+  console.log(state);
   const { data, error, loading: queryLoading } = useQuery<
     typeof GetViewerQuery
-  >(GET_VIEWER);
+  >(GET_VIEWER, { skip: !!state.user });
   const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (
@@ -61,6 +63,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
 
   return (
     <>
+      <GlobalStyle />
       <Navbar />
       {shouldShowFillInfoModal && <span>You need to fill in info</span>}
       <main>{children}</main>

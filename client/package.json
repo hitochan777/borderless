@@ -4,10 +4,8 @@
   "description": "SNS for correcting writings of language learners",
   "main": "index.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
-    "dev:fast": "TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register/transpile-only node_modules/.bin/micro-dev --ignore .next ./index.ts",
-    "inspect": "TS_NODE_PROJECT=tsconfig.server.json node --inspect=127.0.0.1:9230 -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
     "build": "next build",
+    "dev": "next dev --port 3002",
     "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,7 +22,6 @@
   "dependencies": {
     "@types/cookie": "^0.3.3",
     "@types/js-cookie": "^2.2.2",
-    "@types/microrouter": "^3.1.0",
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
@@ -39,12 +36,9 @@
     "babel-plugin-styled-components": "^1.10.6",
     "cookie": "^0.4.0",
     "firebase": "^6.2.4",
-    "firebase-admin": "^8.2.0",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "js-cookie": "^2.2.0",
-    "micro": "^9.3.4",
-    "microrouter": "hitochan777-misc/micro-router#fix-no-content",
     "next": "^9.0.0",
     "next-cookies": "^1.1.2",
     "react": "^16.8.6",
@@ -53,13 +47,7 @@
     "react-state-action-hooks": "^1.1.0",
     "rebass": "^3.1.1",
     "styled-components": "^4.3.2",
-    "typed-graphqlify": "^2.2.3"
-  },
-  "devDependencies": {
-    "@types/http-proxy": "^1.17.0",
-    "http-proxy": "^1.17.0",
-    "micro-dev": "^3.0.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.2"
+    "typed-graphqlify": "^2.2.3",
+    "typescript": "^3.5.3"
   }
 }

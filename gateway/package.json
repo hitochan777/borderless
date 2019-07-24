@@ -1,0 +1,40 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "SNS for correcting writings of language learners",
+  "main": "index.js",
+  "scripts": {
+    "dev": "TS_NODE_PROJECT=tsconfig.json node -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
+    "dev:fast": "TS_NODE_PROJECT=tsconfig.json node -r ts-node/register/transpile-only node_modules/.bin/micro-dev --ignore .next ./index.ts",
+    "inspect": "TS_NODE_PROJECT=tsconfig.json node --inspect=127.0.0.1:9230 -r ts-node/register node_modules/.bin/micro-dev --ignore .next ./index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hitochan777/polyglot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hitochan777/polyglot/issues"
+  },
+  "homepage": "https://github.com/hitochan777/polyglot#readme",
+  "dependencies": {
+    "@types/cookie": "^0.3.3",
+    "@types/microrouter": "^3.1.0",
+    "cookie": "^0.4.0",
+    "firebase-admin": "^8.2.0",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "micro": "^9.3.4",
+    "microrouter": "github:hitochan777-misc/micro-router#fix-no-content",
+    "next": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.0",
+    "http-proxy": "^1.17.0",
+    "micro-dev": "^3.0.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
+}

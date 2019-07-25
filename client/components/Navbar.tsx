@@ -1,50 +1,46 @@
 import React from "react";
 import Link from "next/link";
-import { Box, Flex, Heading } from "rebass";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import MenuItem from "@material-ui/core/MenuItem";
+import styled from "styled-components";
 
 import { useStateValue } from "../store";
+
+const StyledTypography = styled(Typography)`
+  flex-grow: 1;
+`;
 
 const Navbar = () => {
   const { state, actions } = useStateValue();
 
   return (
-    <Flex
-      alignItems="center"
-      style={{ backgroundColor: "#00a651", fontFamily: "Sans-Serif;" }}
-    >
-      <Heading fontSize={[4, 5]} color="white">
-        Borderless
-      </Heading>
-      <Box mx="auto">
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-      </Box>
-      <Box mx="auto">
-        <div>
-          {state.user ? (
-            <div>
-              <Link href="#">
-                <a onClick={actions.signOut}>Logout</a>
+    <AppBar position="static">
+      <Toolbar>
+        <StyledTypography variant="h6">Borderless</StyledTypography>
+        {state.user ? (
+          <MenuItem>
+            <Link href="#">
+              <a onClick={actions.signOut}>Logout</a>
+            </Link>
+          </MenuItem>
+        ) : (
+          <>
+            <MenuItem>
+              <Link href="/signin">
+                <a>Sign in</a>
               </Link>
-            </div>
-          ) : (
-            <>
-              <div>
-                <Link href="/signin">
-                  <a>Sign in</a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/signin">
-                  <a>Sign up</a>
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </Box>
-    </Flex>
+            </MenuItem>
+            <MenuItem>
+              <Link href="/signin">
+                <a>Sign up</a>
+              </Link>
+            </MenuItem>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

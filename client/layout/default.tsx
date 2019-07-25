@@ -8,6 +8,7 @@ import { GlobalStyle } from "./global-style";
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
+import { FillInModal } from "../components/FillInModal";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -64,7 +65,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
     <>
       <GlobalStyle />
       <Navbar />
-      {shouldShowFillInfoModal && <span>You need to fill in info</span>}
+      <FillInModal open={shouldShowFillInfoModal} handleSubmit={() => {}} />
       <main>{children}</main>
     </>
   );

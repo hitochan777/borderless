@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -7,12 +7,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { Formik, FormikProps } from "formik";
 
 import { MultiSelect } from "./molecule/MultiSelect";
 
 interface Props {
   open: boolean;
-  handleSubmit: () => void;
+  handleSubmit: any;
 }
 
 const LANGUAGES = [
@@ -33,62 +34,85 @@ const StyledForm = styled.form`
   flex-wrap: wrap;
 `;
 
+interface FormValues {
+  username: string;
+  email: string;
+  fluentLanguages: string[];
+  learningLanguages: string[];
+}
+
 export const FillInModal: React.StatelessComponent<Props> = ({
   open,
-  handleSubmit
+  handleSubmit: onSubmit
 }) => {
-  const [fluentLanguages, setFluentLanguages] = useState([]);
-  const [learningLanguages, setLearningLanguages] = useState([]);
-  const handleFluentLanguagesChange = (event: any) => {
-    setFluentLanguages(event.target.value);
-  };
-  const handleLearningLanguagesChanges = (event: any) => {
-    setLearningLanguages(event.target.value);
-  };
   return (
-    <Dialog open={open} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Fill in the information below before starting your journey!
-        </DialogContentText>
+    <Formik
+      initialValues={{
+        username: "",
+        email: "",
+        fluentLanguages: [],
+        learningLanguages: []
+      }}
+      onSubmit={onSubmit}
+      render={({
+        handleChange,
+        handleSubmit,
+        values
+      }: FormikProps<FormValues>) => (
         <StyledForm>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Username"
-            type="email"
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-          <MultiSelect
-            id="fluent-languages"
-            value={fluentLanguages}
-            handleChange={handleFluentLanguagesChange}
-            options={LANGUAGES}
-            label="Fluent Languages"
-          />
-          <MultiSelect
-            id="learning-languages"
-            value={learningLanguages}
-            handleChange={handleLearningLanguagesChanges}
-            options={LANGUAGES}
-            label="Learning Languages"
-          />
+          <Dialog open={open} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Fill in the information below before starting your journey!
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="username"
+                name="username"
+                label="Username"
+                type="text"
+                value={values.username}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                margin="dense"
+                id="email"
+                name="email"
+                label="Email Address"
+                type="email"
+                value={values.email}
+                onChange={handleChange}
+                fullWidth
+              />
+              <MultiSelect
+                id="fluent-languages"
+                value={values.fluentLanguages}
+                name="fluentLanguages"
+                onChange={handleChange}
+                options={LANGUAGES}
+                label="Fluent Languages"
+              />
+              <MultiSelect
+                id="learning-languages"
+                name="learningLanguages"
+                value={values.learningLanguages}
+                onChange={handleChange}
+                options={LANGUAGES}
+                label="Learning Languages"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleSubmit as any} color="primary">
+                Let's Go!
+              </Button>
+            </DialogActions>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
+          </Dialog>
         </StyledForm>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSubmit} color="primary">
-          Let's Go!
-        </Button>
-      </DialogActions>
-    </Dialog>
+      )}
+    ></Formik>
   );
 };

@@ -10,9 +10,10 @@ import FormControl from "@material-ui/core/FormControl";
 interface Props {
   id: string;
   value: any;
-  handleChange: (event: any) => void;
+  onChange: (event: any) => void;
   options: string[];
   label: string;
+  name: string;
 }
 
 const ITEM_HEIGHT = 48;
@@ -31,21 +32,21 @@ const ChipWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledFormControl = styled(FormControl)``;
-
 export const MultiSelect: React.StatelessComponent<Props> = ({
   id,
   value,
-  handleChange,
+  onChange,
   options,
-  label
+  label,
+  name
 }) => (
-  <StyledFormControl fullWidth>
+  <FormControl fullWidth>
     <InputLabel htmlFor={id}>{label}</InputLabel>
     <Select
       multiple
       value={value}
-      onChange={handleChange}
+      name={name}
+      onChange={onChange}
       input={<Input id={id} />}
       renderValue={(selected: any) => (
         <ChipWrapper>
@@ -62,5 +63,5 @@ export const MultiSelect: React.StatelessComponent<Props> = ({
         </MenuItem>
       ))}
     </Select>
-  </StyledFormControl>
+  </FormControl>
 );

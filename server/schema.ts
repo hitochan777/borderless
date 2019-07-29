@@ -1,5 +1,4 @@
 import {
-  enumType,
   objectType,
   interfaceType,
   queryType,
@@ -102,6 +101,14 @@ const UserInput = inputObjectType({
   }
 });
 
+const Language = objectType({
+  name: "Language",
+  definition(t) {
+    t.implements(Node);
+    t.string("name");
+  }
+});
+
 const Query = queryType({
   definition(t) {
     t.list.field("posts", {
@@ -112,10 +119,27 @@ const Query = queryType({
       }
     });
     t.list.field("langs", {
-      type: "Post",
+      type: "Language",
       args: {},
       resolve(root, args, ctx) {
-        return [];
+        return [
+          {
+            id: "1",
+            name: "Japanese"
+          },
+          {
+            id: "2",
+            name: "English"
+          },
+          {
+            id: "3",
+            name: "Korean"
+          },
+          {
+            id: "4",
+            name: "Chinese"
+          }
+        ];
       }
     });
     t.field("viewer", {
@@ -170,7 +194,7 @@ const Mutation = mutationType({
         user: arg({ type: UserInput, required: true })
       },
       resolve: async (
-        root,
+        _,
         { id, user },
         { repositories: { userRepository } }
       ) => {
@@ -239,7 +263,7 @@ const Mutation = mutationType({
 });
 
 export const schema = makeSchema({
-  types: [User, Node, Post, Line, Tweet, AuthData, Query, Mutation, UserInput],
+  types: [User, Node, Post, Line, Language, Tweet, AuthData, Query, Mutation, UserInput],
   outputs: {
     schema: path.join(__dirname, "schema.graphql"),
     typegen: path.join(__dirname, "typegen.ts")

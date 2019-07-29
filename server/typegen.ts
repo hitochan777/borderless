@@ -26,6 +26,10 @@ export interface NexusGenRootTypes {
   AuthData: { // root type
     token: string; // String!
   }
+  Language: { // root type
+    id: string; // ID!
+    name: string; // String!
+  }
   Line: { // root type
     id: string; // ID!
     post: NexusGenRootTypes['Post']; // Post!
@@ -54,7 +58,7 @@ export interface NexusGenRootTypes {
     learningLangs: number[]; // [Int!]!
     username: string; // String!
   }
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Language'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
   String: string;
   Int: number;
   Float: number;
@@ -69,6 +73,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   AuthData: { // field return type
     token: string; // String!
+  }
+  Language: { // field return type
+    id: string; // ID!
+    name: string; // String!
   }
   Line: { // field return type
     id: string; // ID!
@@ -89,7 +97,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
-    langs: NexusGenRootTypes['Post'][]; // [Post!]!
+    langs: NexusGenRootTypes['Language'][]; // [Language!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -128,12 +136,12 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  Node: "Post" | "Line" | "Tweet" | "User"
+  Node: "Language" | "Post" | "Line" | "Tweet" | "User"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthData" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
+export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
 
 export type NexusGenInputNames = "UserInput";
 

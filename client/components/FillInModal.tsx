@@ -8,26 +8,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, FormikProps } from "formik";
+import { query, types, mutation, params } from "typed-graphqlify";
+import gql from "graphql-tag";
 
 import { MultiSelect } from "./molecule/MultiSelect";
+import { useQuery, useMutation } from "react-apollo-hooks";
+import Loading from "./Loading";
 
 interface Props {
   open: boolean;
-  handleSubmit: any;
 }
-
-const LANGUAGES = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
-];
 
 const StyledForm = styled.form`
   display: flex;
@@ -41,10 +31,52 @@ interface FormValues {
   learningLanguages: string[];
 }
 
+const GetLanguagesQuery = {
+  langs: [
+    {
+      id: types.string,
+      name: types.string
+    }
+  ]
+};
+
+const GET_LANGUAGES = gql(query(GetLanguagesQuery));
+
+const UpdateUserReturnObject = {
+  id: types.string
+}
+const UpdateUserMutation = mutation(
+  "updateUserMutation",
+  params(
+    { $id: "ID!", $input: "UserInput!" },
+    {
+      userUpdate: params(
+        { id: "$id", input: "$input" },
+        UpdateUserReturnObject
+      )
+    }
+  )
+);
+
+const SIGN_UP = gql(UpdateUserMutation);
+
 export const FillInModal: React.StatelessComponent<Props> = ({
   open,
-  handleSubmit: onSubmit
 }) => {
+  const [ updateUser, {updateUserLoading} ] = useMutation<typeof UpdateUserReturnObject>(SIGN_UP)
+  const { data, error, loading } = useQuery<typeof GetLanguagesQuery>(
+    GET_LANGUAGES
+  );
+  if (error || data === undefined) {
+    throw error;
+  }
+  if (loading) {
+    return <Loading />;
+  }
+  const LANGUAGES = data.langs.map(({ id, name }) => ({
+    value: id,
+    name
+  }));
   return (
     <Formik
       initialValues={{

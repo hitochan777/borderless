@@ -56,7 +56,6 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
       data.viewer.email.length === 0 || data.viewer.username.length === 0;
 
     if (state.user && isInfoEmpty) {
-      // TODO: use modal or something to show a form
       shouldShowFillInfoModal = true;
     }
   }
@@ -65,7 +64,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
     <>
       <GlobalStyle />
       <Navbar />
-      <FillInModal open={shouldShowFillInfoModal} handleSubmit={() => {}} />
+      <FillInModal open={shouldShowFillInfoModal} />
       <main>{children}</main>
     </>
   );

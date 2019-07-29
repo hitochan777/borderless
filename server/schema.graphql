@@ -6,6 +6,12 @@ type AuthData {
   token: String!
 }
 
+type Language implements Node {
+  """Unique identifier for the resource"""
+  id: ID!
+  name: String!
+}
+
 type Line implements Node {
   """Unique identifier for the resource"""
   id: ID!
@@ -35,7 +41,7 @@ type Post implements Node {
 }
 
 type Query {
-  langs: [Post!]!
+  langs: [Language!]!
   posts: [Post!]!
   viewer: User!
 }

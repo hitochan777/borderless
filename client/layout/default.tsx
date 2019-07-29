@@ -22,8 +22,8 @@ const GetViewerQuery = {
   viewer: {
     username: types.string,
     email: types.string,
-    fluentLangs: [types.string],
-    learningLangs: [types.string]
+    fluentLanguages: [types.string],
+    learningLanguages: [types.string]
   }
 };
 

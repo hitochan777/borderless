@@ -26,10 +26,10 @@ const User = objectType({
     t.implements(Node);
     t.string("username");
     t.string("email");
-    t.list.field("fluentLangs", {
+    t.list.field("fluentLanguages", {
       type: "Int"
     });
-    t.list.field("learningLangs", {
+    t.list.field("learningLanguages", {
       type: "Int"
     });
   }
@@ -92,10 +92,10 @@ const UserInput = inputObjectType({
   definition(t) {
     t.string("username");
     t.string("email");
-    t.list.field("fluentLangs", {
+    t.list.field("fluentLanguages", {
       type: "String"
     });
-    t.list.field("learningLangs", {
+    t.list.field("learningLanguages", {
       type: "String"
     });
   }
@@ -157,8 +157,8 @@ const Query = queryType({
           id: uid,
           email: result.email,
           username: result.username,
-          fluentLangs: result.fluentLanguages,
-          learningLangs: result.learningLanguages
+          fluentLanguages: result.fluentLanguages,
+          learningLanguages: result.learningLanguages
         };
       }
     });
@@ -182,8 +182,8 @@ const Mutation = mutationType({
           id: newUser.uid,
           email: newUser.email,
           username: newUser.username,
-          fluentLangs: newUser.fluentLanguages,
-          learningLangs: newUser.learningLanguages
+          fluentLanguages: newUser.fluentLanguages,
+          learningLanguages: newUser.learningLanguages
         };
       }
     });
@@ -206,8 +206,8 @@ const Mutation = mutationType({
           id: updatedUser.uid,
           email: updatedUser.email,
           username: updatedUser.username,
-          fluentLangs: updatedUser.fluentLanguages,
-          learningLangs: updatedUser.learningLanguages
+          fluentLanguages: updatedUser.fluentLanguages,
+          learningLanguages: updatedUser.learningLanguages
         };
       }
     });
@@ -263,7 +263,18 @@ const Mutation = mutationType({
 });
 
 export const schema = makeSchema({
-  types: [User, Node, Post, Line, Language, Tweet, AuthData, Query, Mutation, UserInput],
+  types: [
+    User,
+    Node,
+    Post,
+    Line,
+    Language,
+    Tweet,
+    AuthData,
+    Query,
+    Mutation,
+    UserInput
+  ],
   outputs: {
     schema: path.join(__dirname, "schema.graphql"),
     typegen: path.join(__dirname, "typegen.ts")

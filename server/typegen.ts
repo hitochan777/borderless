@@ -13,8 +13,8 @@ declare global {
 export interface NexusGenInputs {
   UserInput: { // input type
     email?: string | null; // String
-    fluentLangs?: string[] | null; // [String!]
-    learningLangs?: string[] | null; // [String!]
+    fluentLanguages?: string[] | null; // [String!]
+    learningLanguages?: string[] | null; // [String!]
     username?: string | null; // String
   }
 }
@@ -53,9 +53,9 @@ export interface NexusGenRootTypes {
   }
   User: { // root type
     email: string; // String!
-    fluentLangs: number[]; // [Int!]!
+    fluentLanguages: number[]; // [Int!]!
     id: string; // ID!
-    learningLangs: number[]; // [Int!]!
+    learningLanguages: number[]; // [Int!]!
     username: string; // String!
   }
   Node: NexusGenRootTypes['Language'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
@@ -110,9 +110,9 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string; // String!
-    fluentLangs: number[]; // [Int!]!
+    fluentLanguages: number[]; // [Int!]!
     id: string; // ID!
-    learningLangs: number[]; // [Int!]!
+    learningLanguages: number[]; // [Int!]!
     username: string; // String!
   }
   Node: { // field return type

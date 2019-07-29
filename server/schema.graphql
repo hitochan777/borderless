@@ -57,17 +57,17 @@ type Tweet implements Node {
 
 type User implements Node {
   email: String!
-  fluentLangs: [Int!]!
+  fluentLanguages: [Int!]!
 
   """Unique identifier for the resource"""
   id: ID!
-  learningLangs: [Int!]!
+  learningLanguages: [Int!]!
   username: String!
 }
 
 input UserInput {
   email: String
-  fluentLangs: [String!]
-  learningLangs: [String!]
+  fluentLanguages: [String!]
+  learningLanguages: [String!]
   username: String
 }

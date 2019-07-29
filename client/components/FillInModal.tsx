@@ -14,6 +14,7 @@ import gql from "graphql-tag";
 import { MultiSelect } from "./molecule/MultiSelect";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import Loading from "./Loading";
+import { useStateValue } from "../store";
 
 interface Props {
   open: boolean;
@@ -44,26 +45,30 @@ const GET_LANGUAGES = gql(query(GetLanguagesQuery));
 
 const UpdateUserReturnObject = {
   id: types.string
-}
+};
 const UpdateUserMutation = mutation(
   "updateUserMutation",
   params(
-    { $id: "ID!", $input: "UserInput!" },
+    { $id: "String!", $user: "UserInput!" },
     {
-      userUpdate: params(
-        { id: "$id", input: "$input" },
-        UpdateUserReturnObject
-      )
+      userUpdate: params({ id: "$id", user: "$user" }, UpdateUserReturnObject)
     }
   )
 );
 
 const SIGN_UP = gql(UpdateUserMutation);
 
-export const FillInModal: React.StatelessComponent<Props> = ({
-  open,
-}) => {
-  const [ updateUser, {updateUserLoading} ] = useMutation<typeof UpdateUserReturnObject>(SIGN_UP)
+export const FillInModal: React.StatelessComponent<Props> = ({ open }) => {
+  const { state } = useStateValue();
+  const updateUser = useMutation<typeof UpdateUserReturnObject>(SIGN_UP);
+
+  const handleSubmit = async (values: FormValues) => {
+    if (!state.user) {
+      throw new Error("uid should not be empty when updating user");
+    }
+    await updateUser({ variables: { id: state.user, user: values } });
+  };
+
   const { data, error, loading } = useQuery<typeof GetLanguagesQuery>(
     GET_LANGUAGES
   );
@@ -85,7 +90,7 @@ export const FillInModal: React.StatelessComponent<Props> = ({
         fluentLanguages: [],
         learningLanguages: []
       }}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       render={({
         handleChange,
         handleSubmit,

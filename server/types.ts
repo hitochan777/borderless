@@ -11,3 +11,5 @@ export interface GraphQLContext {
   res: ServerResponse;
   repositories: RepositoryContainer;
 }
+
+export type ID = number;

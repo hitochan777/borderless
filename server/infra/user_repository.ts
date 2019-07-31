@@ -1,6 +1,5 @@
-import knex, { Raw } from "knex";
+import knex from "knex";
 
-import { Language } from "../value/language";
 import { User } from "../entity/user";
 
 const ALL_FIELDS = [
@@ -11,6 +10,7 @@ const ALL_FIELDS = [
 ];
 
 interface RawUser {
+  id: number;
   uid: string;
   email: string;
   username: string;
@@ -31,7 +31,7 @@ export class UserRepository {
       return null;
     }
     return new User(
-      user.uid,
+      user.id,
       user.email,
       user.username,
       [], // TODO
@@ -66,7 +66,7 @@ export class UserRepository {
       return null;
     }
     return new User(
-      user.uid,
+      user.id,
       user.email,
       user.username,
       [], // TODO
@@ -78,8 +78,8 @@ export class UserRepository {
     userInput: {
       email?: string | null;
       username?: string | null;
-      fluentLanguages?: Language[] | null;
-      learningLanguages?: Language[] | null;
+      fluentLanguages?: string[] | null;
+      learningLanguages?: string[] | null;
     }
   ): Promise<User | null> {
     let newUserInput = {
@@ -106,6 +106,6 @@ export class UserRepository {
     if (!user) {
       return null;
     }
-    return new User(user.uid, user.email, user.username, [], []);
+    return new User(user.id, user.email, user.username, [], []);
   }
 }

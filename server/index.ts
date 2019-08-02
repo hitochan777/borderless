@@ -9,6 +9,7 @@ import db from "./db";
 import { schema } from "./schema";
 import { RepositoryContainer } from "./types";
 import { UserRepository } from "./infra/user_repository";
+import { PostRepository } from "./infra/post_repository";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -19,7 +20,8 @@ if (admin.apps.length === 0) {
 
 const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   return {
-    userRepository: new UserRepository(db)
+    userRepository: new UserRepository(db),
+    postRepository: new PostRepository(db)
   };
 };
 
@@ -36,7 +38,11 @@ export const createContext = (db: knex) => async ({
     const user = await admin.auth().verifySessionCookie(sessionCookie, true);
     uid = user.uid;
   }
-  return { uid, res, repositories: buildRepositoryContainer(db) };
+  return {
+    uid: "CgJgvBcQB3ajIdJ3wJF5qFqt2yq1",
+    res,
+    repositories: buildRepositoryContainer(db)
+  };
 };
 
 // addMockFunctionsToSchema({ schema });

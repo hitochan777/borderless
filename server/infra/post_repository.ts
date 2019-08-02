@@ -1,0 +1,45 @@
+import knex from "knex";
+
+import { Post } from "../entity/post";
+import { ID } from "../types";
+import { Language } from "../value/language";
+
+interface RawPost {
+  id: number;
+  user_id: number;
+  language: number;
+  text: string;
+}
+
+interface PostInput {
+  userId: ID;
+  language: number;
+  text: string;
+}
+
+export class PostRepository {
+  posts: () => knex.QueryBuilder<RawPost, RawPost[]>;
+  constructor(db: knex) {
+    this.posts = () => db("post");
+  }
+  async create({ userId, language, text }: PostInput) {
+    const ids = await this.posts().insert({
+      user_id: userId,
+      language,
+      text
+    });
+    if (ids.length === 0) {
+      return null;
+    }
+    const post = await this.posts()
+      .where("id", ids[0])
+      .first();
+    if (!post) {
+      return null;
+    }
+    if (!Language[post.language]) {
+      throw new Error(`Invalid language ID ${post.language}`);
+    }
+    return new Post(post.id, post.user_id, post.language, post.text);
+  }
+}

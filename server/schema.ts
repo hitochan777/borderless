@@ -20,6 +20,14 @@ const Node = interfaceType({
   }
 });
 
+const Repliable = interfaceType({
+  name: "Repliable",
+  definition(t) {
+    t.field("text", { type: "String" });
+    t.resolveType(() => null);
+  }
+});
+
 const User = objectType({
   name: "User",
   definition(t) {
@@ -39,13 +47,9 @@ const Post = objectType({
   name: "Post",
   definition(t) {
     t.implements(Node);
-    t.list.field("lines", {
-      type: "Line"
-    });
-    t.field("user", {
-      type: "User"
-    });
-    t.string("lang");
+    t.string("text");
+    t.int("userId");
+    t.int("language");
   }
 });
 
@@ -53,13 +57,13 @@ const Line = objectType({
   name: "Line",
   definition(t) {
     t.implements(Node);
+    t.implements(Repliable);
     t.list.field("tweets", {
       type: "Tweet"
     });
     t.field("post", {
       type: "Post"
     });
-    t.string("text");
   }
 });
 
@@ -67,16 +71,13 @@ const Tweet = objectType({
   name: "Tweet",
   definition(t) {
     t.implements(Node);
+    t.implements(Repliable);
     t.list.field("replies", {
       type: "Tweet"
     });
-    t.field("parentTweet", {
-      type: "Tweet"
+    t.field("inReplyTo", {
+      type: Repliable
     });
-    t.field("line", {
-      type: "Line"
-    });
-    t.string("text");
   }
 });
 
@@ -98,6 +99,14 @@ const UserInput = inputObjectType({
     t.list.field("learningLanguages", {
       type: "String"
     });
+  }
+});
+
+const PostInput = inputObjectType({
+  name: "PostInput",
+  definition(t) {
+    t.int("language", { required: true });
+    t.string("text", { required: true });
   }
 });
 
@@ -211,6 +220,39 @@ const Mutation = mutationType({
         };
       }
     });
+    t.field("postCreate", {
+      type: "Post",
+      args: {
+        post: arg({ type: PostInput, required: true })
+      },
+      resolve: async (
+        _,
+        { post: postInput },
+        { repositories: { userRepository, postRepository }, uid }
+      ) => {
+        if (!uid) {
+          throw new Error("uid is empty");
+        }
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          throw new Error("user not found");
+        }
+        const post = await postRepository.create({
+          userId: user.id,
+          language: postInput.language,
+          text: postInput.text
+        });
+        if (!post) {
+          throw new Error("Failed to create a post");
+        }
+        return {
+          id: `${post.id}`,
+          userId: post.userId,
+          language: post.language,
+          text: post.text
+        };
+      }
+    });
     t.field("logout", {
       type: "Boolean",
       resolve: async (root, args, { res }) => {
@@ -273,7 +315,9 @@ export const schema = makeSchema({
     AuthData,
     Query,
     Mutation,
-    UserInput
+    UserInput,
+    Repliable,
+    PostInput
   ],
   outputs: {
     schema: path.join(__dirname, "schema.graphql"),

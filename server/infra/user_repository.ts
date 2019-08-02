@@ -32,6 +32,7 @@ export class UserRepository {
     }
     return new User(
       user.id,
+      user.uid,
       user.email,
       user.username,
       [], // TODO
@@ -67,6 +68,7 @@ export class UserRepository {
     }
     return new User(
       user.id,
+      user.uid,
       user.email,
       user.username,
       [], // TODO
@@ -106,6 +108,6 @@ export class UserRepository {
     if (!user) {
       return null;
     }
-    return new User(user.id, user.email, user.username, [], []);
+    return new User(user.id, user.uid, user.email, user.username, [], []);
   }
 }

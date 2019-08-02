@@ -5,7 +5,7 @@ export class Post {
   constructor(
     public id: ID,
     public userId: ID,
-    public lineIds: ID[],
     public language: Language,
+    public text: string
   ) {}
 }

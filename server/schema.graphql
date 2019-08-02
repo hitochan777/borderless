@@ -12,7 +12,7 @@ type Language implements Node {
   name: String!
 }
 
-type Line implements Node {
+type Line implements Node & Repliable {
   """Unique identifier for the resource"""
   id: ID!
   post: Post!
@@ -22,6 +22,7 @@ type Line implements Node {
 
 type Mutation {
   logout: Boolean!
+  postCreate(post: PostInput!): Post!
   signin(token: String!): AuthData!
   userCreate(id: String!): User!
   userUpdate(id: String!, user: UserInput!): User!
@@ -35,9 +36,14 @@ interface Node {
 type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
-  lang: String!
-  lines: [Line!]!
-  user: User!
+  language: Int!
+  text: String!
+  userId: Int!
+}
+
+input PostInput {
+  language: Int!
+  text: String!
 }
 
 type Query {
@@ -46,11 +52,14 @@ type Query {
   viewer: User!
 }
 
-type Tweet implements Node {
+interface Repliable {
+  text: String!
+}
+
+type Tweet implements Node & Repliable {
   """Unique identifier for the resource"""
   id: ID!
-  line: Line!
-  parentTweet: Tweet!
+  inReplyTo: Repliable!
   replies: [Tweet!]!
   text: String!
 }

@@ -11,6 +11,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  PostInput: { // input type
+    language: number; // Int!
+    text: string; // String!
+  }
   UserInput: { // input type
     email?: string | null; // String
     fluentLanguages?: string[] | null; // [String!]
@@ -39,15 +43,14 @@ export interface NexusGenRootTypes {
   Mutation: {};
   Post: { // root type
     id: string; // ID!
-    lang: string; // String!
-    lines: NexusGenRootTypes['Line'][]; // [Line!]!
-    user: NexusGenRootTypes['User']; // User!
+    language: number; // Int!
+    text: string; // String!
+    userId: number; // Int!
   }
   Query: {};
   Tweet: { // root type
     id: string; // ID!
-    line: NexusGenRootTypes['Line']; // Line!
-    parentTweet: NexusGenRootTypes['Tweet']; // Tweet!
+    inReplyTo: NexusGenRootTypes['Repliable']; // Repliable!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
   }
@@ -58,7 +61,8 @@ export interface NexusGenRootTypes {
     learningLanguages: number[]; // [Int!]!
     username: string; // String!
   }
-  Node: NexusGenRootTypes['Language'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Language'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
+  Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
   String: string;
   Int: number;
   Float: number;
@@ -67,6 +71,7 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  PostInput: NexusGenInputs['PostInput'];
   UserInput: NexusGenInputs['UserInput'];
 }
 
@@ -86,15 +91,16 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     logout: boolean; // Boolean!
+    postCreate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
     id: string; // ID!
-    lang: string; // String!
-    lines: NexusGenRootTypes['Line'][]; // [Line!]!
-    user: NexusGenRootTypes['User']; // User!
+    language: number; // Int!
+    text: string; // String!
+    userId: number; // Int!
   }
   Query: { // field return type
     langs: NexusGenRootTypes['Language'][]; // [Language!]!
@@ -103,8 +109,7 @@ export interface NexusGenFieldTypes {
   }
   Tweet: { // field return type
     id: string; // ID!
-    line: NexusGenRootTypes['Line']; // Line!
-    parentTweet: NexusGenRootTypes['Tweet']; // Tweet!
+    inReplyTo: NexusGenRootTypes['Repliable']; // Repliable!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
   }
@@ -118,10 +123,16 @@ export interface NexusGenFieldTypes {
   Node: { // field return type
     id: string; // ID!
   }
+  Repliable: { // field return type
+    text: string; // String!
+  }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    postCreate: { // args
+      post: NexusGenInputs['PostInput']; // PostInput!
+    }
     signin: { // args
       token: string; // String!
     }
@@ -136,18 +147,19 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  Node: "Language" | "Post" | "Line" | "Tweet" | "User"
+  Node: "Language" | "Post" | "User" | "Line" | "Tweet"
+  Repliable: "Line" | "Tweet"
 }
 
 export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "UserInput";
+export type NexusGenInputNames = "PostInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 
-export type NexusGenInterfaceNames = "Node";
+export type NexusGenInterfaceNames = "Node" | "Repliable";
 
 export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 

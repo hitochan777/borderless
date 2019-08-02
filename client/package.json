@@ -44,7 +44,7 @@
     "next": "^9.0.0",
     "next-cookies": "^1.1.2",
     "react": "^16.8.6",
-    "react-apollo-hooks": "^0.4.5",
+    "react-apollo-hooks": "^0.5.0",
     "react-dom": "^16.8.6",
     "react-state-action-hooks": "^1.1.0",
     "rebass": "^3.1.1",

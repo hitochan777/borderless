@@ -35,8 +35,12 @@ export class UserRepository {
       user.uid,
       user.email,
       user.username,
-      [], // TODO
-      [] // TODO
+      user.fluentLanguages.trim().length === 0
+        ? []
+        : user.fluentLanguages.split(",").map(lang_id => +lang_id),
+      user.learningLanguages.trim().length === 0
+        ? []
+        : user.learningLanguages.split(",").map(lang_id => +lang_id)
     );
   }
   async findByIdOrCreate(uid: string): Promise<User | null> {

@@ -12,6 +12,8 @@ import path from "path";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 
+import * as value from "./value/language";
+
 const Node = interfaceType({
   name: "Node",
   definition(t) {
@@ -131,24 +133,12 @@ const Query = queryType({
       type: "Language",
       args: {},
       resolve(root, args, ctx) {
-        return [
-          {
-            id: "1",
-            name: "Japanese"
-          },
-          {
-            id: "2",
-            name: "English"
-          },
-          {
-            id: "3",
-            name: "Korean"
-          },
-          {
-            id: "4",
-            name: "Chinese"
-          }
-        ];
+        return Object.keys(value.Language)
+          .filter(value => !isNaN(+value))
+          .map(id => ({
+            id,
+            name: value.Language[+id]
+          }));
       }
     });
     t.field("viewer", {

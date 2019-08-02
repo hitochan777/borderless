@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { useQuery } from "react-apollo-hooks";
-import { query, types } from "typed-graphqlify";
-import gql from "graphql-tag";
 
 import { GlobalStyle } from "./global-style";
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
+import { GetViewerQuery, GET_VIEWER } from "../constant/queries";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -17,17 +16,6 @@ const LoadingWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
-const GetViewerQuery = {
-  viewer: {
-    username: types.string,
-    email: types.string,
-    fluentLanguages: [types.string],
-    learningLanguages: [types.string]
-  }
-};
-
-const GET_VIEWER = gql(query(GetViewerQuery));
 
 interface Props {}
 
@@ -45,6 +33,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
     );
   }
   let shouldShowFillInfoModal: boolean = false;
+  let formData;
   if (state.user) {
     if (error) {
       throw error;
@@ -52,11 +41,22 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
     if (!data) {
       throw new Error("Unexpected error");
     }
+
+    const { email, username, learningLanguages, fluentLanguages } = data.viewer;
     const isInfoEmpty =
-      data.viewer.email.length === 0 || data.viewer.username.length === 0;
+      email.length === 0 ||
+      username.length === 0 ||
+      learningLanguages.length === 0 ||
+      fluentLanguages.length === 0;
 
     if (state.user && isInfoEmpty) {
       shouldShowFillInfoModal = true;
+      formData = {
+        email,
+        username,
+        learningLanguages: learningLanguages.map(l => `${l}`),
+        fluentLanguages: fluentLanguages.map(l => `${l}`)
+      };
     }
   }
 
@@ -64,7 +64,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
     <>
       <GlobalStyle />
       <Navbar />
-      <FillInModal open={shouldShowFillInfoModal} />
+      <FillInModal open={shouldShowFillInfoModal} formData={formData} />
       <main>{children}</main>
     </>
   );

@@ -32,6 +32,11 @@ interface FormValues {
   learningLanguages: string[];
 }
 
+interface Props {
+  open: boolean;
+  formData: FormValues | undefined;
+}
+
 const GetLanguagesQuery = {
   langs: [
     {
@@ -58,7 +63,15 @@ const UpdateUserMutation = mutation(
 
 const SIGN_UP = gql(UpdateUserMutation);
 
-export const FillInModal: React.StatelessComponent<Props> = ({ open }) => {
+export const FillInModal: React.StatelessComponent<Props> = ({
+  open,
+  formData = {
+    email: "",
+    username: "",
+    fluentLanguages: [],
+    learningLanguages: []
+  }
+}) => {
   const { state } = useStateValue();
   const updateUser = useMutation<typeof UpdateUserReturnObject>(SIGN_UP);
 
@@ -84,12 +97,7 @@ export const FillInModal: React.StatelessComponent<Props> = ({ open }) => {
   }));
   return (
     <Formik
-      initialValues={{
-        username: "",
-        email: "",
-        fluentLanguages: [],
-        learningLanguages: []
-      }}
+      initialValues={formData}
       onSubmit={handleSubmit}
       render={({
         handleChange,

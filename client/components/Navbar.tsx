@@ -16,7 +16,7 @@ const Navbar = () => {
   const { state, actions } = useStateValue();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{marginBottom: 10}}>
       <Toolbar>
         <StyledTypography variant="h6">Borderless</StyledTypography>
         {state.user ? (

@@ -16,10 +16,10 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   UserInput: { // input type
-    email?: string | null; // String
-    fluentLanguages?: string[] | null; // [String!]
-    learningLanguages?: string[] | null; // [String!]
-    username?: string | null; // String
+    email: string; // String!
+    fluentLanguages: number[]; // [Int!]!
+    learningLanguages: number[]; // [Int!]!
+    username: string; // String!
   }
 }
 

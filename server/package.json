@@ -5,13 +5,15 @@
   "license": "MIT",
   "dependencies": {
     "@types/cookie": "^0.3.3",
+    "@types/node": "^12.6.9",
     "apollo-server-micro": "^2.6.7",
     "cookie": "^0.4.0",
     "firebase-admin": "^8.2.0",
     "graphql": "^14.3.1",
-    "knex": "^0.19.0",
     "nexus": "^0.11.7",
-    "sqlite3": "^4.0.9"
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.0.9",
+    "typeorm": "^0.2.18"
   },
   "devDependencies": {
     "micro-dev": "^3.0.0",
@@ -21,7 +23,6 @@
   },
   "scripts": {
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
-    "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
-    "migrate": "ts-node -P ./tsconfig.json node_modules/.bin/knex migrate:latest --knexfile ./config/knexfile.ts"
+    "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts"
   }
 }

@@ -79,7 +79,16 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     if (!state.user) {
       throw new Error("uid should not be empty when updating user");
     }
-    await updateUser({ variables: { id: state.user, user: values } });
+    await updateUser({
+      variables: {
+        id: state.user,
+        user: {
+          ...values,
+          learningLanguages: values.learningLanguages.map((l: string) => +l),
+          fluentLanguages: values.fluentLanguages.map((l: string) => +l)
+        }
+      }
+    });
   };
 
   const { data, error, loading } = useQuery<typeof GetLanguagesQuery>(
@@ -158,6 +167,6 @@ export const FillInModal: React.StatelessComponent<Props> = ({
           </Dialog>
         </StyledForm>
       )}
-    ></Formik>
+    />
   );
 };

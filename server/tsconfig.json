@@ -4,6 +4,8 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "es2018"]
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "esnext", "es2018"]
   }
 }

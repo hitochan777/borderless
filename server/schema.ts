@@ -93,13 +93,15 @@ const AuthData = objectType({
 const UserInput = inputObjectType({
   name: "UserInput",
   definition(t) {
-    t.string("username");
-    t.string("email");
+    t.string("username", { nullable: false });
+    t.string("email", { nullable: false });
     t.list.field("fluentLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
     t.list.field("learningLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
   }
 });
@@ -148,10 +150,11 @@ const Query = queryType({
         if (uid === null) {
           throw new Error("uid is empty");
         }
-        const result = await userRepository.findByUid(uid);
-        if (result === null) {
+        const result = await userRepository.findOne({ where: { uid } });
+        if (!result) {
           throw new Error("User not found");
         }
+        console.log(result);
         return {
           id: uid,
           email: result.email,
@@ -172,11 +175,8 @@ const Mutation = mutationType({
         id: stringArg({ required: true })
       },
       resolve: async (root, { id }, { repositories: { userRepository } }) => {
-        const newUser = await userRepository.create(id);
-        if (!newUser) {
-          throw new Error(`failed to create user with uid = ${id}`);
-        }
-        console.log(newUser);
+        const newUsers = await userRepository.insert({ uid: id });
+        const newUser = newUsers.generatedMaps[0];
         return {
           id: newUser.uid,
           email: newUser.email,
@@ -194,12 +194,22 @@ const Mutation = mutationType({
       },
       resolve: async (
         _,
-        { id, user },
+        { id, user: userInput },
         { repositories: { userRepository } }
       ) => {
-        const updatedUser = await userRepository.update(id, user);
-        if (!updatedUser) {
+        const user = {
+          email: userInput.email,
+          username: userInput.username,
+          fluentLanguages: userInput.fluentLanguages as value.Language[],
+          learningLanguages: userInput.learningLanguages as value.Language[]
+        };
+        const updatedResult = await userRepository.update({ uid: id }, user);
+        if (updatedResult.raw.affectedRows === 0) {
           throw new Error("failed to update user");
+        }
+        const updatedUser = await userRepository.findOne({ uid: id });
+        if (!updatedUser) {
+          throw new Error("updated user is empty");
         }
         return {
           id: updatedUser.uid,
@@ -223,21 +233,25 @@ const Mutation = mutationType({
         if (!uid) {
           throw new Error("uid is empty");
         }
-        const user = await userRepository.findByUid(uid);
+        const user = await userRepository.findOne({ uid });
         if (!user) {
           throw new Error("user not found");
         }
-        const post = await postRepository.create({
-          userId: user.id,
+        const insertResult = await postRepository.insert({
+          user,
           language: postInput.language,
           text: postInput.text
         });
-        if (!post) {
+        if (insertResult.identifiers.length === 0) {
           throw new Error("Failed to create a post");
+        }
+        const post = await postRepository.findOne(insertResult.identifiers[0]);
+        if (!post) {
+          throw new Error("post not found");
         }
         return {
           id: `${post.id}`,
-          userId: post.userId,
+          userId: post.user.id,
           language: post.language,
           text: post.text
         };
@@ -270,7 +284,7 @@ const Mutation = mutationType({
             .createSessionCookie(token, { expiresIn });
 
           const decodedToken = await admin.auth().verifyIdToken(token);
-          await userRepository.findByIdOrCreate(decodedToken.uid);
+          await userRepository.save({ uid: decodedToken.uid });
 
           // FIXME: secure should be true for security
           const options = {

@@ -76,8 +76,8 @@ type User implements Node {
 }
 
 input UserInput {
-  email: String!
-  fluentLanguages: [Int!]!
-  learningLanguages: [Int!]!
-  username: String!
+  email: String
+  fluentLanguages: [String!]
+  learningLanguages: [String!]
+  username: String
 }

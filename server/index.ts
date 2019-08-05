@@ -1,16 +1,15 @@
-import "reflect-metadata";
 import { ApolloServer } from "apollo-server-micro";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import { parse } from "cookie";
+import knex from "knex";
 
 import { GraphQLContext } from "./types";
+import db from "./db";
 import { schema } from "./schema";
 import { RepositoryContainer } from "./types";
-import { createConnection } from "typeorm";
-
-import { User } from "./entity/user";
-import { Post } from "./entity/post";
+import { UserRepository } from "./infra/user_repository";
+import { PostRepository } from "./infra/post_repository";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -19,43 +18,37 @@ if (admin.apps.length === 0) {
   });
 }
 
-const buildRepositoryContainer = async (): Promise<RepositoryContainer> => {
-  const connection = await createConnection();
-
+const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   return {
-    userRepository: connection.getRepository<User>(User),
-    postRepository: connection.getRepository<Post>(Post)
+    userRepository: new UserRepository(db),
+    postRepository: new PostRepository(db)
   };
 };
 
-export const createContext = async () => {
-  const repositories = await buildRepositoryContainer();
-
-  return async ({
-    req,
-    res
-  }: {
-    req: ExtendedServerRequest;
-    res: ServerResponse;
-  }): Promise<GraphQLContext> => {
-    let uid = null;
-    const sessionCookie = (req.cookies && req.cookies.session) || "";
-    if (sessionCookie !== "") {
-      const user = await admin.auth().verifySessionCookie(sessionCookie, true);
-      uid = user.uid;
-    }
-    return {
-      uid: "CgJgvBcQB3ajIdJ3wJF5qFqt2yq1",
-      res,
-      repositories
-    };
+export const createContext = (db: knex) => async ({
+  req,
+  res
+}: {
+  req: ExtendedServerRequest;
+  res: ServerResponse;
+}): Promise<GraphQLContext> => {
+  let uid = null;
+  const sessionCookie = (req.cookies && req.cookies.session) || "";
+  if (sessionCookie !== "") {
+    const user = await admin.auth().verifySessionCookie(sessionCookie, true);
+    uid = user.uid;
+  }
+  return {
+    uid: "CgJgvBcQB3ajIdJ3wJF5qFqt2yq1",
+    res,
+    repositories: buildRepositoryContainer(db)
   };
 };
 
 // addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
-  const context = await createContext();
+  const context = await createContext(db);
   const server = new ApolloServer({
     schema,
     context,

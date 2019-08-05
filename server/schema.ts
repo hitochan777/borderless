@@ -45,10 +45,10 @@ const User = objectType({
     t.list.field("posts", {
       type: "Post",
       async resolve(root, args, { repositories: { postRepository } }) {
-        const posts = await postRepository.find({ user: { uid: root.id } });
+        const posts = await postRepository.findByUid(root.id);
         return posts.map(post => ({
           id: `${post.id}`,
-          userId: post.user.uid,
+          userId: root.id,
           text: post.text,
           language: post.language
         }));
@@ -62,7 +62,7 @@ const Post = objectType({
   definition(t) {
     t.implements(Node);
     t.string("text");
-    t.string("userId");
+    t.int("userId");
     t.int("language");
   }
 });
@@ -105,15 +105,13 @@ const AuthData = objectType({
 const UserInput = inputObjectType({
   name: "UserInput",
   definition(t) {
-    t.string("username", { nullable: false });
-    t.string("email", { nullable: false });
+    t.string("username");
+    t.string("email");
     t.list.field("fluentLanguages", {
-      type: "Int",
-      nullable: false
+      type: "String"
     });
     t.list.field("learningLanguages", {
-      type: "Int",
-      nullable: false
+      type: "String"
     });
   }
 });
@@ -162,8 +160,8 @@ const Query = queryType({
         if (uid === null) {
           throw new Error("uid is empty");
         }
-        const result = await userRepository.findOne({ where: { uid } });
-        if (!result) {
+        const result = await userRepository.findByUid(uid);
+        if (result === null) {
           throw new Error("User not found");
         }
         return {
@@ -186,8 +184,11 @@ const Mutation = mutationType({
         id: stringArg({ required: true })
       },
       resolve: async (root, { id }, { repositories: { userRepository } }) => {
-        const newUsers = await userRepository.insert({ uid: id });
-        const newUser = newUsers.generatedMaps[0];
+        const newUser = await userRepository.create(id);
+        if (!newUser) {
+          throw new Error(`failed to create user with uid = ${id}`);
+        }
+        console.log(newUser);
         return {
           id: newUser.uid,
           email: newUser.email,
@@ -205,22 +206,12 @@ const Mutation = mutationType({
       },
       resolve: async (
         _,
-        { id, user: userInput },
+        { id, user },
         { repositories: { userRepository } }
       ) => {
-        const user = {
-          email: userInput.email,
-          username: userInput.username,
-          fluentLanguages: userInput.fluentLanguages as value.Language[],
-          learningLanguages: userInput.learningLanguages as value.Language[]
-        };
-        const updatedResult = await userRepository.update({ uid: id }, user);
-        if (updatedResult.raw.affectedRows === 0) {
-          throw new Error("failed to update user");
-        }
-        const updatedUser = await userRepository.findOne({ uid: id });
+        const updatedUser = await userRepository.update(id, user);
         if (!updatedUser) {
-          throw new Error("updated user is empty");
+          throw new Error("failed to update user");
         }
         return {
           id: updatedUser.uid,
@@ -244,25 +235,21 @@ const Mutation = mutationType({
         if (!uid) {
           throw new Error("uid is empty");
         }
-        const user = await userRepository.findOne({ uid });
+        const user = await userRepository.findByUid(uid);
         if (!user) {
           throw new Error("user not found");
         }
-        const insertResult = await postRepository.insert({
-          user,
+        const post = await postRepository.create({
+          userId: user.id,
           language: postInput.language,
           text: postInput.text
         });
-        if (insertResult.identifiers.length === 0) {
-          throw new Error("Failed to create a post");
-        }
-        const post = await postRepository.findOne(insertResult.identifiers[0]);
         if (!post) {
-          throw new Error("post not found");
+          throw new Error("Failed to create a post");
         }
         return {
           id: `${post.id}`,
-          userId: post.user.uid,
+          userId: post.userId,
           language: post.language,
           text: post.text
         };
@@ -295,7 +282,7 @@ const Mutation = mutationType({
             .createSessionCookie(token, { expiresIn });
 
           const decodedToken = await admin.auth().verifyIdToken(token);
-          await userRepository.save({ uid: decodedToken.uid });
+          await userRepository.findByIdOrCreate(decodedToken.uid);
 
           // FIXME: secure should be true for security
           const options = {

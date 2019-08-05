@@ -1,12 +1,11 @@
 import { ServerResponse } from "http";
-import { Repository } from "typeorm";
 
-import { User } from "./entity/user";
-import { Post } from "./entity/post";
+import { UserRepository } from "./infra/user_repository";
+import { PostRepository } from "./infra/post_repository";
 
 export interface RepositoryContainer {
-  userRepository: Repository<User>;
-  postRepository: Repository<Post>;
+  userRepository: UserRepository;
+  postRepository: PostRepository;
 }
 
 export interface GraphQLContext {

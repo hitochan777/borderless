@@ -1,32 +1,11 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-} from "typeorm";
-
 import { Language } from "../value/language";
-import { User } from "./user";
+import { ID } from "../types";
 
-@Entity()
 export class Post {
-  @PrimaryGeneratedColumn()
-  id: number = 0;
-
-  @ManyToOne(() => User, {eager: true})
-  user: User = new User({});
-
-  @Column({
-    transformer: {
-      from: (language: string): Language => +language,
-      to: (language: Language): string => `${language}`
-    }
-  })
-  language: Language = Language.English;
-
-  @Column() text: string = "";
-
-  constructor(post: Partial<Post>) {
-    Object.assign(this, post);
-  }
+  constructor(
+    public id: ID,
+    public userId: ID,
+    public language: Language,
+    public text: string
+  ) {}
 }

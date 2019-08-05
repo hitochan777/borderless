@@ -46,7 +46,7 @@ const User = objectType({
       type: "Post",
       async resolve(root, args, { repositories: { postRepository } }) {
         const posts = await postRepository.findByUid(root.id);
-        return posts.map(post => ({
+        return posts.map((post: any) => ({
           id: `${post.id}`,
           userId: root.id,
           text: post.text,
@@ -62,7 +62,7 @@ const Post = objectType({
   definition(t) {
     t.implements(Node);
     t.string("text");
-    t.int("userId");
+    t.string("userId");
     t.int("language");
   }
 });
@@ -249,7 +249,7 @@ const Mutation = mutationType({
         }
         return {
           id: `${post.id}`,
-          userId: post.userId,
+          userId: `{${post.userId}`,
           language: post.language,
           text: post.text
         };

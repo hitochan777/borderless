@@ -6,7 +6,7 @@ import { Language } from "../value/language";
 
 interface RawPost {
   id: number;
-  user_id: number;
+  userId: number;
   language: number;
   text: string;
 }
@@ -24,7 +24,7 @@ export class PostRepository {
   }
   async create({ userId, language, text }: PostInput) {
     const ids = await this.posts().insert({
-      user_id: userId,
+      userId,
       language,
       text
     });
@@ -40,9 +40,9 @@ export class PostRepository {
     if (!Language[post.language]) {
       throw new Error(`Invalid language ID ${post.language}`);
     }
-    return new Post(post.id, post.user_id, post.language, post.text);
+    return new Post(post.id, post.userId, post.language, post.text);
   }
-  async findByUid(uid: string): Post[] {
+  async findByUid(uid: string): Promise<Post[]> {
     return [];
   }
 }

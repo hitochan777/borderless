@@ -5,8 +5,8 @@ const TABLE_NAME = "post";
 export async function up(knex: Knex): Promise<any> {
   return knex.schema.createTable(TABLE_NAME, t => {
     t.increments("id");
-    t.integer("user_id").unsigned();
-    t.foreign("user_id").references("user.id");
+    t.integer("userId").unsigned();
+    t.foreign("userId").references("user.id");
     t.integer("language").notNullable();
     t.text("text");
   });

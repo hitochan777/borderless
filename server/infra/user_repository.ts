@@ -37,10 +37,10 @@ export class UserRepository {
       user.username,
       user.fluentLanguages.trim().length === 0
         ? []
-        : user.fluentLanguages.split(",").map(lang_id => +lang_id),
+        : user.fluentLanguages.split(",").map(langId => +langId),
       user.learningLanguages.trim().length === 0
         ? []
-        : user.learningLanguages.split(",").map(lang_id => +lang_id)
+        : user.learningLanguages.split(",").map(langId => +langId)
     );
   }
   async findByIdOrCreate(uid: string): Promise<User | null> {

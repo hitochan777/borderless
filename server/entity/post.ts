@@ -2,8 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn
+  ManyToOne,
 } from "typeorm";
 
 import { Language } from "../value/language";
@@ -14,8 +13,7 @@ export class Post {
   @PrimaryGeneratedColumn()
   id: number = 0;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, {eager: true})
   user: User = new User({});
 
   @Column({

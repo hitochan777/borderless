@@ -38,7 +38,7 @@ type Post implements Node {
   id: ID!
   language: Int!
   text: String!
-  userId: Int!
+  userId: String!
 }
 
 input PostInput {
@@ -71,6 +71,7 @@ type User implements Node {
   """Unique identifier for the resource"""
   id: ID!
   learningLanguages: [Int!]!
+  posts: [Post!]!
   username: String!
 }
 

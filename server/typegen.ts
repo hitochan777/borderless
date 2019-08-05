@@ -45,7 +45,7 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     language: number; // Int!
     text: string; // String!
-    userId: number; // Int!
+    userId: string; // String!
   }
   Query: {};
   Tweet: { // root type
@@ -100,7 +100,7 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     language: number; // Int!
     text: string; // String!
-    userId: number; // Int!
+    userId: string; // String!
   }
   Query: { // field return type
     langs: NexusGenRootTypes['Language'][]; // [Language!]!
@@ -118,6 +118,7 @@ export interface NexusGenFieldTypes {
     fluentLanguages: number[]; // [Int!]!
     id: string; // ID!
     learningLanguages: number[]; // [Int!]!
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
     username: string; // String!
   }
   Node: { // field return type

@@ -6,7 +6,8 @@ export const GetViewerQuery = {
     username: types.string,
     email: types.string,
     fluentLanguages: [types.number],
-    learningLanguages: [types.number]
+    learningLanguages: [types.number],
+    posts: [{ id: types.string, text: types.string, language: types.number }]
   }
 };
 

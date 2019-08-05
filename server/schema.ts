@@ -42,6 +42,18 @@ const User = objectType({
     t.list.field("learningLanguages", {
       type: "Int"
     });
+    t.list.field("posts", {
+      type: "Post",
+      async resolve(root, args, { repositories: { postRepository } }) {
+        const posts = await postRepository.find({ user: { uid: root.id } });
+        return posts.map(post => ({
+          id: `${post.id}`,
+          userId: post.user.uid,
+          text: post.text,
+          language: post.language
+        }));
+      }
+    });
   }
 });
 
@@ -50,7 +62,7 @@ const Post = objectType({
   definition(t) {
     t.implements(Node);
     t.string("text");
-    t.int("userId");
+    t.string("userId");
     t.int("language");
   }
 });
@@ -154,7 +166,6 @@ const Query = queryType({
         if (!result) {
           throw new Error("User not found");
         }
-        console.log(result);
         return {
           id: uid,
           email: result.email,
@@ -251,7 +262,7 @@ const Mutation = mutationType({
         }
         return {
           id: `${post.id}`,
-          userId: post.user.id,
+          userId: post.user.uid,
           language: post.language,
           text: post.text
         };

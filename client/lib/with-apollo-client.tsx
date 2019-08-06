@@ -4,10 +4,16 @@ import { AppContext } from "next/app";
 import Head from "next/head";
 import { getMarkupFromTree } from "react-apollo-hooks";
 import ApolloClient from "apollo-client";
+import cookie from "cookie";
 
 import initApollo from "./init-apollo";
+import { IncomingMessage } from "http";
 
 const isBrowser = typeof window !== "undefined";
+
+function parseCookies(req?: IncomingMessage) {
+  return req && cookie.parse(req.headers.cookie || "");
+}
 
 const withApolloClient = (
   App: React.ComponentType<any> & { getInitialProps?: Function }
@@ -15,17 +21,29 @@ const withApolloClient = (
   return class Apollo extends React.Component {
     static displayName = "withApollo(App)";
     apolloClient: ApolloClient<any>;
-    static async getInitialProps(ctx: AppContext) {
-      const { Component, router } = ctx;
+    static async getInitialProps(appContext: AppContext) {
+      const {
+        Component,
+        router,
+        ctx: { req }
+      } = appContext;
 
       let appProps = {};
       if (App.getInitialProps) {
-        appProps = await App.getInitialProps(ctx);
+        appProps = await App.getInitialProps(appContext);
       }
 
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
-      const apollo = initApollo();
+      const apollo = initApollo(
+        {},
+        {
+          getToken: () => {
+            const parsed = parseCookies(req);
+            return parsed && parsed["session"];
+          }
+        }
+      );
       if (!isBrowser) {
         try {
           // Run all GraphQL queries
@@ -63,7 +81,11 @@ const withApolloClient = (
 
     constructor(props: any) {
       super(props);
-      this.apolloClient = initApollo(props.apolloState);
+      this.apolloClient = initApollo(props.apolloState, {
+        getToken: () => {
+          return undefined;
+        }
+      });
     }
 
     render() {

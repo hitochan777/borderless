@@ -25,6 +25,27 @@ const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   };
 };
 
+const extractToken = (
+  maybeAuthorization?: string,
+  maybeSessionCookie?: string
+) => {
+  if (maybeAuthorization && maybeSessionCookie) {
+    return "";
+  }
+  const authorization = maybeAuthorization || "";
+  if (authorization !== "") {
+    const authElements = authorization.split(" ");
+    if (authElements.length === 2) {
+      return authElements[1];
+    }
+  }
+  const sessionCookie = maybeSessionCookie || "";
+  if (sessionCookie !== "") {
+    return sessionCookie;
+  }
+  return "";
+};
+
 export const createContext = (db: knex) => async ({
   req,
   res
@@ -33,13 +54,16 @@ export const createContext = (db: knex) => async ({
   res: ServerResponse;
 }): Promise<GraphQLContext> => {
   let uid = null;
-  const sessionCookie = (req.cookies && req.cookies.session) || "";
-  if (sessionCookie !== "") {
-    const user = await admin.auth().verifySessionCookie(sessionCookie, true);
+  let token = extractToken(
+    req.headers.authorization,
+    req.cookies && req.cookies["session"]
+  );
+  if (token !== "") {
+    const user = await admin.auth().verifySessionCookie(token, true);
     uid = user.uid;
   }
   return {
-    uid: "CgJgvBcQB3ajIdJ3wJF5qFqt2yq1",
+    uid,
     res,
     repositories: buildRepositoryContainer(db)
   };

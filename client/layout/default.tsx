@@ -23,7 +23,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
   const { state } = useStateValue();
   const { data, error, loading: queryLoading } = useQuery<
     typeof GetViewerQuery
-  >(GET_VIEWER, { skip: !state.user });
+  >(GET_VIEWER);
   const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (

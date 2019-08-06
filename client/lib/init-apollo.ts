@@ -3,10 +3,13 @@ import { HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
-import Cookie from "js-cookie";
 import ApolloClient from "apollo-client";
 
 // import { logger } from "../../logger";
+
+interface ApolloInitOptions {
+  getToken: () => string | undefined;
+}
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
@@ -17,12 +20,12 @@ if (!isBrowser) {
   (global as any).fetch = fetch;
 }
 
-const authorizationLink = setContext((_, { headers }) => {
-  const token = Cookie.get("token");
+const createAuthorizationLink = ({getToken}: ApolloInitOptions) => setContext((_, { headers }) => {
+  const token = getToken()
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ""
+      authorization: token ? `Bearer ${token}` : ''
     }
   };
 });
@@ -46,25 +49,26 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3000/graphql",
-  credentials: "same-origin"
+  credentials: "same-origin",
 });
 
-const create = (initialState: any) =>
+const create = (initialState: any, options: ApolloInitOptions) =>
   new ApolloClient({
-    link: ApolloLink.from([onErrorLink, authorizationLink, httpLink]),
-    cache: new InMemoryCache().restore(initialState || {})
+    link: ApolloLink.from([onErrorLink, createAuthorizationLink(options), httpLink]),
+    cache: new InMemoryCache().restore(initialState || {}),
+    ssrMode: !isBrowser
   });
 
-const initApollo = (initialState: any = {}) => {
+const initApollo = (initialState: any = {}, options: ApolloInitOptions) => {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!isBrowser) {
-    return create(initialState);
+    return create(initialState, options);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = create(initialState);
+    apolloClient = create(initialState, options);
   }
 
   return apolloClient;

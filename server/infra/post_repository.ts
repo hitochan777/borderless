@@ -42,7 +42,15 @@ export class PostRepository {
     }
     return new Post(post.id, post.userId, post.language, post.text);
   }
-  async findByUid(uid: string): Promise<Post[]> {
-    return [];
+  async findByUser(userId: ID): Promise<Post[]> {
+    const posts = await this.posts().where({
+      userId
+    });
+    return posts.map(post => ({
+      id: post.id,
+      userId: post.userId,
+      language: post.language,
+      text: post.text
+    }));
   }
 }

@@ -44,8 +44,17 @@ const User = objectType({
     });
     t.list.field("posts", {
       type: "Post",
-      async resolve(root, args, { repositories: { postRepository } }) {
-        const posts = await postRepository.findByUid(root.id);
+      async resolve(
+        root,
+        args,
+        { repositories: { userRepository, postRepository } }
+      ) {
+        // postRepository.findByUser only accept user.id not uid
+        const user = await userRepository.findByUid(root.id);
+        if (!user) {
+          throw new Error("user is empty");
+        }
+        const posts = await postRepository.findByUser(user.id);
         return posts.map((post: any) => ({
           id: `${post.id}`,
           userId: root.id,

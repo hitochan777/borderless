@@ -10,9 +10,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, FormikProps } from "formik";
 import { query, types, mutation, params } from "typed-graphqlify";
 import gql from "graphql-tag";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { MultiSelect } from "./molecule/MultiSelect";
-import { useQuery, useMutation } from "react-apollo-hooks";
 import Loading from "./Loading";
 import { useStateValue } from "../store";
 
@@ -73,7 +73,9 @@ export const FillInModal: React.StatelessComponent<Props> = ({
   }
 }) => {
   const { state } = useStateValue();
-  const updateUser = useMutation<typeof UpdateUserReturnObject>(SIGN_UP);
+  const [updateUser, { loading: signupLoading }] = useMutation<
+    typeof UpdateUserReturnObject
+  >(SIGN_UP);
 
   const handleSubmit = async (values: FormValues) => {
     if (!state.user) {
@@ -82,13 +84,13 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     await updateUser({ variables: { id: state.user, user: values } });
   };
 
-  const { data, error, loading } = useQuery<typeof GetLanguagesQuery>(
-    GET_LANGUAGES
-  );
+  const { data, error, loading: getLanguageLoading } = useQuery<
+    typeof GetLanguagesQuery
+  >(GET_LANGUAGES);
   if (error || data === undefined) {
     throw error;
   }
-  if (loading) {
+  if (signupLoading || getLanguageLoading) {
     return <Loading />;
   }
   const LANGUAGES = data.langs.map(({ id, name }) => ({

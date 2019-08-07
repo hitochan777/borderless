@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Formik, FormikProps } from "formik";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
@@ -56,7 +56,7 @@ const NewPage = () => {
     name: `${id}`
   }));
 
-  const createPost = useMutation<typeof CreatePostReturnObject>(CREATE_POST);
+  const [createPost] = useMutation<typeof CreatePostReturnObject>(CREATE_POST);
 
   const handleSubmit = async (values: FormValues) => {
     await createPost({

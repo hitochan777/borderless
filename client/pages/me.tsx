@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 import Layout from "../layout/default";
 import { GET_VIEWER, GetViewerQuery } from "../constant/queries";

@@ -1,8 +1,7 @@
 import React from "react";
-import { renderToString } from "react-dom/server";
 import { AppContext } from "next/app";
 import Head from "next/head";
-import { getMarkupFromTree } from "react-apollo-hooks";
+import { getDataFromTree } from "@apollo/react-ssr";
 import ApolloClient from "apollo-client";
 import cookie from "cookie";
 
@@ -47,17 +46,14 @@ const withApolloClient = (
       if (!isBrowser) {
         try {
           // Run all GraphQL queries
-          await getMarkupFromTree({
-            renderFunction: renderToString,
-            tree: (
-              <App
-                {...appProps}
-                Component={Component}
-                router={router}
-                apolloClient={apollo}
-              />
-            )
-          });
+          await getDataFromTree(
+            <App
+              {...appProps}
+              Component={Component}
+              router={router}
+              apolloClient={apollo}
+            />
+          );
         } catch (error) {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
           // Handle them in components via the data.error prop:

@@ -1,6 +1,6 @@
 import React from "react";
 import App, { Container, AppContext } from "next/app";
-import { ApolloProvider } from "react-apollo-hooks";
+import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";

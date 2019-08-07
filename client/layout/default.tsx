@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 import { GlobalStyle } from "./global-style";
 import { useStateValue } from "../store";

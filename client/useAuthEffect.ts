@@ -1,7 +1,7 @@
 import * as firebase from "firebase";
 import { useEffect } from "react";
 import gql from "graphql-tag";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 import { useStateValue } from "./store";
 
@@ -22,7 +22,7 @@ const SIGNIN = gql`
 export const useAuthEffect = () => {
   const { actions } = useStateValue();
   const { setUser, setLoading } = actions;
-  const signin = useMutation(SIGNIN);
+  const [signin] = useMutation(SIGNIN);
 
   useAsyncEffect(async () => {
     const result = await firebase.auth().getRedirectResult();

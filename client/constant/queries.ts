@@ -1,4 +1,4 @@
-import { query, types } from "typed-graphqlify";
+import { query, types, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 
 export const GetViewerQuery = {
@@ -12,3 +12,19 @@ export const GetViewerQuery = {
 };
 
 export const GET_VIEWER = gql(query(GetViewerQuery));
+
+export const GetPost = params(
+  { $id: "Int!" },
+  {
+    post: params(
+      { id: "$id" },
+      {
+        id: types.string,
+        text: types.string,
+        language: types.number
+      }
+    )
+  }
+);
+
+export const GET_POST = gql(query(GetPost));

@@ -24,12 +24,10 @@ export default () => {
         {data.viewer.posts.map(post => (
           <li>
             <PostCard
+              id={+post.id}
               title={post.text}
               username="hoge"
               language="English"
-              handleClick={() => {
-                alert("clicked");
-              }}
             />
           </li>
         ))}

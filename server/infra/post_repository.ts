@@ -53,4 +53,22 @@ export class PostRepository {
       text: post.text
     }));
   }
+  async findById(id: ID): Promise<Post | null> {
+    const posts = await this.posts().where({
+      id
+    });
+    if (posts.length > 1) {
+      throw new Error("Multiple posts found");
+    }
+    if (posts.length === 0) {
+      return null;
+    }
+    const post = posts[0];
+    return {
+      id: post.id,
+      userId: post.userId,
+      language: post.language,
+      text: post.text
+    };
+  }
 }

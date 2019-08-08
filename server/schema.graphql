@@ -48,6 +48,7 @@ input PostInput {
 
 type Query {
   langs: [Language!]!
+  post(id: Int!): Post!
   posts: [Post!]!
   viewer: User!
 }

@@ -6,7 +6,8 @@ import {
   makeSchema,
   mutationType,
   inputObjectType,
-  arg
+  arg,
+  intArg
 } from "nexus";
 import path from "path";
 import * as admin from "firebase-admin";
@@ -148,6 +149,24 @@ const Query = queryType({
       args: {},
       resolve(root, args, ctx) {
         return [];
+      }
+    });
+    t.field("post", {
+      type: "Post",
+      args: {
+        id: intArg({ required: true })
+      },
+      async resolve(_, { id }, { repositories: { postRepository } }) {
+        const post = await postRepository.findById(id);
+        if (!post) {
+          throw new Error("post not found");
+        }
+        return {
+          id: `${post.id}`,
+          userId: `${post.userId}`,
+          text: post.text,
+          language: post.language
+        };
       }
     });
     t.list.field("langs", {

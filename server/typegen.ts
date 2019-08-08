@@ -104,6 +104,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     langs: NexusGenRootTypes['Language'][]; // [Language!]!
+    post: NexusGenRootTypes['Post']; // Post!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -143,6 +144,11 @@ export interface NexusGenArgTypes {
     userUpdate: { // args
       id: string; // String!
       user: NexusGenInputs['UserInput']; // UserInput!
+    }
+  }
+  Query: {
+    post: { // args
+      id: number; // Int!
     }
   }
 }

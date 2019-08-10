@@ -18,7 +18,11 @@ const Navbar = () => {
   return (
     <AppBar position="static" style={{ marginBottom: 10 }}>
       <Toolbar>
-        <StyledTypography variant="h6">Borderless</StyledTypography>
+        <StyledTypography variant="h6">
+          <Link href="/">
+            <a>Borderless</a>
+          </Link>
+        </StyledTypography>
         {state.user ? (
           <MenuItem>
             <Link href="#">

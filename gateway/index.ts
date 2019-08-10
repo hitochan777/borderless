@@ -8,7 +8,7 @@ import {
 import httpProxy from "http-proxy";
 import admin from "firebase-admin";
 import { IncomingMessage, ServerResponse } from "http";
-import { parse } from "cookie";
+import * as cookie from "cookie";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -18,6 +18,13 @@ if (admin.apps.length === 0) {
 }
 
 const proxy = httpProxy.createProxyServer();
+
+const clearCookie = (res: MicroServerResponse, key: string) => {
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize(key, "", { expires: new Date() })
+  );
+};
 
 const withAuthHandler = (handler: any) => async (
   req: ExtendedServerRequest,
@@ -33,7 +40,7 @@ const withAuthHandler = (handler: any) => async (
       req.headers["uid"] = decodedIdToken.uid;
     }
   } catch (error) {
-    console.error(error);
+    clearCookie(res, "session");
   }
   return handler(req, res, ...restArgs);
 };
@@ -69,12 +76,12 @@ type ExtendedServerRequest = IncomingMessage & {
   cookies?: { [key: string]: string };
 };
 
-const cookie = (handler: Handler) => (
+const withCookie = (handler: Handler) => (
   req: ExtendedServerRequest,
   res: ServerResponse,
   ...restArgs: any[]
 ) => {
-  const cookies = parse((req.headers && req.headers.cookie) || "");
+  const cookies = cookie.parse((req.headers && req.headers.cookie) || "");
   req.cookies = cookies;
   return handler(req, res, ...restArgs);
 };
@@ -85,6 +92,6 @@ const createHandler = async () => {
     get(GRAPHQL_PATH, graphqlProxyHandler),
     get("*", withAuthHandler(frontAppProxyHandler))
   );
-  return cookie(routedHandler);
+  return withCookie(routedHandler);
 };
 export default createHandler();

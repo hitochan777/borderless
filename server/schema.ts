@@ -115,13 +115,15 @@ const AuthData = objectType({
 const UserInput = inputObjectType({
   name: "UserInput",
   definition(t) {
-    t.string("username");
-    t.string("email");
+    t.string("username", { nullable: false });
+    t.string("email", { nullable: false });
     t.list.field("fluentLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
     t.list.field("learningLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
   }
 });
@@ -212,7 +214,7 @@ const Mutation = mutationType({
         id: stringArg({ required: true })
       },
       resolve: async (root, { id }, { repositories: { userRepository } }) => {
-        const newUser = await userRepository.create(id);
+        const newUser = await userRepository.create({ uid: id });
         if (!newUser) {
           throw new Error(`failed to create user with uid = ${id}`);
         }

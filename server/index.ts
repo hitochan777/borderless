@@ -18,7 +18,7 @@ if (admin.apps.length === 0) {
   });
 }
 
-const buildRepositoryContainer = (db: knex): RepositoryContainer => {
+export const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   return {
     userRepository: new UserRepository(db),
     postRepository: new PostRepository(db)

@@ -28,7 +28,7 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
   return (
     <ul>
       {data.feed.map(post => (
-        <li>
+        <li key={post.id}>
           <PostCard
             id={+post.id}
             title={post.text}

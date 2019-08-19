@@ -1,13 +1,7 @@
 import knex from "knex";
 
 import { User } from "../entity/user";
-
-const ALL_FIELDS = [
-  "uid",
-  "username",
-  "email, fluentLanguages",
-  "learningLanguages"
-];
+import { Language } from "../value/language";
 
 interface RawUser {
   id: number;
@@ -17,6 +11,13 @@ interface RawUser {
   fluentLanguages: string;
   learningLanguages: string;
 }
+
+type UserInput = Partial<
+  Pick<
+    User,
+    "uid" | "email" | "username" | "fluentLanguages" | "learningLanguages"
+  >
+>;
 
 export class UserRepository {
   users: () => knex.QueryBuilder<RawUser, RawUser[]>;
@@ -35,12 +36,8 @@ export class UserRepository {
       user.uid,
       user.email,
       user.username,
-      user.fluentLanguages.trim().length === 0
-        ? []
-        : user.fluentLanguages.split(",").map(langId => +langId),
-      user.learningLanguages.trim().length === 0
-        ? []
-        : user.learningLanguages.split(",").map(langId => +langId)
+      this.transformFrom(user.fluentLanguages),
+      this.transformFrom(user.learningLanguages)
     );
   }
   async findByIdOrCreate(uid: string): Promise<User | null> {
@@ -48,19 +45,22 @@ export class UserRepository {
     if (user) {
       return user;
     }
-    return this.create(uid);
+    return this.create({ uid });
   }
-  async create(uid: string): Promise<User | null> {
-    const ids = await this.users().insert(
-      {
-        uid,
-        email: "",
-        username: "",
-        fluentLanguages: "",
-        learningLanguages: ""
-      },
-      ALL_FIELDS
-    );
+  async create({
+    uid = "",
+    email = "",
+    username = "",
+    fluentLanguages = [],
+    learningLanguages = []
+  }: UserInput): Promise<User | null> {
+    const ids = await this.users().insert({
+      uid,
+      email,
+      username,
+      fluentLanguages: this.transformTo(fluentLanguages),
+      learningLanguages: this.transformTo(learningLanguages)
+    });
     if (ids.length === 0) {
       return null;
     }
@@ -75,29 +75,25 @@ export class UserRepository {
       user.uid,
       user.email,
       user.username,
-      [], // TODO
-      [] // TODO
+      this.transformFrom(user.fluentLanguages),
+      this.transformFrom(user.learningLanguages)
     );
   }
   async update(
     uid: string,
-    userInput: {
-      email?: string | null;
-      username?: string | null;
-      fluentLanguages?: string[] | null;
-      learningLanguages?: string[] | null;
-    }
+{
+    email = "",
+    username = "",
+    fluentLanguages = [],
+    learningLanguages = []
+  }: Omit<UserInput, "uid">
   ): Promise<User | null> {
     let newUserInput = {
-      email: userInput.email,
-      username: userInput.username
+      email,
+      username,
+      fluentLanguages: this.transformTo(fluentLanguages),
+      learningLanguages: this.transformTo(learningLanguages)
     } as Omit<RawUser, "uid">;
-    if (userInput.fluentLanguages) {
-      newUserInput.fluentLanguages = userInput.fluentLanguages.join(",");
-    }
-    if (userInput.learningLanguages) {
-      newUserInput.learningLanguages = userInput.learningLanguages.join(",");
-    }
     const numUpdated = await this.users()
       .where("uid", uid)
       .update(newUserInput);
@@ -113,5 +109,14 @@ export class UserRepository {
       return null;
     }
     return new User(user.id, user.uid, user.email, user.username, [], []);
+  }
+
+  private transformTo(languages: Language[]): string {
+    return languages.join(",");
+  }
+  private transformFrom(languages: string): Language[] {
+    return languages.trim().length === 0
+      ? []
+      : languages.split(",").map(langId => +langId);
   }
 }

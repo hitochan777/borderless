@@ -71,4 +71,13 @@ export class PostRepository {
       text: post.text
     };
   }
+  async findByLanguages(langs: Language[]): Promise<Post[]> {
+    const posts = await this.posts().whereIn("language", langs);
+    return posts.map(post => ({
+      id: post.id,
+      userId: post.userId,
+      language: post.language,
+      text: post.text
+    }));
+  }
 }

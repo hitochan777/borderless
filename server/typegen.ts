@@ -16,10 +16,10 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   UserInput: { // input type
-    email?: string | null; // String
-    fluentLanguages?: string[] | null; // [String!]
-    learningLanguages?: string[] | null; // [String!]
-    username?: string | null; // String
+    email: string; // String!
+    fluentLanguages: number[]; // [Int!]!
+    learningLanguages: number[]; // [Int!]!
+    username: string; // String!
   }
 }
 
@@ -61,7 +61,7 @@ export interface NexusGenRootTypes {
     learningLanguages: number[]; // [Int!]!
     username: string; // String!
   }
-  Node: NexusGenRootTypes['Language'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
   Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
   String: string;
   Int: number;
@@ -103,6 +103,7 @@ export interface NexusGenFieldTypes {
     userId: string; // String!
   }
   Query: { // field return type
+    feed: NexusGenRootTypes['Post'][]; // [Post!]!
     langs: NexusGenRootTypes['Language'][]; // [Language!]!
     post: NexusGenRootTypes['Post']; // Post!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -147,6 +148,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    feed: { // args
+      uid: string; // String!
+    }
     post: { // args
       id: number; // Int!
     }
@@ -154,7 +158,7 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  Node: "Language" | "Post" | "User" | "Line" | "Tweet"
+  Node: "Post" | "Language" | "User" | "Line" | "Tweet"
   Repliable: "Line" | "Tweet"
 }
 

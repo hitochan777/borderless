@@ -22,6 +22,7 @@
   "scripts": {
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
     "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
-    "migrate": "ts-node -P ./tsconfig.json node_modules/.bin/knex migrate:latest --knexfile ./config/knexfile.ts"
+    "migrate": "ts-node -P ./tsconfig.json node_modules/.bin/knex migrate:latest --knexfile ./config/knexfile.ts",
+    "seed:run": "ts-node -P ./tsconfig.json node_modules/.bin/knex seed:run --knexfile ./config/knexfile.ts"
   }
 }

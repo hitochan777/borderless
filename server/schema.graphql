@@ -47,6 +47,7 @@ input PostInput {
 }
 
 type Query {
+  feed(uid: String!): [Post!]!
   langs: [Language!]!
   post(id: Int!): Post!
   posts: [Post!]!
@@ -77,8 +78,8 @@ type User implements Node {
 }
 
 input UserInput {
-  email: String
-  fluentLanguages: [String!]
-  learningLanguages: [String!]
-  username: String
+  email: String!
+  fluentLanguages: [Int!]!
+  learningLanguages: [Int!]!
+  username: String!
 }

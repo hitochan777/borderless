@@ -115,13 +115,15 @@ const AuthData = objectType({
 const UserInput = inputObjectType({
   name: "UserInput",
   definition(t) {
-    t.string("username");
-    t.string("email");
+    t.string("username", { nullable: false });
+    t.string("email", { nullable: false });
     t.list.field("fluentLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
     t.list.field("learningLanguages", {
-      type: "String"
+      type: "Int",
+      nullable: false
     });
   }
 });
@@ -144,6 +146,26 @@ const Language = objectType({
 
 const Query = queryType({
   definition(t) {
+    t.list.field("feed", {
+      type: "Post",
+      args: {
+        uid: stringArg({ required: true })
+      },
+      async resolve(
+        _,
+        { uid },
+        { repositories: { userRepository, postRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        const posts = await postRepository.findByLanguages(
+          user.fluentLanguages
+        );
+        return posts;
+      }
+    });
     t.list.field("posts", {
       type: "Post",
       args: {},
@@ -212,7 +234,7 @@ const Mutation = mutationType({
         id: stringArg({ required: true })
       },
       resolve: async (root, { id }, { repositories: { userRepository } }) => {
-        const newUser = await userRepository.create(id);
+        const newUser = await userRepository.create({ uid: id });
         if (!newUser) {
           throw new Error(`failed to create user with uid = ${id}`);
         }

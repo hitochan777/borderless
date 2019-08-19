@@ -24,11 +24,18 @@ const Navbar = () => {
           </Link>
         </StyledTypography>
         {state.user ? (
-          <MenuItem>
-            <Link href="#">
-              <a onClick={actions.signOut}>Logout</a>
-            </Link>
-          </MenuItem>
+          <>
+            <MenuItem>
+              <Link href="/post/new">
+                <a>+</a>
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href="#">
+                <a onClick={actions.signOut}>Logout</a>
+              </Link>
+            </MenuItem>
+          </>
         ) : (
           <>
             <MenuItem>

@@ -146,6 +146,26 @@ const Language = objectType({
 
 const Query = queryType({
   definition(t) {
+    t.list.field("feed", {
+      type: "Post",
+      args: {
+        uid: stringArg({ required: true })
+      },
+      async resolve(
+        _,
+        { uid },
+        { repositories: { userRepository, postRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        const posts = await postRepository.findByLanguages(
+          user.fluentLanguages
+        );
+        return posts;
+      }
+    });
     t.list.field("posts", {
       type: "Post",
       args: {},

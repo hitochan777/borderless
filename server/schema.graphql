@@ -47,6 +47,7 @@ input PostInput {
 }
 
 type Query {
+  feed(uid: String!): [Post!]!
   langs: [Language!]!
   post(id: Int!): Post!
   posts: [Post!]!

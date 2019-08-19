@@ -13,18 +13,26 @@ export const GetViewerQuery = {
 
 export const GET_VIEWER = gql(query(GetViewerQuery));
 
-export const GetPost = params(
+const Post = {
+  id: types.string,
+  text: types.string,
+  language: types.number
+};
+
+export const GetPostById = params(
   { $id: "Int!" },
   {
-    post: params(
-      { id: "$id" },
-      {
-        id: types.string,
-        text: types.string,
-        language: types.number
-      }
-    )
+    post: params({ id: "$id" }, Post)
   }
 );
 
-export const GET_POST = gql(query(GetPost));
+export const GET_POST_BY_ID = gql(query(GetPostById));
+
+export const GetFeedForUser = params(
+  { $uid: "String!" },
+  {
+    feed: params({ uid: "$uid" }, [Post])
+  }
+);
+
+export const GET_FEED_FOR_USER = gql(query(GetFeedForUser));

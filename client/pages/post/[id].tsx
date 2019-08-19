@@ -4,7 +4,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { useQuery } from "@apollo/react-hooks";
 
-import { GET_POST, GetPost } from "../../constant/queries";
+import { GET_POST_BY_ID, GetPostById } from "../../constant/queries";
 import Layout from "../../layout/default";
 import Loading from "../../components/Loading";
 
@@ -13,9 +13,12 @@ interface Props {
 }
 
 const PostIndexPage: NextPage<Props> = ({ id }) => {
-  const { data, error, loading } = useQuery<typeof GetPost>(GET_POST, {
-    variables: { id }
-  });
+  const { data, error, loading } = useQuery<typeof GetPostById>(
+    GET_POST_BY_ID,
+    {
+      variables: { id }
+    }
+  );
 
   if (loading) {
     return <Loading />;

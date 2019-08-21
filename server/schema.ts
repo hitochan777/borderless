@@ -163,7 +163,12 @@ const Query = queryType({
         const posts = await postRepository.findByLanguages(
           user.fluentLanguages
         );
-        return posts;
+        return posts.map(post => ({
+          id: `${post.id}`,
+          userId: `${post.userId}`,
+          text: post.text,
+          language: post.language
+        }));
       }
     });
     t.list.field("posts", {

@@ -43,7 +43,7 @@ export interface NexusGenRootTypes {
   Mutation: {};
   Post: { // root type
     id: string; // ID!
-    language: number; // Int!
+    language: NexusGenRootTypes['Language']; // Language!
     text: string; // String!
     userId: string; // String!
   }
@@ -98,7 +98,7 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     id: string; // ID!
-    language: number; // Int!
+    language: NexusGenRootTypes['Language']; // Language!
     text: string; // String!
     userId: string; // String!
   }

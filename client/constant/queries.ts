@@ -7,7 +7,13 @@ export const GetViewerQuery = {
     email: types.string,
     fluentLanguages: [types.number],
     learningLanguages: [types.number],
-    posts: [{ id: types.string, text: types.string, language: types.number }]
+    posts: [
+      {
+        id: types.string,
+        text: types.string,
+        language: { id: types.string, name: types.string }
+      }
+    ]
   }
 };
 
@@ -16,7 +22,7 @@ export const GET_VIEWER = gql(query(GetViewerQuery));
 const Post = {
   id: types.string,
   text: types.string,
-  language: types.number
+  language: { id: types.string, name: types.string }
 };
 
 export const GetPostById = params(

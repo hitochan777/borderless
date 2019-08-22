@@ -33,7 +33,7 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
             id={+post.id}
             title={post.text}
             username="hoge"
-            language="English"
+            language={post.language.name}
           />
         </li>
       ))}

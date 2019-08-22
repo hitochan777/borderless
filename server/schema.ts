@@ -60,7 +60,10 @@ const User = objectType({
           id: `${post.id}`,
           userId: root.id,
           text: post.text,
-          language: post.language
+          language: {
+            id: post.language,
+            name: value.Language[+post.language]
+          }
         }));
       }
     });
@@ -73,7 +76,9 @@ const Post = objectType({
     t.implements(Node);
     t.string("text");
     t.string("userId");
-    t.int("language");
+    t.field("language", {
+      type: "Language"
+    });
   }
 });
 
@@ -167,7 +172,10 @@ const Query = queryType({
           id: `${post.id}`,
           userId: `${post.userId}`,
           text: post.text,
-          language: post.language
+          language: {
+            id: `${post.language}`,
+            name: value.Language[+post.language]
+          }
         }));
       }
     });
@@ -192,7 +200,10 @@ const Query = queryType({
           id: `${post.id}`,
           userId: `${post.userId}`,
           text: post.text,
-          language: post.language
+          language: {
+            id: `${post.language}`,
+            name: value.Language[+post.language]
+          }
         };
       }
     });
@@ -305,7 +316,10 @@ const Mutation = mutationType({
         return {
           id: `${post.id}`,
           userId: `{${post.userId}`,
-          language: post.language,
+          language: {
+            id: `{${post.language}`,
+            name: value.Language[post.language]
+          },
           text: post.text
         };
       }

@@ -60,14 +60,10 @@ const NewPage = () => {
     {}
   );
 
-  console.log(allLanguageTable);
-
   const learningLanguages = data.viewer.learningLanguages.map(id => ({
     value: `${id}`,
     name: allLanguageTable[id]
   }));
-
-  console.log(learningLanguages);
 
   const [createPost] = useMutation<typeof CreatePostReturnObject>(CREATE_POST);
 

@@ -8,13 +8,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, FormikProps } from "formik";
-import { query, types, mutation, params } from "typed-graphqlify";
+import { types, mutation, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { MultiSelect } from "./molecule/MultiSelect";
 import Loading from "./Loading";
 import { useStateValue } from "../store";
+import { GET_LANGUAGES, GetLanguagesQuery } from "../constant/queries";
 
 interface Props {
   open: boolean;
@@ -36,17 +37,6 @@ interface Props {
   open: boolean;
   formData: FormValues | undefined;
 }
-
-const GetLanguagesQuery = {
-  langs: [
-    {
-      id: types.string,
-      name: types.string
-    }
-  ]
-};
-
-const GET_LANGUAGES = gql(query(GetLanguagesQuery));
 
 const UpdateUserReturnObject = {
   id: types.string

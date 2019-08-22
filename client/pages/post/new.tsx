@@ -6,11 +6,11 @@ import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
-import { mutation, params, types } from "typed-graphqlify";
+import { query, mutation, params, types } from "typed-graphqlify";
 import gql from "graphql-tag";
 
 import Layout from "../../layout/default";
-import { GET_VIEWER, GetViewerQuery } from "../../constant/queries";
+import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
 import MenuItem from "@material-ui/core/MenuItem";
 import Input from "@material-ui/core/Input";
 import Loading from "../../components/Loading";
@@ -37,7 +37,9 @@ const CreatePostMutation = mutation(
 const CREATE_POST = gql(CreatePostMutation);
 
 const NewPage = () => {
-  const { data, error, loading } = useQuery<typeof GetViewerQuery>(GET_VIEWER);
+  const { data, error, loading } = useQuery<
+    typeof GetViewerQuery & typeof GetLanguagesQuery
+  >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
 
   if (loading) {
     return <Loading />;
@@ -48,13 +50,24 @@ const NewPage = () => {
   }
 
   if (!data) {
-    throw new Error("learning language is not an array");
+    throw new Error("data is empty");
   }
+  const allLanguageTable = data.langs.reduce<{ [key: string]: string }>(
+    (table, { id, name }) => {
+      table[id] = name;
+      return table;
+    },
+    {}
+  );
 
-  const LANGUAGES = data.viewer.learningLanguages.map(id => ({
+  console.log(allLanguageTable);
+
+  const learningLanguages = data.viewer.learningLanguages.map(id => ({
     value: `${id}`,
-    name: `${id}`
+    name: allLanguageTable[id]
   }));
+
+  console.log(learningLanguages);
 
   const [createPost] = useMutation<typeof CreatePostReturnObject>(CREATE_POST);
 
@@ -92,7 +105,7 @@ const NewPage = () => {
                   onChange={handleChange}
                   input={<Input id="language" />}
                 >
-                  {LANGUAGES.map(({ value, name }, index) => (
+                  {learningLanguages.map(({ value, name }, index) => (
                     <MenuItem key={index} value={value}>
                       {name}
                     </MenuItem>

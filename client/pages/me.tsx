@@ -22,7 +22,7 @@ export default () => {
     <Layout>
       <ul>
         {data.viewer.posts.map(post => (
-          <li>
+          <li key={post.id}>
             <PostCard
               id={+post.id}
               title={post.text}

@@ -36,3 +36,14 @@ export const GetFeedForUser = params(
 );
 
 export const GET_FEED_FOR_USER = gql(query(GetFeedForUser));
+
+export const GetLanguagesQuery = {
+  langs: [
+    {
+      id: types.string,
+      name: types.string
+    }
+  ]
+};
+
+export const GET_LANGUAGES = gql(query(GetLanguagesQuery));

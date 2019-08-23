@@ -3,49 +3,56 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "./types"
-import * as entity_line from "./entity/line"
-import * as entity_post from "./entity/post"
-import * as entity_tweet from "./entity/tweet"
-import * as entity_user from "./entity/user"
-
+import * as ctx from "./types";
+import * as entity_line from "./entity/line";
+import * as entity_post from "./entity/post";
+import * as entity_tweet from "./entity/tweet";
+import * as entity_user from "./entity/user";
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {
-  PostInput: { // input type
+  PostInput: {
+    // input type
     language: number; // Int!
     text: string; // String!
-  }
-  UserInput: { // input type
+  };
+  UserInput: {
+    // input type
     email: string; // String!
     fluentLanguages: number[]; // [Int!]!
     learningLanguages: number[]; // [Int!]!
     username: string; // String!
-  }
+  };
 }
 
-export interface NexusGenEnums {
-}
+export interface NexusGenEnums {}
 
 export interface NexusGenRootTypes {
-  AuthData: { // root type
+  AuthData: {
+    // root type
     token: string; // String!
-  }
-  Language: { // root type
+  };
+  Language: {
+    // root type
     id: string; // ID!
     name: string; // String!
-  }
+  };
   Line: entity_line.Line;
   Mutation: {};
   Post: entity_post.Post;
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
-  Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
+  Node:
+    | NexusGenRootTypes["Post"]
+    | NexusGenRootTypes["Language"]
+    | NexusGenRootTypes["User"]
+    | NexusGenRootTypes["Line"]
+    | NexusGenRootTypes["Tweet"];
+  Repliable: NexusGenRootTypes["Line"] | NexusGenRootTypes["Tweet"];
   String: string;
   Int: number;
   Float: number;
@@ -54,100 +61,124 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
-  PostInput: NexusGenInputs['PostInput'];
-  UserInput: NexusGenInputs['UserInput'];
+  PostInput: NexusGenInputs["PostInput"];
+  UserInput: NexusGenInputs["UserInput"];
 }
 
 export interface NexusGenFieldTypes {
-  AuthData: { // field return type
+  AuthData: {
+    // field return type
     token: string; // String!
-  }
-  Language: { // field return type
+  };
+  Language: {
+    // field return type
     id: string; // ID!
     name: string; // String!
-  }
-  Line: { // field return type
+  };
+  Line: {
+    // field return type
     id: string; // ID!
-    post: NexusGenRootTypes['Post']; // Post!
+    post: NexusGenRootTypes["Post"]; // Post!
     text: string; // String!
-    tweets: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
-  }
-  Mutation: { // field return type
+    tweets: NexusGenRootTypes["Tweet"][]; // [Tweet!]!
+  };
+  Mutation: {
+    // field return type
     logout: boolean; // Boolean!
-    postCreate: NexusGenRootTypes['Post']; // Post!
-    signin: NexusGenRootTypes['AuthData']; // AuthData!
-    userCreate: NexusGenRootTypes['User']; // User!
-    userUpdate: NexusGenRootTypes['User']; // User!
-  }
-  Post: { // field return type
+    postCreate: NexusGenRootTypes["Post"]; // Post!
+    signin: NexusGenRootTypes["AuthData"]; // AuthData!
+    userCreate: NexusGenRootTypes["User"]; // User!
+    userUpdate: NexusGenRootTypes["User"]; // User!
+  };
+  Post: {
+    // field return type
     id: string; // ID!
-    language: NexusGenRootTypes['Language']; // Language!
+    language: NexusGenRootTypes["Language"]; // Language!
     text: string; // String!
-    user: NexusGenRootTypes['User']; // User!
-  }
-  Query: { // field return type
-    feed: NexusGenRootTypes['Post'][]; // [Post!]!
-    langs: NexusGenRootTypes['Language'][]; // [Language!]!
-    post: NexusGenRootTypes['Post']; // Post!
-    posts: NexusGenRootTypes['Post'][]; // [Post!]!
-    viewer: NexusGenRootTypes['User']; // User!
-  }
-  Tweet: { // field return type
+    user: NexusGenRootTypes["User"]; // User!
+  };
+  Query: {
+    // field return type
+    feed: NexusGenRootTypes["Post"][]; // [Post!]!
+    langs: NexusGenRootTypes["Language"][]; // [Language!]!
+    post: NexusGenRootTypes["Post"]; // Post!
+    posts: NexusGenRootTypes["Post"][]; // [Post!]!
+    viewer: NexusGenRootTypes["User"]; // User!
+  };
+  Tweet: {
+    // field return type
     id: string; // ID!
-    inReplyTo: NexusGenRootTypes['Repliable']; // Repliable!
-    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
+    inReplyTo: NexusGenRootTypes["Repliable"]; // Repliable!
+    replies: NexusGenRootTypes["Tweet"][]; // [Tweet!]!
     text: string; // String!
-  }
-  User: { // field return type
+  };
+  User: {
+    // field return type
     email: string; // String!
     fluentLanguages: number[]; // [Int!]!
     id: string; // ID!
     learningLanguages: number[]; // [Int!]!
-    posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    posts: NexusGenRootTypes["Post"][]; // [Post!]!
     username: string; // String!
-  }
-  Node: { // field return type
+  };
+  Node: {
+    // field return type
     id: string; // ID!
-  }
-  Repliable: { // field return type
+  };
+  Repliable: {
+    // field return type
     text: string; // String!
-  }
+  };
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    postCreate: { // args
-      post: NexusGenInputs['PostInput']; // PostInput!
-    }
-    signin: { // args
+    postCreate: {
+      // args
+      post: NexusGenInputs["PostInput"]; // PostInput!
+    };
+    signin: {
+      // args
       token: string; // String!
-    }
-    userCreate: { // args
+    };
+    userCreate: {
+      // args
       id: string; // String!
-    }
-    userUpdate: { // args
+    };
+    userUpdate: {
+      // args
       id: string; // String!
-      user: NexusGenInputs['UserInput']; // UserInput!
-    }
-  }
+      user: NexusGenInputs["UserInput"]; // UserInput!
+    };
+  };
   Query: {
-    feed: { // args
+    feed: {
+      // args
       uid: string; // String!
-    }
-    post: { // args
+    };
+    post: {
+      // args
       id: number; // Int!
-    }
-  }
+    };
+  };
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  Node: "Post" | "Language" | "User" | "Line" | "Tweet"
-  Repliable: "Line" | "Tweet"
+  Node: "Post" | "Language" | "User" | "Line" | "Tweet";
+  Repliable: "Line" | "Tweet";
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
+export type NexusGenObjectNames =
+  | "AuthData"
+  | "Language"
+  | "Line"
+  | "Mutation"
+  | "Post"
+  | "Query"
+  | "Tweet"
+  | "User";
 
 export type NexusGenInputNames = "PostInput" | "UserInput";
 
@@ -173,9 +204,19 @@ export interface NexusGenTypes {
   interfaceNames: NexusGenInterfaceNames;
   scalarNames: NexusGenScalarNames;
   unionNames: NexusGenUnionNames;
-  allInputTypes: NexusGenTypes['inputNames'] | NexusGenTypes['enumNames'] | NexusGenTypes['scalarNames'];
-  allOutputTypes: NexusGenTypes['objectNames'] | NexusGenTypes['enumNames'] | NexusGenTypes['unionNames'] | NexusGenTypes['interfaceNames'] | NexusGenTypes['scalarNames'];
-  allNamedTypes: NexusGenTypes['allInputTypes'] | NexusGenTypes['allOutputTypes']
-  abstractTypes: NexusGenTypes['interfaceNames'] | NexusGenTypes['unionNames'];
+  allInputTypes:
+    | NexusGenTypes["inputNames"]
+    | NexusGenTypes["enumNames"]
+    | NexusGenTypes["scalarNames"];
+  allOutputTypes:
+    | NexusGenTypes["objectNames"]
+    | NexusGenTypes["enumNames"]
+    | NexusGenTypes["unionNames"]
+    | NexusGenTypes["interfaceNames"]
+    | NexusGenTypes["scalarNames"];
+  allNamedTypes:
+    | NexusGenTypes["allInputTypes"]
+    | NexusGenTypes["allOutputTypes"];
+  abstractTypes: NexusGenTypes["interfaceNames"] | NexusGenTypes["unionNames"];
   abstractResolveReturn: NexusGenAbstractResolveReturnTypes;
 }

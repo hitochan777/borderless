@@ -11,7 +11,10 @@ export const GetViewerQuery = {
       {
         id: types.string,
         text: types.string,
-        language: { id: types.string, name: types.string }
+        language: { id: types.string, name: types.string },
+        user: {
+          username: types.string
+        }
       }
     ]
   }
@@ -22,7 +25,10 @@ export const GET_VIEWER = gql(query(GetViewerQuery));
 const Post = {
   id: types.string,
   text: types.string,
-  language: { id: types.string, name: types.string }
+  language: { id: types.string, name: types.string },
+  user: {
+    username: types.string
+  }
 };
 
 export const GetPostById = params(

@@ -36,8 +36,9 @@ const PostIndexPage: NextPage<Props> = ({ id }) => {
         <Paper>
           <h3>title here</h3>
           <ul>
-            <li>{data.post.language.name}</li>
-            <li>{data.post.text}</li>
+            <li>Language: {data.post.language.name}</li>
+            <li>Posted by {data.post.user.username}</li>
+            <li>Content: {data.post.text}</li>
           </ul>
         </Paper>
       </Container>

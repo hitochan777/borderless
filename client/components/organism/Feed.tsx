@@ -32,7 +32,7 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
           <PostCard
             id={+post.id}
             title={post.text}
-            username="hoge"
+            username={post.user.username}
             language={post.language.name}
           />
         </li>

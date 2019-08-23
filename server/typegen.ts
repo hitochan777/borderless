@@ -4,6 +4,10 @@
  */
 
 import * as ctx from "./types"
+import * as entity_line from "./entity/line"
+import * as entity_post from "./entity/post"
+import * as entity_tweet from "./entity/tweet"
+import * as entity_user from "./entity/user"
 
 
 declare global {
@@ -34,33 +38,12 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     name: string; // String!
   }
-  Line: { // root type
-    id: string; // ID!
-    post: NexusGenRootTypes['Post']; // Post!
-    text: string; // String!
-    tweets: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
-  }
+  Line: entity_line.Line;
   Mutation: {};
-  Post: { // root type
-    id: string; // ID!
-    language: NexusGenRootTypes['Language']; // Language!
-    text: string; // String!
-    userId: string; // String!
-  }
+  Post: entity_post.Post;
   Query: {};
-  Tweet: { // root type
-    id: string; // ID!
-    inReplyTo: NexusGenRootTypes['Repliable']; // Repliable!
-    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
-    text: string; // String!
-  }
-  User: { // root type
-    email: string; // String!
-    fluentLanguages: number[]; // [Int!]!
-    id: string; // ID!
-    learningLanguages: number[]; // [Int!]!
-    username: string; // String!
-  }
+  Tweet: entity_tweet.Tweet;
+  User: entity_user.User;
   Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
   Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
   String: string;
@@ -100,7 +83,7 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     language: NexusGenRootTypes['Language']; // Language!
     text: string; // String!
-    userId: string; // String!
+    user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Post'][]; // [Post!]!

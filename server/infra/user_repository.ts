@@ -2,6 +2,7 @@ import knex from "knex";
 
 import { User } from "../entity/user";
 import { Language } from "../value/language";
+import { ID } from "../types";
 
 interface RawUser {
   id: number;
@@ -40,6 +41,23 @@ export class UserRepository {
       this.transformFrom(user.learningLanguages)
     );
   }
+  async findById(id: ID): Promise<User | null> {
+    const user = await this.users()
+      .where("id", id)
+      .first();
+    if (!user) {
+      return null;
+    }
+    return new User(
+      user.id,
+      user.uid,
+      user.email,
+      user.username,
+      this.transformFrom(user.fluentLanguages),
+      this.transformFrom(user.learningLanguages)
+    );
+  }
+
   async findByIdOrCreate(uid: string): Promise<User | null> {
     const user = await this.findByUid(uid);
     if (user) {
@@ -81,12 +99,12 @@ export class UserRepository {
   }
   async update(
     uid: string,
-{
-    email = "",
-    username = "",
-    fluentLanguages = [],
-    learningLanguages = []
-  }: Omit<UserInput, "uid">
+    {
+      email = "",
+      username = "",
+      fluentLanguages = [],
+      learningLanguages = []
+    }: Omit<UserInput, "uid">
   ): Promise<User | null> {
     let newUserInput = {
       email,

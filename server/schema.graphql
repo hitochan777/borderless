@@ -38,7 +38,7 @@ type Post implements Node {
   id: ID!
   language: Language!
   text: String!
-  userId: String!
+  user: User!
 }
 
 input PostInput {

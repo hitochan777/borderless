@@ -1,5 +1,5 @@
 import React from "react";
-import App, { Container, AppContext } from "next/app";
+import App, { AppContext } from "next/app";
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
@@ -78,22 +78,20 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
       ...{ user: user }
     };
     return (
-      <Container>
-        <StateProvider
-          initialState={initialState}
-          actionDefs={actionDefs}
-          context={context}
-          callback={(prevState: State, newState: State) => {
-            console.debug("[UPDATE]", prevState, newState);
-          }}
-        >
-          <ApolloProvider client={apolloClient}>
-            <AuthProvider>
-              <Component {...pageProps} />
-            </AuthProvider>
-          </ApolloProvider>
-        </StateProvider>
-      </Container>
+      <StateProvider
+        initialState={initialState}
+        actionDefs={actionDefs}
+        context={context}
+        callback={(prevState: State, newState: State) => {
+          console.debug("[UPDATE]", prevState, newState);
+        }}
+      >
+        <ApolloProvider client={apolloClient}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </ApolloProvider>
+      </StateProvider>
     );
   }
 }

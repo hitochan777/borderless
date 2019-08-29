@@ -1,8 +1,4 @@
-import {
-  stringArg,
-  mutationType,
-  arg,
-} from "nexus";
+import { stringArg, mutationType, arg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 
@@ -20,7 +16,7 @@ export const Mutation = mutationType({
         if (!newUser) {
           throw new Error(`failed to create user with uid = ${id}`);
         }
-        return newUser
+        return newUser;
       }
     });
     t.field("userUpdate", {
@@ -38,7 +34,7 @@ export const Mutation = mutationType({
         if (!updatedUser) {
           throw new Error("failed to update user");
         }
-        return updatedUser
+        return updatedUser;
       }
     });
     t.field("postCreate", {
@@ -66,7 +62,7 @@ export const Mutation = mutationType({
         if (!post) {
           throw new Error("Failed to create a post");
         }
-        return post
+        return post;
       }
     });
     t.field("logout", {

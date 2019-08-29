@@ -20,15 +20,16 @@ if (!isBrowser) {
   (global as any).fetch = fetch;
 }
 
-const createAuthorizationLink = ({getToken}: ApolloInitOptions) => setContext((_, { headers }) => {
-  const token = getToken()
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : ''
-    }
-  };
-});
+const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
+  setContext((_, { headers }) => {
+    const token = getToken();
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : ""
+      }
+    };
+  });
 
 const onErrorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -49,12 +50,16 @@ const onErrorLink = onError(({ graphQLErrors, networkError }) => {
 
 const httpLink = new HttpLink({
   uri: "http://localhost:3000/graphql",
-  credentials: "same-origin",
+  credentials: "same-origin"
 });
 
 const create = (initialState: any, options: ApolloInitOptions) =>
   new ApolloClient({
-    link: ApolloLink.from([onErrorLink, createAuthorizationLink(options), httpLink]),
+    link: ApolloLink.from([
+      onErrorLink,
+      createAuthorizationLink(options),
+      httpLink
+    ]),
     cache: new InMemoryCache().restore(initialState || {}),
     ssrMode: !isBrowser
   });

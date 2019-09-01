@@ -1,20 +1,20 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 import { Formik, FormikProps } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Select from "@material-ui/core/Select";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import Input from "@material-ui/core/Input";
 import { query, mutation, params, types } from "typed-graphqlify";
 import gql from "graphql-tag";
+import Router from "next/router";
 
 import Layout from "../../layout/default";
 import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
-import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
 import Loading from "../../components/Loading";
-import Router from "next/router";
+import { PostForm } from "../../components/organism/PostForm";
 
 interface FormValues {
   text: string;
@@ -37,6 +37,7 @@ const CreatePostMutation = mutation(
 const CREATE_POST = gql(CreatePostMutation);
 
 const NewPage = () => {
+  const [lines, setLines] = React.useState<string[]>([""]);
   const { data, error, loading } = useQuery<
     typeof GetViewerQuery & typeof GetLanguagesQuery
   >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
@@ -110,17 +111,7 @@ const NewPage = () => {
               </FormControl>
 
               <FormControl fullWidth>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="text"
-                  name="text"
-                  label="Content"
-                  multiline
-                  rows="10"
-                  value={values.text}
-                  onChange={handleChange}
-                />
+                <PostForm lines={lines} setLines={setLines} />
               </FormControl>
               <Button onClick={handleSubmit as any} color="primary">
                 Post

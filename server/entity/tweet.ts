@@ -9,6 +9,6 @@ export class Tweet {
     public replyIds: ID[],
     public inReplyToId: ID,
     public inReplyToType: RepliableType,
-    public text: String,
+    public text: String
   ) {}
 }

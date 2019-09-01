@@ -62,7 +62,7 @@ export async function seed(knex: Knex): Promise<any> {
         ...post
       });
       if (!createdPost) {
-        throw new Error("Failed to create a post")
+        throw new Error("Failed to create a post");
       }
     }
   }

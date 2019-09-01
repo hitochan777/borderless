@@ -25,7 +25,7 @@ export const User = objectType({
           throw new Error("user is empty");
         }
         const posts = await postRepository.findByUser(user.id);
-        return posts
+        return posts;
       }
     });
   }

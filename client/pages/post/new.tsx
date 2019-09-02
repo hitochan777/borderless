@@ -14,7 +14,8 @@ import Router from "next/router";
 import Layout from "../../layout/default";
 import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
 import Loading from "../../components/Loading";
-import { PostForm } from "../../components/organism/PostForm";
+import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
+import { Editor } from "../../components/organism/Editor";
 
 interface FormValues {
   text: string;
@@ -37,7 +38,7 @@ const CreatePostMutation = mutation(
 const CREATE_POST = gql(CreatePostMutation);
 
 const NewPage = () => {
-  const [lines, setLines] = React.useState<string[]>([""]);
+  const editorStore = useEditorStore()
   const { data, error, loading } = useQuery<
     typeof GetViewerQuery & typeof GetLanguagesQuery
   >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
@@ -111,7 +112,7 @@ const NewPage = () => {
               </FormControl>
 
               <FormControl fullWidth>
-                <PostForm lines={lines} setLines={setLines} />
+                <Editor store={editorStore} />
               </FormControl>
               <Button onClick={handleSubmit as any} color="primary">
                 Post

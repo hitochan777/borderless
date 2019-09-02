@@ -28,10 +28,10 @@
     "microrouter": "github:hitochan777-misc/micro-router#fix-no-content"
   },
   "devDependencies": {
-    "@types/http-proxy": "^1.17.0",
-    "http-proxy": "^1.17.0",
-    "micro-dev": "^3.0.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "@types/http-proxy": "1.17.0",
+    "http-proxy": "1.17.0",
+    "micro-dev": "3.0.0",
+    "ts-node": "8.3.0",
+    "typescript": "3.5.3"
   }
 }

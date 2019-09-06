@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
-import ContentEditable from "react-contenteditable";
 import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TweetIcon from "@material-ui/icons/ChatBubble";
 import IconButton from "@material-ui/core/IconButton";
+import ContentEditable from "react-contenteditable";
 
 import {
   EditorState,
@@ -63,6 +63,7 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
 
   React.useEffect(() => {
     const lineRef = lineRefs.current[newLineIndex];
+    console.log(lineRef);
     if (lineRef) {
       lineRef.focus();
     }
@@ -70,10 +71,13 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
 
   return (
     <>
-      <div>{JSON.stringify(lines, null, 2)}</div>
-      <div>{JSON.stringify(newLineIndex, null, 2)}</div>
       {lines.map((line, index) => (
-        <StyledPostForm key={index}>
+        <StyledPostForm
+          key={index}
+          onMouseOver={() => {
+            dispatch({ type: SET_FOCUS, payload: { index } });
+          }}
+        >
           <StyledOperationMenu>
             {focusedIndex === index && (
               <>
@@ -92,9 +96,9 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
             )}
           </StyledOperationMenu>
           <StyledContentEditable
-            innerRef={(el: HTMLDivElement) =>
-              ((lineRefs.current as any)[index] = el)
-            }
+            innerRef={(el: HTMLDivElement) => {
+              (lineRefs.current as any)[index] = el;
+            }}
             html={line}
             onChange={event => {
               dispatch({
@@ -114,9 +118,6 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
               }
             }}
             onPaste={pasteAsPlainText}
-            onMouseOver={() => {
-              dispatch({ type: SET_FOCUS, payload: { index } });
-            }}
             placeholder="Type something here"
           />
         </StyledPostForm>

@@ -18,7 +18,6 @@ import { useEditorStore } from "../../components/organism/Editor/useEditorReduce
 import { Editor } from "../../components/organism/Editor";
 
 interface FormValues {
-  text: string;
   language: string;
 }
 
@@ -38,7 +37,7 @@ const CreatePostMutation = mutation(
 const CREATE_POST = gql(CreatePostMutation);
 
 const NewPage = () => {
-  const editorStore = useEditorStore()
+  const editorStore = useEditorStore();
   const { data, error, loading } = useQuery<
     typeof GetViewerQuery & typeof GetLanguagesQuery
   >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
@@ -73,7 +72,7 @@ const NewPage = () => {
     await createPost({
       variables: {
         post: {
-          text: values.text,
+          text: editorStore.state.lines.join("\n"),
           language: +values.language
         }
       }
@@ -86,7 +85,6 @@ const NewPage = () => {
       <Container maxWidth="sm">
         <Formik
           initialValues={{
-            text: "",
             language: ""
           }}
           onSubmit={handleSubmit}

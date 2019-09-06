@@ -10,7 +10,7 @@ storiesOf("Loading", module).add("standard", () => <Loading />);
 
 storiesOf("Editor", module).add("standard", () =>
   React.createElement(() => {
-    const store = useEditorStore()
+    const store = useEditorStore();
     return <Editor store={store} />;
   })
 );

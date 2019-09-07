@@ -99,7 +99,7 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
             innerRef={(el: HTMLDivElement) => {
               (lineRefs.current as any)[index] = el;
             }}
-            html={line}
+            html={line.text}
             onChange={event => {
               dispatch({
                 type: CHANGE_LINE,

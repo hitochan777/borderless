@@ -1,13 +1,18 @@
 import { useReducer } from "react";
 
+export interface LineState {
+  text: string;
+  comments: string[];
+}
+
 export interface EditorState {
-  lines: string[];
+  lines: LineState[];
   newLineIndex: number;
   focusedIndex: number;
 }
 
 const initialState: EditorState = {
-  lines: [""],
+  lines: [{ text: "", comments: [] }],
   newLineIndex: 0,
   focusedIndex: 0
 };
@@ -50,19 +55,23 @@ export type ActionTypes =
   | CreateNewLineAction
   | DeleteCharacterAction;
 
-const changeLine = (currentLines: string[], index: number, newLine: string) => {
+const changeLine = (
+  currentLines: LineState[],
+  index: number,
+  newLine: string
+) => {
   const newLines = newLine.split("\n");
   if (index > currentLines.length - 1) {
     return [...currentLines];
   }
   return [
     ...currentLines.slice(0, index),
-    ...newLines,
+    ...newLines.map(line => ({ text: line, comments: [] })),
     ...currentLines.splice(index + 1)
   ];
 };
 
-const deleteLine = (currentLines: string[], index: number): string[] => {
+const deleteLine = (currentLines: LineState[], index: number): LineState[] => {
   return [...currentLines.slice(0, index), ...currentLines.splice(index + 1)];
 };
 
@@ -100,7 +109,7 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
         ...state,
         lines: [
           ...state.lines.slice(0, action.payload.index + 1),
-          "",
+          { text: "", comments: [] },
           ...state.lines.slice(action.payload.index + 1)
         ],
         focusedIndex: state.focusedIndex + 1,
@@ -114,13 +123,13 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
           lines: []
         };
       }
-      if (state.lines[action.payload.index].length > 0) {
+      if (state.lines[action.payload.index].text.length > 0) {
         return state;
       }
-      if (state.lines.length === 1 && state.lines[0].length === 0) {
+      if (state.lines.length === 1 && state.lines[0].text.length === 0) {
         return {
           ...state,
-          lines: [""]
+          lines: [{ text: "", comments: [] }]
         };
       }
       return {

@@ -1,8 +1,13 @@
 import { useReducer } from "react";
 
+export interface CommentState {
+  text: string;
+  isOpen: boolean;
+}
+
 export interface LineState {
   text: string;
-  comments: string[];
+  comment: CommentState;
 }
 
 export interface EditorState {
@@ -12,7 +17,7 @@ export interface EditorState {
 }
 
 const initialState: EditorState = {
-  lines: [{ text: "", comments: [] }],
+  lines: [{ text: "", comment: { text: "", isOpen: false } }],
   newLineIndex: 0,
   focusedIndex: 0
 };
@@ -22,6 +27,8 @@ export const DELETE_LINE = "DELETE_LINE";
 export const CHANGE_LINE = "CHANGE_LINE";
 export const CREATE_NEW_LINE = "CREATE_NEW_LINE";
 export const DELETE_CHARACTER = "DELETE_CHARACTER";
+export const TOGGLE_COMMENT = "TOGGLE_COMMENT";
+export const CHANGE_COMMENT = "CHANGE_COMMENT";
 
 interface SetFocusAction {
   type: typeof SET_FOCUS;
@@ -48,12 +55,42 @@ interface DeleteCharacterAction {
   payload: { index: number };
 }
 
+interface ToggleCommentAction {
+  type: typeof TOGGLE_COMMENT;
+  payload: { index: number };
+}
+
+interface ChangeCommentAction {
+  type: typeof CHANGE_COMMENT;
+  payload: { text: string; index: number };
+}
+
 export type ActionTypes =
   | SetFocusAction
   | DeleteLineAction
   | ChangeLineAction
   | CreateNewLineAction
-  | DeleteCharacterAction;
+  | DeleteCharacterAction
+  | ToggleCommentAction
+  | ChangeCommentAction;
+
+const toggleComment = (state: EditorState, index: number): EditorState => {
+  const lines = [
+    ...state.lines.slice(0, index),
+    {
+      ...state.lines[index],
+      comment: {
+        ...state.lines[index].comment,
+        isOpen: !state.lines[index].comment.isOpen
+      }
+    },
+    ...state.lines.splice(index + 1)
+  ];
+  return {
+    ...state,
+    lines
+  };
+};
 
 const changeLine = (
   currentLines: LineState[],
@@ -66,7 +103,10 @@ const changeLine = (
   }
   return [
     ...currentLines.slice(0, index),
-    ...newLines.map(line => ({ text: line, comments: [] })),
+    ...newLines.map(line => ({
+      text: line,
+      comment: { text: "", isOpen: false }
+    })),
     ...currentLines.splice(index + 1)
   ];
 };
@@ -109,7 +149,7 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
         ...state,
         lines: [
           ...state.lines.slice(0, action.payload.index + 1),
-          { text: "", comments: [] },
+          { text: "", comment: { text: "", isOpen: false } },
           ...state.lines.slice(action.payload.index + 1)
         ],
         focusedIndex: state.focusedIndex + 1,
@@ -129,7 +169,7 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
       if (state.lines.length === 1 && state.lines[0].text.length === 0) {
         return {
           ...state,
-          lines: [{ text: "", comments: [] }]
+          lines: [{ text: "", comment: { text: "", isOpen: false } }]
         };
       }
       return {
@@ -138,6 +178,32 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
         focusedIndex: Math.max(action.payload.index - 1, 0),
         newLineIndex: Math.max(action.payload.index - 1, 0)
       };
+    case TOGGLE_COMMENT:
+      if (
+        action.payload.index < 0 ||
+        action.payload.index >= state.lines.length
+      ) {
+        return state;
+      }
+      return toggleComment(state, action.payload.index);
+    case CHANGE_COMMENT:
+      const { index } = action.payload;
+      if (index < 0 || index >= state.lines.length) {
+        return state;
+      }
+      const lines = [
+        ...state.lines.slice(0, index),
+        {
+          ...state.lines[index],
+          comment: { ...state.lines[index].comment, text: action.payload.text }
+        },
+        ...state.lines.splice(index + 1)
+      ];
+      return {
+        ...state,
+        lines
+      };
+
     default:
       return state;
   }

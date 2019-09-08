@@ -3,6 +3,9 @@ import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TweetIcon from "@material-ui/icons/ChatBubble";
 import IconButton from "@material-ui/core/IconButton";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import ContentEditable from "react-contenteditable";
 
 import {
@@ -11,7 +14,9 @@ import {
   DELETE_LINE,
   CHANGE_LINE,
   CREATE_NEW_LINE,
-  DELETE_CHARACTER
+  DELETE_CHARACTER,
+  TOGGLE_COMMENT,
+  CHANGE_COMMENT
 } from "./useEditorReducer";
 
 const StyledOperationMenu = styled.div`
@@ -30,7 +35,7 @@ const StyledContentEditable = styled(ContentEditable)`
   }
 `;
 
-const StyledPostForm = styled.div`
+const StyledLine = styled.div`
   display: flex;
   line-height: 2rem;
   height: 2rem;
@@ -63,65 +68,94 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
 
   React.useEffect(() => {
     const lineRef = lineRefs.current[newLineIndex];
-    console.log(lineRef);
     if (lineRef) {
       lineRef.focus();
     }
   }, [newLineIndex]);
 
   return (
-    <>
+    <Container maxWidth="sm">
       {lines.map((line, index) => (
-        <StyledPostForm
-          key={index}
-          onMouseOver={() => {
-            dispatch({ type: SET_FOCUS, payload: { index } });
-          }}
-        >
-          <StyledOperationMenu>
-            {focusedIndex === index && (
-              <>
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    dispatch({ type: DELETE_LINE, payload: { index } });
+        <div key={index}>
+          <Grid container spacing={3}>
+            <Grid item sm={12}>
+              <StyledLine
+                onMouseOver={() => {
+                  dispatch({ type: SET_FOCUS, payload: { index } });
+                }}
+              >
+                <StyledOperationMenu>
+                  {focusedIndex === index && (
+                    <>
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          dispatch({ type: DELETE_LINE, payload: { index } });
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          dispatch({
+                            type: TOGGLE_COMMENT,
+                            payload: { index }
+                          });
+                        }}
+                      >
+                        <TweetIcon />
+                      </IconButton>
+                    </>
+                  )}
+                </StyledOperationMenu>
+                <StyledContentEditable
+                  innerRef={(el: HTMLDivElement) => {
+                    (lineRefs.current as any)[index] = el;
                   }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-                <IconButton size="small">
-                  <TweetIcon />
-                </IconButton>
-              </>
+                  html={line.text}
+                  onChange={event => {
+                    dispatch({
+                      type: CHANGE_LINE,
+                      payload: { newLine: event.target.value, index }
+                    });
+                  }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      dispatch({ type: CREATE_NEW_LINE, payload: { index } });
+                    }
+                  }}
+                  onKeyDown={event => {
+                    if (event.key === "Backspace") {
+                      dispatch({ type: DELETE_CHARACTER, payload: { index } });
+                    }
+                  }}
+                  onPaste={pasteAsPlainText}
+                  placeholder="Type something here"
+                />
+              </StyledLine>
+            </Grid>
+            {line.comment.isOpen && (
+              <Grid item sm={12}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  multiline
+                  rowsMax="4"
+                  value={line.comment.text}
+                  onChange={event => {
+                    dispatch({
+                      type: CHANGE_COMMENT,
+                      payload: { text: event.target.value, index }
+                    });
+                  }}
+                ></TextField>
+              </Grid>
             )}
-          </StyledOperationMenu>
-          <StyledContentEditable
-            innerRef={(el: HTMLDivElement) => {
-              (lineRefs.current as any)[index] = el;
-            }}
-            html={line.text}
-            onChange={event => {
-              dispatch({
-                type: CHANGE_LINE,
-                payload: { newLine: event.target.value, index }
-              });
-            }}
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                dispatch({ type: CREATE_NEW_LINE, payload: { index } });
-              }
-            }}
-            onKeyDown={event => {
-              if (event.key === "Backspace") {
-                dispatch({ type: DELETE_CHARACTER, payload: { index } });
-              }
-            }}
-            onPaste={pasteAsPlainText}
-            placeholder="Type something here"
-          />
-        </StyledPostForm>
+          </Grid>
+        </div>
       ))}
-    </>
+    </Container>
   );
 };

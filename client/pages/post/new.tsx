@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
+import Box from "@material-ui/core/Box";
 import Input from "@material-ui/core/Input";
 import { query, mutation, params, types } from "typed-graphqlify";
 import gql from "graphql-tag";
@@ -14,7 +15,10 @@ import Router from "next/router";
 import Layout from "../../layout/default";
 import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
 import Loading from "../../components/Loading";
-import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
+import {
+  useEditorStore,
+  EditorState
+} from "../../components/organism/Editor/useEditorReducer";
 import { Editor } from "../../components/organism/Editor";
 
 interface FormValues {
@@ -66,13 +70,16 @@ const NewPage = () => {
     name: allLanguageTable[id]
   }));
 
-  const [createPost] = useMutation<typeof CreatePostReturnObject>(CREATE_POST);
+  const [createPost] = useMutation<
+    typeof CreatePostReturnObject,
+    { post: { text: EditorState; language: number } }
+  >(CREATE_POST);
 
   const handleSubmit = async (values: FormValues) => {
     await createPost({
       variables: {
         post: {
-          text: editorStore.state.lines.join("\n"),
+          text: editorStore.state,
           language: +values.language
         }
       }
@@ -112,8 +119,24 @@ const NewPage = () => {
               <FormControl fullWidth>
                 <Editor store={editorStore} />
               </FormControl>
-              <Button onClick={handleSubmit as any} color="primary">
-                Post
+              <Box mr={2}>
+                {(props: any) => (
+                  <Button
+                    {...props}
+                    variant="contained"
+                    onClick={handleSubmit as any}
+                    color="primary"
+                  >
+                    Save as Draft
+                  </Button>
+                )}
+              </Box>
+              <Button
+                variant="contained"
+                onClick={handleSubmit as any}
+                color="secondary"
+              >
+                Publish
               </Button>
             </form>
           )}

@@ -2,6 +2,7 @@ import express, { Response, Request } from "express";
 import admin from "firebase-admin";
 import next from "next";
 import proxy from "http-proxy-middleware";
+import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -17,8 +18,7 @@ const dev = process.env.NODE_ENV !== "production";
 
 const withAuthHandler = (handler: any) => async (
   req: Request,
-  res: Response,
-  ...restArgs: any[]
+  res: Response
 ) => {
   try {
     const sessionCookie = req.cookies && req.cookies.session;
@@ -31,7 +31,7 @@ const withAuthHandler = (handler: any) => async (
   } catch (error) {
     res.clearCookie("session");
   }
-  return handler(req, res, ...restArgs);
+  return handler(req, res);
 };
 
 const GRAPHQL_PATH = "/graphql";
@@ -43,15 +43,19 @@ const runServer = async () => {
   await nextApp.prepare();
   const server = express();
 
-  server.use(cors());
-  server.use(cookieParser());
   if (dev) {
     server.use(
       GRAPHQL_PATH,
       proxy({ target: GRAPHQL_ENDPOINT, changeOrigin: true })
     );
   }
-  server.use("*", withAuthHandler(nextAppHandler));
+  server.get(
+    "*",
+    bodyParser.json(),
+    cors(),
+    cookieParser(),
+    withAuthHandler(nextAppHandler)
+  );
 
   server.listen(port, () => console.log("Server Listening on Port", port));
 };

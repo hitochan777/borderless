@@ -10,16 +10,10 @@ import { State } from "../store/state";
 import { defaultState, actionDefs, StateProvider } from "../store";
 import { useAuthEffect } from "../useAuthEffect";
 import withApolloClient from "../lib/with-apollo-client";
-import redirect from "../lib/redirect";
-
-const PUBLIC_PAGES = ["/", "/signin", "/signup", "/about", "/_error"];
 
 const auth = async (context: NextPageContext) => {
   let user = null;
   const { session: sessionCookie } = nextCookie(context);
-  if (!PUBLIC_PAGES.includes(context.pathname) && !sessionCookie) {
-    redirect(context, "/signin");
-  }
   if (context.req && sessionCookie) {
     user = (context.req as any).headers.uid;
   }

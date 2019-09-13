@@ -15,10 +15,7 @@ import Router from "next/router";
 import Layout from "../../layout/default";
 import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
 import Loading from "../../components/Loading";
-import {
-  useEditorStore,
-  EditorState
-} from "../../components/organism/Editor/useEditorReducer";
+import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
 import { Editor } from "../../components/organism/Editor";
 
 interface FormValues {
@@ -72,14 +69,14 @@ const NewPage = () => {
 
   const [createPost] = useMutation<
     typeof CreatePostReturnObject,
-    { post: { lines: EditorState["lines"]; language: number } }
+    { post: { lines: { text: string; comment: string }[]; language: number } }
   >(CREATE_POST);
 
   const handleSubmit = async (values: FormValues) => {
     await createPost({
       variables: {
         post: {
-          lines: editorStore.state.lines,
+          lines: editorStore.state.getPostable(),
           language: +values.language
         }
       }

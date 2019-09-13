@@ -193,6 +193,15 @@ export class EditorState {
     return this.getLines().size;
   }
 
+  getPostable() {
+    return this.getLines()
+      .map(line => ({
+        text: line.get("text"),
+        comment: line.get("comment").get("text")
+      }))
+      .toArray();
+  }
+
   get lines() {
     return this.getLines();
   }

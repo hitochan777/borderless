@@ -72,14 +72,14 @@ const NewPage = () => {
 
   const [createPost] = useMutation<
     typeof CreatePostReturnObject,
-    { post: { text: EditorState; language: number } }
+    { post: { lines: EditorState["lines"]; language: number } }
   >(CREATE_POST);
 
   const handleSubmit = async (values: FormValues) => {
     await createPost({
       variables: {
         post: {
-          text: editorStore.state,
+          lines: editorStore.state.lines,
           language: +values.language
         }
       }

@@ -17,3 +17,4 @@ export * from "./AuthData";
 // Input Object
 export * from "./UserInput";
 export * from "./PostInput";
+export * from "./LineInput";

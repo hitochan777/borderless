@@ -20,6 +20,11 @@ type Line implements Node & Repliable {
   tweets: [Tweet!]!
 }
 
+input LineInput {
+  comment: String
+  text: String!
+}
+
 type Mutation {
   logout: Boolean!
   postCreate(post: PostInput!): Post!
@@ -43,7 +48,7 @@ type Post implements Node {
 
 input PostInput {
   language: Int!
-  text: String!
+  lines: [LineInput!]!
 }
 
 type Query {

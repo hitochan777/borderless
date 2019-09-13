@@ -15,9 +15,13 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  LineInput: { // input type
+    comment?: string | null; // String
+    text: string; // String!
+  }
   PostInput: { // input type
     language: number; // Int!
-    text: string; // String!
+    lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
   UserInput: { // input type
     email: string; // String!
@@ -54,6 +58,7 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  LineInput: NexusGenInputs['LineInput'];
   PostInput: NexusGenInputs['PostInput'];
   UserInput: NexusGenInputs['UserInput'];
 }
@@ -149,7 +154,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "PostInput" | "UserInput";
+export type NexusGenInputNames = "LineInput" | "PostInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 

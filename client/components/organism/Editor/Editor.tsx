@@ -59,11 +59,12 @@ interface Props {
 
 export const Editor: React.StatelessComponent<Props> = ({ store }) => {
   const lineRefs = useRef<HTMLDivElement[]>([]);
+  const { state } = store;
   const { lines, newLineIndex, focusedIndex } = store.state;
   const { dispatch } = store;
 
   React.useEffect(() => {
-    lineRefs.current = lineRefs.current.slice(0, lines.length);
+    lineRefs.current = lineRefs.current.slice(0, state.getLineCount());
   }, [lines]);
 
   React.useEffect(() => {
@@ -113,7 +114,7 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
                   innerRef={(el: HTMLDivElement) => {
                     (lineRefs.current as any)[index] = el;
                   }}
-                  html={line.text}
+                  html={line.get("text")}
                   onChange={event => {
                     dispatch({
                       type: CHANGE_LINE,
@@ -136,14 +137,14 @@ export const Editor: React.StatelessComponent<Props> = ({ store }) => {
                 />
               </StyledLine>
             </Grid>
-            {line.comment.isOpen && (
+            {line.get("comment").get("isOpen") && (
               <Grid item sm={12}>
                 <TextField
                   fullWidth
                   variant="outlined"
                   multiline
                   rowsMax="4"
-                  value={line.comment.text}
+                  value={line.get("comment").get("text")}
                   onChange={event => {
                     dispatch({
                       type: CHANGE_COMMENT,

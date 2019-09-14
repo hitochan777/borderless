@@ -26,7 +26,7 @@ export default () => {
           <li key={post.id}>
             <PostCard
               id={+post.id}
-              title={post.text}
+              title={post.lines[0].text}
               username={post.user.username}
               language={post.language.name}
             />

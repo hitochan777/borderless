@@ -12,12 +12,9 @@ type Language implements Node {
   name: String!
 }
 
-type Line implements Node & Repliable {
-  """Unique identifier for the resource"""
-  id: ID!
-  post: Post!
+type Line {
+  replies: [Tweet!]!
   text: String!
-  tweets: [Tweet!]!
 }
 
 input LineInput {
@@ -42,7 +39,7 @@ type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
   language: Language!
-  text: String!
+  lines: [Line!]!
   user: User!
 }
 
@@ -59,16 +56,16 @@ type Query {
   viewer: User!
 }
 
-interface Repliable {
-  text: String!
-}
+"""Anything that can be replied"""
+union Repliable = Line | Tweet
 
-type Tweet implements Node & Repliable {
+type Tweet implements Node {
   """Unique identifier for the resource"""
   id: ID!
-  inReplyTo: Repliable!
-  replies: [Tweet!]!
+  inReplyTo: Int
+  replyIds: [Int!]!
   text: String!
+  userId: Int!
 }
 
 type User implements Node {

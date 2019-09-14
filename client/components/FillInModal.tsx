@@ -71,7 +71,16 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     if (!state.user) {
       throw new Error("uid should not be empty when updating user");
     }
-    await updateUser({ variables: { id: state.user, user: values } });
+    await updateUser({
+      variables: {
+        id: state.user,
+        user: {
+          ...values,
+          fluentLanguages: values.fluentLanguages.map(l => +l),
+          learningLanguages: values.learningLanguages.map(l => +l)
+        }
+      }
+    });
   };
 
   const { data, error, loading: getLanguageLoading } = useQuery<

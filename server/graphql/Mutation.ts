@@ -45,7 +45,10 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { post: postInput },
-        { repositories: { userRepository, postRepository }, uid }
+        {
+          repositories: { userRepository, postRepository, tweetRepository },
+          uid
+        }
       ) => {
         if (!uid) {
           throw new Error("uid is empty");
@@ -57,11 +60,23 @@ export const Mutation = mutationType({
         const post = await postRepository.create({
           userId: user.id,
           language: postInput.language,
-          text: postInput.lines.map(line => line.text).join("\n")
+          text: postInput.lines.map((line: any) => line.text).join("\n")
         });
         if (!post) {
           throw new Error("Failed to create a post");
         }
+        for (const lineNum in postInput.lines) {
+          const maybeComment = postInput.lines[lineNum].comment;
+          if (maybeComment && maybeComment.length > 0) {
+            await tweetRepository.createTweetForLine({
+              userId: user.id,
+              text: maybeComment,
+              lineNum: +lineNum,
+              postId: post.id
+            });
+          }
+        }
+
         return post;
       }
     });

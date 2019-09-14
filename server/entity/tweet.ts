@@ -1,14 +1,16 @@
 import { ID } from "../types";
 
-export type RepliableType = "Tweet" | "Line";
-
+interface LineRef {
+  postId: ID;
+  lineNum: number;
+}
 export class Tweet {
   constructor(
-    public id: string,
+    public id: ID,
     public userId: ID,
     public replyIds: ID[],
-    public inReplyToId: ID,
-    public inReplyToType: RepliableType,
-    public text: String
+    public inReplyTo: ID | null,
+    public text: String,
+    public lineRef?: LineRef
   ) {}
 }

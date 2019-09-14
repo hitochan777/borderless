@@ -48,13 +48,13 @@ export interface NexusGenRootTypes {
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
-  Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
   String: string;
   Int: number;
   Float: number;
   Boolean: boolean;
   ID: string;
+  Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
@@ -72,10 +72,8 @@ export interface NexusGenFieldTypes {
     name: string; // String!
   }
   Line: { // field return type
-    id: string; // ID!
-    post: NexusGenRootTypes['Post']; // Post!
+    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
-    tweets: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
   }
   Mutation: { // field return type
     logout: boolean; // Boolean!
@@ -87,7 +85,7 @@ export interface NexusGenFieldTypes {
   Post: { // field return type
     id: string; // ID!
     language: NexusGenRootTypes['Language']; // Language!
-    text: string; // String!
+    lines: NexusGenRootTypes['Line'][]; // [Line!]!
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
@@ -99,9 +97,10 @@ export interface NexusGenFieldTypes {
   }
   Tweet: { // field return type
     id: string; // ID!
-    inReplyTo: NexusGenRootTypes['Repliable']; // Repliable!
-    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
+    inReplyTo: number | null; // Int
+    replyIds: number[]; // [Int!]!
     text: string; // String!
+    userId: number; // Int!
   }
   User: { // field return type
     email: string; // String!
@@ -113,9 +112,6 @@ export interface NexusGenFieldTypes {
   }
   Node: { // field return type
     id: string; // ID!
-  }
-  Repliable: { // field return type
-    text: string; // String!
   }
 }
 
@@ -146,8 +142,8 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  Node: "Post" | "Language" | "User" | "Line" | "Tweet"
   Repliable: "Line" | "Tweet"
+  Node: "Post" | "Language" | "Tweet" | "User"
 }
 
 export interface NexusGenInheritedFields {}
@@ -158,11 +154,11 @@ export type NexusGenInputNames = "LineInput" | "PostInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 
-export type NexusGenInterfaceNames = "Node" | "Repliable";
+export type NexusGenInterfaceNames = "Node";
 
 export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 
-export type NexusGenUnionNames = never;
+export type NexusGenUnionNames = "Repliable";
 
 export interface NexusGenTypes {
   context: ctx.GraphQLContext;

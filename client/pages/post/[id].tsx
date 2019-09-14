@@ -34,11 +34,20 @@ const PostIndexPage: NextPage<Props> = ({ id }) => {
     <Layout>
       <Container maxWidth="sm">
         <Paper>
-          <h3>title here</h3>
+          <h3>{data.post.lines[0].text}</h3>
           <ul>
             <li>Language: {data.post.language.name}</li>
             <li>Posted by {data.post.user.username}</li>
-            <li>Content: {data.post.text}</li>
+            <li>
+              Content
+              <div>
+                {data.post.lines.map(line => (
+                  <p>
+                    {line.text} (Comment: {line.replies.length})
+                  </p>
+                ))}
+              </div>
+            </li>
           </ul>
         </Paper>
       </Container>

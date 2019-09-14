@@ -3,7 +3,7 @@ import React from "react";
 import { useStateValue } from "../store";
 import Layout from "../layout/default";
 
-export default () => {
+const SignIn: React.StatelessComponent = () => {
   const { actions } = useStateValue();
   return (
     <Layout>
@@ -11,3 +11,5 @@ export default () => {
     </Layout>
   );
 };
+
+export default SignIn;

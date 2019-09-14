@@ -17,9 +17,7 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-interface Props {}
-
-const Layout: React.StatelessComponent<Props> = ({ children }) => {
+const Layout: React.StatelessComponent = ({ children }) => {
   const { state } = useStateValue();
   const { data, error, loading: queryLoading } = useQuery<
     typeof GetViewerQuery
@@ -32,7 +30,7 @@ const Layout: React.StatelessComponent<Props> = ({ children }) => {
       </LoadingWrapper>
     );
   }
-  let shouldShowFillInfoModal: boolean = false;
+  let shouldShowFillInfoModal = false;
   let formData;
   if (state.user) {
     if (error) {

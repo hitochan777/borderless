@@ -10,7 +10,7 @@ export class Tweet {
     public userId: ID,
     public replyIds: ID[],
     public inReplyTo: ID | null,
-    public text: String,
+    public text: string,
     public lineRef?: LineRef
   ) {}
 }

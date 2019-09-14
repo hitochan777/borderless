@@ -67,7 +67,7 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     typeof UpdateUserReturnObject
   >(SIGN_UP);
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues): Promise<void> => {
     if (!state.user) {
       throw new Error("uid should not be empty when updating user");
     }
@@ -152,7 +152,7 @@ export const FillInModal: React.StatelessComponent<Props> = ({
             </DialogContent>
             <DialogActions>
               <Button onClick={handleSubmit as any} color="primary">
-                Let's Go!
+                {"Let's Go!"}
               </Button>
             </DialogActions>
             <pre>{JSON.stringify(values, null, 2)}</pre>

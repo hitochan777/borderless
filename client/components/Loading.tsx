@@ -42,7 +42,7 @@ const SpinnerItem = styled.div`
   }
 `;
 
-const Loading = () => (
+const Loading: React.StatelessComponent = () => (
   <Spinner>
     <SpinnerItem />
     <SpinnerItem />

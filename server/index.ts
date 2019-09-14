@@ -56,7 +56,7 @@ export const createContext = (db: knex) => async ({
   res: ServerResponse;
 }): Promise<GraphQLContext> => {
   let uid = null;
-  let token = extractToken(
+  const token = extractToken(
     req.headers.authorization,
     req.cookies && req.cookies["session"]
   );

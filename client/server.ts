@@ -13,7 +13,7 @@ if (admin.apps.length === 0) {
   });
 }
 
-const port = parseInt(<string>process.env.PORT, 10) || 3000;
+const port = parseInt(process.env.PORT as string, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 
 const withAuthHandler = (handler: any) => async (
@@ -26,7 +26,7 @@ const withAuthHandler = (handler: any) => async (
       const decodedIdToken = await admin
         .auth()
         .verifySessionCookie(sessionCookie, true);
-      req.headers["uid"] = decodedIdToken.uid;
+      req.headers["uid"] = decodedIdToken.uid; // eslint-disable-line require-atomic-updates
     }
   } catch (error) {
     res.clearCookie("session");

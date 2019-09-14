@@ -4,18 +4,15 @@ export const Tweet = objectType({
   name: "Tweet",
   definition(t) {
     t.implements("Node");
-    t.implements("Repliable");
-    t.list.field("replies", {
-      type: "Tweet",
+    t.string("text");
+    t.int("inReplyTo", {
+      nullable: true
+    });
+    t.int("userId");
+    t.list.field("replyIds", {
+      type: "Int",
       resolve() {
         return [];
-      }
-    });
-    t.field("inReplyTo", {
-      type: "Repliable",
-      resolve() {
-        // TODO: replace with a correct logic
-        return { id: 1, post_id: 1, order: 2, text: "" };
       }
     });
   }

@@ -1,9 +1,10 @@
-import { interfaceType } from "nexus";
+import { unionType } from "nexus";
 
-export const Repliable = interfaceType({
+export const Repliable = unionType({
   name: "Repliable",
+  description: "Anything that can be replied",
   definition(t) {
-    t.field("text", { type: "String" });
-    t.resolveType(() => null);
+    t.members("Tweet", "Line");
+    t.resolveType(_ => "Line");
   }
 });

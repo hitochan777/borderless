@@ -10,6 +10,7 @@ import { schema } from "./schema";
 import { RepositoryContainer } from "./types";
 import { UserRepository } from "./infra/user_repository";
 import { PostRepository } from "./infra/post_repository";
+import { TweetRepository } from "./infra/tweet_repository";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -21,7 +22,8 @@ if (admin.apps.length === 0) {
 export const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   return {
     userRepository: new UserRepository(db),
-    postRepository: new PostRepository(db)
+    postRepository: new PostRepository(db),
+    tweetRepository: new TweetRepository(db)
   };
 };
 

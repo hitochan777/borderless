@@ -17,13 +17,24 @@ interface PostInput {
   text: string;
 }
 
+interface RawRepliable {
+  id: ID;
+}
+
 export class PostRepository {
   posts: () => knex.QueryBuilder<RawPost, RawPost[]>;
+  repliables: () => knex.QueryBuilder<RawRepliable, RawRepliable[]>;
   constructor(db: knex) {
     this.posts = () => db("post");
+    this.repliables = () => db("repliable");
   }
   async create({ userId, language, text }: PostInput) {
+    const repliableIds = await this.repliables().insert({});
+    if (repliableIds.length == 0) {
+      return null;
+    }
     const ids = await this.posts().insert({
+      id: repliableIds[0],
       userId,
       language,
       text

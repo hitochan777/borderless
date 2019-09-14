@@ -1,8 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-interface Props {}
-
-export const GlobalStyle = createGlobalStyle<Props>`
+export const GlobalStyle = createGlobalStyle<{}>`
   body {
       margin: 0;
       padding: 0;

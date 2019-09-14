@@ -51,12 +51,12 @@ export async function seed(knex: Knex): Promise<any> {
     }
   ];
 
-  for (let entity of entities) {
+  for (const entity of entities) {
     const user = await userRepository.create(entity.user);
     if (!user) {
       throw new Error("Failed to create an user");
     }
-    for (let post of entity.posts) {
+    for (const post of entity.posts) {
       const createdPost = await postRepository.create({
         userId: user.id,
         ...post

@@ -106,7 +106,7 @@ export class UserRepository {
       learningLanguages = []
     }: Omit<UserInput, "uid">
   ): Promise<User | null> {
-    let newUserInput = {
+    const newUserInput = {
       email,
       username,
       fluentLanguages: this.transformTo(fluentLanguages),

@@ -12,7 +12,7 @@ const StyledTypography = styled(Typography)`
   flex-grow: 1;
 `;
 
-const Navbar = () => {
+const Navbar: React.StatelessComponent = () => {
   const { state, actions } = useStateValue();
 
   return (

@@ -6,7 +6,7 @@ import { GetViewerQuery, GET_VIEWER } from "../constant/queries";
 import Loading from "../components/Loading";
 import { PostCard } from "../components/PostCard";
 
-export default () => {
+const Me: React.StatelessComponent = () => {
   const { data, error, loading } = useQuery<typeof GetViewerQuery>(GET_VIEWER);
 
   if (loading) {
@@ -36,3 +36,5 @@ export default () => {
     </Layout>
   );
 };
+
+export default Me;

@@ -1,5 +1,5 @@
 import { Tweet } from "./tweet";
 
 export class Line {
-  constructor(public text: String, public replies: Tweet[]) {}
+  constructor(public text: string, public replies: Tweet[]) {}
 }

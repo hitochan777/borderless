@@ -13,7 +13,7 @@ export const Post = objectType({
         const replies = await tweetRepository.findTweetForLinesByPostId(
           root.id
         );
-        let table: { [key: number]: any[] } = {};
+        const table: { [key: number]: any[] } = {};
         for (const reply of replies) {
           if (!reply.lineRef) {
             continue;

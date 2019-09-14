@@ -23,7 +23,7 @@ const auth = async (context: NextPageContext) => {
 const withAuth = (
   App: React.ComponentType<any> & { getInitialProps?: Function }
 ) => {
-  return class extends React.Component {
+  return class AuthenticatedApp extends React.Component {
     static async getInitialProps(context: AppContext) {
       const { ctx } = context;
       const { user } = await auth(ctx);

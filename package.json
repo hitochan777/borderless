@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,md,html}'"
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,md,html}'",
+    "lint": "eslint -c .eslintrc.js \"{client,server}/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint --fix \"{client,server}/**/*.{ts,tsx}\""
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,14 @@
   },
   "homepage": "https://github.com/hitochan777/polyglot#readme",
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.3"
   },
   "dependencies": {}
 }

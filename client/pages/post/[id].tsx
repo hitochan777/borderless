@@ -41,8 +41,8 @@ const PostIndexPage: NextPage<Props> = ({ id }) => {
             <li>
               Content
               <div>
-                {data.post.lines.map(line => (
-                  <p>
+                {data.post.lines.map((line, index) => (
+                  <p key={index}>
                     {line.text} (Comment: {line.replies.length})
                   </p>
                 ))}

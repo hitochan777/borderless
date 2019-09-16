@@ -60,7 +60,8 @@ export const Mutation = mutationType({
         const post = await postRepository.create({
           userId: user.id,
           language: postInput.language,
-          text: postInput.lines.map((line: any) => line.text).join("\n")
+          text: postInput.lines.map(line => line.text).join("\n"),
+          isDraft: postInput.isDraft
         });
         if (!post) {
           throw new Error("Failed to create a post");

@@ -20,6 +20,7 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   PostInput: { // input type
+    isDraft: boolean; // Boolean!
     language: number; // Int!
     lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
@@ -84,6 +85,7 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     id: string; // ID!
+    isDraft: boolean; // Boolean!
     language: NexusGenRootTypes['Language']; // Language!
     lines: NexusGenRootTypes['Line'][]; // [Line!]!
     user: NexusGenRootTypes['User']; // User!

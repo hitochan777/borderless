@@ -1,7 +1,9 @@
 import React from "react";
+import Link from "next/link";
 import { NextPage } from "next";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 import { useQuery } from "@apollo/react-hooks";
 
 import { GET_POST_BY_ID, GetPostById } from "../../constant/queries";
@@ -49,6 +51,17 @@ const PostIndexPage: NextPage<Props> = ({ id }) => {
               </div>
             </li>
           </ul>
+          {data.post.isDraft ? (
+            <Link href="/post/[id]/edit" as={`/post/${data.post.id}/edit`}>
+              <Button variant="contained" color="primary">
+                Edit
+              </Button>
+            </Link>
+          ) : (
+            <Button variant="contained" color="primary" disabled={true}>
+              Published
+            </Button>
+          )}
         </Paper>
       </Container>
     </Layout>

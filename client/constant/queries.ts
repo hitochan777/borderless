@@ -1,35 +1,27 @@
 import { query, types, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 
-export const GetViewerQuery = {
-  viewer: {
-    username: types.string,
-    email: types.string,
-    fluentLanguages: [types.number],
-    learningLanguages: [types.number],
-    posts: [
-      {
-        id: types.string,
-        lines: [{ text: types.string, replies: [{ text: types.string }] }],
-        language: { id: types.string, name: types.string },
-        user: {
-          username: types.string
-        }
-      }
-    ]
-  }
-};
-
-export const GET_VIEWER = gql(query(GetViewerQuery));
-
 const Post = {
   id: types.string,
   lines: [{ text: types.string, replies: [{ text: types.string }] }],
   language: { id: types.string, name: types.string },
   user: {
     username: types.string
+  },
+  isDraft: types.boolean
+};
+
+export const GetViewerQuery = {
+  viewer: {
+    username: types.string,
+    email: types.string,
+    fluentLanguages: [types.number],
+    learningLanguages: [types.number],
+    posts: [Post]
   }
 };
+
+export const GET_VIEWER = gql(query(GetViewerQuery));
 
 export const GetPostById = params(
   { $id: "Int!" },

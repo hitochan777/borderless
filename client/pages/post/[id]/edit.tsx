@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik, FormikProps } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Select from "@material-ui/core/Select";
@@ -12,11 +12,11 @@ import { query, mutation, params, types } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
 
-import Layout from "../../layout/default";
-import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
-import Loading from "../../components/Loading";
-import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
-import { Editor } from "../../components/organism/Editor";
+import Layout from "../../../layout/default";
+import { GetViewerQuery, GetLanguagesQuery } from "../../../constant/queries";
+import Loading from "../../../components/Loading";
+import { useEditorStore } from "../../../components/organism/Editor/useEditorReducer";
+import { Editor } from "../../../components/organism/Editor";
 
 interface FormValues {
   language: string;
@@ -42,31 +42,6 @@ const NewPage = () => {
   const { data, error, loading } = useQuery<
     typeof GetViewerQuery & typeof GetLanguagesQuery
   >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
-  const [submitSignal, setSubmitSignal] = useState({
-    isDraft: true,
-    shouldSubmit: false,
-    handleSubmit: () => {}
-  });
-
-  const handleSubmit = async (values: FormValues) => {
-    await createPost({
-      variables: {
-        post: {
-          lines: editorStore.state.getPostable(),
-          language: +values.language,
-          isDraft: submitSignal.isDraft
-        }
-      }
-    });
-    Router.push("/me");
-  };
-
-  useEffect(() => {
-    if (submitSignal.shouldSubmit) {
-      submitSignal.handleSubmit();
-      setSubmitSignal(state => ({ ...state, shouldSubmit: false }));
-    }
-  }, [submitSignal]);
 
   if (loading) {
     return <Loading />;
@@ -94,14 +69,20 @@ const NewPage = () => {
 
   const [createPost] = useMutation<
     typeof CreatePostReturnObject,
-    {
-      post: {
-        lines: { text: string; comment: string }[];
-        language: number;
-        isDraft?: boolean;
-      };
-    }
+    { post: { lines: { text: string; comment: string }[]; language: number } }
   >(CREATE_POST);
+
+  const handleSubmit = async (values: FormValues) => {
+    await createPost({
+      variables: {
+        post: {
+          lines: editorStore.state.getPostable(),
+          language: +values.language
+        }
+      }
+    });
+    Router.push("/me");
+  };
 
   return (
     <Layout>
@@ -112,8 +93,8 @@ const NewPage = () => {
           }}
           onSubmit={handleSubmit}
           render={({
-            submitForm,
             handleChange,
+            handleSubmit,
             values
           }: FormikProps<FormValues>) => (
             <form>
@@ -140,15 +121,7 @@ const NewPage = () => {
                   <Button
                     {...props}
                     variant="contained"
-                    onClick={() => {
-                      setSubmitSignal({
-                        isDraft: true,
-                        shouldSubmit: true,
-                        handleSubmit: () => {
-                          submitForm();
-                        }
-                      });
-                    }}
+                    onClick={handleSubmit as any}
                     color="primary"
                   >
                     Save as Draft
@@ -157,15 +130,7 @@ const NewPage = () => {
               </Box>
               <Button
                 variant="contained"
-                onClick={() => {
-                  setSubmitSignal({
-                    isDraft: false,
-                    shouldSubmit: true,
-                    handleSubmit: () => {
-                      submitForm();
-                    }
-                  });
-                }}
+                onClick={handleSubmit as any}
                 color="secondary"
               >
                 Publish

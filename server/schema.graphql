@@ -38,12 +38,14 @@ interface Node {
 type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
+  isDraft: Boolean!
   language: Language!
   lines: [Line!]!
   user: User!
 }
 
 input PostInput {
+  isDraft: Boolean! = true
   language: Int!
   lines: [LineInput!]!
 }

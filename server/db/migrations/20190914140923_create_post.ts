@@ -10,6 +10,7 @@ export async function up(knex: Knex): Promise<any> {
     t.integer("userId").unsigned();
     t.foreign("userId").references("user.id");
     t.integer("language").notNullable();
+    t.boolean("isDraft").defaultTo(false);
     t.text("text");
   });
 }

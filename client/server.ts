@@ -29,7 +29,14 @@ const withAuthHandler = (handler: any) => async (
       req.headers["uid"] = decodedIdToken.uid; // eslint-disable-line require-atomic-updates
     }
   } catch (error) {
-    res.clearCookie("session");
+    console.log(error);
+    if (error.code === "app/network-error") {
+      console.log(
+        "Network error occurred. Make sure Next.js server is no connected to the internet"
+      );
+    } else {
+      res.clearCookie("session");
+    }
   }
   return handler(req, res);
 };

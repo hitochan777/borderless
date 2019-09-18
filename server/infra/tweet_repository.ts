@@ -85,4 +85,10 @@ export class TweetRepository {
       );
     });
   }
+
+  async deleteAllTweetsForLineByPostId(postId: ID) {
+    await this.tweetForLine()
+      .where({ postId })
+      .delete();
+  }
 }

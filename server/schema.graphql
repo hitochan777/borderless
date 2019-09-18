@@ -25,6 +25,7 @@ input LineInput {
 type Mutation {
   logout: Boolean!
   postCreate(post: PostInput!): Post!
+  postUpdate(id: Int!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   userCreate(id: String!): User!
   userUpdate(id: String!, user: UserInput!): User!

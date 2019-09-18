@@ -11,7 +11,7 @@ const defaultComment: CommentState = {
   isOpen: false
 };
 
-const CommentFactory = Record(defaultComment);
+export const CommentFactory = Record(defaultComment);
 
 export interface LineState {
   text: string;
@@ -20,7 +20,7 @@ export interface LineState {
 
 const defaultLine = { text: "", comment: CommentFactory() };
 
-const LineFactory = Record(defaultLine);
+export const LineFactory = Record(defaultLine);
 
 interface EditorStateRecordType {
   lines: List<Record<LineState>>;
@@ -221,6 +221,7 @@ export const CREATE_NEW_LINE = "CREATE_NEW_LINE";
 export const DELETE_CHARACTER = "DELETE_CHARACTER";
 export const TOGGLE_COMMENT = "TOGGLE_COMMENT";
 export const CHANGE_COMMENT = "CHANGE_COMMENT";
+export const INITIALIZE_STATE = "INITIALIZE_STATE"
 
 interface SetFocusAction {
   type: typeof SET_FOCUS;
@@ -257,6 +258,11 @@ interface ChangeCommentAction {
   payload: { text: string; index: number };
 }
 
+interface InitializeStateAction {
+  type: typeof INITIALIZE_STATE;
+  payload: Partial<EditorStateRecordType>
+}
+
 export type ActionTypes =
   | SetFocusAction
   | DeleteLineAction
@@ -264,7 +270,8 @@ export type ActionTypes =
   | CreateNewLineAction
   | DeleteCharacterAction
   | ToggleCommentAction
-  | ChangeCommentAction;
+  | ChangeCommentAction
+  | InitializeStateAction;
 
 const reducer = (state: EditorState, action: ActionTypes): EditorState => {
   switch (action.type) {
@@ -295,6 +302,8 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
         action.payload.index,
         action.payload.text
       );
+    case INITIALIZE_STATE:
+      return EditorState.create(action.payload)
 
     default:
       return state;
@@ -305,5 +314,8 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
 
 export const useEditorStore = () => {
   const [state, dispatch] = useReducer(reducer, EditorState.create());
-  return { state, dispatch };
+  const setState = (initialState: Partial<EditorStateRecordType>) => {
+    dispatch({ type: INITIALIZE_STATE, payload: initialState})
+  }
+  return { state, dispatch, setState };
 };

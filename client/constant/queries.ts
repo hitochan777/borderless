@@ -1,4 +1,4 @@
-import { query, types, params } from "typed-graphqlify";
+import { query, types, params, mutation } from "typed-graphqlify";
 import gql from "graphql-tag";
 
 const Post = {
@@ -51,3 +51,18 @@ export const GetLanguagesQuery = {
 };
 
 export const GET_LANGUAGES = gql(query(GetLanguagesQuery));
+
+export const UpdatePostReturnObject = {
+  id: types.string
+};
+export const UpdatePostMutation = mutation(
+  "updatePostMutation",
+  params(
+    { $id: "Int!", $post: "PostInput!" },
+    {
+      postUpdate: params({ id: "$id", post: "$post" }, UpdatePostReturnObject)
+    }
+  )
+);
+
+export const UPDATE_POST = gql(UpdatePostMutation);

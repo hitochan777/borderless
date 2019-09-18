@@ -1,4 +1,4 @@
-import { stringArg, mutationType, arg } from "nexus";
+import { stringArg, mutationType, arg, intArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 
@@ -66,6 +66,51 @@ export const Mutation = mutationType({
         if (!post) {
           throw new Error("Failed to create a post");
         }
+        for (const lineNum in postInput.lines) {
+          const maybeComment = postInput.lines[lineNum].comment;
+          if (maybeComment && maybeComment.length > 0) {
+            await tweetRepository.createTweetForLine({
+              userId: user.id,
+              text: maybeComment,
+              lineNum: +lineNum,
+              postId: post.id
+            });
+          }
+        }
+
+        return post;
+      }
+    });
+    t.field("postUpdate", {
+      type: "Post",
+      args: {
+        id: intArg({required: true}),
+        post: arg({ type: "PostInput", required: true })
+      },
+      resolve: async (
+        _,
+        { id, post: postInput },
+        {
+          repositories: { userRepository, postRepository, tweetRepository },
+          uid
+        }
+      ) => {
+        if (!uid) {
+          throw new Error("uid is empty");
+        }
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          throw new Error("user not found");
+        }
+        const post = await postRepository.update(id, {
+          language: postInput.language,
+          text: postInput.lines.map((line:any) => line.text).join("\n"),
+          isDraft: postInput.isDraft
+        });
+        if (!post) {
+          throw new Error("Failed to update a post");
+        }
+        await tweetRepository.deleteAllTweetsForLineByPostId(post.id)
         for (const lineNum in postInput.lines) {
           const maybeComment = postInput.lines[lineNum].comment;
           if (maybeComment && maybeComment.length > 0) {

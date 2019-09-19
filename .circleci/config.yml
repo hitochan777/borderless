@@ -2,28 +2,26 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:12
-        environment:
-          ## this enables colors in the output
-          TERM: xterm
-
-    working_directory: ~/repo/client
 
     steps:
       - checkout:
-          path: ~/repo
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm install 
+      - run: yarn 
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
+
+      - run: yarn format-check
+      - run: yarn lint
+      # - run: yarn test

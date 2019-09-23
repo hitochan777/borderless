@@ -84,7 +84,7 @@ export const Mutation = mutationType({
     t.field("postUpdate", {
       type: "Post",
       args: {
-        id: intArg({required: true}),
+        id: intArg({ required: true }),
         post: arg({ type: "PostInput", required: true })
       },
       resolve: async (
@@ -104,13 +104,14 @@ export const Mutation = mutationType({
         }
         const post = await postRepository.update(id, {
           language: postInput.language,
-          text: postInput.lines.map((line:any) => line.text).join("\n"),
+          text: postInput.lines.map((line: any) => line.text).join("\n"),
           isDraft: postInput.isDraft
         });
         if (!post) {
           throw new Error("Failed to update a post");
         }
-        await tweetRepository.deleteAllTweetsForLineByPostId(post.id)
+        console.log(postInput.lines);
+        await tweetRepository.deleteAllTweetsForLineByPostId(post.id);
         for (const lineNum in postInput.lines) {
           const maybeComment = postInput.lines[lineNum].comment;
           if (maybeComment && maybeComment.length > 0) {

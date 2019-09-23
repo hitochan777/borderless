@@ -221,7 +221,7 @@ export const CREATE_NEW_LINE = "CREATE_NEW_LINE";
 export const DELETE_CHARACTER = "DELETE_CHARACTER";
 export const TOGGLE_COMMENT = "TOGGLE_COMMENT";
 export const CHANGE_COMMENT = "CHANGE_COMMENT";
-export const INITIALIZE_STATE = "INITIALIZE_STATE"
+export const INITIALIZE_STATE = "INITIALIZE_STATE";
 
 interface SetFocusAction {
   type: typeof SET_FOCUS;
@@ -260,7 +260,7 @@ interface ChangeCommentAction {
 
 interface InitializeStateAction {
   type: typeof INITIALIZE_STATE;
-  payload: Partial<EditorStateRecordType>
+  payload: Partial<EditorStateRecordType>;
 }
 
 export type ActionTypes =
@@ -303,7 +303,7 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
         action.payload.text
       );
     case INITIALIZE_STATE:
-      return EditorState.create(action.payload)
+      return EditorState.create(action.payload);
 
     default:
       return state;
@@ -315,7 +315,7 @@ const reducer = (state: EditorState, action: ActionTypes): EditorState => {
 export const useEditorStore = () => {
   const [state, dispatch] = useReducer(reducer, EditorState.create());
   const setState = (initialState: Partial<EditorStateRecordType>) => {
-    dispatch({ type: INITIALIZE_STATE, payload: initialState})
-  }
+    dispatch({ type: INITIALIZE_STATE, payload: initialState });
+  };
   return { state, dispatch, setState };
 };

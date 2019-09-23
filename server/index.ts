@@ -65,7 +65,7 @@ export const createContext = (db: knex) => async ({
     uid = user.uid;
   }
   return {
-    uid: "CgJgvBcQB3ajIdJ3wJF5qFqt2yq1",
+    uid,
     res,
     repositories: buildRepositoryContainer(db)
   };

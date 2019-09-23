@@ -62,22 +62,27 @@ export class PostRepository {
       post.isDraft
     );
   }
-  async update(id: number, { userId, language, text, isDraft }: Partial<PostInput>) {
-    const cnt = await this.posts().where({id}).update({
-      userId,
-      language,
-      text,
-      isDraft
-    })
+  async update(
+    id: number,
+    { userId, language, text, isDraft }: Partial<PostInput>
+  ) {
+    const cnt = await this.posts()
+      .where({ id })
+      .update({
+        userId,
+        language,
+        text,
+        isDraft
+      });
 
     if (cnt === 0) {
       return null;
     }
-    const maybePost = await this.findById(id)
+    const maybePost = await this.findById(id);
     if (!maybePost) {
-      return null
+      return null;
     }
-   
+
     return new Post(
       maybePost.id,
       maybePost.userId,

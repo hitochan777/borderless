@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, FormikProps } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Select from "@material-ui/core/Select";
@@ -44,12 +44,27 @@ const EditPage: NextPage<Props> = ({ id }) => {
   const { data, error, loading } = useQuery<
     typeof GetViewerQuery & typeof GetLanguagesQuery & { post: typeof Post }
   >(gql(QUERY_STRING));
+  const [submitSignal, setSubmitSignal] = useState({
+    isDraft: true,
+    shouldSubmit: false,
+    handleSubmit: () => {}
+  });
+  useEffect(() => {
+    if (submitSignal.shouldSubmit) {
+      submitSignal.handleSubmit();
+      setSubmitSignal(state => ({ ...state, shouldSubmit: false }));
+    }
+  }, [submitSignal]);
 
   const [updatePost] = useMutation<
     typeof UpdatePostReturnObject,
     {
       id: number;
-      post: { lines: { text: string; comment: string }[]; language: number };
+      post: {
+        lines: { text: string; comment: string }[];
+        language: number;
+        isDraft: boolean;
+      };
     }
   >(UPDATE_POST);
 
@@ -105,7 +120,8 @@ const EditPage: NextPage<Props> = ({ id }) => {
         id,
         post: {
           lines: editorStore.state.getPostable(),
-          language: +values.language
+          language: +values.language,
+          isDraft: submitSignal.isDraft
         }
       }
     });
@@ -121,8 +137,8 @@ const EditPage: NextPage<Props> = ({ id }) => {
           }}
           onSubmit={handleSubmit}
           render={({
+            submitForm,
             handleChange,
-            handleSubmit,
             values
           }: FormikProps<FormValues>) => (
             <form>
@@ -149,7 +165,15 @@ const EditPage: NextPage<Props> = ({ id }) => {
                   <Button
                     {...props}
                     variant="contained"
-                    onClick={handleSubmit as any}
+                    onClick={() => {
+                      setSubmitSignal({
+                        isDraft: true,
+                        shouldSubmit: true,
+                        handleSubmit: () => {
+                          submitForm();
+                        }
+                      });
+                    }}
                     color="primary"
                   >
                     Save as Draft
@@ -158,7 +182,15 @@ const EditPage: NextPage<Props> = ({ id }) => {
               </Box>
               <Button
                 variant="contained"
-                onClick={handleSubmit as any}
+                onClick={() => {
+                  setSubmitSignal({
+                    isDraft: false,
+                    shouldSubmit: true,
+                    handleSubmit: () => {
+                      submitForm();
+                    }
+                  });
+                }}
                 color="secondary"
               >
                 Publish

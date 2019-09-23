@@ -1,7 +1,7 @@
 import { query, types, params, mutation } from "typed-graphqlify";
 import gql from "graphql-tag";
 
-const Post = {
+export const Post = {
   id: types.string,
   lines: [{ text: types.string, replies: [{ text: types.string }] }],
   language: { id: types.string, name: types.string },

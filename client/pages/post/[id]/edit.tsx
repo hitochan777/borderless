@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import Input from "@material-ui/core/Input";
 import { NextPage } from "next";
-import { query } from "typed-graphqlify";
+import { query, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
 import immutable from "immutable";
@@ -20,7 +20,7 @@ import {
   GetLanguagesQuery,
   UPDATE_POST,
   UpdatePostReturnObject,
-  GetPostById
+  Post
 } from "../../../constant/queries";
 import Loading from "../../../components/Loading";
 import { useEditorStore } from "../../../components/organism/Editor/useEditorReducer";
@@ -36,13 +36,21 @@ interface Props {
 
 const EditPage: NextPage<Props> = ({ id }) => {
   const editorStore = useEditorStore();
+  const QUERY_STRING = query({
+    post: params({ id: 8 }, Post),
+    ...GetViewerQuery,
+    ...GetLanguagesQuery
+  });
   const { data, error, loading } = useQuery<
-    typeof GetViewerQuery & typeof GetLanguagesQuery & typeof GetPostById
-  >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery, ...GetPostById })));
+    typeof GetViewerQuery & typeof GetLanguagesQuery & { post: typeof Post }
+  >(gql(QUERY_STRING));
 
   const [updatePost] = useMutation<
     typeof UpdatePostReturnObject,
-    { id: number, post: { lines: { text: string; comment: string }[]; language: number } }
+    {
+      id: number;
+      post: { lines: { text: string; comment: string }[]; language: number };
+    }
   >(UPDATE_POST);
 
   useEffect(() => {
@@ -56,7 +64,7 @@ const EditPage: NextPage<Props> = ({ id }) => {
       return {
         text: line.text,
         comment: {
-          text: line.replies[0].text
+          text: line.replies.length === 0 ? "" : line.replies[0].text
         }
       };
     });

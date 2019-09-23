@@ -48,19 +48,6 @@ const NewPage = () => {
     handleSubmit: () => {}
   });
 
-  const handleSubmit = async (values: FormValues) => {
-    await createPost({
-      variables: {
-        post: {
-          lines: editorStore.state.getPostable(),
-          language: +values.language,
-          isDraft: submitSignal.isDraft
-        }
-      }
-    });
-    Router.push("/me");
-  };
-
   useEffect(() => {
     if (submitSignal.shouldSubmit) {
       submitSignal.handleSubmit();
@@ -102,6 +89,19 @@ const NewPage = () => {
       };
     }
   >(CREATE_POST);
+
+  const handleSubmit = async (values: FormValues) => {
+    await createPost({
+      variables: {
+        post: {
+          lines: editorStore.state.getPostable(),
+          language: +values.language,
+          isDraft: submitSignal.isDraft
+        }
+      }
+    });
+    Router.push("/me");
+  };
 
   return (
     <Layout>

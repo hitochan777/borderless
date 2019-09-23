@@ -48,5 +48,6 @@ export const Post = objectType({
         };
       }
     });
+    t.boolean("isDraft");
   }
 });

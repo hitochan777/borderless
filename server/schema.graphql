@@ -25,6 +25,7 @@ input LineInput {
 type Mutation {
   logout: Boolean!
   postCreate(post: PostInput!): Post!
+  postUpdate(id: Int!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   userCreate(id: String!): User!
   userUpdate(id: String!, user: UserInput!): User!
@@ -38,12 +39,14 @@ interface Node {
 type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
+  isDraft: Boolean!
   language: Language!
   lines: [Line!]!
   user: User!
 }
 
 input PostInput {
+  isDraft: Boolean! = true
   language: Int!
   lines: [LineInput!]!
 }

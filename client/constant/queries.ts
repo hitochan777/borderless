@@ -1,5 +1,15 @@
-import { query, types, params } from "typed-graphqlify";
+import { query, types, params, mutation } from "typed-graphqlify";
 import gql from "graphql-tag";
+
+export const Post = {
+  id: types.string,
+  lines: [{ text: types.string, replies: [{ text: types.string }] }],
+  language: { id: types.string, name: types.string },
+  user: {
+    username: types.string
+  },
+  isDraft: types.boolean
+};
 
 export const GetViewerQuery = {
   viewer: {
@@ -7,29 +17,11 @@ export const GetViewerQuery = {
     email: types.string,
     fluentLanguages: [types.number],
     learningLanguages: [types.number],
-    posts: [
-      {
-        id: types.string,
-        lines: [{ text: types.string, replies: [{ text: types.string }] }],
-        language: { id: types.string, name: types.string },
-        user: {
-          username: types.string
-        }
-      }
-    ]
+    posts: [Post]
   }
 };
 
 export const GET_VIEWER = gql(query(GetViewerQuery));
-
-const Post = {
-  id: types.string,
-  lines: [{ text: types.string, replies: [{ text: types.string }] }],
-  language: { id: types.string, name: types.string },
-  user: {
-    username: types.string
-  }
-};
 
 export const GetPostById = params(
   { $id: "Int!" },
@@ -59,3 +51,18 @@ export const GetLanguagesQuery = {
 };
 
 export const GET_LANGUAGES = gql(query(GetLanguagesQuery));
+
+export const UpdatePostReturnObject = {
+  id: types.string
+};
+export const UpdatePostMutation = mutation(
+  "updatePostMutation",
+  params(
+    { $id: "Int!", $post: "PostInput!" },
+    {
+      postUpdate: params({ id: "$id", post: "$post" }, UpdatePostReturnObject)
+    }
+  )
+);
+
+export const UPDATE_POST = gql(UpdatePostMutation);

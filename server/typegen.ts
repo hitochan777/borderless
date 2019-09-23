@@ -20,6 +20,7 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   PostInput: { // input type
+    isDraft: boolean; // Boolean!
     language: number; // Int!
     lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
@@ -78,12 +79,14 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     logout: boolean; // Boolean!
     postCreate: NexusGenRootTypes['Post']; // Post!
+    postUpdate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
     id: string; // ID!
+    isDraft: boolean; // Boolean!
     language: NexusGenRootTypes['Language']; // Language!
     lines: NexusGenRootTypes['Line'][]; // [Line!]!
     user: NexusGenRootTypes['User']; // User!
@@ -118,6 +121,10 @@ export interface NexusGenFieldTypes {
 export interface NexusGenArgTypes {
   Mutation: {
     postCreate: { // args
+      post: NexusGenInputs['PostInput']; // PostInput!
+    }
+    postUpdate: { // args
+      id: number; // Int!
       post: NexusGenInputs['PostInput']; // PostInput!
     }
     signin: { // args

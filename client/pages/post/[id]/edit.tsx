@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, FormikProps } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Select from "@material-ui/core/Select";
@@ -8,52 +8,87 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import Input from "@material-ui/core/Input";
-import { query, mutation, params, types } from "typed-graphqlify";
+import { NextPage } from "next";
+import { query, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
+import immutable from "immutable";
 
-import Layout from "../../layout/default";
-import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
-import Loading from "../../components/Loading";
-import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
-import { Editor } from "../../components/organism/Editor";
+import Layout from "../../../layout/default";
+import {
+  GetViewerQuery,
+  GetLanguagesQuery,
+  UPDATE_POST,
+  UpdatePostReturnObject,
+  Post
+} from "../../../constant/queries";
+import Loading from "../../../components/Loading";
+import { useEditorStore } from "../../../components/organism/Editor/useEditorReducer";
+import { Editor } from "../../../components/organism/Editor";
 
 interface FormValues {
   language: string;
 }
 
-const CreatePostReturnObject = {
-  id: types.string
-};
-const CreatePostMutation = mutation(
-  "createPostMutation",
-  params(
-    { $post: "PostInput!" },
-    {
-      postCreate: params({ post: "$post" }, CreatePostReturnObject)
-    }
-  )
-);
+interface Props {
+  id: number;
+}
 
-const CREATE_POST = gql(CreatePostMutation);
-
-const NewPage = () => {
+const EditPage: NextPage<Props> = ({ id }) => {
   const editorStore = useEditorStore();
+  const QUERY_STRING = query({
+    post: params({ id: 8 }, Post),
+    ...GetViewerQuery,
+    ...GetLanguagesQuery
+  });
   const { data, error, loading } = useQuery<
-    typeof GetViewerQuery & typeof GetLanguagesQuery
-  >(gql(query({ ...GetViewerQuery, ...GetLanguagesQuery })));
+    typeof GetViewerQuery & typeof GetLanguagesQuery & { post: typeof Post }
+  >(gql(QUERY_STRING));
   const [submitSignal, setSubmitSignal] = useState({
     isDraft: true,
     shouldSubmit: false,
     handleSubmit: () => {}
   });
-
   useEffect(() => {
     if (submitSignal.shouldSubmit) {
       submitSignal.handleSubmit();
       setSubmitSignal(state => ({ ...state, shouldSubmit: false }));
     }
   }, [submitSignal]);
+
+  const [updatePost] = useMutation<
+    typeof UpdatePostReturnObject,
+    {
+      id: number;
+      post: {
+        lines: { text: string; comment: string }[];
+        language: number;
+        isDraft: boolean;
+      };
+    }
+  >(UPDATE_POST);
+
+  useEffect(() => {
+    if (!data || !data.post) {
+      return;
+    }
+    const lines = data.post.lines.map(line => {
+      if (line.replies.length > 1) {
+        throw new Error("Line reply should be one if it is in draft");
+      }
+      return {
+        text: line.text,
+        comment: {
+          text: line.replies.length === 0 ? "" : line.replies[0].text
+        }
+      };
+    });
+    editorStore.setState(
+      immutable.fromJS({
+        lines
+      })
+    );
+  }, [data]);
 
   if (loading) {
     return <Loading />;
@@ -79,20 +114,10 @@ const NewPage = () => {
     name: allLanguageTable[id]
   }));
 
-  const [createPost] = useMutation<
-    typeof CreatePostReturnObject,
-    {
-      post: {
-        lines: { text: string; comment: string }[];
-        language: number;
-        isDraft?: boolean;
-      };
-    }
-  >(CREATE_POST);
-
   const handleSubmit = async (values: FormValues) => {
-    await createPost({
+    await updatePost({
       variables: {
+        id,
         post: {
           lines: editorStore.state.getPostable(),
           language: +values.language,
@@ -108,7 +133,7 @@ const NewPage = () => {
       <Container maxWidth="sm">
         <Formik
           initialValues={{
-            language: ""
+            language: data.post.language.id
           }}
           onSubmit={handleSubmit}
           render={({
@@ -178,4 +203,12 @@ const NewPage = () => {
   );
 };
 
-export default NewPage;
+EditPage.getInitialProps = async ({ query }) => {
+  const { id } = query;
+  if (typeof id !== "string") {
+    throw new Error("unexpected type in id");
+  }
+  return { id: +id as number };
+};
+
+export default EditPage;

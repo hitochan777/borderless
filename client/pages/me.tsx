@@ -1,10 +1,10 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 
-import Layout from "../layout/default";
-import { GetViewerQuery, GET_VIEWER } from "../constant/queries";
-import Loading from "../components/Loading";
-import { PostCard } from "../components/PostCard";
+import Layout from "@/layout/default";
+import { GetViewerQuery, GET_VIEWER } from "@/constant/queries";
+import Loading from "@/components/Loading";
+import { PostCard } from "@/components/PostCard";
 
 const Me: React.StatelessComponent = () => {
   const { data, error, loading } = useQuery<typeof GetViewerQuery>(GET_VIEWER);

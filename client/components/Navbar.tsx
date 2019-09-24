@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import styled from "styled-components";
 
-import { useStateValue } from "../store";
+import { useStateValue } from "@/store";
 
 const StyledTypography = styled(Typography)`
   flex-grow: 1;

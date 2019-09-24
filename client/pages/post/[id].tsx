@@ -6,9 +6,9 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { useQuery } from "@apollo/react-hooks";
 
-import { GET_POST_BY_ID, GetPostById } from "../../constant/queries";
-import Layout from "../../layout/default";
-import Loading from "../../components/Loading";
+import { GET_POST_BY_ID, GetPostById } from "@/constant/queries";
+import Layout from "@/layout/default";
+import Loading from "@/components/Loading";
 
 interface Props {
   id: number;

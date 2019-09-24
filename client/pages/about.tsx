@@ -1,6 +1,6 @@
 import React from "react";
 
-import Layout from "../layout/default";
+import Layout from "@/layout/default";
 
 const About: React.StatelessComponent = () => <Layout>About</Layout>;
 

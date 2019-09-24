@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useStateValue } from "../store";
-import Layout from "../layout/default";
+import { useStateValue } from "@/store";
+import Layout from "@/layout/default";
 
 const SignIn: React.StatelessComponent = () => {
   const { actions } = useStateValue();

@@ -14,8 +14,8 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { MultiSelect } from "./molecule/MultiSelect";
 import Loading from "./Loading";
-import { useStateValue } from "../store";
-import { GET_LANGUAGES, GetLanguagesQuery } from "../constant/queries";
+import { useStateValue } from "@/store";
+import { GET_LANGUAGES, GetLanguagesQuery } from "@/constant/queries";
 
 interface Props {
   open: boolean;

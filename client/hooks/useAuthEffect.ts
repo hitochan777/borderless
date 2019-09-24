@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-import { useStateValue } from "./store";
+import { useStateValue } from "@/store";
 
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {

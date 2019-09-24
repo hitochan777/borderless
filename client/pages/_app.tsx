@@ -5,11 +5,11 @@ import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
-import "../firebase";
-import { State } from "../store/state";
-import { defaultState, actionDefs, StateProvider } from "../store";
-import { useAuthEffect } from "../useAuthEffect";
-import withApolloClient from "../lib/with-apollo-client";
+import "@/lib/firebase";
+import { State } from "@/store/state";
+import { defaultState, actionDefs, StateProvider } from "@/store";
+import { useAuthEffect } from "@/hooks/useAuthEffect";
+import withApolloClient from "@/lib/with-apollo-client";
 
 const auth = async (context: NextPageContext) => {
   let user = null;

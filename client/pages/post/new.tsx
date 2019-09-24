@@ -12,11 +12,11 @@ import { query, mutation, params, types } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
 
-import Layout from "../../layout/default";
-import { GetViewerQuery, GetLanguagesQuery } from "../../constant/queries";
-import Loading from "../../components/Loading";
-import { useEditorStore } from "../../components/organism/Editor/useEditorReducer";
-import { Editor } from "../../components/organism/Editor";
+import Layout from "@/layout/default";
+import { GetViewerQuery, GetLanguagesQuery } from "@/constant/queries";
+import Loading from "@/components/Loading";
+import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
+import { Editor } from "@/components/organism/Editor";
 
 interface FormValues {
   language: string;

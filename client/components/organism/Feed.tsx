@@ -1,9 +1,9 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 
-import { GET_FEED_FOR_USER, GetFeedForUser } from "../../constant/queries";
-import Loading from "../../components/Loading";
-import { PostCard } from "../PostCard";
+import { GET_FEED_FOR_USER, GetFeedForUser } from "@/constant/queries";
+import Loading from "@/components/Loading";
+import { PostCard } from "@/components/PostCard";
 
 interface Props {
   uid: string;

@@ -14,17 +14,17 @@ import gql from "graphql-tag";
 import Router from "next/router";
 import immutable from "immutable";
 
-import Layout from "../../../layout/default";
+import Layout from "@/layout/default";
 import {
   GetViewerQuery,
   GetLanguagesQuery,
   UPDATE_POST,
   UpdatePostReturnObject,
   Post
-} from "../../../constant/queries";
-import Loading from "../../../components/Loading";
-import { useEditorStore } from "../../../components/organism/Editor/useEditorReducer";
-import { Editor } from "../../../components/organism/Editor";
+} from "@/constant/queries";
+import Loading from "@/components/Loading";
+import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
+import { Editor } from "@/components/organism/Editor";
 
 interface FormValues {
   language: string;

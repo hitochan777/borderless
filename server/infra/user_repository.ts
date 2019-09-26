@@ -126,7 +126,14 @@ export class UserRepository {
     if (!user) {
       return null;
     }
-    return new User(user.id, user.uid, user.email, user.username, [], []);
+    return new User(
+      user.id,
+      user.uid,
+      user.email,
+      user.username,
+      this.transformFrom(user.fluentLanguages),
+      this.transformFrom(user.learningLanguages)
+    );
   }
 
   private transformTo(languages: Language[]): string {

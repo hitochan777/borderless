@@ -39,8 +39,13 @@ interface Props {
 }
 
 const UpdateUserReturnObject = {
-  id: types.string
+  id: types.string,
+  email: types.string,
+  username: types.string,
+  fluentLanguages: [types.number],
+  learningLanguages: [types.number]
 };
+
 const UpdateUserMutation = mutation(
   "updateUserMutation",
   params(

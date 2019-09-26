@@ -13,6 +13,7 @@ export const Post = {
 
 export const GetViewerQuery = {
   viewer: {
+    id: types.string,
     username: types.string,
     email: types.string,
     fluentLanguages: [types.number],

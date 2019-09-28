@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { useQuery } from "@apollo/react-hooks";
+import TweetIcon from "@material-ui/icons/ChatBubble";
 
 import { GET_POST_BY_ID, GetPostById } from "@/constant/queries";
 import Layout from "@/layout/default";

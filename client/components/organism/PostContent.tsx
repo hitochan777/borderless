@@ -2,9 +2,19 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
 import Link from "next/link";
 
-interface Props {
+const useStyles = makeStyles(theme => ({
+  paper: {
+    padding: theme.spacing(2),
+    margin: "auto"
+  }
+}));
+
+export interface Props {
   id: number;
   user: {
     username: string;
@@ -29,11 +39,14 @@ export const PostContent: React.StatelessComponent<Props> = ({
   language,
   isDraft
 }) => {
+  const classes = useStyles();
   return (
     <Grid container spacing={1}>
       <Grid item>
-        <Paper>
-          <h3>{lines[0].text}</h3>
+        <Paper className={classes.paper}>
+          <Typography gutterBottom variant="subtitle1">
+            {lines[0].text}
+          </Typography>
           <ul>
             <li>Language: {language.name}</li>
             <li>Posted by {user.username}</li>
@@ -42,7 +55,14 @@ export const PostContent: React.StatelessComponent<Props> = ({
               <div>
                 {lines.map((line, index) => (
                   <p key={index}>
-                    {line.text} (Comment: {line.replies.length})
+                    <Link
+                      href={{ pathname: "/post/[id]", query: { line: index } }}
+                      as={`/post/${id}?line=${index}`}
+                    >
+                      <a>
+                        {line.text} (Comment: {line.replies.length})
+                      </a>
+                    </Link>
                   </p>
                 ))}
               </div>

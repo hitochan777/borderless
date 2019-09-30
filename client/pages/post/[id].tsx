@@ -1,56 +1,35 @@
 import React from "react";
 import { NextPage } from "next";
 import Container from "@material-ui/core/Container";
-import { useQuery } from "@apollo/react-hooks";
 
-import { GET_POST_BY_ID, GetPostById } from "@/constant/queries";
 import Layout from "@/layout/default";
-import Loading from "@/components/Loading";
-import { PostContent } from "@/components/organism/PostContent";
+import { Post } from "@/components/organism/Post";
 
 interface Props {
   id: number;
+  line?: number;
 }
 
-const PostIndexPage: NextPage<Props> = ({ id }) => {
-  const { data, error, loading } = useQuery<typeof GetPostById>(
-    GET_POST_BY_ID,
-    {
-      variables: { id }
-    }
-  );
-
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    throw error;
-  }
-  if (!data) {
-    throw new Error("data is empty");
-  }
-
+const PostIndexPage: NextPage<Props> = ({ id, line }) => {
   return (
     <Layout>
       <Container maxWidth="sm">
-        <PostContent
-          id={+data.post.id}
-          isDraft={data.post.isDraft}
-          lines={data.post.lines}
-          language={data.post.language}
-          user={data.post.user}
-        />
+        <Post id={id} lineNum={line} />
       </Container>
     </Layout>
   );
 };
 
 PostIndexPage.getInitialProps = async ({ query }) => {
-  const { id } = query;
+  const { id, line } = query;
   if (typeof id !== "string") {
     throw new Error("unexpected type in id");
   }
-  return { id: +id as number };
+  if (line && typeof line !== "string") {
+    throw new Error("unexpected type in line");
+  }
+  const lineNumber = isNaN(+line) ? undefined : +line;
+  return { id: +id, line: lineNumber };
 };
 
 export default PostIndexPage;

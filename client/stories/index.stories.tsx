@@ -5,6 +5,7 @@ import Loading from "@/components/Loading";
 import { Editor } from "@/components/organism/Editor";
 import { CommentItem } from "@/components/molecule/CommentItem";
 import { PostContent } from "@/components/organism/PostContent";
+import { PostPresenter } from "@/components/organism/Post";
 import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
 
 storiesOf("Loading", module).add("standard", () => <Loading />);
@@ -47,3 +48,42 @@ storiesOf("PostContent", module).add("standard", () => (
     language={{ name: "English" }}
   ></PostContent>
 ));
+
+storiesOf("Post", module)
+  .add("without comment", () => (
+    <PostPresenter
+      id={1}
+      user={{ username: "john" }}
+      lines={[
+        {
+          text: "first line",
+          replies: [
+            { text: "first comment for first line" },
+            { text: "second comment for first line" }
+          ]
+        }
+      ]}
+      isDraft={false}
+      language={{ name: "English" }}
+      handleClose={() => {}}
+    />
+  ))
+  .add("with comment", () => (
+    <PostPresenter
+      id={1}
+      lineNum={0}
+      user={{ username: "john" }}
+      lines={[
+        {
+          text: "first line",
+          replies: [
+            { text: "first comment for first line" },
+            { text: "second comment for first line" }
+          ]
+        }
+      ]}
+      isDraft={false}
+      language={{ name: "English" }}
+      handleClose={() => {}}
+    />
+  ));

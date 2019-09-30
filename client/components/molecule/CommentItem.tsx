@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import TweetIcon from "@material-ui/icons/ChatBubble";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,10 +16,12 @@ interface Props {
 }
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    margin: "auto"
-  }
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
+  },
+  inline: {}
 }));
 
 export const CommentItem: React.StatelessComponent<Props> = ({
@@ -32,26 +34,31 @@ export const CommentItem: React.StatelessComponent<Props> = ({
   const classes = useStyles();
   return (
     <Link href="/comment/[id]" as={`/comment/${commentId}`}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={1} direction="column">
-          <Grid item>
-            <Typography gutterBottom variant="subtitle1">
-              @{username} {createdAt.toLocaleDateString()}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography gutterBottom variant="body2">
-              {text}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <IconButton size="small">
-              <TweetIcon />
-              {replyCount}
-            </IconButton>
-          </Grid>
-        </Grid>
-      </Paper>
+      <ListItem>
+        <ListItemText
+          primary={
+            <>
+              <span>{`@${username} ${createdAt.toLocaleDateString()}`}</span>{" "}
+              <IconButton size="small">
+                <TweetIcon />
+                {replyCount}
+              </IconButton>
+            </>
+          }
+          secondary={
+            <>
+              <Typography
+                component="span"
+                variant="body2"
+                className={classes.inline}
+                color="textPrimary"
+              >
+                {text}
+              </Typography>
+            </>
+          }
+        />
+      </ListItem>
     </Link>
   );
 };

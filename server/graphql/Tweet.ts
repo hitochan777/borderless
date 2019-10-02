@@ -9,10 +9,11 @@ export const Tweet = objectType({
       nullable: true
     });
     t.int("userId");
-    t.list.field("replyIds", {
-      type: "Int",
-      resolve() {
-        return [];
+    t.list.field("replies", {
+      type: "Tweet",
+      async resolve(root, _, { repositories: { tweetRepository } }) {
+        const replies = await tweetRepository.findRepliesTo(root.id);
+        return replies;
       }
     });
   }

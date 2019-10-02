@@ -101,7 +101,7 @@ export interface NexusGenFieldTypes {
   Tweet: { // field return type
     id: string; // ID!
     inReplyTo: number | null; // Int
-    replyIds: number[]; // [Int!]!
+    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
     userId: number; // Int!
   }

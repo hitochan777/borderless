@@ -17,7 +17,7 @@
     "micro-dev": "3.0.0",
     "ts-loader": "6.0.4",
     "ts-node": "8.3.0",
-    "typescript": "3.5.3"
+    "typescript": "3.6.3"
   },
   "scripts": {
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",

@@ -56,6 +56,10 @@ type Query {
   langs: [Language!]!
   post(id: Int!): Post!
   posts: [Post!]!
+  tweet(
+    """tweet id"""
+    id: Int!
+  ): Tweet!
   viewer: User!
 }
 

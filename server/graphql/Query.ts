@@ -44,6 +44,19 @@ export const Query = queryType({
         return post;
       }
     });
+    t.field("tweet", {
+      type: "Tweet",
+      args: {
+        id: intArg({ required: true, description: "tweet id" })
+      },
+      async resolve(_, { id }, { repositories: { tweetRepository } }) {
+        const tweet = await tweetRepository.findTweetById(id);
+        if (!tweet) {
+          throw new Error("tweet not found");
+        }
+        return tweet;
+      }
+    });
     t.list.field("langs", {
       type: "Language",
       args: {},

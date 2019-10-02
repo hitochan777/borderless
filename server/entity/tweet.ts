@@ -8,7 +8,6 @@ export class Tweet {
   constructor(
     public id: ID,
     public userId: ID,
-    public replyIds: ID[],
     public inReplyTo: ID | null,
     public text: string,
     public lineRef?: LineRef

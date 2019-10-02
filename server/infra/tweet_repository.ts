@@ -84,6 +84,25 @@ export class TweetRepository {
     return tweets.map(tweet => TweetRepository.mapDBResultToEntity(tweet));
   }
 
+  async findTweetById(id: ID): Promise<Tweet | null> {
+    const tweetsForLine = await this.tweetForLine().where({
+      id
+    });
+    const tweets = await this.tweets().where({
+      id
+    });
+    if (tweetsForLine.length + tweets.length > 1) {
+      throw new Error("multiple tweet with the same ID found");
+    }
+    if (tweetsForLine.length === 1) {
+      return TweetRepository.mapDBResultToEntity(tweetsForLine[0]);
+    }
+    if (tweets.length === 1) {
+      return TweetRepository.mapDBResultToEntity(tweets[0]);
+    }
+    return null;
+  }
+
   async deleteAllTweetsForLineByPostId(postId: ID) {
     await this.tweetForLine()
       .where({ postId })

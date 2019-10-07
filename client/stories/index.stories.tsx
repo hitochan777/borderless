@@ -7,6 +7,7 @@ import { CommentItem } from "@/components/molecule/CommentItem";
 import { PostContent } from "@/components/organism/PostContent";
 import { PostPresenter } from "@/components/organism/Post";
 import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
+import { NextEditor } from "@/components/organism/NextEditor";
 
 storiesOf("Loading", module).add("standard", () => <Loading />);
 
@@ -24,7 +25,7 @@ storiesOf("CommentItem", module).add("standard", () => (
     createdAt={new Date(Date.now())}
     text="this is a comment"
     replyCount={3}
-  ></CommentItem>
+  />
 ));
 
 storiesOf("PostContent", module).add("standard", () => (
@@ -46,7 +47,7 @@ storiesOf("PostContent", module).add("standard", () => (
     ]}
     isDraft={false}
     language={{ name: "English" }}
-  ></PostContent>
+  />
 ));
 
 storiesOf("Post", module)
@@ -87,3 +88,7 @@ storiesOf("Post", module)
       handleClose={() => {}}
     />
   ));
+
+storiesOf("NextEditor", module).add("standard", () => {
+  return <NextEditor />;
+});

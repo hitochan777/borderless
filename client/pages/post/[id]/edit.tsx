@@ -12,7 +12,6 @@ import { NextPage } from "next";
 import { query, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
-import immutable from "immutable";
 
 import Layout from "@/layout/default";
 import {
@@ -23,7 +22,9 @@ import {
   Post
 } from "@/constant/queries";
 import Loading from "@/components/Loading";
-import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
+import {
+  CHANGE_CONTENT_STATE
+} from "@/components/organism/Editor/useEditorReducer";
 import { Editor } from "@/components/organism/Editor";
 
 interface FormValues {
@@ -35,7 +36,6 @@ interface Props {
 }
 
 const EditPage: NextPage<Props> = ({ id }) => {
-  const editorStore = useEditorStore();
   const QUERY_STRING = query({
     post: params({ id: 8 }, Post),
     ...GetViewerQuery,
@@ -73,21 +73,18 @@ const EditPage: NextPage<Props> = ({ id }) => {
       return;
     }
     const lines = data.post.lines.map(line => {
-      if (line.replies.length > 1) {
-        throw new Error("Line reply should be one if it is in draft");
-      }
       return {
-        text: line.text,
-        comment: {
-          text: line.replies.length === 0 ? "" : line.replies[0].text
-        }
+        text: line.text
       };
     });
-    editorStore.setState(
-      immutable.fromJS({
-        lines
-      })
-    );
+    editorStore.dispatch({
+      type: CHANGE_CONTENT_STATE,
+      payload: {
+        document: {
+          nodes: [] 
+        }
+      }
+    });
   }, [data]);
 
   if (loading) {

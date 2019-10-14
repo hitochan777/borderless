@@ -7,7 +7,7 @@ import { CommentItem } from "@/components/molecule/CommentItem";
 import { PostContent } from "@/components/organism/PostContent";
 import { PostPresenter } from "@/components/organism/Post";
 import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
-import { NextEditor } from "@/components/organism/NextEditor";
+import { NextEditor } from "@/components/organism/Editor";
 
 storiesOf("Loading", module).add("standard", () => <Loading />);
 

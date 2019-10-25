@@ -1,25 +1,17 @@
-import React, { useState, useContext, Dispatch } from "react";
+import React, { useState, useContext } from "react";
 import { Editor as SlateEditor, RenderBlockProps } from "slate-react";
 import TweetIcon from "@material-ui/icons/ChatBubble";
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 
 import {
-  useEditorStore,
-  State,
-  ActionTypes,
-  CHANGE_COMMENT_BOX_TARGET,
+  useEditorStoreContext,
   CHANGE_CONTENT_STATE
 } from "@/components/organism/Editor/useEditorReducer";
 
-
-const EditorContext = React.createContext<{
+const EditorUIContext = React.createContext<{
   hoveredBlock: string | null;
   setHoveredBlock: (newHoveredBlock: string | null) => void;
-  store: {
-    state: State;
-    dispatch: Dispatch<ActionTypes>;
-  };
 }>(null as any);
 
 const StyledLine = styled.div`
@@ -34,9 +26,7 @@ const StyledOperationMenu = styled.div`
 `;
 
 const LineBlock: React.FC<RenderBlockProps> = props => {
-  const { hoveredBlock, setHoveredBlock, store } = useContext(
-    EditorContext
-  );
+  const { hoveredBlock, setHoveredBlock } = useContext(EditorUIContext);
   const shouldShowBubble = hoveredBlock && hoveredBlock === props.node.key;
   const onMouseEnter = () => {
     setHoveredBlock(props.node.key);
@@ -55,12 +45,7 @@ const LineBlock: React.FC<RenderBlockProps> = props => {
           {shouldShowBubble && (
             <IconButton
               size="small"
-              onClick={() => {
-                store.dispatch({
-                  type: CHANGE_COMMENT_BOX_TARGET,
-                  payload: { key: props.node.key }
-                });
-              }}
+              onClick={() => {}}
             >
               <TweetIcon />
             </IconButton>
@@ -74,10 +59,10 @@ const LineBlock: React.FC<RenderBlockProps> = props => {
 
 export const Editor: React.StatelessComponent = () => {
   const [hoveredBlock, setHoveredBlock] = useState<string | null>(null);
-  const store = useEditorStoreContext();
+  const { dispatch, state } = useEditorStoreContext();
 
   const onChange = ({ value }: { value: any }) => {
-    store.dispatch({type: CHANGE_CONTENT_STATE, payload: value})
+    dispatch({ type: CHANGE_CONTENT_STATE, payload: value });
   };
 
   const renderBlock = (
@@ -94,15 +79,13 @@ export const Editor: React.StatelessComponent = () => {
   };
 
   return (
-    <EditorContext.Provider
-      value={{ hoveredBlock, setHoveredBlock, store }}
-    >
+    <EditorUIContext.Provider value={{ hoveredBlock, setHoveredBlock }}>
       <SlateEditor
-        value={store.state.contentState}
+        value={state.contentState}
         onChange={onChange}
         placeholder="Start writing something here!"
         renderBlock={renderBlock}
       />
-    </EditorContext.Provider>
+    </EditorUIContext.Provider>
   );
 };

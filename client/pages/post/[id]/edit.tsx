@@ -12,6 +12,7 @@ import { NextPage } from "next";
 import { query, params } from "typed-graphqlify";
 import gql from "graphql-tag";
 import Router from "next/router";
+import Plain from "slate-plain-serializer";
 
 import Layout from "@/layout/default";
 import {
@@ -23,6 +24,8 @@ import {
 } from "@/constant/queries";
 import Loading from "@/components/Loading";
 import {
+  useEditorStore,
+  EditorStoreContext,
   CHANGE_CONTENT_STATE
 } from "@/components/organism/Editor/useEditorReducer";
 import { Editor } from "@/components/organism/Editor";
@@ -36,6 +39,7 @@ interface Props {
 }
 
 const EditPage: NextPage<Props> = ({ id }) => {
+  const editorStore = useEditorStore();
   const QUERY_STRING = query({
     post: params({ id: 8 }, Post),
     ...GetViewerQuery,
@@ -72,18 +76,10 @@ const EditPage: NextPage<Props> = ({ id }) => {
     if (!data || !data.post) {
       return;
     }
-    const lines = data.post.lines.map(line => {
-      return {
-        text: line.text
-      };
-    });
+    const lines = data.post.lines.map(line => line.text).join("\n");
     editorStore.dispatch({
       type: CHANGE_CONTENT_STATE,
-      payload: {
-        document: {
-          nodes: [] 
-        }
-      }
+      payload: Plain.deserialize(lines)
     });
   }, [data]);
 
@@ -116,7 +112,7 @@ const EditPage: NextPage<Props> = ({ id }) => {
       variables: {
         id,
         post: {
-          lines: editorStore.state.getPostable(),
+          content: JSON.stringify(editorStore.state.contentState.toJSON()),
           language: +values.language,
           isDraft: submitSignal.isDraft
         }
@@ -155,7 +151,9 @@ const EditPage: NextPage<Props> = ({ id }) => {
               </FormControl>
 
               <FormControl fullWidth>
-                <Editor store={editorStore} />
+                <EditorStoreContext.Provider value={editorStore}>
+                  <Editor />
+                </EditorStoreContext.Provider>
               </FormControl>
               <Box mr={2}>
                 {(props: any) => (

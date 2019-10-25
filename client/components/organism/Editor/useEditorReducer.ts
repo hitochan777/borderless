@@ -10,7 +10,7 @@ export interface State {
       comment: string;
     };
   };
-  contentState: any;
+  contentState: Value;
 }
 
 const defaultState: State = {

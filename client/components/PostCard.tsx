@@ -21,9 +21,7 @@ export const PostCard: React.StatelessComponent<Props> = ({
     <Link href="/post/[id]" as={`/post/${id}`}>
       <Card>
         <CardContent>
-          <Typography variant="h5" component="h2">
-            {title}
-          </Typography>
+          <Typography variant="h5">{title}</Typography>
           <Typography color="textSecondary">{username}</Typography>
           <Typography color="primary" gutterBottom>
             {language}

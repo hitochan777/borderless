@@ -48,7 +48,6 @@ export const CommentItem: React.StatelessComponent<Props> = ({
           secondary={
             <>
               <Typography
-                component="span"
                 variant="body2"
                 className={classes.inline}
                 color="textPrimary"

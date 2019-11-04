@@ -2,21 +2,11 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 
 import Loading from "@/components/Loading";
-import { Editor } from "@/components/organism/Editor";
 import { CommentItem } from "@/components/molecule/CommentItem";
 import { PostContent } from "@/components/organism/PostContent";
 import { PostPresenter } from "@/components/organism/Post";
-import { useEditorStore } from "@/components/organism/Editor/useEditorReducer";
-import { NextEditor } from "@/components/organism/Editor";
 
 storiesOf("Loading", module).add("standard", () => <Loading />);
-
-storiesOf("Editor", module).add("standard", () =>
-  React.createElement(() => {
-    const store = useEditorStore();
-    return <Editor store={store} />;
-  })
-);
 
 storiesOf("CommentItem", module).add("standard", () => (
   <CommentItem
@@ -88,7 +78,3 @@ storiesOf("Post", module)
       handleClose={() => {}}
     />
   ));
-
-storiesOf("NextEditor", module).add("standard", () => {
-  return <NextEditor />;
-});

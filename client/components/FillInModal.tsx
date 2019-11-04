@@ -68,9 +68,10 @@ export const FillInModal: React.StatelessComponent<Props> = ({
   }
 }) => {
   const { state } = useStateValue();
-  const [updateUser, { loading: signupLoading }] = useMutation<
-    typeof UpdateUserReturnObject
-  >(SIGN_UP);
+  const [
+    updateUser,
+    { loading: signupLoading, error: signupError }
+  ] = useMutation<typeof UpdateUserReturnObject>(SIGN_UP);
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     if (!state.user) {
@@ -88,14 +89,22 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     });
   };
 
-  const { data, error, loading: getLanguageLoading } = useQuery<
-    typeof GetLanguagesQuery
-  >(GET_LANGUAGES);
-  if (error || data === undefined) {
-    throw error;
-  }
+  const {
+    data,
+    error: getLanguageError,
+    loading: getLanguageLoading
+  } = useQuery<typeof GetLanguagesQuery>(GET_LANGUAGES);
   if (signupLoading || getLanguageLoading) {
     return <Loading />;
+  }
+  if (signupError) {
+    throw new Error("Error during signup");
+  }
+  if (getLanguageError) {
+    throw new Error("Error during fetching languages");
+  }
+  if (!data) {
+    throw new Error("Fetched data is empty");
   }
   const LANGUAGES = data.langs.map(({ id, name }) => ({
     value: id,

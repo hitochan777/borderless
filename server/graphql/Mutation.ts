@@ -45,10 +45,7 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { post: postInput },
-        {
-          repositories: { userRepository, postRepository, tweetRepository },
-          uid
-        }
+        { repositories: { userRepository, postRepository }, uid }
       ) => {
         if (!uid) {
           throw new Error("uid is empty");
@@ -60,22 +57,11 @@ export const Mutation = mutationType({
         const post = await postRepository.create({
           userId: user.id,
           language: postInput.language,
-          text: postInput.lines.map(line => line.text).join("\n"),
+          content: postInput.content,
           isDraft: postInput.isDraft
         });
         if (!post) {
           throw new Error("Failed to create a post");
-        }
-        for (const lineNum in postInput.lines) {
-          const maybeComment = postInput.lines[lineNum].comment;
-          if (maybeComment && maybeComment.length > 0) {
-            await tweetRepository.createTweetForLine({
-              userId: user.id,
-              text: maybeComment,
-              lineNum: +lineNum,
-              postId: post.id
-            });
-          }
         }
 
         return post;
@@ -104,24 +90,11 @@ export const Mutation = mutationType({
         }
         const post = await postRepository.update(id, {
           language: postInput.language,
-          text: postInput.lines.map((line: any) => line.text).join("\n"),
+          content: postInput.content,
           isDraft: postInput.isDraft
         });
         if (!post) {
           throw new Error("Failed to update a post");
-        }
-        console.log(postInput.lines);
-        await tweetRepository.deleteAllTweetsForLineByPostId(post.id);
-        for (const lineNum in postInput.lines) {
-          const maybeComment = postInput.lines[lineNum].comment;
-          if (maybeComment && maybeComment.length > 0) {
-            await tweetRepository.createTweetForLine({
-              userId: user.id,
-              text: maybeComment,
-              lineNum: +lineNum,
-              postId: post.id
-            });
-          }
         }
 
         return post;

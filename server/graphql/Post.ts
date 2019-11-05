@@ -6,27 +6,12 @@ export const Post = objectType({
   name: "Post",
   definition(t) {
     t.implements("Node");
-    t.list.field("lines", {
-      type: "Line",
+    t.string("content", {
       async resolve(root, _, { repositories: { tweetRepository } }) {
-        const lineTexts = root.text.split("\n");
-        const replies = await tweetRepository.findTweetForLinesByPostId(
-          root.id
-        );
-        const table: { [key: number]: any[] } = {};
-        for (const reply of replies) {
-          if (!reply.lineRef) {
-            continue;
-          }
-          if (!table[reply.lineRef.lineNum]) {
-            table[reply.lineRef.lineNum] = [];
-          }
-          table[reply.lineRef.lineNum].push(reply);
-        }
-        return lineTexts.map((text, index) => ({
-          text,
-          replies: table[index] || []
-        }));
+        const dummy = {
+          type: "line"
+        };
+        return JSON.stringify(dummy);
       }
     });
     t.field("user", {

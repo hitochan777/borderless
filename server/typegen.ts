@@ -20,9 +20,9 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   PostInput: { // input type
+    content: string; // String!
     isDraft: boolean; // Boolean!
     language: number; // Int!
-    lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
   UserInput: { // input type
     email: string; // String!
@@ -49,7 +49,7 @@ export interface NexusGenRootTypes {
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Tweet'];
   String: string;
   Int: number;
   Float: number;
@@ -85,10 +85,10 @@ export interface NexusGenFieldTypes {
     userUpdate: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
+    content: string; // String!
     id: string; // ID!
     isDraft: boolean; // Boolean!
     language: NexusGenRootTypes['Language']; // Language!
-    lines: NexusGenRootTypes['Line'][]; // [Line!]!
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
@@ -154,7 +154,7 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   Repliable: "Line" | "Tweet"
-  Node: "Post" | "Language" | "Tweet" | "User"
+  Node: "Post" | "Language" | "User" | "Tweet"
 }
 
 export interface NexusGenInheritedFields {}

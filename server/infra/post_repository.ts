@@ -8,14 +8,14 @@ interface RawPost {
   id: number;
   userId: number;
   language: number;
-  text: string;
+  content: string;
   isDraft: boolean;
 }
 
 interface PostInput {
   userId: ID;
   language: number;
-  text: string;
+  content: string;
   isDraft: boolean;
 }
 
@@ -30,7 +30,7 @@ export class PostRepository {
     this.posts = () => db("post");
     this.repliables = () => db("repliable");
   }
-  async create({ userId, language, text, isDraft }: PostInput) {
+  async create({ userId, language, content, isDraft }: PostInput) {
     const repliableIds = await this.repliables().insert({});
     if (repliableIds.length == 0) {
       return null;
@@ -39,7 +39,7 @@ export class PostRepository {
       id: repliableIds[0],
       userId,
       language,
-      text,
+      content,
       isDraft
     });
     if (ids.length === 0) {
@@ -58,20 +58,20 @@ export class PostRepository {
       post.id,
       post.userId,
       post.language,
-      post.text,
+      JSON.parse(post.content),
       post.isDraft
     );
   }
   async update(
     id: number,
-    { userId, language, text, isDraft }: Partial<PostInput>
+    { userId, language, content, isDraft }: Partial<PostInput>
   ) {
     const cnt = await this.posts()
       .where({ id })
       .update({
         userId,
         language,
-        text,
+        content,
         isDraft
       });
 
@@ -87,7 +87,7 @@ export class PostRepository {
       maybePost.id,
       maybePost.userId,
       maybePost.language,
-      maybePost.text,
+      maybePost.content,
       maybePost.isDraft
     );
   }
@@ -100,7 +100,7 @@ export class PostRepository {
       id: post.id,
       userId: post.userId,
       language: post.language,
-      text: post.text,
+      content: JSON.parse(post.content),
       isDraft: post.isDraft
     }));
   }
@@ -119,7 +119,7 @@ export class PostRepository {
       id: post.id,
       userId: post.userId,
       language: post.language,
-      text: post.text,
+      content: JSON.parse(post.content),
       isDraft: post.isDraft
     };
   }
@@ -129,7 +129,7 @@ export class PostRepository {
       id: post.id,
       userId: post.userId,
       language: post.language,
-      text: post.text,
+      content: JSON.parse(post.content),
       isDraft: post.isDraft
     }));
   }

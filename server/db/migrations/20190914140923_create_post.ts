@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<any> {
     t.foreign("userId").references("user.id");
     t.integer("language").notNullable();
     t.boolean("isDraft").defaultTo(false);
-    t.text("text");
+    t.text("content");
   });
 }
 

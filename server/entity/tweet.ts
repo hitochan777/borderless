@@ -9,7 +9,11 @@ export class Tweet {
     public id: ID,
     public userId: ID,
     public inReplyTo: ID | null,
-    public text: string,
-    public lineRef?: LineRef
+    public postId: ID,
+    public text: string
   ) {}
 }
+// repliable = id, like
+//   post
+//   tweet
+//   marker -> line, characters

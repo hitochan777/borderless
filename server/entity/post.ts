@@ -6,7 +6,7 @@ export class Post {
     public id: ID,
     public userId: ID,
     public language: Language,
-    public text: string,
+    public content: { [key: string]: any },
     public isDraft: boolean
   ) {}
 }

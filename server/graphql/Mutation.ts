@@ -54,6 +54,7 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("user not found");
         }
+        JSON.parse(postInput.content); // check if content is parseable
         const post = await postRepository.create({
           userId: user.id,
           language: postInput.language,
@@ -88,6 +89,7 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("user not found");
         }
+        JSON.parse(postInput.content); // check if content is parseable
         const post = await postRepository.update(id, {
           language: postInput.language,
           content: postInput.content,

@@ -19,13 +19,7 @@ export interface Props {
   user: {
     username: string;
   };
-  lines: {
-    text: string;
-    replies: {
-      username?: string;
-      text: string;
-    }[];
-  }[];
+  lines: string[];
   language: {
     name: string;
   };
@@ -45,7 +39,7 @@ export const PostContent: React.StatelessComponent<Props> = ({
       <Grid item>
         <Paper className={classes.paper}>
           <Typography gutterBottom variant="subtitle1">
-            {lines[0].text}
+            {lines[0]}
           </Typography>
           <ul>
             <li>Language: {language.name}</li>
@@ -59,9 +53,7 @@ export const PostContent: React.StatelessComponent<Props> = ({
                       href={{ pathname: "/post/[id]", query: { line: index } }}
                       as={`/post/${id}?line=${index}`}
                     >
-                      <a>
-                        {line.text} (Comment: {line.replies.length})
-                      </a>
+                      <a>{line}</a>
                     </Link>
                   </p>
                 ))}

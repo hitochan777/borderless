@@ -85,10 +85,11 @@ export interface NexusGenFieldTypes {
     userUpdate: NexusGenRootTypes['User']; // User!
   }
   Post: { // field return type
-    content: string; // String!
     id: string; // ID!
     isDraft: boolean; // Boolean!
+    json: string; // String!
     language: NexusGenRootTypes['Language']; // Language!
+    lines: string[]; // [String!]!
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type

@@ -37,12 +37,12 @@ interface Node {
 }
 
 type Post implements Node {
-  content: String!
-
   """Unique identifier for the resource"""
   id: ID!
   isDraft: Boolean!
+  json: String!
   language: Language!
+  lines: [String!]!
   user: User!
 }
 

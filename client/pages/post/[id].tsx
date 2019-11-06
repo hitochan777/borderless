@@ -10,11 +10,11 @@ interface Props {
   line?: number;
 }
 
-const PostIndexPage: NextPage<Props> = ({ id, line }) => {
+const PostIndexPage: NextPage<Props> = ({ id }) => {
   return (
     <Layout>
       <Container maxWidth="sm">
-        <Post id={id} lineNum={line} />
+        <Post id={id} />
       </Container>
     </Layout>
   );

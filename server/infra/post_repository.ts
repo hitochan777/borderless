@@ -96,13 +96,16 @@ export class PostRepository {
     const posts = await this.posts().where({
       userId
     });
-    return posts.map(post => ({
-      id: post.id,
-      userId: post.userId,
-      language: post.language,
-      content: JSON.parse(post.content),
-      isDraft: post.isDraft
-    }));
+    return posts.map(
+      post =>
+        new Post(
+          post.id,
+          post.userId,
+          post.language,
+          JSON.parse(post.content),
+          post.isDraft
+        )
+    );
   }
   async findById(id: ID): Promise<Post | null> {
     const posts = await this.posts().where({
@@ -115,22 +118,25 @@ export class PostRepository {
       return null;
     }
     const post = posts[0];
-    return {
-      id: post.id,
-      userId: post.userId,
-      language: post.language,
-      content: JSON.parse(post.content),
-      isDraft: post.isDraft
-    };
+    return new Post(
+      post.id,
+      post.userId,
+      post.language,
+      JSON.parse(post.content),
+      post.isDraft
+    );
   }
   async findByLanguages(langs: Language[]): Promise<Post[]> {
     const posts = await this.posts().whereIn("language", langs);
-    return posts.map(post => ({
-      id: post.id,
-      userId: post.userId,
-      language: post.language,
-      content: JSON.parse(post.content),
-      isDraft: post.isDraft
-    }));
+    return posts.map(
+      post =>
+        new Post(
+          post.id,
+          post.userId,
+          post.language,
+          JSON.parse(post.content),
+          post.isDraft
+        )
+    );
   }
 }

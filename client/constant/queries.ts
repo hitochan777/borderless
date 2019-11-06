@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 
 export const Post = {
   id: types.string,
-  lines: [{ text: types.string, replies: [{ text: types.string }] }],
+  json: types.string,
+  lines: [types.string],
   language: { id: types.string, name: types.string },
   user: {
     username: types.string

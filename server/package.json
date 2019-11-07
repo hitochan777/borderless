@@ -17,7 +17,7 @@
     "micro-dev": "3.0.0",
     "ts-loader": "6.2.1",
     "ts-node": "8.4.1",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   },
   "scripts": {
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 --ignore .sqlite3 ./index.ts",

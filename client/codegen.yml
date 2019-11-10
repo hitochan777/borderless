@@ -1,0 +1,9 @@
+overwrite: true
+schema: "http://localhost:3001/graphql"
+# documents: "./schema.graphql"
+documents: "./hoge.ts"
+generates:
+  generated/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations

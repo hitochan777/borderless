@@ -9,7 +9,8 @@
     "start": "ts-node server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -73,6 +74,9 @@
   },
   "devDependencies": {
     "@babel/core": "7.7.0",
+    "@graphql-codegen/cli": "^1.8.3",
+    "@graphql-codegen/typescript": "1.8.3",
+    "@graphql-codegen/typescript-operations": "^1.8.3",
     "@storybook/addon-actions": "5.2.5",
     "@storybook/addon-info": "5.2.5",
     "@storybook/addon-links": "5.2.5",

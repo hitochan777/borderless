@@ -1,7 +1,8 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 
-import { GET_POST_BY_ID, GetPostById } from "@/constant/queries";
+import { FETCH_POST_BY_ID_QUERY } from "@/constant/graphql";
+import { FetchPostByIdQuery } from "@/generated/types";
 import Loading from "@/components/Loading";
 import {
   PostContent,
@@ -33,8 +34,8 @@ export interface Props {
 }
 
 export const Post: React.StatelessComponent<Props> = ({ id }) => {
-  const { data, error, loading } = useQuery<typeof GetPostById>(
-    GET_POST_BY_ID,
+  const { data, error, loading } = useQuery<FetchPostByIdQuery>(
+    FETCH_POST_BY_ID_QUERY,
     {
       variables: { id }
     }

@@ -5,39 +5,21 @@ import { useMutation } from "@apollo/react-hooks";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import { mutation, params, types } from "typed-graphqlify";
-import gql from "graphql-tag";
 
 import Layout from "@/layout/default";
 import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
+import { POST_CREATE_MUTATION } from "@/constant/graphql";
+import {
+  PostCreateMutation,
+  PostCreateMutationVariables
+} from "@/generated/types";
 
 const useCreatePost = () => {
-  const CreatePostReturnObject = {
-    id: types.string
-  };
-  const CreatePostMutation = mutation(
-    "createPostMutation",
-    params(
-      { $post: "PostInput!" },
-      {
-        postCreate: params({ post: "$post" }, CreatePostReturnObject)
-      }
-    )
-  );
-
-  const CREATE_POST = gql(CreatePostMutation);
-
   const [createPost, { loading, error }] = useMutation<
-    typeof CreatePostReturnObject,
-    {
-      post: {
-        content: string;
-        language: number;
-        isDraft: boolean;
-      };
-    }
-  >(CREATE_POST);
+    PostCreateMutation,
+    PostCreateMutationVariables
+  >(POST_CREATE_MUTATION);
   return { createPost, loading, error };
 };
 

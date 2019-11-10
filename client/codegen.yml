@@ -1,7 +1,6 @@
 overwrite: true
 schema: "http://localhost:3001/graphql"
-# documents: "./schema.graphql"
-documents: "./hoge.ts"
+documents: "./constant/graphql.ts"
 generates:
   generated/types.ts:
     plugins:

@@ -3,7 +3,8 @@ import { useQuery } from "@apollo/react-hooks";
 
 import Select from "../Select";
 import Loading from "../Loading";
-import { GET_LANGUAGES, GetLanguagesQuery } from "@/constant/queries";
+import { FETCH_LANGUAGES_QUERY } from "@/constant/graphql";
+import { FetchLanguagesQuery } from "@/generated/types";
 
 interface Props {
   label: string;
@@ -16,8 +17,8 @@ const LanguagSelector: React.FunctionComponent<Props> = ({
   value,
   onChange
 }) => {
-  const { data, error, loading } = useQuery<typeof GetLanguagesQuery>(
-    GET_LANGUAGES
+  const { data, error, loading } = useQuery<FetchLanguagesQuery>(
+    FETCH_LANGUAGES_QUERY
   );
   if (loading) {
     return <Loading />;

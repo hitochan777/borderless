@@ -8,14 +8,20 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Formik, FormikProps } from "formik";
-import { types, mutation, params } from "typed-graphqlify";
-import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { MultiSelect } from "./molecule/MultiSelect";
 import Loading from "./Loading";
 import { useStateValue } from "@/store";
-import { GET_LANGUAGES, GetLanguagesQuery } from "@/constant/queries";
+import {
+  FETCH_LANGUAGES_QUERY,
+  USER_UPDATE_MUTATION
+} from "@/constant/graphql";
+import {
+  FetchLanguagesQuery,
+  UserUpdateMutation,
+  UserUpdateMutationVariables
+} from "@/generated/types";
 
 interface Props {
   open: boolean;
@@ -38,26 +44,6 @@ interface Props {
   formData: FormValues | undefined;
 }
 
-const UpdateUserReturnObject = {
-  id: types.string,
-  email: types.string,
-  username: types.string,
-  fluentLanguages: [types.number],
-  learningLanguages: [types.number]
-};
-
-const UpdateUserMutation = mutation(
-  "updateUserMutation",
-  params(
-    { $id: "String!", $user: "UserInput!" },
-    {
-      userUpdate: params({ id: "$id", user: "$user" }, UpdateUserReturnObject)
-    }
-  )
-);
-
-const SIGN_UP = gql(UpdateUserMutation);
-
 export const FillInModal: React.StatelessComponent<Props> = ({
   open,
   formData = {
@@ -71,7 +57,9 @@ export const FillInModal: React.StatelessComponent<Props> = ({
   const [
     updateUser,
     { loading: signupLoading, error: signupError }
-  ] = useMutation<typeof UpdateUserReturnObject>(SIGN_UP);
+  ] = useMutation<UserUpdateMutation, UserUpdateMutationVariables>(
+    USER_UPDATE_MUTATION
+  );
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     if (!state.user) {
@@ -93,7 +81,7 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     data,
     error: getLanguageError,
     loading: getLanguageLoading
-  } = useQuery<typeof GetLanguagesQuery>(GET_LANGUAGES);
+  } = useQuery<FetchLanguagesQuery>(FETCH_LANGUAGES_QUERY);
   if (signupLoading || getLanguageLoading) {
     return <Loading />;
   }

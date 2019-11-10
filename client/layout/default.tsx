@@ -7,7 +7,8 @@ import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
-import { GetViewerQuery, GET_VIEWER } from "../constant/queries";
+import { FETCH_VIEWER_QUERY } from "@/constant/graphql";
+import { FetchViewerQuery } from "@/generated/types";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -19,9 +20,10 @@ const LoadingWrapper = styled.div`
 
 const Layout: React.StatelessComponent = ({ children }) => {
   const { state } = useStateValue();
-  const { data, error, loading: queryLoading } = useQuery<
-    typeof GetViewerQuery
-  >(GET_VIEWER, { skip: state.user === null });
+  const { data, error, loading: queryLoading } = useQuery<FetchViewerQuery>(
+    FETCH_VIEWER_QUERY,
+    { skip: state.user === null }
+  );
   const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (

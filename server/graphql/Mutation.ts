@@ -2,8 +2,6 @@ import { stringArg, mutationType, arg, intArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 
-import * as value from "../value/language";
-
 export const Mutation = mutationType({
   definition(t) {
     t.field("userCreate", {
@@ -11,7 +9,7 @@ export const Mutation = mutationType({
       args: {
         id: stringArg({ required: true })
       },
-      resolve: async (root, { id }, { repositories: { userRepository } }) => {
+      resolve: async (_, { id }, { repositories: { userRepository } }) => {
         const newUser = await userRepository.create({ uid: id });
         if (!newUser) {
           throw new Error(`failed to create user with uid = ${id}`);
@@ -77,10 +75,7 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { id, post: postInput },
-        {
-          repositories: { userRepository, postRepository, tweetRepository },
-          uid
-        }
+        { repositories: { userRepository, postRepository }, uid }
       ) => {
         if (!uid) {
           throw new Error("uid is empty");

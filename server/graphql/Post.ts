@@ -7,11 +7,8 @@ export const Post = objectType({
   definition(t) {
     t.implements("Node");
     t.string("json", {
-      async resolve(root, _, { repositories: { tweetRepository } }) {
-        const dummy = {
-          type: "line"
-        };
-        return JSON.stringify(dummy);
+      async resolve(root, _) {
+        return JSON.stringify(root.content);
       }
     });
     t.list.field("lines", {

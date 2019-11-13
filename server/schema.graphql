@@ -36,13 +36,18 @@ interface Node {
   id: ID!
 }
 
+type PartialLine {
+  text: String!
+}
+
 type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
   isDraft: Boolean!
   json: String!
   language: Language!
-  lines: [String!]!
+  lines: [Line!]!
+  title: String!
   user: User!
 }
 

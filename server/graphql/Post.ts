@@ -11,10 +11,14 @@ export const Post = objectType({
         return JSON.stringify(root.content);
       }
     });
+    t.string("title", {
+      resolve(root) {
+        return root.title;
+      }
+    });
     t.list.field("lines", {
-      type: "String",
+      type: "Line",
       async resolve(root, _) {
-        console.log(root.lines);
         return root.lines;
       }
     }),

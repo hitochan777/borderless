@@ -84,12 +84,16 @@ export interface NexusGenFieldTypes {
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
   }
+  PartialLine: { // field return type
+    text: string; // String!
+  }
   Post: { // field return type
     id: string; // ID!
     isDraft: boolean; // Boolean!
     json: string; // String!
     language: NexusGenRootTypes['Language']; // Language!
-    lines: string[]; // [String!]!
+    lines: NexusGenRootTypes['Line'][]; // [Line!]!
+    title: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type

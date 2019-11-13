@@ -10,8 +10,18 @@ export class Post {
     public isDraft: boolean
   ) {}
 
-  get lines(): string[] {
-    return this.content.document.nodes.map((node: any) => node.nodes[0].text);
+  get lines(): Line[] {
+    return this.content.document.nodes.map(
+      (node: any) => new Line(0, node.nodes[0].text) // TODO: id is temporarily 0
+    );
+  }
+
+  get title(): string {
+    const lines = this.lines;
+    if (lines.length === 0) {
+      return "";
+    }
+    return this.lines[0].text;
   }
 }
 

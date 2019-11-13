@@ -29,7 +29,7 @@ const Me: React.StatelessComponent = () => {
           <li key={post.id}>
             <PostCard
               id={+post.id}
-              title={post.lines[0]}
+              title={post.title}
               username={post.user.username}
               language={post.language.name}
             />

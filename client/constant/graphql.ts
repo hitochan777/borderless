@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 export const POST_FIELD_FRAGMENT = gql`
   fragment postFieldFragment on Post {
     id
+    title
     json
     lines
     language {

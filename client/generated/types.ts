@@ -20,9 +20,11 @@ export type Language = Node & {
   name: Scalars["String"];
 };
 
-export type Line = {
+export type Line = Node & {
   __typename?: "Line";
-  text: Scalars["String"];
+  /** Unique identifier for the resource */
+  id: Scalars["ID"];
+  partialLines: Array<PartialLine>;
   replies: Array<Tweet>;
 };
 
@@ -68,12 +70,18 @@ export type Node = {
   id: Scalars["ID"];
 };
 
+export type PartialLine = {
+  __typename?: "PartialLine";
+  text: Scalars["String"];
+};
+
 export type Post = Node & {
   __typename?: "Post";
   /** Unique identifier for the resource */
   id: Scalars["ID"];
   json: Scalars["String"];
-  lines: Array<Scalars["String"]>;
+  title: Scalars["String"];
+  lines: Array<Line>;
   user: User;
   language: Language;
   isDraft: Scalars["Boolean"];
@@ -140,8 +148,15 @@ export type UserInput = {
 
 export type PostFieldFragmentFragment = { __typename?: "Post" } & Pick<
   Post,
-  "id" | "json" | "lines" | "isDraft"
+  "id" | "title" | "json" | "isDraft"
 > & {
+    lines: Array<
+      { __typename?: "Line" } & Pick<Line, "id"> & {
+          partialLines: Array<
+            { __typename?: "PartialLine" } & Pick<PartialLine, "text">
+          >;
+        }
+    >;
     language: { __typename?: "Language" } & Pick<Language, "id" | "name">;
     user: { __typename?: "User" } & Pick<User, "username">;
   };

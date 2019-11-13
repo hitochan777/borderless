@@ -8,7 +8,26 @@ export const Tweet = objectType({
     t.int("inReplyTo", {
       nullable: true
     });
-    t.int("userId");
+    t.field("postedBy", {
+      type: "User",
+      async resolve(root, _, { repositories: { userRepository } }) {
+        const user = await userRepository.findById(root.userId);
+        if (!user) {
+          throw new Error("user not found");
+        }
+        return user;
+      }
+    });
+    t.field("post", {
+      type: "Post",
+      async resolve(root, _, { repositories: { postRepository } }) {
+        const post = await postRepository.findById(root.postId);
+        if (!post) {
+          throw new Error("post not found");
+        }
+        return post;
+      }
+    });
     t.list.field("replies", {
       type: "Tweet",
       async resolve(root, _, { repositories: { tweetRepository } }) {

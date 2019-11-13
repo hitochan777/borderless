@@ -24,7 +24,7 @@ export const Post = objectType({
     }),
       t.field("user", {
         type: "User",
-        async resolve(root, args, { repositories: { userRepository } }) {
+        async resolve(root, _, { repositories: { userRepository } }) {
           const user = await userRepository.findById(root.userId);
           if (!user) {
             throw new Error("User not found");

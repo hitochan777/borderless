@@ -29,6 +29,7 @@ type Mutation {
   postCreate(post: PostInput!): Post!
   postUpdate(id: Int!, post: PostInput!): Post!
   signin(token: String!): AuthData!
+  tweetCreate(tweet: TweetInput!): Tweet!
   userCreate(id: String!): User!
   userUpdate(id: String!, user: UserInput!): User!
 }
@@ -78,9 +79,16 @@ type Tweet implements Node {
   """Unique identifier for the resource"""
   id: ID!
   inReplyTo: Int
+  post: Post!
+  postedBy: User!
   replies: [Tweet!]!
   text: String!
-  userId: Int!
+}
+
+input TweetInput {
+  inReplyTo: Int!
+  postId: Int!
+  text: String!
 }
 
 type User implements Node {

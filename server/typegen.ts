@@ -24,6 +24,11 @@ export interface NexusGenInputs {
     isDraft: boolean; // Boolean!
     language: number; // Int!
   }
+  TweetInput: { // input type
+    inReplyTo: number; // Int!
+    postId: number; // Int!
+    text: string; // String!
+  }
   UserInput: { // input type
     email: string; // String!
     fluentLanguages: number[]; // [Int!]!
@@ -64,6 +69,7 @@ export interface NexusGenRootTypes {
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   LineInput: NexusGenInputs['LineInput'];
   PostInput: NexusGenInputs['PostInput'];
+  TweetInput: NexusGenInputs['TweetInput'];
   UserInput: NexusGenInputs['UserInput'];
 }
 
@@ -85,6 +91,7 @@ export interface NexusGenFieldTypes {
     postCreate: NexusGenRootTypes['Post']; // Post!
     postUpdate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
+    tweetCreate: NexusGenRootTypes['Tweet']; // Tweet!
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
   }
@@ -111,9 +118,10 @@ export interface NexusGenFieldTypes {
   Tweet: { // field return type
     id: string; // ID!
     inReplyTo: number | null; // Int
+    post: NexusGenRootTypes['Post']; // Post!
+    postedBy: NexusGenRootTypes['User']; // User!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
-    userId: number; // Int!
   }
   User: { // field return type
     email: string; // String!
@@ -139,6 +147,9 @@ export interface NexusGenArgTypes {
     }
     signin: { // args
       token: string; // String!
+    }
+    tweetCreate: { // args
+      tweet: NexusGenInputs['TweetInput']; // TweetInput!
     }
     userCreate: { // args
       id: string; // String!
@@ -170,7 +181,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "LineInput" | "PostInput" | "UserInput";
+export type NexusGenInputNames = "LineInput" | "PostInput" | "TweetInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 

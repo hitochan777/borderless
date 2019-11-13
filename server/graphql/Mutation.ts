@@ -97,9 +97,44 @@ export const Mutation = mutationType({
         return post;
       }
     });
+    t.field("tweetCreate", {
+      type: "Tweet",
+      args: {
+        tweet: arg({ type: "TweetInput", required: true })
+      },
+      resolve: async (
+        _,
+        { tweet: tweetInput },
+        {
+          repositories: { postRepository, tweetRepository, userRepository },
+          uid
+        }
+      ) => {
+        if (!uid) {
+          throw new Error("uid is empty");
+        }
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          throw new Error("user not found");
+        }
+        const post = await postRepository.findById(tweetInput.postId);
+        if (!post) {
+          throw new Error("post not found");
+        }
+        const tweet = await tweetRepository.create({
+          ...tweetInput,
+          userId: user.id
+        });
+        if (!tweet) {
+          throw new Error("Failed to create a tweet");
+        }
+
+        return tweet;
+      }
+    });
     t.field("logout", {
       type: "Boolean",
-      resolve: async (root, args, { res }) => {
+      resolve: async (_, __, { res }) => {
         res.setHeader(
           "Set-Cookie",
           cookie.serialize("session", "", { maxAge: 0 })

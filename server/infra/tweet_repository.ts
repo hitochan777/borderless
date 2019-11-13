@@ -23,6 +23,40 @@ export class TweetRepository {
     this.repliables = () => db("repliable");
   }
 
+  async create({
+    userId,
+    postId,
+    text,
+    inReplyTo
+  }: {
+    userId: ID;
+    postId: ID;
+    text: string;
+    inReplyTo: ID;
+  }) {
+    const repliableIds = await this.repliables().insert({});
+    if (repliableIds.length == 0) {
+      return null;
+    }
+    const ids = await this.tweets().insert({
+      id: repliableIds[0],
+      userId,
+      postId,
+      text,
+      inReplyTo
+    });
+    if (ids.length === 0) {
+      return null;
+    }
+    const tweet = await this.tweets()
+      .where("id", ids[0])
+      .first();
+    if (!tweet) {
+      return null;
+    }
+    return TweetRepository.mapDBResultToEntity(tweet);
+  }
+
   async findTweetById(id: ID): Promise<Tweet | null> {
     const tweets = await this.tweets().where({
       id

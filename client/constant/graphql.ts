@@ -1,5 +1,12 @@
 import gql from "graphql-tag";
 
+export const TWEET_FIELD_FRAGMENT = gql`
+  fragment tweetFieldFragment on Tweet {
+    id
+    text
+  }
+`;
+
 export const POST_FIELD_FRAGMENT = gql`
   fragment postFieldFragment on Post {
     id
@@ -9,6 +16,9 @@ export const POST_FIELD_FRAGMENT = gql`
       id
       partialLines {
         text
+      }
+      replies {
+        ...tweetFieldFragment
       }
     }
     language {
@@ -20,6 +30,7 @@ export const POST_FIELD_FRAGMENT = gql`
     }
     isDraft
   }
+  ${TWEET_FIELD_FRAGMENT}
 `;
 
 export const FETCH_VIEWER_QUERY = gql`

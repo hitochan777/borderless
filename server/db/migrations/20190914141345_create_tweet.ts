@@ -11,6 +11,8 @@ export async function up(knex: Knex): Promise<any> {
     t.foreign("userId").references("user.id");
     t.integer("inReplyTo").unsigned();
     t.foreign("inReplyTo").references("repliable.id");
+    t.integer("postId").unsigned();
+    t.foreign("postId").references("post.id");
     t.text("text");
   });
 }

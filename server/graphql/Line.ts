@@ -12,8 +12,9 @@ export const Line = objectType({
     });
     t.list.field("replies", {
       type: "Tweet",
-      resolve() {
-        return [];
+      async resolve(root, _, { repositories: { tweetRepository } }) {
+        const tweets = await tweetRepository.findRepliesTo(root.id);
+        return tweets;
       }
     });
   }

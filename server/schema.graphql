@@ -50,6 +50,7 @@ type Post implements Node {
   json: String!
   language: Language!
   lines: [Line!]!
+  replies: [Tweet!]!
   title: String!
   user: User!
 }

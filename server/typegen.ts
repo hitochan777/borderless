@@ -104,6 +104,7 @@ export interface NexusGenFieldTypes {
     json: string; // String!
     language: NexusGenRootTypes['Language']; // Language!
     lines: NexusGenRootTypes['Line'][]; // [Line!]!
+    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     title: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }

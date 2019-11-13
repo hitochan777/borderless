@@ -42,5 +42,11 @@ export const Post = objectType({
       }
     });
     t.boolean("isDraft");
+    t.list.field("replies", {
+      type: "Tweet",
+      resolve: async (root, _, { repositories: { tweetRepository } }) => {
+        return await tweetRepository.findRepliesTo(root.id);
+      }
+    });
   }
 });

@@ -49,12 +49,13 @@ export const PostContent: React.StatelessComponent<Props> = ({
               <div>
                 {lines.map((line, index) => (
                   <p key={index}>
-                    <Link
+                    {/*<Link
                       href={{ pathname: "/post/[id]", query: { line: index } }}
                       as={`/post/${id}?line=${index}`}
                     >
                       <a>{line}</a>
-                    </Link>
+                    </Link>*/}
+                    {line}
                   </p>
                 ))}
               </div>

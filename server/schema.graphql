@@ -12,9 +12,11 @@ type Language implements Node {
   name: String!
 }
 
-type Line {
+type Line implements Node {
+  """Unique identifier for the resource"""
+  id: ID!
+  partialLines: [PartialLine!]!
   replies: [Tweet!]!
-  text: String!
 }
 
 input LineInput {

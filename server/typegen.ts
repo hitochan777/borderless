@@ -45,11 +45,14 @@ export interface NexusGenRootTypes {
   }
   Line: entity_line.Line;
   Mutation: {};
+  PartialLine: { // root type
+    text: string; // String!
+  }
   Post: entity_post.Post;
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Tweet'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
   String: string;
   Int: number;
   Float: number;
@@ -73,8 +76,9 @@ export interface NexusGenFieldTypes {
     name: string; // String!
   }
   Line: { // field return type
+    id: string; // ID!
+    partialLines: NexusGenRootTypes['PartialLine'][]; // [PartialLine!]!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
-    text: string; // String!
   }
   Mutation: { // field return type
     logout: boolean; // Boolean!
@@ -159,12 +163,12 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   Repliable: "Line" | "Tweet"
-  Node: "Post" | "Language" | "User" | "Tweet"
+  Node: "Post" | "Language" | "Line" | "Tweet" | "User"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "Post" | "Query" | "Tweet" | "User";
+export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
 export type NexusGenInputNames = "LineInput" | "PostInput" | "UserInput";
 

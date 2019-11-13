@@ -5,7 +5,12 @@ export const POST_FIELD_FRAGMENT = gql`
     id
     title
     json
-    lines
+    lines {
+      id
+      partialLines {
+        text
+      }
+    }
     language {
       id
       name

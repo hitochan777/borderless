@@ -13,6 +13,7 @@ export * from "./Line";
 export * from "./Language";
 export * from "./Tweet";
 export * from "./AuthData";
+export * from "./PartialLine";
 
 // Input Object
 export * from "./UserInput";

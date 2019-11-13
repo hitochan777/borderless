@@ -1,5 +1,6 @@
 import { Tweet } from "./tweet";
+import { ID } from "../types";
 
 export class Line {
-  constructor(public text: string, public replies: Tweet[]) {}
+  constructor(public id: ID, public text: string) {}
 }

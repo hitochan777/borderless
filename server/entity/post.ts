@@ -1,5 +1,6 @@
 import { Language } from "../value/language";
 import { ID } from "../types";
+import { Line } from "./line";
 
 export class Post {
   constructor(
@@ -12,7 +13,9 @@ export class Post {
 
   get lines(): Line[] {
     return this.content.document.nodes.map(
-      (node: any) => new Line(0, node.nodes[0].text) // TODO: id is temporarily 0
+      // TODO: id is temporarily sequential
+      // TODO: handle marker
+      (node: any, index: number) => new Line(index, node.nodes[0].text)
     );
   }
 

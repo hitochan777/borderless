@@ -50,11 +50,12 @@ export const Post: React.StatelessComponent<Props> = ({ id }) => {
   if (!data) {
     throw new Error("data is empty");
   }
+  console.log(data.post);
   return (
     <PostPresenter
       id={+data.post.id}
       isDraft={data.post.isDraft}
-      lines={data.post.lines}
+      lines={data.post.lines.map(line => line.partialLines[0].text)}
       language={data.post.language}
       user={data.post.user}
     />

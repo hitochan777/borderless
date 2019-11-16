@@ -4,19 +4,34 @@ import { Line } from "./line";
 
 export class Post {
   constructor(
-    public id: ID,
+    public id: ID | null,
     public userId: ID,
     public language: Language,
-    public content: { [key: string]: any },
+    public lines: Line[],
     public isDraft: boolean
   ) {}
 
-  get lines(): Line[] {
-    return this.content.document.nodes.map(
-      // TODO: id is temporarily sequential
-      // TODO: handle marker
-      (node: any, index: number) => new Line(index, node.nodes[0].text)
-    );
+  static create(
+    userId: ID,
+    language: Language,
+    lineStrings: string[],
+    isDraft: boolean
+  ): Post {
+    const lines = lineStrings.map(lineString => {
+      return Line.create({
+        lineContent: {
+          partialLines: [
+            {
+              subtext: lineString,
+              referers: []
+            }
+          ]
+        },
+        replies: [],
+        postId: null
+      });
+    });
+    return new Post(null, userId, language, lines, isDraft);
   }
 
   get title(): string {
@@ -24,42 +39,42 @@ export class Post {
     if (lines.length === 0) {
       return "";
     }
-    return this.lines[0].text;
+    return this.lines[0].lineContent.partialLines
+      .map(partialLine => partialLine.subtext)
+      .join("");
   }
 }
 
-/*
- * {
-  "object": "value",
-  "document": {
-    "object": "document",
-    "data": {},
-    "nodes": [
+// Example of `lines`
+[
+  {
+    text: [
       {
-        "object": "block",
-        "type": "line",
-        "data": {},
-        "nodes": [
-          {
-            "object": "text",
-            "text": "first line",
-            "marks": []
-          }
-        ]
+        subtext: "this i",
+        referers: []
       },
       {
-        "object": "block",
-        "type": "line",
-        "data": {},
-        "nodes": [
-          {
-            "object": "text",
-            "text": "second line",
-            "marks": []
-          }
-        ]
+        subtext: "s a first",
+        referers: []
+      },
+      {
+        subtext: "line",
+        referers: []
       }
-    ]
+    ],
+    referers: []
+  },
+  {
+    text: [
+      {
+        subtext: "this is a seco",
+        referers: []
+      },
+      {
+        subtext: "nd line",
+        referers: []
+      }
+    ],
+    referers: []
   }
-}
- */
+];

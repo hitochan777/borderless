@@ -20,9 +20,9 @@ export interface NexusGenInputs {
     text: string; // String!
   }
   PostInput: { // input type
-    content: string; // String!
     isDraft: boolean; // Boolean!
     language: number; // Int!
+    lines: string[]; // [String!]!
   }
   TweetInput: { // input type
     inReplyTo: number; // Int!

@@ -4,13 +4,13 @@ import * as admin from "firebase-admin";
 import { parse } from "cookie";
 import knex from "knex";
 
-import { GraphQLContext } from "./types";
+import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
 import db from "./db";
 import { schema } from "./schema";
-import { RepositoryContainer } from "./types";
 import { UserRepository } from "./infra/user_repository";
 import { PostRepository } from "./infra/post_repository";
 import { TweetRepository } from "./infra/tweet_repository";
+import { SlateService } from "./infra/slate_service";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -24,6 +24,12 @@ export const buildRepositoryContainer = (db: knex): RepositoryContainer => {
     userRepository: new UserRepository(db),
     postRepository: new PostRepository(db),
     tweetRepository: new TweetRepository(db)
+  };
+};
+
+export const buildServiceContainer = (): ServiceContainer => {
+  return {
+    editorService: new SlateService()
   };
 };
 
@@ -67,18 +73,19 @@ export const createContext = (db: knex) => async ({
   return {
     uid,
     res,
-    repositories: buildRepositoryContainer(db)
+    repositories: buildRepositoryContainer(db),
+    services: buildServiceContainer()
   };
 };
 
 // addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
-  const context = await createContext(db);
+  const context = createContext(db);
   const server = new ApolloServer({
     schema,
     context,
-    formatResponse: (response: ServerResponse) => {
+    formatResponse: (response: any) => {
       console.info(response);
       return response;
     }

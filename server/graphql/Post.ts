@@ -7,8 +7,10 @@ export const Post = objectType({
   definition(t) {
     t.implements("Node");
     t.string("json", {
-      async resolve(root, _) {
-        return JSON.stringify(root.content);
+      async resolve(root, _, { services: { editorService } }) {
+        return JSON.stringify(
+          editorService.transformLinesToSlateJson(root.lines)
+        );
       }
     });
     t.string("title", {

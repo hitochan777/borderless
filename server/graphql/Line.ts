@@ -7,7 +7,9 @@ export const Line = objectType({
     t.list.field("partialLines", {
       type: "PartialLine",
       resolve(root) {
-        return [{ text: root.text }];
+        return root.lineContent.partialLines.map(partialLine => ({
+          text: partialLine.subtext
+        }));
       }
     });
     t.list.field("replies", {

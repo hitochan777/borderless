@@ -8,14 +8,7 @@ interface RawPost {
   id: number;
   userId: number;
   language: number;
-  content: string;
-  isDraft: boolean;
-}
-
-interface PostInput {
-  userId: ID;
-  language: number;
-  content: string;
+  lineIds: string;
   isDraft: boolean;
 }
 
@@ -30,17 +23,19 @@ export class PostRepository {
     this.posts = () => db("post");
     this.repliables = () => db("repliable");
   }
-  async create({ userId, language, content, isDraft }: PostInput) {
+  async create(postInput: Post) {
     const repliableIds = await this.repliables().insert({});
     if (repliableIds.length == 0) {
       return null;
     }
+    // TODO: create lines
+    const lineIds = [1, 2, 3];
     const ids = await this.posts().insert({
       id: repliableIds[0],
-      userId,
-      language,
-      content,
-      isDraft
+      userId: postInput.userId,
+      language: postInput.language,
+      lineIds: lineIds.join(","),
+      isDraft: postInput.isDraft
     });
     if (ids.length === 0) {
       return null;
@@ -54,17 +49,11 @@ export class PostRepository {
     if (!Language[post.language]) {
       throw new Error(`Invalid language ID ${post.language}`);
     }
-    return new Post(
-      post.id,
-      post.userId,
-      post.language,
-      JSON.parse(post.content),
-      post.isDraft
-    );
+    return new Post(post.id, post.userId, post.language, post.isDraft);
   }
   async update(
     id: number,
-    { userId, language, content, isDraft }: Partial<PostInput>
+    { userId, language, lines, isDraft }: Partial<PostInput>
   ) {
     const cnt = await this.posts()
       .where({ id })

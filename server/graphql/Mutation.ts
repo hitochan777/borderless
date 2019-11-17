@@ -148,7 +148,7 @@ export const Mutation = mutationType({
         token: stringArg({ required: true })
       },
       resolve: async (
-        root,
+        _,
         { token },
         { res, repositories: { userRepository } }
       ) => {

@@ -11,26 +11,17 @@ export class Post {
     public isDraft: boolean
   ) {}
 
-  static create(
-    userId: ID,
-    language: Language,
-    lineStrings: string[],
-    isDraft: boolean
-  ): Post {
-    const lines = lineStrings.map(lineString => {
-      return Line.create({
-        lineContent: {
-          partialLines: [
-            {
-              subtext: lineString,
-              referers: []
-            }
-          ]
-        },
-        replies: [],
-        postId: null
-      });
-    });
+  static create({
+    userId,
+    language,
+    lines,
+    isDraft
+  }: {
+    userId: ID;
+    language: Language;
+    lines: Line[];
+    isDraft: boolean;
+  }): Post {
     return new Post(null, userId, language, lines, isDraft);
   }
 

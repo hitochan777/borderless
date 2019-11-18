@@ -1,7 +1,9 @@
 import { stringArg, mutationType, arg, intArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
+
 import { Post } from "../entity/post";
+import { Line } from "../entity/line";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -53,12 +55,12 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("user not found");
         }
-        const newPost = Post.create(
-          user.id,
-          postInput.language,
-          postInput.lines,
-          postInput.isDraft
-        );
+        const newPost = Post.create({
+          userId: user.id,
+          language: postInput.language,
+          lines: postInput.lines.map(line => Line.createFromString(line)),
+          isDraft: postInput.isDraft
+        });
         const post = await postRepository.create(newPost);
         if (!post) {
           throw new Error("Failed to create a post");
@@ -87,7 +89,7 @@ export const Mutation = mutationType({
         }
         const post = await postRepository.update(id, {
           language: postInput.language,
-          lines: postInput.lines,
+          lines: postInput.lines.map(line => Line.createFromString(line)),
           isDraft: postInput.isDraft
         });
         if (!post) {

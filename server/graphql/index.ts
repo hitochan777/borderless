@@ -19,4 +19,5 @@ export * from "./PartialLine";
 export * from "./UserInput";
 export * from "./PostInput";
 export * from "./LineInput";
+export * from "./PartialLineInput";
 export * from "./TweetInput";

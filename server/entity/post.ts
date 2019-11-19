@@ -2,35 +2,23 @@ import { Language } from "../value/language";
 import { ID } from "../types";
 import { Line } from "./line";
 
+interface PostFactoryInput {
+  userId: ID;
+  language: Language;
+  lines: Line[];
+  isDraft: boolean;
+}
+
 export class Post {
   constructor(
-    public id: ID | null,
+    public id: ID,
     public userId: ID,
     public language: Language,
     public lines: Line[],
     public isDraft: boolean
   ) {}
 
-  static create(
-    userId: ID,
-    language: Language,
-    lineStrings: string[],
-    isDraft: boolean
-  ): Post {
-    const lines = lineStrings.map(lineString => {
-      return Line.create({
-        lineContent: {
-          partialLines: [
-            {
-              subtext: lineString,
-              referers: []
-            }
-          ]
-        },
-        replies: [],
-        postId: null
-      });
-    });
+  static create({ userId, language, lines, isDraft }: PostFactoryInput): Post {
     return new Post(null, userId, language, lines, isDraft);
   }
 

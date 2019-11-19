@@ -3,7 +3,7 @@ import { inputObjectType } from "nexus";
 export const LineInput = inputObjectType({
   name: "LineInput",
   definition(t) {
-    t.string("text", { required: true });
-    t.string("comment");
+    t.int("id", { required: false });
+    t.list.field("partialLines", { type: "PartialLineInput", required: true });
   }
 });

@@ -8,12 +8,12 @@ interface RawPost {
   id: number;
   userId: number;
   language: number;
-  lineIds: string;
+  content: string;
   isDraft: boolean;
 }
 
 interface RawRepliable {
-  id: ID;
+  id: number;
 }
 
 export class PostRepository {
@@ -23,18 +23,18 @@ export class PostRepository {
     this.posts = () => db("post");
     this.repliables = () => db("repliable");
   }
-  async create(postInput: Post) {
+  async create(postInput: Post): Promise<Post | null> {
+    if (postInput.userId === null) {
+      throw new Error("You cannot set userId to null");
+    }
     const repliableIds = await this.repliables().insert({});
     if (repliableIds.length == 0) {
       return null;
     }
-    // TODO: create lines
-    const lineIds = [1, 2, 3];
     const ids = await this.posts().insert({
       id: repliableIds[0],
       userId: postInput.userId,
       language: postInput.language,
-      lineIds: lineIds.join(","),
       isDraft: postInput.isDraft
     });
     if (ids.length === 0) {
@@ -49,36 +49,41 @@ export class PostRepository {
     if (!Language[post.language]) {
       throw new Error(`Invalid language ID ${post.language}`);
     }
-    return new Post(post.id, post.userId, post.language, post.isDraft);
+    return new Post(
+      post.id,
+      post.userId,
+      post.language,
+      JSON.parse(post.content),
+      post.isDraft
+    );
   }
-  async update(
-    id: number,
-    { userId, language, lines, isDraft }: Partial<PostInput>
-  ) {
+  async update(post: Post) {
+    if (post.id === null) {
+      throw new Error("ID is not set");
+    }
+    if (post.userId === null) {
+      throw new Error("You cannot set userId to null");
+    }
+    const contentString = JSON.stringify(post.lines);
     const cnt = await this.posts()
-      .where({ id })
+      .where({ id: post.id })
       .update({
-        userId,
-        language,
-        content,
-        isDraft
+        userId: post.userId,
+        language: post.language,
+        content: contentString,
+        isDraft: post.isDraft
       });
 
     if (cnt === 0) {
       return null;
     }
-    const maybePost = await this.findById(id);
+
+    const maybePost = await this.findById(post.id);
     if (!maybePost) {
       return null;
     }
 
-    return new Post(
-      maybePost.id,
-      maybePost.userId,
-      maybePost.language,
-      maybePost.content,
-      maybePost.isDraft
-    );
+    return maybePost;
   }
 
   async findByUser(userId: ID): Promise<Post[]> {
@@ -96,6 +101,7 @@ export class PostRepository {
         )
     );
   }
+
   async findById(id: ID): Promise<Post | null> {
     const posts = await this.posts().where({
       id
@@ -115,6 +121,7 @@ export class PostRepository {
       post.isDraft
     );
   }
+
   async findByLanguages(langs: Language[]): Promise<Post[]> {
     const posts = await this.posts().whereIn("language", langs);
     return posts.map(

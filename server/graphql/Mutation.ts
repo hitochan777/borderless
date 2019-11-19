@@ -2,6 +2,8 @@ import { stringArg, mutationType, arg, intArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 import { Post } from "../entity/post";
+import { Line } from "../entity/line";
+import { LineContent } from "../entity/line_content";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -44,7 +46,14 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { post: postInput },
-        { repositories: { userRepository, postRepository }, uid }
+        {
+          repositories: {
+            userRepository,
+            postRepository,
+            lineMarkerRepository
+          },
+          uid
+        }
       ) => {
         if (!uid) {
           throw new Error("uid is empty");
@@ -53,18 +62,64 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("user not found");
         }
-        const newPost = Post.create(
-          user.id,
-          postInput.language,
-          postInput.lines,
-          postInput.isDraft
-        );
-        const post = await postRepository.create(newPost);
-        if (!post) {
+
+        // Step1: create post with empty content and get ID
+        const newPost = Post.create({
+          userId: user.id,
+          language: postInput.language,
+          lines: [],
+          isDraft: postInput.isDraft
+        });
+        const createdPost = await postRepository.create(newPost);
+        if (!createdPost) {
           throw new Error("Failed to create a post");
         }
+        if (createdPost.id === null) {
+          throw new Error("created post has null ID");
+        }
 
-        return post;
+        // Step2: create line markers with the post ID and get line marker IDs
+        const lineMarkerIds = await lineMarkerRepository.generateIds(
+          postInput.lines.length,
+          createdPost.id
+        );
+
+        // Step3: fill post content with line IDs and update the post
+
+        if (lineMarkerIds.length !== postInput.lines.length) {
+          throw new Error("line marker length and lines length not equal");
+        }
+
+        const lines: Line[] = [];
+
+        for (const [index, markerId] of lineMarkerIds.entries()) {
+          const lineContent: LineContent = {
+            id: markerId,
+            partialLines: postInput.lines[index].partialLines.map(
+              partialLine => ({
+                subtext: partialLine.subtext,
+                referers: []
+              })
+            )
+          };
+          const line = Line.create({
+            postId: createdPost.id,
+            lineContent,
+            replies: []
+          });
+          lines.push(line);
+        }
+
+        const lineIdsFilledPost = Object.create(newPost, {});
+        lineIdsFilledPost.lines = lines;
+
+        const updatedPost = await postRepository.update(lineIdsFilledPost);
+
+        if (updatedPost === null) {
+          throw new Error("Error during update");
+        }
+
+        return updatedPost;
       }
     });
     t.field("postUpdate", {
@@ -85,16 +140,43 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("user not found");
         }
-        const post = await postRepository.update(id, {
-          language: postInput.language,
-          lines: postInput.lines,
-          isDraft: postInput.isDraft
-        });
-        if (!post) {
+
+        const lines: Line[] = [];
+
+        for (const [index, postInputLine] of postInput.lines.entries()) {
+          if (postInputLine.id === undefined) {
+            throw new Error("Line ID is null");
+          }
+          const lineContent: LineContent = {
+            id: postInputLine.id,
+            partialLines: postInput.lines[index].partialLines.map(
+              partialLine => ({
+                subtext: partialLine.subtext,
+                referers: []
+              })
+            )
+          };
+          const line = Line.create({
+            postId: id,
+            lineContent,
+            replies: []
+          });
+          lines.push(line);
+        }
+
+        const post = new Post(
+          id,
+          user.id,
+          postInput.language,
+          lines,
+          postInput.isDraft
+        );
+        const updatedPost = await postRepository.update(post);
+        if (!updatedPost) {
           throw new Error("Failed to update a post");
         }
 
-        return post;
+        return updatedPost;
       }
     });
     t.field("tweetCreate", {

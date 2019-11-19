@@ -20,8 +20,8 @@ type Line implements Node {
 }
 
 input LineInput {
-  comment: String
-  text: String!
+  id: Int
+  partialLines: [PartialLineInput!]!
 }
 
 type Mutation {
@@ -43,6 +43,11 @@ type PartialLine {
   text: String!
 }
 
+input PartialLineInput {
+  referes: [String!]
+  subtext: String!
+}
+
 type Post implements Node {
   """Unique identifier for the resource"""
   id: ID!
@@ -58,7 +63,7 @@ type Post implements Node {
 input PostInput {
   isDraft: Boolean! = true
   language: Int!
-  lines: [String!]!
+  lines: [LineInput!]!
 }
 
 type Query {

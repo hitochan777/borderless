@@ -10,6 +10,7 @@ import { schema } from "./schema";
 import { UserRepository } from "./infra/user_repository";
 import { PostRepository } from "./infra/post_repository";
 import { TweetRepository } from "./infra/tweet_repository";
+import { LineMarkerRepository } from "./infra/line_marker_repository";
 import { SlateService } from "./infra/slate_service";
 
 if (admin.apps.length === 0) {
@@ -23,7 +24,8 @@ export const buildRepositoryContainer = (db: knex): RepositoryContainer => {
   return {
     userRepository: new UserRepository(db),
     postRepository: new PostRepository(db),
-    tweetRepository: new TweetRepository(db)
+    tweetRepository: new TweetRepository(db),
+    lineMarkerRepository: new LineMarkerRepository(db)
   };
 };
 

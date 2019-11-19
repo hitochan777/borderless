@@ -16,13 +16,17 @@ declare global {
 
 export interface NexusGenInputs {
   LineInput: { // input type
-    comment?: string | null; // String
-    text: string; // String!
+    id?: number | null; // Int
+    partialLines: NexusGenInputs['PartialLineInput'][]; // [PartialLineInput!]!
+  }
+  PartialLineInput: { // input type
+    referes?: string[] | null; // [String!]
+    subtext: string; // String!
   }
   PostInput: { // input type
     isDraft: boolean; // Boolean!
     language: number; // Int!
-    lines: string[]; // [String!]!
+    lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
   TweetInput: { // input type
     inReplyTo: number; // Int!
@@ -67,6 +71,7 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   LineInput: NexusGenInputs['LineInput'];
+  PartialLineInput: NexusGenInputs['PartialLineInput'];
   PostInput: NexusGenInputs['PostInput'];
   TweetInput: NexusGenInputs['TweetInput'];
   UserInput: NexusGenInputs['UserInput'];
@@ -181,7 +186,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "LineInput" | "PostInput" | "TweetInput" | "UserInput";
+export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "TweetInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 

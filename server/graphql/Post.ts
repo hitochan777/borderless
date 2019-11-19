@@ -47,9 +47,6 @@ export const Post = objectType({
     t.list.field("replies", {
       type: "Tweet",
       resolve: async (root, _, { repositories: { tweetRepository } }) => {
-        if (!root.id) {
-          throw new Error("Invalid tweet ID");
-        }
         return await tweetRepository.findRepliesTo(root.id);
       }
     });

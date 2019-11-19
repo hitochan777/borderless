@@ -28,11 +28,13 @@ export class PostRepository {
     if (repliableIds.length == 0) {
       return null;
     }
+    // TODO: create lines
+    const lineIds = [1, 2, 3];
     const ids = await this.posts().insert({
       id: repliableIds[0],
       userId: postInput.userId,
       language: postInput.language,
-      lineIds: postInput.lineIds.join(","),
+      lineIds: lineIds.join(","),
       isDraft: postInput.isDraft
     });
     if (ids.length === 0) {
@@ -47,12 +49,11 @@ export class PostRepository {
     if (!Language[post.language]) {
       throw new Error(`Invalid language ID ${post.language}`);
     }
-    postInput.id = post.id;
-    return postInput;
+    return new Post(post.id, post.userId, post.language, post.isDraft);
   }
   async update(
     id: number,
-    { userId, language, lineIds, isDraft }: Partial<Post>
+    { userId, language, lines, isDraft }: Partial<PostInput>
   ) {
     const cnt = await this.posts()
       .where({ id })

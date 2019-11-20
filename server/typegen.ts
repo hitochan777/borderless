@@ -49,6 +49,7 @@ export interface NexusGenRootTypes {
     token: string; // String!
   }
   Language: { // root type
+    id: string; // ID!
     name: string; // String!
   }
   Line: entity_line.Line;

@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-micro";
+import { GraphQLResponse } from "apollo-server-types";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import { parse } from "cookie";
@@ -87,7 +88,10 @@ const createServer = async () => {
   const server = new ApolloServer({
     schema,
     context,
-    formatResponse: (response: any) => {
+    formatResponse: response => {
+      if (!response) {
+        throw new Error("response is null");
+      }
       console.info(response);
       return response;
     }

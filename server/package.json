@@ -5,11 +5,11 @@
   "license": "MIT",
   "dependencies": {
     "@types/cookie": "^0.3.3",
-    "apollo-server-micro": "^2.9.9",
+    "apollo-server-micro": "^2.9.11",
     "cookie": "^0.4.0",
-    "firebase-admin": "^8.7.0",
+    "firebase-admin": "^8.8.0",
     "graphql": "^14.5.8",
-    "knex": "^0.20.1",
+    "knex": "^0.20.2",
     "nexus": "^0.11.7",
     "sqlite3": "^4.1.0"
   },

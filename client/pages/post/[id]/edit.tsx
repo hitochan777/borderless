@@ -5,7 +5,6 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import { Value } from "slate";
 
 import Layout from "@/layout/default";
 import { Editor, useEditorState } from "@/components/molecule/Editor";
@@ -20,7 +19,7 @@ import {
   FetchPostByIdQuery,
   FetchPostByIdQueryVariables
 } from "@/generated/types";
-import { transformToGql } from "@/service/slate";
+import { transformToGql, transformfromGql } from "@/service/slate";
 
 const usePostById = (id: number) => {
   const { data, loading, error } = useQuery<
@@ -57,8 +56,8 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
   } = useUpdatePost();
   useEffect(() => {
     if (!fetchPostLoading && fetchPostData) {
-      const parsedEditorState = JSON.parse(fetchPostData.post.json);
-      setEditorState(Value.fromJSON(parsedEditorState));
+      const parsedEditorState = transformfromGql(fetchPostData.post.lines);
+      setEditorState(parsedEditorState);
       setLanguage(fetchPostData.post.language.id);
     }
   }, [fetchPostLoading, fetchPostData]);

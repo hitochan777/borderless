@@ -3,8 +3,8 @@ import { LineFieldFragment, LineInput } from "../generated/types";
 
 export function transformToGql(value: Value): LineInput[] {
   const state: any = value.document.toJS();
-  console.log(state.nodes[0]);
   return state.nodes.map((lineNode: any) => ({
+    id: +lineNode.data.id,
     partialLines: lineNode.nodes.map((sublineNode: any) => ({
       subtext: sublineNode.text
     }))
@@ -14,12 +14,16 @@ export function transformfromGql(lines: LineFieldFragment[]): Value {
   return Value.fromJSON({
     document: {
       nodes: lines.map(line => ({
-        type: "block",
+        object: "block",
+        type: "line",
         nodes: line.partialLines.map(partial => ({
-          type: "line",
+          object: "text",
           text: partial.text,
           marks: []
-        }))
+        })),
+        data: {
+          id: line.id
+        }
       }))
     }
   });

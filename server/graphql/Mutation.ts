@@ -139,7 +139,7 @@ export const Mutation = mutationType({
         const lines: Line[] = [];
 
         for (const [index, postInputLine] of postInput.lines.entries()) {
-          if (postInputLine.id === undefined) {
+          if (!postInputLine.id) {
             throw new Error("Line ID is null");
           }
           const lineContent: LineContent = {

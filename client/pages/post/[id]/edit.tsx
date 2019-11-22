@@ -20,6 +20,7 @@ import {
   FetchPostByIdQuery,
   FetchPostByIdQueryVariables
 } from "@/generated/types";
+import { transformToGql } from "@/service/slate";
 
 const usePostById = (id: number) => {
   const { data, loading, error } = useQuery<
@@ -69,7 +70,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
       variables: {
         id,
         post: {
-          content: JSON.stringify(editorState.toJSON()),
+          lines: transformToGql(editorState),
           language: +language,
           isDraft
         }

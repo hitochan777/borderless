@@ -19,11 +19,14 @@ export class LineMarkerRepository {
     this.repliables = () => db("repliable");
   }
   async generateIds(num: number, postId: number): Promise<ID[]> {
-    const repliableRows = [];
+    const repliableIds = [];
     for (let i = 0; i < num; i++) {
-      repliableRows.push({});
+      const _repliableIds = await this.repliables().insert({});
+      if (_repliableIds.length !== 1) {
+        throw new Error("repliable ids does not have one element");
+      }
+      repliableIds.push(_repliableIds[0]);
     }
-    const repliableIds = await this.repliables().insert(repliableRows);
     if (repliableIds.length !== num) {
       throw new Error(`Could not generate ${num} repliables`);
     }
@@ -33,9 +36,19 @@ export class LineMarkerRepository {
         postId
       };
     });
-    const lineMarkerIds = await this.lineMarkers().insert(lineMarkers);
-    if (repliableIds.length !== num) {
-      throw new Error(`Could not generate ${num} repliables`);
+    const lineMarkerIds = [];
+    for (let i = 0; i < num; i++) {
+      const _lineMarkerIds = await this.lineMarkers().insert(lineMarkers[i]);
+      if (_lineMarkerIds.length !== 1) {
+        throw new Error("lineMarkerIds does not have one element");
+      }
+
+      lineMarkerIds.push(_lineMarkerIds[0]);
+    }
+    if (lineMarkerIds.length !== num) {
+      throw new Error(
+        `Could not generate ${num} line markers. generated ${lineMarkerIds.length} line markers`
+      );
     }
     return lineMarkerIds;
   }

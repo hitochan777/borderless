@@ -1,14 +1,27 @@
 import gql from "graphql-tag";
 
 export const TWEET_FIELD_FRAGMENT = gql`
-  fragment tweetFieldFragment on Tweet {
+  fragment tweetField on Tweet {
     id
     text
   }
 `;
 
+export const LINE_FIELD_FRAGMENT = gql`
+  fragment lineField on Line {
+    id
+    partialLines {
+      text
+    }
+    replies {
+      ...tweetField
+    }
+  }
+  ${TWEET_FIELD_FRAGMENT}
+`;
+
 export const POST_FIELD_FRAGMENT = gql`
-  fragment postFieldFragment on Post {
+  fragment postField on Post {
     id
     title
     json
@@ -18,7 +31,7 @@ export const POST_FIELD_FRAGMENT = gql`
         text
       }
       replies {
-        ...tweetFieldFragment
+        ...tweetField
       }
     }
     language {
@@ -42,7 +55,7 @@ export const FETCH_VIEWER_QUERY = gql`
       fluentLanguages
       learningLanguages
       posts {
-        ...postFieldFragment
+        ...postField
       }
     }
   }
@@ -52,7 +65,7 @@ export const FETCH_VIEWER_QUERY = gql`
 export const FETCH_POST_BY_ID_QUERY = gql`
   query fetchPostById($id: Int!) {
     post(id: $id) {
-      ...postFieldFragment
+      ...postField
     }
   }
   ${POST_FIELD_FRAGMENT}
@@ -61,7 +74,7 @@ export const FETCH_POST_BY_ID_QUERY = gql`
 export const FETCH_FEED_FOR_USER_QUERY = gql`
   query fetchFeedForUser($uid: String!) {
     feed(uid: $uid) {
-      ...postFieldFragment
+      ...postField
     }
   }
   ${POST_FIELD_FRAGMENT}

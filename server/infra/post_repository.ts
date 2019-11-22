@@ -58,13 +58,15 @@ export class PostRepository {
     );
   }
   async update(post: Post) {
-    if (post.id === null) {
+    if (!post.id) {
       throw new Error("ID is not set");
     }
-    if (post.userId === null) {
+    if (!post.userId) {
       throw new Error("You cannot set userId to null");
     }
     const contentString = JSON.stringify(post.lines);
+    console.log(post);
+    console.log(contentString);
     const cnt = await this.posts()
       .where({ id: post.id })
       .update({

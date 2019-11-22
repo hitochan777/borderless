@@ -164,12 +164,19 @@ export type UserInput = {
   learningLanguages: Array<Scalars["Int"]>;
 };
 
-export type TweetFieldFragmentFragment = { __typename?: "Tweet" } & Pick<
+export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
   "id" | "text"
 >;
 
-export type PostFieldFragmentFragment = { __typename?: "Post" } & Pick<
+export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
+    partialLines: Array<
+      { __typename?: "PartialLine" } & Pick<PartialLine, "text">
+    >;
+    replies: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
+  };
+
+export type PostFieldFragment = { __typename?: "Post" } & Pick<
   Post,
   "id" | "title" | "json" | "isDraft"
 > & {
@@ -178,7 +185,7 @@ export type PostFieldFragmentFragment = { __typename?: "Post" } & Pick<
           partialLines: Array<
             { __typename?: "PartialLine" } & Pick<PartialLine, "text">
           >;
-          replies: Array<{ __typename?: "Tweet" } & TweetFieldFragmentFragment>;
+          replies: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
         }
     >;
     language: { __typename?: "Language" } & Pick<Language, "id" | "name">;
@@ -191,7 +198,7 @@ export type FetchViewerQuery = { __typename?: "Query" } & {
   viewer: { __typename?: "User" } & Pick<
     User,
     "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-  > & { posts: Array<{ __typename?: "Post" } & PostFieldFragmentFragment> };
+  > & { posts: Array<{ __typename?: "Post" } & PostFieldFragment> };
 };
 
 export type FetchPostByIdQueryVariables = {
@@ -199,7 +206,7 @@ export type FetchPostByIdQueryVariables = {
 };
 
 export type FetchPostByIdQuery = { __typename?: "Query" } & {
-  post: { __typename?: "Post" } & PostFieldFragmentFragment;
+  post: { __typename?: "Post" } & PostFieldFragment;
 };
 
 export type FetchFeedForUserQueryVariables = {
@@ -207,7 +214,7 @@ export type FetchFeedForUserQueryVariables = {
 };
 
 export type FetchFeedForUserQuery = { __typename?: "Query" } & {
-  feed: Array<{ __typename?: "Post" } & PostFieldFragmentFragment>;
+  feed: Array<{ __typename?: "Post" } & PostFieldFragment>;
 };
 
 export type FetchLanguagesQueryVariables = {};

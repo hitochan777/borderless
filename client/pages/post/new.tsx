@@ -13,8 +13,8 @@ import { POST_CREATE_MUTATION } from "@/constant/graphql";
 import {
   PostCreateMutation,
   PostCreateMutationVariables
-  // PostInput
 } from "@/generated/types";
+import { transformToGql } from "@/service/slate";
 
 const useCreatePost = () => {
   const [createPost, { loading, error }] = useMutation<
@@ -33,8 +33,7 @@ const PostNewPage: NextPage = () => {
     await createPost({
       variables: {
         post: {
-          // TODO: lines: JSON.stringify(editorState.toJSON()),
-          lines: [],
+          lines: transformToGql(editorState),
           language: +language,
           isDraft
         }

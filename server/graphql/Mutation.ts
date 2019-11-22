@@ -70,6 +70,7 @@ export const Mutation = mutationType({
           lines: [],
           isDraft: postInput.isDraft
         });
+        console.log("creating post");
         const createdPost = await postRepository.create(newPost);
         if (!createdPost) {
           throw new Error("Failed to create a post");
@@ -85,7 +86,6 @@ export const Mutation = mutationType({
         );
 
         // Step3: fill post content with line IDs and update the post
-
         if (lineMarkerIds.length !== postInput.lines.length) {
           throw new Error("line marker length and lines length not equal");
         }
@@ -94,7 +94,6 @@ export const Mutation = mutationType({
 
         for (const [index, markerId] of lineMarkerIds.entries()) {
           const lineContent: LineContent = {
-            id: markerId,
             partialLines: postInput.lines[index].partialLines.map(
               partialLine => ({
                 subtext: partialLine.subtext,
@@ -102,15 +101,11 @@ export const Mutation = mutationType({
               })
             )
           };
-          const line = Line.create({
-            postId: createdPost.id,
-            lineContent,
-            replies: []
-          });
+          const line = new Line(markerId, createdPost.id, lineContent, []);
           lines.push(line);
         }
 
-        const lineIdsFilledPost = Object.create(newPost, {});
+        const lineIdsFilledPost = Object.create(createdPost, {});
         lineIdsFilledPost.lines = lines;
 
         const updatedPost = await postRepository.update(lineIdsFilledPost);
@@ -148,7 +143,6 @@ export const Mutation = mutationType({
             throw new Error("Line ID is null");
           }
           const lineContent: LineContent = {
-            id: postInputLine.id,
             partialLines: postInput.lines[index].partialLines.map(
               partialLine => ({
                 subtext: partialLine.subtext,

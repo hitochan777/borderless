@@ -1,20 +1,22 @@
-import { ID } from "../types";
-
+import { Base } from "./base";
+import { NullableID, ID } from "../types";
 import { LineContent } from "./line_content";
 
 interface LineFactoryInput {
-  postId: ID | null;
+  postId: NullableID;
   lineContent: LineContent;
   replies: ID[];
 }
 
-export class Line {
+export class Line extends Base {
   constructor(
-    public id: ID | null,
-    public postId: ID | null,
+    _id: NullableID,
+    public postId: NullableID,
     public lineContent: LineContent,
     public replies: ID[]
-  ) {}
+  ) {
+    super(_id);
+  }
 
   static create({ postId, lineContent, replies }: LineFactoryInput) {
     return new Line(null, postId, lineContent, replies);

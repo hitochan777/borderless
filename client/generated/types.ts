@@ -29,8 +29,8 @@ export type Line = Node & {
 };
 
 export type LineInput = {
-  text: Scalars["String"];
-  comment?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  partialLines: Array<PartialLineInput>;
 };
 
 export type Mutation = {
@@ -39,6 +39,7 @@ export type Mutation = {
   userUpdate: User;
   postCreate: Post;
   postUpdate: Post;
+  tweetCreate: Tweet;
   logout: Scalars["Boolean"];
   signin: AuthData;
 };
@@ -61,6 +62,10 @@ export type MutationPostUpdateArgs = {
   post: PostInput;
 };
 
+export type MutationTweetCreateArgs = {
+  tweet: TweetInput;
+};
+
 export type MutationSigninArgs = {
   token: Scalars["String"];
 };
@@ -75,6 +80,11 @@ export type PartialLine = {
   text: Scalars["String"];
 };
 
+export type PartialLineInput = {
+  subtext: Scalars["String"];
+  referes?: Maybe<Array<Scalars["String"]>>;
+};
+
 export type Post = Node & {
   __typename?: "Post";
   /** Unique identifier for the resource */
@@ -85,11 +95,12 @@ export type Post = Node & {
   user: User;
   language: Language;
   isDraft: Scalars["Boolean"];
+  replies: Array<Tweet>;
 };
 
 export type PostInput = {
   language: Scalars["Int"];
-  content: Scalars["String"];
+  lines: Array<LineInput>;
   isDraft: Scalars["Boolean"];
 };
 
@@ -127,6 +138,12 @@ export type Tweet = Node & {
   postedBy: User;
   post: Post;
   replies: Array<Tweet>;
+};
+
+export type TweetInput = {
+  inReplyTo: Scalars["Int"];
+  postId: Scalars["Int"];
+  text: Scalars["String"];
 };
 
 export type User = Node & {

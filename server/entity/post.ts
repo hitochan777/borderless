@@ -1,6 +1,7 @@
 import { Language } from "../value/language";
-import { ID } from "../types";
+import { ID, NullableID } from "../types";
 import { Line } from "./line";
+import { Base } from "./base";
 
 interface PostFactoryInput {
   userId: ID;
@@ -9,14 +10,16 @@ interface PostFactoryInput {
   isDraft: boolean;
 }
 
-export class Post {
+export class Post extends Base {
   constructor(
-    public id: ID,
+    _id: NullableID,
     public userId: ID,
     public language: Language,
     public lines: Line[],
     public isDraft: boolean
-  ) {}
+  ) {
+    super(_id);
+  }
 
   static create({ userId, language, lines, isDraft }: PostFactoryInput): Post {
     return new Post(null, userId, language, lines, isDraft);
@@ -32,37 +35,3 @@ export class Post {
       .join("");
   }
 }
-
-// Example of `lines`
-[
-  {
-    text: [
-      {
-        subtext: "this i",
-        referers: []
-      },
-      {
-        subtext: "s a first",
-        referers: []
-      },
-      {
-        subtext: "line",
-        referers: []
-      }
-    ],
-    referers: []
-  },
-  {
-    text: [
-      {
-        subtext: "this is a seco",
-        referers: []
-      },
-      {
-        subtext: "nd line",
-        referers: []
-      }
-    ],
-    referers: []
-  }
-];

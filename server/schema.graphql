@@ -8,13 +8,13 @@ type AuthData {
 
 type Language implements Node {
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
   name: String!
 }
 
 type Line implements Node {
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
   partialLines: [PartialLine!]!
   replies: [Tweet!]!
 }
@@ -36,7 +36,7 @@ type Mutation {
 
 interface Node {
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
 }
 
 type PartialLine {
@@ -50,7 +50,7 @@ input PartialLineInput {
 
 type Post implements Node {
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
   isDraft: Boolean!
   json: String!
   language: Language!
@@ -83,7 +83,7 @@ union Repliable = Line | Tweet
 
 type Tweet implements Node {
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
   inReplyTo: Int
   post: Post!
   postedBy: User!
@@ -102,7 +102,7 @@ type User implements Node {
   fluentLanguages: [Int!]!
 
   """Unique identifier for the resource"""
-  id: ID
+  id: ID!
   learningLanguages: [Int!]!
   posts: [Post!]!
   username: String!

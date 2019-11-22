@@ -15,7 +15,7 @@ export class LineMarkerRepository {
   lineMarkers: () => knex.QueryBuilder<RawLineMarker, RawLineMarker[]>;
   repliables: () => knex.QueryBuilder<RawRepliable, RawRepliable[]>;
   constructor(db: knex) {
-    this.lineMarkers = () => db("line_markers");
+    this.lineMarkers = () => db("line_marker");
     this.repliables = () => db("repliable");
   }
   async generateIds(num: number, postId: number): Promise<ID[]> {

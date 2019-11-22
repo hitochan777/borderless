@@ -49,7 +49,7 @@ export interface NexusGenRootTypes {
     token: string; // String!
   }
   Language: { // root type
-    id?: string | null; // ID
+    id: string; // ID!
     name: string; // String!
   }
   Line: entity_line.Line;
@@ -83,11 +83,11 @@ export interface NexusGenFieldTypes {
     token: string; // String!
   }
   Language: { // field return type
-    id: string | null; // ID
+    id: string; // ID!
     name: string; // String!
   }
   Line: { // field return type
-    id: string | null; // ID
+    id: string; // ID!
     partialLines: NexusGenRootTypes['PartialLine'][]; // [PartialLine!]!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
   }
@@ -104,7 +104,7 @@ export interface NexusGenFieldTypes {
     text: string; // String!
   }
   Post: { // field return type
-    id: string | null; // ID
+    id: string; // ID!
     isDraft: boolean; // Boolean!
     json: string; // String!
     language: NexusGenRootTypes['Language']; // Language!
@@ -122,7 +122,7 @@ export interface NexusGenFieldTypes {
     viewer: NexusGenRootTypes['User']; // User!
   }
   Tweet: { // field return type
-    id: string | null; // ID
+    id: string; // ID!
     inReplyTo: number | null; // Int
     post: NexusGenRootTypes['Post']; // Post!
     postedBy: NexusGenRootTypes['User']; // User!
@@ -132,13 +132,13 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     email: string; // String!
     fluentLanguages: number[]; // [Int!]!
-    id: string | null; // ID
+    id: string; // ID!
     learningLanguages: number[]; // [Int!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     username: string; // String!
   }
   Node: { // field return type
-    id: string | null; // ID
+    id: string; // ID!
   }
 }
 

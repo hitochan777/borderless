@@ -24,4 +24,5 @@ export interface GraphQLContext {
   services: ServiceContainer;
 }
 
-export type ID = number | null;
+export type ID = number;
+export type NullableID = ID | null;

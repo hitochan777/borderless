@@ -65,8 +65,6 @@ export class PostRepository {
       throw new Error("You cannot set userId to null");
     }
     const contentString = JSON.stringify(post.lines);
-    console.log(post);
-    console.log(contentString);
     const cnt = await this.posts()
       .where({ id: post.id })
       .update({

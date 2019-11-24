@@ -8,7 +8,7 @@ export class Base {
     this.id = _id ?? DEFAULT_ID;
   }
 
-  notPersisted() {
+  isNotPersisted() {
     return this.id === DEFAULT_ID;
   }
 }

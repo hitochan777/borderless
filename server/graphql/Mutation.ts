@@ -126,7 +126,14 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { id, post: postInput },
-        { repositories: { userRepository, postRepository }, uid }
+        {
+          repositories: {
+            userRepository,
+            postRepository,
+            lineMarkerRepository
+          },
+          uid
+        }
       ) => {
         if (!uid) {
           throw new Error("uid is empty");
@@ -139,9 +146,6 @@ export const Mutation = mutationType({
         const lines: Line[] = [];
 
         for (const [index, postInputLine] of postInput.lines.entries()) {
-          if (!postInputLine.id) {
-            throw new Error("Line ID is null");
-          }
           const lineContent: LineContent = {
             partialLines: postInput.lines[index].partialLines.map(
               partialLine => ({
@@ -150,12 +154,22 @@ export const Mutation = mutationType({
               })
             )
           };
-          const line = Line.create({
-            postId: id,
-            lineContent,
-            replies: []
-          });
+          const line = new Line(postInputLine.id ?? null, id, lineContent, []);
+
           lines.push(line);
+        }
+
+        // create line markers for new lines
+        const numNewLines = lines.filter(line => line.isNotPersisted()).length;
+        const lineMarkerIds = await lineMarkerRepository.generateIds(
+          numNewLines,
+          id
+        );
+
+        for (let i = 0, newIdIdx = 0; i < lines.length; i++) {
+          if (lines[i].isNotPersisted()) {
+            lines[i].id = lineMarkerIds[newIdIdx++];
+          }
         }
 
         const post = new Post(

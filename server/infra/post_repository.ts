@@ -64,6 +64,10 @@ export class PostRepository {
     if (!post.userId) {
       throw new Error("You cannot set userId to null");
     }
+    if (post.lines.some(line => line.isNotPersisted())) {
+      throw new Error("Line ID should not be null during update");
+    }
+
     const contentString = JSON.stringify(post.lines);
     const cnt = await this.posts()
       .where({ id: post.id })

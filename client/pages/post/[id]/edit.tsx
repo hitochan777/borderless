@@ -95,6 +95,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
           }}
         />
         <Box mt={4}>
+          <pre>{JSON.stringify(editorState.toJS(), null, 2)}</pre>
           <Editor
             slateKey="slateKey"
             editorState={editorState}

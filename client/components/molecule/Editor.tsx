@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Editor as SlateEditor } from "slate-react";
+import { Editor as SlateEditor, EventHook } from "slate-react";
 import { Value } from "slate";
 
 import useCustomKeygen from "@/lib/useCustomKeygen";
@@ -46,8 +46,23 @@ export const Editor: React.StatelessComponent<EditorProps> = ({
     setEditorState(value);
   };
 
+  const onEnter: EventHook<React.KeyboardEvent> = (event, editor) => {
+    event.preventDefault();
+    editor.splitBlock().setBlocks({ type: "line", data: {} });
+  };
+
+  const onKeyDown: EventHook<React.KeyboardEvent> = (event, editor, next) => {
+    switch (event.key) {
+      case "Enter":
+        return onEnter(event, editor, next);
+      default:
+        return next();
+    }
+  };
+
   return (
     <SlateEditor
+      onKeyDown={onKeyDown}
       value={editorState}
       onChange={onChange}
       placeholder="Start your writing journey here!"

@@ -3,6 +3,7 @@ import { storiesOf } from "@storybook/react";
 
 import Loading from "@/components/Loading";
 import { CommentItem } from "@/components/molecule/CommentItem";
+import { CommentForm } from "@/components/molecule/CommentForm";
 import { PostContent } from "@/components/organism/PostContent";
 import { PostPresenter } from "@/components/organism/Post";
 
@@ -17,6 +18,8 @@ storiesOf("CommentItem", module).add("standard", () => (
     replyCount={3}
   />
 ));
+
+storiesOf("CommentForm", module).add("standard", () => <CommentForm />);
 
 storiesOf("PostContent", module).add("standard", () => (
   <PostContent

@@ -1,16 +1,29 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Link from "next/link";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
     margin: "auto"
+  },
+  metaData: {
+    marginBottom: theme.spacing(2)
+  },
+  avatar: {
+    width: 30,
+    height: 30
+  },
+  button: {
+    height: theme.spacing(3),
+    padding: 0
   }
 }));
 
@@ -35,45 +48,61 @@ export const PostContent: React.StatelessComponent<Props> = ({
 }) => {
   const classes = useStyles();
   return (
-    <Grid container spacing={1}>
-      <Grid item>
-        <Paper className={classes.paper}>
-          <Typography gutterBottom variant="subtitle1">
-            {lines[0]}
-          </Typography>
-          <ul>
-            <li>Language: {language.name}</li>
-            <li>Posted by {user.username}</li>
-            <li>
-              Content
-              <div>
-                {lines.map((line, index) => (
-                  <p key={index}>
-                    {/*<Link
-                      href={{ pathname: "/post/[id]", query: { line: index } }}
-                      as={`/post/${id}?line=${index}`}
-                    >
-                      <a>{line}</a>
-                    </Link>*/}
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </li>
-          </ul>
+    <Paper className={classes.paper}>
+      <Typography gutterBottom variant="h2" align="center">
+        {lines[0]}
+      </Typography>
+      <Grid
+        container
+        direction="row"
+        spacing={1}
+        className={classes.metaData}
+        justify="center"
+      >
+        <Grid item>
+          <Avatar
+            alt={user.username}
+            src={`https://api.adorable.io/avatars/30/${user.username}@borderless.png`}
+            className={classes.avatar}
+          />
+        </Grid>
+        <Grid item>
+          <Typography variant="subtitle1">{user.username}</Typography>
+        </Grid>
+        <Grid item>
+          <Chip label={language.name} size="small" />
+        </Grid>
+        <Grid item>
           {isDraft ? (
             <Link href="/post/[id]/edit" as={`/post/${id}/edit`}>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
                 Edit
               </Button>
             </Link>
           ) : (
-            <Button variant="contained" color="primary" disabled={true}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={true}
+              className={classes.button}
+            >
               Published
             </Button>
           )}
-        </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+
+      <div>
+        {lines.map((line, index) => (
+          <Typography key={index} variant="body1" component="p">
+            {line}
+          </Typography>
+        ))}
+      </div>
+    </Paper>
   );
 };

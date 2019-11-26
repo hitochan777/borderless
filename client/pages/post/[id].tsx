@@ -13,7 +13,7 @@ interface Props {
 const PostIndexPage: NextPage<Props> = ({ id }) => {
   return (
     <Layout>
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Post id={id} />
       </Container>
     </Layout>

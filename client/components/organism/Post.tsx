@@ -33,7 +33,7 @@ export interface Props {
   id: number;
 }
 
-export const Post: React.StatelessComponent<Props> = ({ id }) => {
+export const Post: React.FunctionComponent<Props> = ({ id }) => {
   const { data, error, loading } = useQuery<FetchPostByIdQuery>(
     FETCH_POST_BY_ID_QUERY,
     {
@@ -50,7 +50,6 @@ export const Post: React.StatelessComponent<Props> = ({ id }) => {
   if (!data) {
     throw new Error("data is empty");
   }
-  console.log(data.post);
   return (
     <PostPresenter
       id={+data.post.id}

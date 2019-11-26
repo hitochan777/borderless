@@ -22,19 +22,7 @@ storiesOf("PostContent", module).add("standard", () => (
   <PostContent
     id={1}
     user={{ username: "john" }}
-    lines={[
-      {
-        text: "first line",
-        replies: [
-          { text: "first comment for first line" },
-          { text: "second comment for first line" }
-        ]
-      },
-      {
-        text: "second line",
-        replies: [{ text: "first comment for second line" }]
-      }
-    ]}
+    lines={["first line", "second line"]}
     isDraft={false}
     language={{ name: "English" }}
   />
@@ -45,36 +33,17 @@ storiesOf("Post", module)
     <PostPresenter
       id={1}
       user={{ username: "john" }}
-      lines={[
-        {
-          text: "first line",
-          replies: [
-            { text: "first comment for first line" },
-            { text: "second comment for first line" }
-          ]
-        }
-      ]}
+      lines={["first line", "second line"]}
       isDraft={false}
       language={{ name: "English" }}
-      handleClose={() => {}}
     />
   ))
   .add("with comment", () => (
     <PostPresenter
       id={1}
-      lineNum={0}
       user={{ username: "john" }}
-      lines={[
-        {
-          text: "first line",
-          replies: [
-            { text: "first comment for first line" },
-            { text: "second comment for first line" }
-          ]
-        }
-      ]}
+      lines={["first line", "second line"]}
       isDraft={false}
       language={{ name: "English" }}
-      handleClose={() => {}}
     />
   ));

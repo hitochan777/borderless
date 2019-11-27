@@ -1,9 +1,9 @@
 import React from "react";
 import { NextPage } from "next";
-import Container from "@material-ui/core/Container";
 
 import Layout from "@/layout/default";
 import { Post } from "@/components/organism/Post";
+import Box from "@material-ui/core/Box";
 
 interface Props {
   id: number;
@@ -13,9 +13,9 @@ interface Props {
 const PostIndexPage: NextPage<Props> = ({ id }) => {
   return (
     <Layout>
-      <Container maxWidth="md">
+      <Box paddingLeft="20%" paddingRight="20%">
         <Post id={id} />
-      </Container>
+      </Box>
     </Layout>
   );
 };

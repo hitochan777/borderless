@@ -54,7 +54,7 @@ export const PostContent: React.StatelessComponent<Props> = ({
     alert("show comments");
   };
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       <Grid item xs={9}>
         <Paper className={classes.paper}>
           <Typography gutterBottom variant="h2" align="center">

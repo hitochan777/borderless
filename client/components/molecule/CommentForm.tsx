@@ -9,6 +9,7 @@ export function CommentForm() {
       <Grid container direction="column">
         <Grid item>
           <TextField
+            fullWidth
             multiline
             rows="4"
             defaultValue="Default Value"

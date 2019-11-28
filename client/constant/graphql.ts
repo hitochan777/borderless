@@ -116,3 +116,11 @@ export const USER_UPDATE_MUTATION = gql`
     }
   }
 `;
+
+export const TWEET_CREATE_MUTATION = gql`
+  mutation tweetCreate($tweet: TweetInput!) {
+    tweetCreate(tweet: $tweet) {
+      id
+    }
+  }
+`;

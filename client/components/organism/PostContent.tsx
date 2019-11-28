@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Router from "next/router";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import CommentIcon from "@material-ui/icons/Comment";
 import Badge from "@material-ui/core/Badge";
 import Link from "next/link";
+import { useMutation } from "@apollo/react-hooks";
+
+import { TWEET_CREATE_MUTATION } from "@/constant/graphql";
+import {
+  TweetCreateMutation,
+  TweetCreateMutationVariables
+} from "@/generated/types";
 
 import { CommentForm } from "@/components/molecule/CommentForm";
 
@@ -27,38 +35,86 @@ const useStyles = makeStyles(theme => ({
   button: {
     height: theme.spacing(3),
     padding: 0
+  },
+  focusedLine: {
+    backgroundColor: "#eee"
+  },
+  hoveredLine: {
+    backgroundColor: "#eee"
   }
 }));
 
 export interface Props {
   id: number;
+  focusedLineId: number | null;
   user: {
     username: string;
   };
-  lines: string[];
+  lines: { id: number; text: string }[];
   language: {
     name: string;
   };
   isDraft: boolean;
 }
 
-export const PostContent: React.StatelessComponent<Props> = ({
+const useCreateTweet = () => {
+  const [createTweet, { loading, error }] = useMutation<
+    TweetCreateMutation,
+    TweetCreateMutationVariables
+  >(TWEET_CREATE_MUTATION);
+  return { createTweet, loading, error };
+};
+
+export const PostContent: React.FC<Props> = ({
   id,
+  focusedLineId,
   user,
   lines,
   language,
   isDraft
 }) => {
   const classes = useStyles();
-  const showComments = () => {
-    alert("show comments");
+  const [hoveredLine, setHoveredLine] = useState<number | null>(null);
+  const [comment, setComment] = useState("");
+  const { createTweet, loading: createTweetLoading } = useCreateTweet();
+
+  const handleCommentFormChange = (newComment: string) => {
+    setComment(newComment);
   };
+
+  const postTweet = async () => {
+    if (focusedLineId === null) {
+      alert("you need to focus on some line");
+      return;
+    }
+    await createTweet({
+      variables: {
+        tweet: {
+          postId: id,
+          text: comment,
+          inReplyTo: focusedLineId
+        }
+      }
+    });
+  };
+
+  const handleLineHover = (lineId: number) => {
+    setHoveredLine(lineId);
+  };
+
+  const handleLineClick = (lineId: number) => {
+    Router.push(
+      { pathname: `/post/[id]`, query: { lid: lineId } },
+      `/post/${id}?lid=${lineId}`
+    );
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
         <Paper className={classes.paper}>
           <Typography gutterBottom variant="h2" align="center">
-            {lines[0]}
+            {lines[0].text}
           </Typography>
           <Grid
             container
@@ -111,11 +167,21 @@ export const PostContent: React.StatelessComponent<Props> = ({
                 container
                 spacing={2}
                 justify="space-between"
-                onClick={showComments}
+                className={
+                  (line.id === focusedLineId ? classes.focusedLine : "") +
+                  " " +
+                  (line.id === hoveredLine ? classes.hoveredLine : "")
+                }
+                onClick={() => {
+                  handleLineClick(line.id);
+                }}
+                onMouseOver={() => {
+                  handleLineHover(line.id);
+                }}
               >
                 <Grid item>
                   <Typography key={index} variant="body1" component="p">
-                    {line}
+                    {line.text}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -129,7 +195,12 @@ export const PostContent: React.StatelessComponent<Props> = ({
         </Paper>
       </Grid>
       <Grid item xs={3}>
-        <CommentForm />
+        <CommentForm
+          onSubmit={postTweet}
+          disabled={createTweetLoading}
+          onChange={handleCommentFormChange}
+          value={comment}
+        />
       </Grid>
     </Grid>
   );

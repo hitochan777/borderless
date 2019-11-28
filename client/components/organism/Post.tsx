@@ -13,6 +13,7 @@ interface PresenterProps extends PostContentProps {}
 
 export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
   id,
+  focusedLineId,
   isDraft,
   lines,
   language,
@@ -21,6 +22,7 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
   return (
     <PostContent
       id={+id}
+      focusedLineId={focusedLineId}
       isDraft={isDraft}
       lines={lines}
       language={language}
@@ -31,9 +33,10 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
 
 export interface Props {
   id: number;
+  focusedLineId: number | null;
 }
 
-export const Post: React.FunctionComponent<Props> = ({ id }) => {
+export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
   const { data, error, loading } = useQuery<FetchPostByIdQuery>(
     FETCH_POST_BY_ID_QUERY,
     {
@@ -53,8 +56,12 @@ export const Post: React.FunctionComponent<Props> = ({ id }) => {
   return (
     <PostPresenter
       id={+data.post.id}
+      focusedLineId={focusedLineId}
       isDraft={data.post.isDraft}
-      lines={data.post.lines.map(line => line.partialLines[0].text)}
+      lines={data.post.lines.map(line => ({
+        id: +line.id,
+        text: line.partialLines[0].text
+      }))}
       language={data.post.language}
       user={data.post.user}
     />

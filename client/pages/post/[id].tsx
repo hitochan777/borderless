@@ -7,29 +7,30 @@ import Box from "@material-ui/core/Box";
 
 interface Props {
   id: number;
-  line?: number;
+  focusedLineId: number | null;
 }
 
-const PostIndexPage: NextPage<Props> = ({ id }) => {
+const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
   return (
     <Layout>
       <Box paddingLeft="20%" paddingRight="20%">
-        <Post id={id} />
+        <Post id={id} focusedLineId={focusedLineId} />
       </Box>
     </Layout>
   );
 };
 
-PostIndexPage.getInitialProps = async ({ query }) => {
-  const { id, line } = query;
+PostIndexPage.getInitialProps = async ctx => {
+  const { query } = ctx;
+  const { id, lid: lineId } = query;
   if (typeof id !== "string") {
     throw new Error("unexpected type in id");
   }
-  if (line && typeof line !== "string") {
+  if (lineId && typeof lineId !== "string") {
     throw new Error("unexpected type in line");
   }
-  const lineNumber = isNaN(+line) ? undefined : +line;
-  return { id: +id, line: lineNumber };
+  const lineNumber = isNaN(+lineId) ? null : +lineId;
+  return { id: +id, focusedLineId: lineNumber };
 };
 
 export default PostIndexPage;

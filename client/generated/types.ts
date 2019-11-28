@@ -251,3 +251,11 @@ export type UserUpdateMutation = { __typename?: "Mutation" } & {
     "id" | "email" | "username" | "fluentLanguages" | "learningLanguages"
   >;
 };
+
+export type TweetCreateMutationVariables = {
+  tweet: TweetInput;
+};
+
+export type TweetCreateMutation = { __typename?: "Mutation" } & {
+  tweetCreate: { __typename?: "Tweet" } & Pick<Tweet, "id">;
+};

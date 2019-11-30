@@ -89,6 +89,15 @@ export const FETCH_LANGUAGES_QUERY = gql`
   }
 `;
 
+export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
+  query fetchTweetsForLine($id: Int!) {
+    replies(id: $id) {
+      id
+      text
+    }
+  }
+`;
+
 export const POST_UPDATE_MUTATION = gql`
   mutation postUpdate($id: Int!, $post: PostInput!) {
     postUpdate(id: $id, post: $post) {

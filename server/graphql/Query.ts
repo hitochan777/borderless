@@ -57,6 +57,16 @@ export const Query = queryType({
         return tweet;
       }
     });
+    t.list.field("replies", {
+      type: "Tweet",
+      args: {
+        id: intArg({ required: true, description: "repliable ID" })
+      },
+      async resolve(_, { id }, { repositories: { tweetRepository } }) {
+        const tweets = await tweetRepository.findRepliesTo(id);
+        return tweets;
+      }
+    });
     t.list.field("langs", {
       type: "Language",
       args: {},

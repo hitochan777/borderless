@@ -17,7 +17,7 @@ import {
   TweetCreateMutation,
   TweetCreateMutationVariables
 } from "@/generated/types";
-
+import { LineCommentList } from "@/components/organism/LineCommentList";
 import { CommentForm } from "@/components/molecule/CommentForm";
 
 const useStyles = makeStyles(theme => ({
@@ -207,6 +207,7 @@ export const PostContent: React.FC<Props> = ({
           onChange={handleCommentFormChange}
           value={comment}
         />
+        {focusedLineId !== null && <LineCommentList lineId={focusedLineId} />}
       </Grid>
     </Grid>
   );

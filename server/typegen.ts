@@ -118,6 +118,7 @@ export interface NexusGenFieldTypes {
     langs: NexusGenRootTypes['Language'][]; // [Language!]!
     post: NexusGenRootTypes['Post']; // Post!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     tweet: NexusGenRootTypes['Tweet']; // Tweet!
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -170,6 +171,9 @@ export interface NexusGenArgTypes {
       uid: string; // String!
     }
     post: { // args
+      id: number; // Int!
+    }
+    replies: { // args
       id: number; // Int!
     }
     tweet: { // args

@@ -101,9 +101,10 @@ export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
 export const POST_UPDATE_MUTATION = gql`
   mutation postUpdate($id: Int!, $post: PostInput!) {
     postUpdate(id: $id, post: $post) {
-      id
+      ...postField
     }
   }
+  ${POST_FIELD_FRAGMENT}
 `;
 
 export const POST_CREATE_MUTATION = gql`

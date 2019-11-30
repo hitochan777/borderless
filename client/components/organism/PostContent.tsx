@@ -12,7 +12,11 @@ import Badge from "@material-ui/core/Badge";
 import Link from "next/link";
 import { useMutation } from "@apollo/react-hooks";
 
-import { TWEET_CREATE_MUTATION } from "@/constant/graphql";
+import {
+  TWEET_CREATE_MUTATION,
+  FETCH_TWEETS_FOR_LINE_QUERY,
+  FETCH_POST_BY_ID_QUERY
+} from "@/constant/graphql";
 import {
   TweetCreateMutation,
   TweetCreateMutationVariables
@@ -98,7 +102,17 @@ export const PostContent: React.FC<Props> = ({
           text: comment,
           inReplyTo: focusedLineId
         }
-      }
+      },
+      refetchQueries: [
+        {
+          query: FETCH_TWEETS_FOR_LINE_QUERY,
+          variables: { id: focusedLineId }
+        },
+        {
+          query: FETCH_POST_BY_ID_QUERY,
+          variables: { id }
+        }
+      ]
     });
   };
 

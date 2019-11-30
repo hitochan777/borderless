@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import Layout from "@/layout/default";
 import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
-import { POST_CREATE_MUTATION } from "@/constant/graphql";
+import { POST_CREATE_MUTATION, FETCH_VIEWER_QUERY } from "@/constant/graphql";
 import {
   PostCreateMutation,
   PostCreateMutationVariables
@@ -20,7 +20,9 @@ const useCreatePost = () => {
   const [createPost, { loading, error }] = useMutation<
     PostCreateMutation,
     PostCreateMutationVariables
-  >(POST_CREATE_MUTATION);
+  >(POST_CREATE_MUTATION, {
+    refetchQueries: [{ query: FETCH_VIEWER_QUERY }]
+  });
   return { createPost, loading, error };
 };
 

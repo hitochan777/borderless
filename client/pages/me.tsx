@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@material-ui/core/Box";
 
 import Layout from "@/layout/default";
 import { FETCH_VIEWER_QUERY } from "@/constant/graphql";
@@ -24,18 +25,18 @@ const Me: React.StatelessComponent = () => {
 
   return (
     <Layout>
-      <ul>
+      <Box paddingLeft="30%" paddingRight="30%">
         {data.viewer.posts.map(post => (
-          <li key={post.id}>
+          <Box mb="1rem">
             <PostCard
               id={+post.id}
               title={post.title}
               username={post.user.username}
               language={post.language.name}
             />
-          </li>
+          </Box>
         ))}
-      </ul>
+      </Box>
     </Layout>
   );
 };

@@ -60,7 +60,8 @@ export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
       isDraft={data.post.isDraft}
       lines={data.post.lines.map(line => ({
         id: +line.id,
-        text: line.partialLines[0].text
+        text: line.partialLines[0].text,
+        replies: line.replies.map(({ id, text }) => ({ id: +id, text }))
       }))}
       language={data.post.language}
       user={data.post.user}

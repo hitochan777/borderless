@@ -50,7 +50,11 @@ export interface Props {
   user: {
     username: string;
   };
-  lines: { id: number; text: string }[];
+  lines: {
+    id: number;
+    text: string;
+    replies: { id: number; text: string }[];
+  }[];
   language: {
     name: string;
   };
@@ -185,9 +189,11 @@ export const PostContent: React.FC<Props> = ({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Badge badgeContent={4} color="primary">
-                    <CommentIcon />
-                  </Badge>
+                  {line.replies.length > 0 && (
+                    <Badge badgeContent={line.replies.length} color="primary">
+                      <CommentIcon />
+                    </Badge>
+                  )}
                 </Grid>
               </Grid>
             ))}

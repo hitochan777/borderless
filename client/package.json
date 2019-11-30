@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "generate:graphql": "graphql-codegen --watch --config codegen.yml"
+    "generate:graphql": "graphql-codegen --watch --config codegen.yml",
+    "format": "cd .. && yarn format && cd client"
   },
   "repository": {
     "type": "git",

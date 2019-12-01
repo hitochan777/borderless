@@ -8,6 +8,7 @@ import { LineContent } from "../entity/line_content";
 export const Mutation = mutationType({
   definition(t) {
     t.field("userCreate", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "User",
       args: {
         id: stringArg({ required: true })
@@ -21,6 +22,7 @@ export const Mutation = mutationType({
       }
     });
     t.field("userUpdate", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "User",
       args: {
         id: stringArg({ required: true }),
@@ -39,6 +41,7 @@ export const Mutation = mutationType({
       }
     });
     t.field("postCreate", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "Post",
       args: {
         post: arg({ type: "PostInput", required: true })
@@ -118,6 +121,7 @@ export const Mutation = mutationType({
       }
     });
     t.field("postUpdate", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "Post",
       args: {
         id: intArg({ required: true }),
@@ -188,6 +192,7 @@ export const Mutation = mutationType({
       }
     });
     t.field("tweetCreate", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "Tweet",
       args: {
         tweet: arg({ type: "TweetInput", required: true })
@@ -223,6 +228,7 @@ export const Mutation = mutationType({
       }
     });
     t.field("logout", {
+      authorize: (_, __, { uid }) => uid !== null,
       type: "Boolean",
       resolve: async (_, __, { res }) => {
         res.setHeader(

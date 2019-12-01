@@ -70,7 +70,7 @@ export const Query = queryType({
     t.list.field("langs", {
       type: "Language",
       args: {},
-      resolve(root, args, ctx) {
+      resolve(_, __, ___) {
         return Object.keys(value.Language)
           .filter(value => !isNaN(+value))
           .map(id => ({
@@ -80,6 +80,9 @@ export const Query = queryType({
       }
     });
     t.field("viewer", {
+      authorize: (_, __, { uid }) => {
+        return uid !== null;
+      },
       type: "User",
       args: {},
       async resolve(_, __, { uid, repositories: { userRepository } }) {

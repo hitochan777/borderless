@@ -4,6 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
+    "@prisma/photon": "^2.0.0-preview017.2",
     "@types/cookie": "^0.3.3",
     "apollo-server-micro": "^2.9.11",
     "cookie": "^0.4.0",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "micro-dev": "3.0.0",
+    "prisma2": "^2.0.0-preview017.2",
     "ts-loader": "6.2.1",
     "ts-node": "8.5.4",
     "typescript": "3.7.2"
@@ -24,7 +26,9 @@
     "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
     "migrate": "ts-node -P ./tsconfig.json node_modules/.bin/knex migrate:latest --knexfile ./config/knexfile.ts",
     "seed:run": "ts-node -P ./tsconfig.json node_modules/.bin/knex seed:run --knexfile ./config/knexfile.ts",
-    "generate:graphql": "ts-node -T schema.ts",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:nexus": "ts-node -T schema.ts",
+    "generate:prisma": "prisma2 generate",
     "format": "cd .. && yarn format && cd server"
   }
 }

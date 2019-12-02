@@ -1,4 +1,4 @@
-import { Line } from "../entity/line";
+import { Line } from "../../entity/line";
 
 export class SlateService {
   transformLinesToSlateJson(lines: Line[]): object {

@@ -1,4 +1,4 @@
-import { queryType, stringArg, intArg } from "nexus";
+import { queryType, stringArg, idArg } from "nexus";
 
 import * as value from "../value/language";
 
@@ -27,14 +27,14 @@ export const Query = queryType({
     t.list.field("posts", {
       type: "Post",
       args: {},
-      resolve(root, args, ctx) {
+      resolve(_, __, ___) {
         return [];
       }
     });
     t.field("post", {
       type: "Post",
       args: {
-        id: intArg({ required: true })
+        id: idArg({ required: true })
       },
       async resolve(_, { id }, { repositories: { postRepository } }) {
         const post = await postRepository.findById(id);
@@ -47,7 +47,7 @@ export const Query = queryType({
     t.field("tweet", {
       type: "Tweet",
       args: {
-        id: intArg({ required: true, description: "tweet id" })
+        id: idArg({ required: true, description: "tweet id" })
       },
       async resolve(_, { id }, { repositories: { tweetRepository } }) {
         const tweet = await tweetRepository.findTweetById(id);
@@ -60,7 +60,7 @@ export const Query = queryType({
     t.list.field("replies", {
       type: "Tweet",
       args: {
-        id: intArg({ required: true, description: "repliable ID" })
+        id: idArg({ required: true, description: "repliable ID" })
       },
       async resolve(_, { id }, { repositories: { tweetRepository } }) {
         const tweets = await tweetRepository.findRepliesTo(id);

@@ -63,7 +63,7 @@ export const FETCH_VIEWER_QUERY = gql`
 `;
 
 export const FETCH_POST_BY_ID_QUERY = gql`
-  query fetchPostById($id: Int!) {
+  query fetchPostById($id: ID!) {
     post(id: $id) {
       ...postField
     }
@@ -90,7 +90,7 @@ export const FETCH_LANGUAGES_QUERY = gql`
 `;
 
 export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
-  query fetchTweetsForLine($id: Int!) {
+  query fetchTweetsForLine($id: ID!) {
     replies(id: $id) {
       id
       text
@@ -99,7 +99,7 @@ export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
 `;
 
 export const POST_UPDATE_MUTATION = gql`
-  mutation postUpdate($id: Int!, $post: PostInput!) {
+  mutation postUpdate($id: ID!, $post: PostInput!) {
     postUpdate(id: $id, post: $post) {
       ...postField
     }

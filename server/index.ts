@@ -8,11 +8,11 @@ import knex from "knex";
 import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
 import db from "./db";
 import { schema } from "./schema";
-import { UserRepository } from "./infra/user_repository";
-import { PostRepository } from "./infra/post_repository";
-import { TweetRepository } from "./infra/tweet_repository";
-import { LineMarkerRepository } from "./infra/line_marker_repository";
-import { SlateService } from "./infra/slate_service";
+import { UserRepository } from "./infra/persistent/prisma/user_repository";
+import { PostRepository } from "./infra/persistent/prisma/post_repository";
+import { TweetRepository } from "./infra/persistent/prisma/tweet_repository";
+import { LineMarkerRepository } from "./infra/persistent/prisma/line_marker_repository";
+import { SlateService } from "./infra/service/slate_service";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -21,12 +21,12 @@ if (admin.apps.length === 0) {
   });
 }
 
-export const buildRepositoryContainer = (db: knex): RepositoryContainer => {
+export const buildRepositoryContainer = (): RepositoryContainer => {
   return {
-    userRepository: new UserRepository(db),
-    postRepository: new PostRepository(db),
-    tweetRepository: new TweetRepository(db),
-    lineMarkerRepository: new LineMarkerRepository(db)
+    userRepository: new UserRepository(),
+    postRepository: new PostRepository(),
+    tweetRepository: new TweetRepository(),
+    lineMarkerRepository: new LineMarkerRepository()
   };
 };
 
@@ -57,7 +57,7 @@ const extractToken = (
   return "";
 };
 
-export const createContext = (db: knex) => async ({
+export const createContext = () => async ({
   req,
   res
 }: {
@@ -76,7 +76,7 @@ export const createContext = (db: knex) => async ({
   return {
     uid,
     res,
-    repositories: buildRepositoryContainer(db),
+    repositories: buildRepositoryContainer(),
     services: buildServiceContainer()
   };
 };
@@ -84,7 +84,7 @@ export const createContext = (db: knex) => async ({
 // addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
-  const context = createContext(db);
+  const context = createContext();
   const server = new ApolloServer({
     schema,
     context,

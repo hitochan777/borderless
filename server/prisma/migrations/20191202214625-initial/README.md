@@ -84,7 +84,7 @@ migration ..20191202214625-initial
 +}
 +
 +model Repliable {
-+  id String @default(cuid()) @id @unique  
++  id String @default(cuid()) @id @unique
 +}
 +
 +model User {
@@ -130,15 +130,14 @@ You can use a specific Photon built for this migration (20191202214625-initial)
 in your `before` or `after` migration script like this:
 
 ```ts
-import Photon from '@generated/photon/20191202214625-initial'
+import Photon from "@generated/photon/20191202214625-initial";
 
-const photon = new Photon()
+const photon = new Photon();
 
 async function main() {
-  const result = await photon.users()
-  console.dir(result, { depth: null })
+  const result = await photon.users();
+  console.dir(result, { depth: null });
 }
 
-main()
-
+main();
 ```

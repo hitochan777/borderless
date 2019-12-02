@@ -16,7 +16,7 @@ declare global {
 
 export interface NexusGenInputs {
   LineInput: { // input type
-    id?: number | null; // Int
+    id?: string | null; // ID
     partialLines: NexusGenInputs['PartialLineInput'][]; // [PartialLineInput!]!
   }
   PartialLineInput: { // input type
@@ -29,8 +29,8 @@ export interface NexusGenInputs {
     lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
   TweetInput: { // input type
-    inReplyTo: number; // Int!
-    postId: number; // Int!
+    inReplyTo: string; // ID!
+    postId: string; // ID!
     text: string; // String!
   }
   UserInput: { // input type
@@ -149,7 +149,7 @@ export interface NexusGenArgTypes {
       post: NexusGenInputs['PostInput']; // PostInput!
     }
     postUpdate: { // args
-      id: number; // Int!
+      id: string; // ID!
       post: NexusGenInputs['PostInput']; // PostInput!
     }
     signin: { // args
@@ -159,7 +159,7 @@ export interface NexusGenArgTypes {
       tweet: NexusGenInputs['TweetInput']; // TweetInput!
     }
     userCreate: { // args
-      id: string; // String!
+      id: string; // ID!
     }
     userUpdate: { // args
       id: string; // String!
@@ -171,13 +171,13 @@ export interface NexusGenArgTypes {
       uid: string; // String!
     }
     post: { // args
-      id: number; // Int!
+      id: string; // ID!
     }
     replies: { // args
-      id: number; // Int!
+      id: string; // ID!
     }
     tweet: { // args
-      id: number; // Int!
+      id: string; // ID!
     }
   }
 }

@@ -21,7 +21,7 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
 }) => {
   return (
     <PostContent
-      id={+id}
+      id={id}
       focusedLineId={focusedLineId}
       isDraft={isDraft}
       lines={lines}
@@ -32,8 +32,8 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
 };
 
 export interface Props {
-  id: number;
-  focusedLineId: number | null;
+  id: string;
+  focusedLineId: string | null;
 }
 
 export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
@@ -55,13 +55,13 @@ export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
   }
   return (
     <PostPresenter
-      id={+data.post.id}
+      id={data.post.id}
       focusedLineId={focusedLineId}
       isDraft={data.post.isDraft}
       lines={data.post.lines.map(line => ({
-        id: +line.id,
+        id: line.id,
         text: line.partialLines[0].text,
-        replies: line.replies.map(({ id, text }) => ({ id: +id, text }))
+        replies: line.replies.map(({ id, text }) => ({ id, text }))
       }))}
       language={data.post.language}
       user={data.post.user}

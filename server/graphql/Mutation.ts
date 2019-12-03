@@ -1,4 +1,4 @@
-import { stringArg, mutationType, arg, intArg, idArg } from "nexus";
+import { stringArg, mutationType, arg, idArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 import { Post } from "../entity/post";
@@ -91,6 +91,7 @@ export const Mutation = mutationType({
           throw new Error("created post has null ID");
         }
 
+        console.log("generating line markers");
         // Step2: create line markers with the post ID and get line marker IDs
         const lineMarkerIds = await lineMarkerRepository.generateIds(
           postInput.lines.length,

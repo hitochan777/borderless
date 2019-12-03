@@ -49,15 +49,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export interface Props {
-  id: number;
-  focusedLineId: number | null;
+  id: string;
+  focusedLineId: string | null;
   user: {
     username: string;
   };
   lines: {
-    id: number;
+    id: string;
     text: string;
-    replies: { id: number; text: string }[];
+    replies: { id: string; text: string }[];
   }[];
   language: {
     name: string;
@@ -82,7 +82,7 @@ export const PostContent: React.FC<Props> = ({
   isDraft
 }) => {
   const classes = useStyles();
-  const [hoveredLine, setHoveredLine] = useState<number | null>(null);
+  const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
   const { createTweet, loading: createTweetLoading } = useCreateTweet();
 
@@ -116,11 +116,11 @@ export const PostContent: React.FC<Props> = ({
     });
   };
 
-  const handleLineHover = (lineId: number) => {
+  const handleLineHover = (lineId: string) => {
     setHoveredLine(lineId);
   };
 
-  const handleLineClick = (lineId: number) => {
+  const handleLineClick = (lineId: string) => {
     Router.push(
       { pathname: `/post/[id]`, query: { lid: lineId } },
       `/post/${id}?lid=${lineId}`

@@ -24,7 +24,7 @@ export class PostRepository {
         },
         language: postInput.language,
         published: !postInput.isDraft,
-        content: ""
+        content: "{}"
       },
       include: {
         user: true

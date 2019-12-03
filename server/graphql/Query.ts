@@ -19,7 +19,8 @@ export const Query = queryType({
           throw new Error("User not found");
         }
         const posts = await postRepository.findByLanguages(
-          user.fluentLanguages
+          user.fluentLanguages,
+          user.id
         );
         return posts;
       }

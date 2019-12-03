@@ -29,7 +29,7 @@ const Me: React.StatelessComponent = () => {
         {data.viewer.posts.map(post => (
           <Box mb="1rem">
             <PostCard
-              id={+post.id}
+              id={post.id}
               title={post.title}
               username={post.user.username}
               language={post.language.name}

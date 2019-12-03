@@ -32,7 +32,7 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
       {data.feed.map(post => (
         <li key={post.id}>
           <PostCard
-            id={+post.id}
+            id={post.id}
             title={post.title}
             username={post.user.username}
             language={post.language.name}

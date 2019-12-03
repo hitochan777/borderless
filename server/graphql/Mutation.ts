@@ -1,8 +1,9 @@
-import { stringArg, mutationType, arg, intArg } from "nexus";
+import { stringArg, mutationType, arg, idArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 import { Post } from "../entity/post";
 import { Line } from "../entity/line";
+import { User } from "../entity/user";
 import { LineContent } from "../entity/line_content";
 
 export const Mutation = mutationType({
@@ -11,14 +12,14 @@ export const Mutation = mutationType({
       authorize: (_, __, { uid }) => uid !== null,
       type: "User",
       args: {
-        id: stringArg({ required: true })
+        id: idArg({ required: true })
       },
       resolve: async (_, { id }, { repositories: { userRepository } }) => {
-        const newUser = await userRepository.create({ uid: id });
-        if (!newUser) {
+        const createdUser = await userRepository.createOnlyWithUid(id);
+        if (createdUser === null) {
           throw new Error(`failed to create user with uid = ${id}`);
         }
-        return newUser;
+        return createdUser;
       }
     });
     t.field("userUpdate", {
@@ -31,9 +32,17 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { id, user },
-        { repositories: { userRepository } }
+        { uid, repositories: { userRepository } }
       ) => {
-        const updatedUser = await userRepository.update(id, user);
+        const userEntity = new User(
+          id,
+          uid || "",
+          user.email,
+          user.username,
+          user.fluentLanguages,
+          user.learningLanguages
+        );
+        const updatedUser = await userRepository.update(id, userEntity);
         if (!updatedUser) {
           throw new Error("failed to update user");
         }
@@ -82,6 +91,7 @@ export const Mutation = mutationType({
           throw new Error("created post has null ID");
         }
 
+        console.log("generating line markers");
         // Step2: create line markers with the post ID and get line marker IDs
         const lineMarkerIds = await lineMarkerRepository.generateIds(
           postInput.lines.length,
@@ -124,7 +134,7 @@ export const Mutation = mutationType({
       authorize: (_, __, { uid }) => uid !== null,
       type: "Post",
       args: {
-        id: intArg({ required: true }),
+        id: idArg({ required: true }),
         post: arg({ type: "PostInput", required: true })
       },
       resolve: async (

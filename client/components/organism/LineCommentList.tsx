@@ -15,7 +15,7 @@ import {
 } from "@/generated/types";
 
 interface Props {
-  lineId: number;
+  lineId: string;
 }
 
 export const LineCommentList: React.FC<Props> = ({ lineId }) => {

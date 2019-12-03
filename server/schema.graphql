@@ -20,17 +20,17 @@ type Line implements Node {
 }
 
 input LineInput {
-  id: Int
+  id: ID
   partialLines: [PartialLineInput!]!
 }
 
 type Mutation {
   logout: Boolean!
   postCreate(post: PostInput!): Post!
-  postUpdate(id: Int!, post: PostInput!): Post!
+  postUpdate(id: ID!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   tweetCreate(tweet: TweetInput!): Tweet!
-  userCreate(id: String!): User!
+  userCreate(id: ID!): User!
   userUpdate(id: String!, user: UserInput!): User!
 }
 
@@ -69,15 +69,15 @@ input PostInput {
 type Query {
   feed(uid: String!): [Post!]!
   langs: [Language!]!
-  post(id: Int!): Post!
+  post(id: ID!): Post!
   posts: [Post!]!
   replies(
     """repliable ID"""
-    id: Int!
+    id: ID!
   ): [Tweet!]!
   tweet(
     """tweet id"""
-    id: Int!
+    id: ID!
   ): Tweet!
   viewer: User!
 }
@@ -96,8 +96,8 @@ type Tweet implements Node {
 }
 
 input TweetInput {
-  inReplyTo: Int!
-  postId: Int!
+  inReplyTo: ID!
+  postId: ID!
   text: String!
 }
 

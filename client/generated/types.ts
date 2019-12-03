@@ -29,7 +29,7 @@ export type Line = Node & {
 };
 
 export type LineInput = {
-  id?: Maybe<Scalars["Int"]>;
+  id?: Maybe<Scalars["ID"]>;
   partialLines: Array<PartialLineInput>;
 };
 
@@ -45,7 +45,7 @@ export type Mutation = {
 };
 
 export type MutationUserCreateArgs = {
-  id: Scalars["String"];
+  id: Scalars["ID"];
 };
 
 export type MutationUserUpdateArgs = {
@@ -58,7 +58,7 @@ export type MutationPostCreateArgs = {
 };
 
 export type MutationPostUpdateArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
   post: PostInput;
 };
 
@@ -120,15 +120,15 @@ export type QueryFeedArgs = {
 };
 
 export type QueryPostArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type QueryTweetArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type QueryRepliesArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 /** Anything that can be replied */
@@ -146,8 +146,8 @@ export type Tweet = Node & {
 };
 
 export type TweetInput = {
-  inReplyTo: Scalars["Int"];
-  postId: Scalars["Int"];
+  inReplyTo: Scalars["ID"];
+  postId: Scalars["ID"];
   text: Scalars["String"];
 };
 
@@ -207,7 +207,7 @@ export type FetchViewerQuery = { __typename?: "Query" } & {
 };
 
 export type FetchPostByIdQueryVariables = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type FetchPostByIdQuery = { __typename?: "Query" } & {
@@ -229,7 +229,7 @@ export type FetchLanguagesQuery = { __typename?: "Query" } & {
 };
 
 export type FetchTweetsForLineQueryVariables = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type FetchTweetsForLineQuery = { __typename?: "Query" } & {
@@ -237,7 +237,7 @@ export type FetchTweetsForLineQuery = { __typename?: "Query" } & {
 };
 
 export type PostUpdateMutationVariables = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
   post: PostInput;
 };
 

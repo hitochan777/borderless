@@ -21,7 +21,7 @@ import {
 } from "@/generated/types";
 import { transformToGql, transformfromGql } from "@/service/slate";
 
-const usePostById = (id: number) => {
+const usePostById = (id: string) => {
   const { data, loading, error } = useQuery<
     FetchPostByIdQuery,
     FetchPostByIdQueryVariables
@@ -38,7 +38,7 @@ const useUpdatePost = () => {
 };
 
 interface Props {
-  id: number;
+  id: string;
 }
 
 const PostEditPage: NextPage<Props> = ({ id }) => {
@@ -137,10 +137,10 @@ function assert(condition: any, msg?: string): asserts condition {
 
 PostEditPage.getInitialProps = async (
   ctx: NextPageContext
-): Promise<{ id: number }> => {
+): Promise<{ id: string }> => {
   const { id } = ctx.query;
   assert(typeof id === "string");
-  return { id: +id };
+  return { id };
 };
 
 export default PostEditPage;

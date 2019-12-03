@@ -1,0 +1,48 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.db"
+}
+
+generator photon {
+  provider = "photonjs"
+}
+
+model Repliable {
+  id String @default(cuid()) @id @unique  
+}
+
+model User {
+  id                String  @default(cuid()) @id @unique
+  uid               String  @unique
+  email             String  @unique
+  username          String
+  fluentLanguages   String?
+  learningLanguages String?
+}
+
+model Post {
+  id        String  @default(cuid()) @id @unique
+  published Boolean
+  language  Int
+  content   String
+  user      User
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Tweet {
+  id        String  @default(cuid()) @id @unique
+  content   String
+  inReplyTo Repliable
+  user      User
+  post      Post
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model LineMarker {
+  id        String  @default(cuid()) @id @unique
+  post      Post
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}

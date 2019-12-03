@@ -1,6 +1,6 @@
 import { ID, NullableID } from "../types";
 
-const DEFAULT_ID = -1;
+const DEFAULT_ID = "DEFAULT_ID";
 
 export class Base {
   public id: ID;

@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Link from "next/link";
 
 interface Props {
-  id: number;
+  id: string;
   title: string;
   username: string;
   language: string;

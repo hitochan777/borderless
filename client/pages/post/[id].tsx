@@ -6,8 +6,8 @@ import { Post } from "@/components/organism/Post";
 import Box from "@material-ui/core/Box";
 
 interface Props {
-  id: number;
-  focusedLineId: number | null;
+  id: string;
+  focusedLineId: string | null;
 }
 
 const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
@@ -23,14 +23,19 @@ const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
 PostIndexPage.getInitialProps = async ctx => {
   const { query } = ctx;
   const { id, lid: lineId } = query;
+  if (id === "") {
+    throw new Error("post ID is not provided");
+  }
+  if (lineId === "") {
+    throw new Error("line ID is not provided");
+  }
   if (typeof id !== "string") {
-    throw new Error("unexpected type in id");
+    throw new Error("You might have specified multiple post IDs");
   }
-  if (lineId && typeof lineId !== "string") {
-    throw new Error("unexpected type in line");
+  if (lineId !== undefined && typeof lineId !== "string") {
+    throw new Error("You might have specified multiple post IDs");
   }
-  const lineNumber = isNaN(+lineId) ? null : +lineId;
-  return { id: +id, focusedLineId: lineNumber };
+  return { id, focusedLineId: lineId === undefined ? null : lineId };
 };
 
 export default PostIndexPage;

@@ -2,7 +2,7 @@ import { Line } from "../../entity/line";
 
 export class SlateService {
   transformLinesToSlateJson(lines: Line[]): object {
-    let json: { [key: string]: any } = {
+    const json: { [key: string]: any } = {
       object: "value",
       document: {
         object: "document",

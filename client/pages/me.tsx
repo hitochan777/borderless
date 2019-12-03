@@ -27,7 +27,7 @@ const Me: React.StatelessComponent = () => {
     <Layout>
       <Box paddingLeft="30%" paddingRight="30%">
         {data.viewer.posts.map(post => (
-          <Box mb="1rem">
+          <Box key={post.id} mb="1rem">
             <PostCard
               id={post.id}
               title={post.title}

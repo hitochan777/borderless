@@ -9,7 +9,7 @@ import {
   Props as PostContentProps
 } from "@/components/organism/PostContent";
 
-interface PresenterProps extends PostContentProps {}
+type PresenterProps = PostContentProps;
 
 export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
   id,

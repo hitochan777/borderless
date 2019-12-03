@@ -10,7 +10,6 @@
     "cookie": "^0.4.0",
     "firebase-admin": "^8.8.0",
     "graphql": "^14.5.8",
-    "knex": "^0.20.2",
     "nexus": "^0.11.7",
     "sqlite3": "^4.1.0"
   },
@@ -24,8 +23,6 @@
   "scripts": {
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 --ignore prisma/dev.db ./index.ts",
     "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
-    "migrate": "ts-node -P ./tsconfig.json node_modules/.bin/knex migrate:latest --knexfile ./config/knexfile.ts",
-    "seed:run": "ts-node -P ./tsconfig.json node_modules/.bin/knex seed:run --knexfile ./config/knexfile.ts",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:nexus": "ts-node -T schema.ts",
     "generate:prisma": "prisma2 generate",

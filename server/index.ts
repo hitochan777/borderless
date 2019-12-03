@@ -1,12 +1,9 @@
 import { ApolloServer } from "apollo-server-micro";
-import { GraphQLResponse } from "apollo-server-types";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import { parse } from "cookie";
-import knex from "knex";
 
 import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
-import db from "./db";
 import { schema } from "./schema";
 import { UserRepository } from "./infra/persistent/prisma/user_repository";
 import { PostRepository } from "./infra/persistent/prisma/post_repository";

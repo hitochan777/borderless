@@ -98,7 +98,7 @@ export class PostRepository {
           post.user.id,
           post.language,
           JSON.parse(post.content),
-          !!post.published
+          !post.published
         )
     );
   }

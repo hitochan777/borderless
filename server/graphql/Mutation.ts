@@ -23,7 +23,16 @@ export const Mutation = mutationType({
       }
     });
     t.field("userUpdate", {
-      authorize: (_, __, { uid }) => uid !== null,
+      authorize: async (_, __, { uid, repositories: { userRepository } }) => {
+        if (!uid) {
+          return false;
+        }
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          return false;
+        }
+        return true;
+      },
       type: "User",
       args: {
         id: stringArg({ required: true }),
@@ -131,7 +140,24 @@ export const Mutation = mutationType({
       }
     });
     t.field("postUpdate", {
-      authorize: (_, __, { uid }) => uid !== null,
+      authorize: async (
+        _,
+        { id },
+        { uid, repositories: { userRepository, postRepository } }
+      ) => {
+        if (!uid) {
+          return false;
+        }
+        const user = await userRepository.findByUid(uid);
+        if (!user) {
+          return false;
+        }
+        const post = await postRepository.findById(id);
+        if (!post) {
+          return false;
+        }
+        return post.userId === user.id;
+      },
       type: "Post",
       args: {
         id: idArg({ required: true }),

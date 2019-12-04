@@ -31,6 +31,11 @@ const Navbar: React.StatelessComponent = () => {
               </Link>
             </MenuItem>
             <MenuItem>
+              <Link href="/me">
+                <a>my page</a>
+              </Link>
+            </MenuItem>
+            <MenuItem>
               <Link href="#">
                 <a onClick={actions.signOut}>Logout</a>
               </Link>

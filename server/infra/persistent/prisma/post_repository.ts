@@ -125,7 +125,6 @@ export class PostRepository {
   }
 
   async findByLanguages(langs: Language[], currentUserId: ID): Promise<Post[]> {
-    console.log(currentUserId);
     const posts = await this.photon.posts.findMany({
       where: {
         AND: [

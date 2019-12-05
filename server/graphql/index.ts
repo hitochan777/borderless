@@ -21,3 +21,4 @@ export * from "./PostInput";
 export * from "./LineInput";
 export * from "./PartialLineInput";
 export * from "./TweetInput";
+export * from "./SearchInput";

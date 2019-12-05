@@ -1,9 +1,23 @@
-import { queryType, stringArg, idArg } from "nexus";
+import { queryType, stringArg, idArg, arg } from "nexus";
 
 import * as value from "../value/language";
 
 export const Query = queryType({
   definition(t) {
+    t.list.field("search", {
+      type: "Post",
+      args: {
+        query: arg({ type: "SearchInput", required: true })
+      },
+      async resolve(_, { query }, { repositories: { postRepository } }) {
+        if (!query.language) {
+          const posts = await postRepository.findAll();
+          return posts;
+        }
+        const posts = await postRepository.findByLanguages([query.language]);
+        return posts;
+      }
+    });
     t.list.field("feed", {
       type: "Post",
       args: {

@@ -106,6 +106,7 @@ export type PostInput = {
 
 export type Query = {
   __typename?: "Query";
+  search: Array<Post>;
   feed: Array<Post>;
   posts: Array<Post>;
   post: Post;
@@ -113,6 +114,10 @@ export type Query = {
   replies: Array<Tweet>;
   langs: Array<Language>;
   viewer: User;
+};
+
+export type QuerySearchArgs = {
+  query: SearchInput;
 };
 
 export type QueryFeedArgs = {
@@ -133,6 +138,10 @@ export type QueryRepliesArgs = {
 
 /** Anything that can be replied */
 export type Repliable = Tweet | Line;
+
+export type SearchInput = {
+  language?: Maybe<Scalars["Int"]>;
+};
 
 export type Tweet = Node & {
   __typename?: "Tweet";
@@ -220,6 +229,14 @@ export type FetchFeedForUserQueryVariables = {
 
 export type FetchFeedForUserQuery = { __typename?: "Query" } & {
   feed: Array<{ __typename?: "Post" } & PostFieldFragment>;
+};
+
+export type FetchSearchResultQueryVariables = {
+  query: SearchInput;
+};
+
+export type FetchSearchResultQuery = { __typename?: "Query" } & {
+  search: Array<{ __typename?: "Post" } & PostFieldFragment>;
 };
 
 export type FetchLanguagesQueryVariables = {};

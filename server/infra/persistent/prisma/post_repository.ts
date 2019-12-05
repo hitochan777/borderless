@@ -124,7 +124,41 @@ export class PostRepository {
     );
   }
 
-  async findByLanguages(langs: Language[], currentUserId: ID): Promise<Post[]> {
+  async findAll(currentUserId: ID = ""): Promise<Post[]> {
+    const posts = await this.photon.posts.findMany({
+      where: {
+        OR: [
+          {
+            published: true
+          },
+          {
+            published: false,
+            user: {
+              id: currentUserId
+            }
+          }
+        ]
+      },
+      include: {
+        user: true
+      }
+    });
+    return posts.map(
+      post =>
+        new Post(
+          post.id,
+          post.user.id,
+          post.language,
+          JSON.parse(post.content),
+          !post.published
+        )
+    );
+  }
+
+  async findByLanguages(
+    langs: Language[],
+    currentUserId: ID = ""
+  ): Promise<Post[]> {
     const posts = await this.photon.posts.findMany({
       where: {
         AND: [

@@ -28,6 +28,9 @@ export interface NexusGenInputs {
     language: number; // Int!
     lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
+  SearchInput: { // input type
+    language?: number | null; // Int
+  }
   TweetInput: { // input type
     inReplyTo: string; // ID!
     postId: string; // ID!
@@ -74,6 +77,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   LineInput: NexusGenInputs['LineInput'];
   PartialLineInput: NexusGenInputs['PartialLineInput'];
   PostInput: NexusGenInputs['PostInput'];
+  SearchInput: NexusGenInputs['SearchInput'];
   TweetInput: NexusGenInputs['TweetInput'];
   UserInput: NexusGenInputs['UserInput'];
 }
@@ -119,6 +123,7 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Post']; // Post!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
+    search: NexusGenRootTypes['Post'][]; // [Post!]!
     tweet: NexusGenRootTypes['Tweet']; // Tweet!
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -176,6 +181,9 @@ export interface NexusGenArgTypes {
     replies: { // args
       id: string; // ID!
     }
+    search: { // args
+      query: NexusGenInputs['SearchInput']; // SearchInput!
+    }
     tweet: { // args
       id: string; // ID!
     }
@@ -191,7 +199,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "TweetInput" | "UserInput";
+export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "SearchInput" | "TweetInput" | "UserInput";
 
 export type NexusGenEnumNames = never;
 

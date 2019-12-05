@@ -75,6 +75,7 @@ type Query {
     """repliable ID"""
     id: ID!
   ): [Tweet!]!
+  search(query: SearchInput!): [Post!]!
   tweet(
     """tweet id"""
     id: ID!
@@ -84,6 +85,10 @@ type Query {
 
 """Anything that can be replied"""
 union Repliable = Line | Tweet
+
+input SearchInput {
+  language: Int
+}
 
 type Tweet implements Node {
   """Unique identifier for the resource"""

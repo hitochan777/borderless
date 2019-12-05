@@ -80,6 +80,15 @@ export const FETCH_FEED_FOR_USER_QUERY = gql`
   ${POST_FIELD_FRAGMENT}
 `;
 
+export const FETCH_SEARCH_RESULT_QUERY = gql`
+  query fetchSearchResult($query: SearchInput!) {
+    search(query: $query) {
+      ...postField
+    }
+  }
+  ${POST_FIELD_FRAGMENT}
+`;
+
 export const FETCH_LANGUAGES_QUERY = gql`
   query fetchLanguages {
     langs {

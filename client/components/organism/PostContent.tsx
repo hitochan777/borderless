@@ -60,6 +60,7 @@ export interface Props {
     replies: { id: string; text: string }[];
   }[];
   language: {
+    id: string;
     name: string;
   };
   isDraft: boolean;
@@ -127,6 +128,10 @@ export const PostContent: React.FC<Props> = ({
     );
   };
 
+  const handleLanguageClick = (language: string) => {
+    Router.push(`/search?lang=${language}`);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={9}>
@@ -152,7 +157,13 @@ export const PostContent: React.FC<Props> = ({
               <Typography variant="subtitle1">{user.username}</Typography>
             </Grid>
             <Grid item>
-              <Chip label={language.name} size="small" />
+              <Chip
+                label={language.name}
+                size="small"
+                onClick={() => {
+                  handleLanguageClick(language.id);
+                }}
+              />
             </Grid>
             <Grid item>
               {isDraft ? (

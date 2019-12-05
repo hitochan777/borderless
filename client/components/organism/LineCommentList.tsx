@@ -36,8 +36,8 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
   return (
     <List>
       {data.replies.map(reply => (
-        <>
-          <ListItem key={reply.id}>
+        <React.Fragment key={reply.id}>
+          <ListItem>
             <ListItemAvatar>
               <Avatar
                 alt={"username here"}
@@ -47,7 +47,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
             <ListItemText>{reply.text}</ListItemText>
           </ListItem>
           <Divider />
-        </>
+        </React.Fragment>
       ))}
     </List>
   );

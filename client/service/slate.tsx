@@ -1,30 +1,21 @@
-import { Value } from "slate";
 import { LineFieldFragment, LineInput } from "../generated/types";
+import { Node } from "slate";
 
-export function transformToGql(value: Value): LineInput[] {
-  const state: any = value.document.toJS();
-  return state.nodes.map((lineNode: any) => ({
-    id: +lineNode.data.id,
-    partialLines: lineNode.nodes.map((sublineNode: any) => ({
+export function transformToGql(nodes: Node[]): LineInput[] {
+  return nodes.map(lineNode => ({
+    id: lineNode.id,
+    partialLines: lineNode.children.map((sublineNode: any) => ({
       subtext: sublineNode.text
     }))
   }));
 }
-export function transformfromGql(lines: LineFieldFragment[]): Value {
-  return Value.fromJSON({
-    document: {
-      nodes: lines.map(line => ({
-        object: "block",
-        type: "line",
-        nodes: line.partialLines.map(partial => ({
-          object: "text",
-          text: partial.text,
-          marks: []
-        })),
-        data: {
-          id: line.id
-        }
-      }))
-    }
-  });
+export function transformfromGql(lines: LineFieldFragment[]): Node[] {
+  return lines.map(line => ({
+    id: line.id,
+    type: "line",
+    children: line.partialLines.map(partial => ({
+      text: partial.text,
+      marks: []
+    }))
+  }));
 }

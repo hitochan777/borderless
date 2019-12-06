@@ -1,71 +1,83 @@
-import React, { useState } from "react";
-import { Editor as SlateEditor, EventHook } from "slate-react";
-import { Value } from "slate";
+import React, { useMemo, useState } from "react";
+import { createEditor, Node, Range, Editor as SlateEditor } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
 
-import useCustomKeygen from "@/lib/useCustomKeygen";
-
-const defaultEditorState = Value.fromJSON({
-  document: {
-    nodes: [
+const defaultValue: Node[] = [
+  {
+    type: "line",
+    children: [
       {
-        object: "block",
-        type: "line",
-        nodes: [
-          {
-            object: "text",
-            text: ""
-          }
-        ]
+        text: ""
       }
     ]
   }
-});
+];
+
+const defaultSelection = null;
 
 export const useEditorState = (
-  initialState?: Value
-): [Value, React.Dispatch<React.SetStateAction<Value>>] => {
-  const [editorState, setEditorState] = useState(
-    initialState || defaultEditorState
+  initialValue?: Node[],
+  initialSelection?: Range | null
+): {
+  value: Node[];
+  setValue: React.Dispatch<React.SetStateAction<Node[]>>;
+  selection: Range | null;
+  setSelection: React.Dispatch<React.SetStateAction<Range | null>>;
+} => {
+  const [value, setValue] = useState(initialValue || defaultValue);
+  const [selection, setSelection] = useState(
+    initialSelection || defaultSelection
   );
-  return [editorState, setEditorState];
+  return { value, setValue, selection, setSelection };
 };
 
 interface EditorProps {
-  slateKey: string;
-  editorState: Value;
-  setEditorState: React.Dispatch<React.SetStateAction<Value>>;
+  value: Node[];
+  setValue: React.Dispatch<React.SetStateAction<Node[]>>;
+  selection: Range | null;
+  setSelection: React.Dispatch<React.SetStateAction<Range | null>>;
 }
 
-export const Editor: React.StatelessComponent<EditorProps> = ({
-  slateKey,
-  editorState,
-  setEditorState
+export const Editor: React.FC<EditorProps> = ({
+  value,
+  setValue,
+  selection,
+  setSelection
 }) => {
-  useCustomKeygen(slateKey);
-  const onChange = ({ value }: { value: Value }) => {
-    setEditorState(value);
+  const onChange = (newValue: Node[], newSelection: Range | null) => {
+    setValue(newValue);
+    setSelection(newSelection);
   };
-
-  const onEnter: EventHook<React.KeyboardEvent> = (event, editor) => {
+  const onEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
-    editor.splitBlock().setBlocks({ type: "line", data: {} });
-  };
-
-  const onKeyDown: EventHook<React.KeyboardEvent> = (event, editor, next) => {
-    switch (event.key) {
-      case "Enter":
-        return onEnter(event, editor, next);
-      default:
-        return next();
+    editor.exec({ type: "insert_break" });
+    const [match] = SlateEditor.nodes(editor, { match: { type: "line" } });
+    if (match) {
+      const path = match[1];
+      SlateEditor.setNodes(editor, { id: undefined }, { at: path });
     }
   };
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (event.key) {
+      case "Enter":
+        return onEnter(event);
+    }
+  };
+
+  const editor = useMemo(() => withReact(createEditor()), []);
   return (
-    <SlateEditor
-      onKeyDown={onKeyDown}
-      value={editorState}
+    <Slate
+      key={"slate-key"}
+      editor={editor}
+      value={value}
+      selection={selection}
       onChange={onChange}
-      placeholder="Start your writing journey here!"
-    />
+    >
+      <Editable
+        onKeyDown={onKeyDown}
+        placeholder={"Start your writing journey here!"}
+      />
+    </Slate>
   );
 };

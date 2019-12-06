@@ -27,7 +27,7 @@ const useCreatePost = () => {
 };
 
 const PostNewPage: NextPage = () => {
-  const [editorState, setEditorState] = useEditorState();
+  const { value, setValue, selection, setSelection } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const { createPost, loading, error } = useCreatePost();
 
@@ -35,7 +35,7 @@ const PostNewPage: NextPage = () => {
     await createPost({
       variables: {
         post: {
-          lines: transformToGql(editorState),
+          lines: transformToGql(value),
           language: +language,
           isDraft
         }
@@ -62,9 +62,10 @@ const PostNewPage: NextPage = () => {
         />
         <Box mt={4}>
           <Editor
-            slateKey="slateKey"
-            editorState={editorState}
-            setEditorState={setEditorState}
+            value={value}
+            setValue={setValue}
+            selection={selection}
+            setSelection={setSelection}
           />
         </Box>
         <Box mt={4}>

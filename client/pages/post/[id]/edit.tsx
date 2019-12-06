@@ -47,7 +47,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
     loading: fetchPostLoading,
     error: fetchPostError
   } = usePostById(id);
-  const [editorState, setEditorState] = useEditorState();
+  const { value, setValue, selection, setSelection } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const {
     updatePost,
@@ -57,7 +57,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
   useEffect(() => {
     if (!fetchPostLoading && fetchPostData) {
       const parsedEditorState = transformfromGql(fetchPostData.post.lines);
-      setEditorState(parsedEditorState);
+      setValue(parsedEditorState);
       setLanguage(fetchPostData.post.language.id);
     }
   }, [fetchPostLoading, fetchPostData]);
@@ -69,7 +69,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
       variables: {
         id,
         post: {
-          lines: transformToGql(editorState),
+          lines: transformToGql(value),
           language: +language,
           isDraft
         }
@@ -95,11 +95,12 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
           }}
         />
         <Box mt={4}>
-          <pre>{JSON.stringify(editorState.toJS(), null, 2)}</pre>
+          <pre>{JSON.stringify(value, null, 2)}</pre>
           <Editor
-            slateKey="slateKey"
-            editorState={editorState}
-            setEditorState={setEditorState}
+            value={value}
+            setValue={setValue}
+            selection={selection}
+            setSelection={setSelection}
           />
         </Box>
         <Box mt={4}>

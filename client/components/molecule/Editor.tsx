@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { createEditor, Node, Range, Editor as SlateEditor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
+import { withHistory } from "slate-history";
 
 const defaultValue: Node[] = [
   {
@@ -48,7 +49,7 @@ export const Editor: React.FC<EditorProps> = ({
     setValue(newValue);
     setSelection(newSelection);
   };
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const onEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
     editor.exec({ type: "insert_break" });

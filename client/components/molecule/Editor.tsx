@@ -48,6 +48,7 @@ export const Editor: React.FC<EditorProps> = ({
     setValue(newValue);
     setSelection(newSelection);
   };
+  const editor = useMemo(() => withReact(createEditor()), []);
   const onEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
     editor.exec({ type: "insert_break" });
@@ -65,7 +66,6 @@ export const Editor: React.FC<EditorProps> = ({
     }
   };
 
-  const editor = useMemo(() => withReact(createEditor()), []);
   return (
     <Slate
       key={"slate-key"}

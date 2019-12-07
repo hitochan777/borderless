@@ -212,7 +212,17 @@ export type FetchViewerQuery = { __typename?: "Query" } & {
   viewer: { __typename?: "User" } & Pick<
     User,
     "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-  > & { posts: Array<{ __typename?: "Post" } & PostFieldFragment> };
+  > & {
+      posts: Array<
+        { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
+            language: { __typename?: "Language" } & Pick<
+              Language,
+              "id" | "name"
+            >;
+            user: { __typename?: "User" } & Pick<User, "username">;
+          }
+      >;
+    };
 };
 
 export type FetchPostByIdQueryVariables = {

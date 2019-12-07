@@ -55,11 +55,18 @@ export const FETCH_VIEWER_QUERY = gql`
       fluentLanguages
       learningLanguages
       posts {
-        ...postField
+        id
+        title
+        language {
+          id
+          name
+        }
+        user {
+          username
+        }
       }
     }
   }
-  ${POST_FIELD_FRAGMENT}
 `;
 
 export const FETCH_POST_BY_ID_QUERY = gql`

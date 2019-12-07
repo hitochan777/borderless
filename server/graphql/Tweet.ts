@@ -47,5 +47,11 @@ export const Tweet = objectType({
         return root.updatedAt;
       }
     });
+    t.int("likeCount", {
+      async resolve(root, _, { repositories: { tweetRepository } }) {
+        const count = await tweetRepository.countLike(root.userId, root.id);
+        return count;
+      }
+    });
   }
 });

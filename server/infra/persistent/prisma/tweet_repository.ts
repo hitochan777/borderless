@@ -103,4 +103,28 @@ export class TweetRepository {
     });
     return rawReplies.map(reply => this.createEntity(reply));
   }
+
+  async addLike(userId: ID, tweetId: ID) {
+    await this.photon.likes.create({
+      data: {
+        repliable: {
+          connect: {
+            id: tweetId
+          }
+        },
+        user: {
+          connect: {
+            id: userId
+          }
+        }
+      }
+    });
+  }
+
+  async countLike(userId: ID, tweetId: ID): Promise<number> {
+    const likes = await this.photon.likes.findMany({
+      where: { user: { id: userId }, repliable: { id: tweetId } }
+    }); // FIXME: use count method when it becomes available
+    return likes.length;
+  }
 }

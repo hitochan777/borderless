@@ -1,4 +1,4 @@
-import { stringArg, mutationType, arg, idArg } from "nexus";
+import { mutationType, arg, idArg, stringArg } from "nexus";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 import { Post } from "../entity/post";
@@ -261,6 +261,29 @@ export const Mutation = mutationType({
         }
 
         return tweet;
+      }
+    });
+    t.field("likeTweet", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "Tweet",
+      args: {
+        id: stringArg({ required: true })
+      },
+      async resolve(
+        _,
+        { id: tweetId },
+        { uid, repositories: { tweetRepository, userRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid as string);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        await tweetRepository.addLike(user.id, tweetId);
+        const maybeTweet = await tweetRepository.findTweetById(tweetId);
+        if (!maybeTweet) {
+          throw new Error("Tweet not found");
+        }
+        return maybeTweet;
       }
     });
     t.field("logout", {

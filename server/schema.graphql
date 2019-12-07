@@ -27,6 +27,7 @@ input LineInput {
 }
 
 type Mutation {
+  likeTweet(id: String!): Tweet!
   logout: Boolean!
   postCreate(post: PostInput!): Post!
   postUpdate(id: ID!, post: PostInput!): Post!
@@ -101,6 +102,7 @@ type Tweet implements Node {
   """Unique identifier for the resource"""
   id: ID!
   inReplyTo: Int
+  likeCount: Int!
   post: Post!
   postedBy: User!
   replies: [Tweet!]!

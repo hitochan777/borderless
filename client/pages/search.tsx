@@ -45,6 +45,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
               title={post.title}
               username={post.user.username}
               language={post.language.name}
+              updatedAt={post.updatedAt}
             />
           </Box>
         ))}

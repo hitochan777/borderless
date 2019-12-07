@@ -102,6 +102,7 @@ export interface NexusGenFieldTypes {
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
   }
   Mutation: { // field return type
+    likeTweet: NexusGenRootTypes['Tweet']; // Tweet!
     logout: boolean; // Boolean!
     postCreate: NexusGenRootTypes['Post']; // Post!
     postUpdate: NexusGenRootTypes['Post']; // Post!
@@ -139,6 +140,7 @@ export interface NexusGenFieldTypes {
     createdAt: any | null; // Date
     id: string; // ID!
     inReplyTo: number | null; // Int
+    likeCount: number; // Int!
     post: NexusGenRootTypes['Post']; // Post!
     postedBy: NexusGenRootTypes['User']; // User!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
@@ -162,6 +164,9 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    likeTweet: { // args
+      id: string; // String!
+    }
     postCreate: { // args
       post: NexusGenInputs['PostInput']; // PostInput!
     }

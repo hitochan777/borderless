@@ -9,7 +9,9 @@ export class User extends Base {
     public email: string,
     public username: string,
     public fluentLanguages: Language[],
-    public learningLanguages: Language[]
+    public learningLanguages: Language[],
+    public createdAt: Date | null = null,
+    public updatedAt: Date | null = null
   ) {
     super(_id);
   }

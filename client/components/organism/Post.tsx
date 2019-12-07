@@ -17,7 +17,8 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
   isDraft,
   lines,
   language,
-  user
+  user,
+  updatedAt
 }) => {
   return (
     <PostContent
@@ -27,6 +28,7 @@ export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
       lines={lines}
       language={language}
       user={user}
+      updatedAt={updatedAt}
     />
   );
 };
@@ -65,6 +67,7 @@ export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
       }))}
       language={data.post.language}
       user={data.post.user}
+      updatedAt={new Date(data.post.updatedAt)}
     />
   );
 };

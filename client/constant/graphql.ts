@@ -4,6 +4,7 @@ export const TWEET_FIELD_FRAGMENT = gql`
   fragment tweetField on Tweet {
     id
     text
+    updatedAt
   }
 `;
 
@@ -42,6 +43,7 @@ export const POST_FIELD_FRAGMENT = gql`
       username
     }
     isDraft
+    updatedAt
   }
   ${TWEET_FIELD_FRAGMENT}
 `;
@@ -110,6 +112,7 @@ export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
     replies(id: $id) {
       id
       text
+      updatedAt
     }
   }
 `;

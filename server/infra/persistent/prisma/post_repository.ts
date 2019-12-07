@@ -1,4 +1,4 @@
-import { Photon } from "@prisma/photon";
+import { Photon, Post as PostModel, User as UserModel } from "@prisma/photon";
 
 import { Post } from "../../../entity/post";
 import { ID } from "../../../types";
@@ -9,6 +9,19 @@ export class PostRepository {
   constructor() {
     this.photon = new Photon();
   }
+
+  createEntity(post: PostModel & { user: UserModel }): Post {
+    return new Post(
+      post.id,
+      post.user.id,
+      post.language,
+      JSON.parse(post.content),
+      !post.published,
+      post.createdAt,
+      post.updatedAt
+    );
+  }
+
   async create(postInput: Post): Promise<Post | null> {
     if (postInput.userId === null) {
       throw new Error("You cannot set userId to null");
@@ -30,13 +43,7 @@ export class PostRepository {
         user: true
       }
     });
-    return new Post(
-      newPost.id,
-      newPost.user.id,
-      newPost.language,
-      JSON.parse(newPost.content),
-      !newPost.published
-    );
+    return this.createEntity(newPost);
   }
   async update(post: Post) {
     if (!post.id) {
@@ -70,13 +77,7 @@ export class PostRepository {
       }
     });
 
-    return new Post(
-      updatedPost.id,
-      updatedPost.user.id,
-      updatedPost.language,
-      JSON.parse(updatedPost.content),
-      !updatedPost.published
-    );
+    return this.createEntity(updatedPost);
   }
 
   async findByUser(userId: ID): Promise<Post[]> {
@@ -91,16 +92,7 @@ export class PostRepository {
       }
     });
 
-    return posts.map(
-      post =>
-        new Post(
-          post.id,
-          post.user.id,
-          post.language,
-          JSON.parse(post.content),
-          !post.published
-        )
-    );
+    return posts.map(post => this.createEntity(post));
   }
 
   async findById(id: ID): Promise<Post | null> {
@@ -115,13 +107,7 @@ export class PostRepository {
     if (post === null) {
       return null;
     }
-    return new Post(
-      post.id,
-      post.user.id,
-      post.language,
-      JSON.parse(post.content),
-      !post.published
-    );
+    return this.createEntity(post);
   }
 
   async findAll(currentUserId: ID = ""): Promise<Post[]> {
@@ -143,16 +129,7 @@ export class PostRepository {
         user: true
       }
     });
-    return posts.map(
-      post =>
-        new Post(
-          post.id,
-          post.user.id,
-          post.language,
-          JSON.parse(post.content),
-          !post.published
-        )
-    );
+    return posts.map(post => this.createEntity(post));
   }
 
   async findByLanguages(
@@ -186,15 +163,6 @@ export class PostRepository {
         user: true
       }
     });
-    return posts.map(
-      post =>
-        new Post(
-          post.id,
-          post.user.id,
-          post.language,
-          JSON.parse(post.content),
-          !post.published
-        )
-    );
+    return posts.map(post => this.createEntity(post));
   }
 }

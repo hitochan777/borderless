@@ -8,7 +8,12 @@ import * as entity_line from "./entity/line"
 import * as entity_post from "./entity/post"
 import * as entity_tweet from "./entity/tweet"
 import * as entity_user from "./entity/user"
-
+import { core } from "nexus"
+declare global {
+  interface NexusGenCustomDefinitionMethods<TypeName extends string> {
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+  }
+}
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
@@ -70,6 +75,7 @@ export interface NexusGenRootTypes {
   Float: number;
   Boolean: boolean;
   ID: string;
+  Date: any;
   Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
 }
 
@@ -108,6 +114,7 @@ export interface NexusGenFieldTypes {
     text: string; // String!
   }
   Post: { // field return type
+    createdAt: any | null; // Date
     id: string; // ID!
     isDraft: boolean; // Boolean!
     json: string; // String!
@@ -115,6 +122,7 @@ export interface NexusGenFieldTypes {
     lines: NexusGenRootTypes['Line'][]; // [Line!]!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     title: string; // String!
+    updatedAt: any | null; // Date
     user: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
@@ -128,19 +136,23 @@ export interface NexusGenFieldTypes {
     viewer: NexusGenRootTypes['User']; // User!
   }
   Tweet: { // field return type
+    createdAt: any | null; // Date
     id: string; // ID!
     inReplyTo: number | null; // Int
     post: NexusGenRootTypes['Post']; // Post!
     postedBy: NexusGenRootTypes['User']; // User!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     text: string; // String!
+    updatedAt: any | null; // Date
   }
   User: { // field return type
+    createdAt: any | null; // Date
     email: string; // String!
     fluentLanguages: number[]; // [Int!]!
     id: string; // ID!
     learningLanguages: number[]; // [Int!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    updatedAt: any | null; // Date
     username: string; // String!
   }
   Node: { // field return type
@@ -205,7 +217,7 @@ export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = "Node";
 
-export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "Date" | "Float" | "ID" | "Int" | "String";
 
 export type NexusGenUnionNames = "Repliable";
 

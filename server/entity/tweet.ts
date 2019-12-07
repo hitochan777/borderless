@@ -7,7 +7,9 @@ export class Tweet extends Base {
     public userId: ID,
     public inReplyTo: ID | null,
     public postId: ID,
-    public text: string
+    public text: string,
+    public createdAt: Date | null,
+    public updatedAt: Date | null
   ) {
     super(_id);
   }

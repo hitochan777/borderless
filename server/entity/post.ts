@@ -16,13 +16,15 @@ export class Post extends Base {
     public userId: ID,
     public language: Language,
     public lines: Line[],
-    public isDraft: boolean
+    public isDraft: boolean,
+    public createdAt: Date | null = null,
+    public updatedAt: Date | null = null
   ) {
     super(_id);
   }
 
   static create({ userId, language, lines, isDraft }: PostFactoryInput): Post {
-    return new Post(null, userId, language, lines, isDraft);
+    return new Post(null, userId, language, lines, isDraft, null, null);
   }
 
   get title(): string {

@@ -22,3 +22,6 @@ export * from "./LineInput";
 export * from "./PartialLineInput";
 export * from "./TweetInput";
 export * from "./SearchInput";
+
+// Scalar
+export * from "./DateScalar";

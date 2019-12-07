@@ -12,6 +12,7 @@ import Badge from "@material-ui/core/Badge";
 import Link from "next/link";
 import { useMutation } from "@apollo/react-hooks";
 
+import dayjs from "@/lib/time";
 import {
   TWEET_CREATE_MUTATION,
   FETCH_TWEETS_FOR_LINE_QUERY,
@@ -64,6 +65,7 @@ export interface Props {
     name: string;
   };
   isDraft: boolean;
+  updatedAt: Date;
 }
 
 const useCreateTweet = () => {
@@ -80,7 +82,8 @@ export const PostContent: React.FC<Props> = ({
   user,
   lines,
   language,
-  isDraft
+  isDraft,
+  updatedAt
 }) => {
   const classes = useStyles();
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
@@ -165,6 +168,7 @@ export const PostContent: React.FC<Props> = ({
                 }}
               />
             </Grid>
+            <Grid item>{dayjs(updatedAt).fromNow()}</Grid>
             <Grid item>
               {isDraft ? (
                 <Link href="/post/[id]/edit" as={`/post/${id}/edit`}>

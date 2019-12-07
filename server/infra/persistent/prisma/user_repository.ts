@@ -17,7 +17,9 @@ export class UserRepository {
       user.email,
       user.username,
       this.transformFrom(user.fluentLanguages || ""),
-      this.transformFrom(user.learningLanguages || "")
+      this.transformFrom(user.learningLanguages || ""),
+      user.createdAt,
+      user.updatedAt
     );
   }
 

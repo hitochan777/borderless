@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 
-import Loading from "@/components/Loading";
+import dayjs from "@/lib/time";
 import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
 import {
   FetchTweetsForLineQuery,
@@ -25,7 +25,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
   >(FETCH_TWEETS_FOR_LINE_QUERY, { variables: { id: lineId } });
 
   if (loading) {
-    return <Loading />;
+    return <></>;
   }
   if (error) {
     throw error;
@@ -44,7 +44,11 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
                 src={`https://api.adorable.io/avatars/30/usernamehere@borderless.png`}
               />
             </ListItemAvatar>
-            <ListItemText>{reply.text}</ListItemText>
+
+            <ListItemText>
+              <div>{dayjs(reply.updatedAt).fromNow()}</div>
+              <div>{reply.text}</div>
+            </ListItemText>
           </ListItem>
           <Divider />
         </React.Fragment>

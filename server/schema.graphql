@@ -6,6 +6,8 @@ type AuthData {
   token: String!
 }
 
+scalar Date
+
 type Language implements Node {
   """Unique identifier for the resource"""
   id: ID!
@@ -49,6 +51,8 @@ input PartialLineInput {
 }
 
 type Post implements Node {
+  createdAt: Date
+
   """Unique identifier for the resource"""
   id: ID!
   isDraft: Boolean!
@@ -57,6 +61,7 @@ type Post implements Node {
   lines: [Line!]!
   replies: [Tweet!]!
   title: String!
+  updatedAt: Date
   user: User!
 }
 
@@ -91,6 +96,8 @@ input SearchInput {
 }
 
 type Tweet implements Node {
+  createdAt: Date
+
   """Unique identifier for the resource"""
   id: ID!
   inReplyTo: Int
@@ -98,6 +105,7 @@ type Tweet implements Node {
   postedBy: User!
   replies: [Tweet!]!
   text: String!
+  updatedAt: Date
 }
 
 input TweetInput {
@@ -107,6 +115,7 @@ input TweetInput {
 }
 
 type User implements Node {
+  createdAt: Date
   email: String!
   fluentLanguages: [Int!]!
 
@@ -114,6 +123,7 @@ type User implements Node {
   id: ID!
   learningLanguages: [Int!]!
   posts: [Post!]!
+  updatedAt: Date
   username: String!
 }
 

@@ -6,6 +6,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
 };
 
 export type AuthData = {
@@ -96,6 +97,8 @@ export type Post = Node & {
   language: Language;
   isDraft: Scalars["Boolean"];
   replies: Array<Tweet>;
+  createdAt?: Maybe<Scalars["Date"]>;
+  updatedAt?: Maybe<Scalars["Date"]>;
 };
 
 export type PostInput = {
@@ -152,6 +155,8 @@ export type Tweet = Node & {
   postedBy: User;
   post: Post;
   replies: Array<Tweet>;
+  createdAt?: Maybe<Scalars["Date"]>;
+  updatedAt?: Maybe<Scalars["Date"]>;
 };
 
 export type TweetInput = {
@@ -169,6 +174,8 @@ export type User = Node & {
   fluentLanguages: Array<Scalars["Int"]>;
   learningLanguages: Array<Scalars["Int"]>;
   posts: Array<Post>;
+  createdAt?: Maybe<Scalars["Date"]>;
+  updatedAt?: Maybe<Scalars["Date"]>;
 };
 
 export type UserInput = {
@@ -180,7 +187,7 @@ export type UserInput = {
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
-  "id" | "text"
+  "id" | "text" | "updatedAt"
 >;
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -192,7 +199,7 @@ export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
 
 export type PostFieldFragment = { __typename?: "Post" } & Pick<
   Post,
-  "id" | "title" | "json" | "isDraft"
+  "id" | "title" | "json" | "isDraft" | "updatedAt"
 > & {
     lines: Array<
       { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -260,7 +267,9 @@ export type FetchTweetsForLineQueryVariables = {
 };
 
 export type FetchTweetsForLineQuery = { __typename?: "Query" } & {
-  replies: Array<{ __typename?: "Tweet" } & Pick<Tweet, "id" | "text">>;
+  replies: Array<
+    { __typename?: "Tweet" } & Pick<Tweet, "id" | "text" | "updatedAt">
+  >;
 };
 
 export type PostUpdateMutationVariables = {

@@ -50,5 +50,17 @@ export const Post = objectType({
         return await tweetRepository.findRepliesTo(root.id);
       }
     });
+    t.date("createdAt", {
+      nullable: true,
+      resolve(root) {
+        return root.createdAt;
+      }
+    });
+    t.date("updatedAt", {
+      nullable: true,
+      resolve(root) {
+        return root.updatedAt;
+      }
+    });
   }
 });

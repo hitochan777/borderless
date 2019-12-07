@@ -86,7 +86,9 @@ export class TweetRepository {
       tweet.user.id,
       tweet.inReplyTo.id,
       tweet.post.id,
-      tweet.content
+      tweet.content,
+      tweet.createdAt,
+      tweet.updatedAt
     );
   }
 

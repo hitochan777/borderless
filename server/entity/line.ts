@@ -13,7 +13,9 @@ export class Line extends Base {
     _id: NullableID,
     public postId: NullableID,
     public lineContent: LineContent,
-    public replies: ID[]
+    public replies: ID[],
+    public createdAt: Date | null = null,
+    public updatedAt: Date | null = null
   ) {
     super(_id);
   }

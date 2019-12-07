@@ -5,6 +5,8 @@ export const TWEET_FIELD_FRAGMENT = gql`
     id
     text
     updatedAt
+    likeCount
+    likedByMe
   }
 `;
 
@@ -110,11 +112,10 @@ export const FETCH_LANGUAGES_QUERY = gql`
 export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
   query fetchTweetsForLine($id: ID!) {
     replies(id: $id) {
-      id
-      text
-      updatedAt
+      ...tweetField
     }
   }
+  ${TWEET_FIELD_FRAGMENT}
 `;
 
 export const POST_UPDATE_MUTATION = gql`
@@ -152,4 +153,13 @@ export const TWEET_CREATE_MUTATION = gql`
       id
     }
   }
+`;
+
+export const TWEET_LIKE_MUTATION = gql`
+  mutation tweetLike($id: ID!) {
+    tweetLike(id: $id) {
+      ...tweetField
+    }
+  }
+  ${TWEET_FIELD_FRAGMENT}
 `;

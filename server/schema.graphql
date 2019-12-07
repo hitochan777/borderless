@@ -27,12 +27,12 @@ input LineInput {
 }
 
 type Mutation {
-  likeTweet(id: String!): Tweet!
   logout: Boolean!
   postCreate(post: PostInput!): Post!
   postUpdate(id: ID!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   tweetCreate(tweet: TweetInput!): Tweet!
+  tweetLike(id: ID!): Tweet!
   userCreate(id: ID!): User!
   userUpdate(id: String!, user: UserInput!): User!
 }
@@ -103,6 +103,7 @@ type Tweet implements Node {
   id: ID!
   inReplyTo: Int
   likeCount: Int!
+  likedByMe: Boolean!
   post: Post!
   postedBy: User!
   replies: [Tweet!]!

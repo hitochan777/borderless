@@ -127,4 +127,11 @@ export class TweetRepository {
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }
+
+  async likedByMe(userId: ID, tweetId: ID): Promise<boolean> {
+    const likes = await this.photon.likes.findMany({
+      where: { user: { id: userId }, repliable: { id: tweetId } }
+    });
+    return likes.length > 0;
+  }
 }

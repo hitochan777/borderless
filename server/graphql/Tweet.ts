@@ -53,5 +53,10 @@ export const Tweet = objectType({
         return count;
       }
     });
+    t.boolean("likedByMe", {
+      async resolve(root, _, { repositories: { tweetRepository } }) {
+        return await tweetRepository.likedByMe(root.userId, root.id);
+      }
+    });
   }
 });

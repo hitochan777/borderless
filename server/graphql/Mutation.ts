@@ -263,11 +263,11 @@ export const Mutation = mutationType({
         return tweet;
       }
     });
-    t.field("likeTweet", {
+    t.field("tweetLike", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Tweet",
       args: {
-        id: stringArg({ required: true })
+        id: idArg({ required: true })
       },
       async resolve(
         _,

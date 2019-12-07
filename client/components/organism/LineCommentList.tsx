@@ -1,17 +1,25 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
+import Badge from "@material-ui/core/Badge";
+import IconButton from "@material-ui/core/IconButton";
 
 import dayjs from "@/lib/time";
-import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
+import {
+  FETCH_TWEETS_FOR_LINE_QUERY,
+  TWEET_LIKE_MUTATION
+} from "@/constant/graphql";
+import { LikeIcon } from "@/components/molecule/LikeIcon";
 import {
   FetchTweetsForLineQuery,
-  FetchTweetsForLineQueryVariables
+  FetchTweetsForLineQueryVariables,
+  TweetLikeMutation,
+  TweetLikeMutationVariables
 } from "@/generated/types";
 
 interface Props {
@@ -23,6 +31,15 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
   >(FETCH_TWEETS_FOR_LINE_QUERY, { variables: { id: lineId } });
+
+  const [tweetLike] = useMutation<
+    TweetLikeMutation,
+    TweetLikeMutationVariables
+  >(TWEET_LIKE_MUTATION);
+
+  const handleLikeClick = async (id: string) => {
+    await tweetLike({ variables: { id } });
+  };
 
   if (loading) {
     return <></>;
@@ -47,7 +64,16 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
 
             <ListItemText>
               <div>{dayjs(reply.updatedAt).fromNow()}</div>
-              <div>{reply.text}</div>
+              <div>
+                {reply.text}
+                <IconButton onClick={() => handleLikeClick(reply.id)}>
+                  <Badge color="primary" badgeContent={reply.likeCount}>
+                    {" "}
+                    <LikeIcon liked={reply.likedByMe} />
+                  </Badge>
+                </IconButton>
+              </div>
+              <div></div>
             </ListItemText>
           </ListItem>
           <Divider />

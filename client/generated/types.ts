@@ -41,6 +41,7 @@ export type Mutation = {
   postCreate: Post;
   postUpdate: Post;
   tweetCreate: Tweet;
+  tweetLike: Tweet;
   logout: Scalars["Boolean"];
   signin: AuthData;
 };
@@ -65,6 +66,10 @@ export type MutationPostUpdateArgs = {
 
 export type MutationTweetCreateArgs = {
   tweet: TweetInput;
+};
+
+export type MutationTweetLikeArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationSigninArgs = {
@@ -157,6 +162,8 @@ export type Tweet = Node & {
   replies: Array<Tweet>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
+  likeCount: Scalars["Int"];
+  likedByMe: Scalars["Boolean"];
 };
 
 export type TweetInput = {
@@ -187,7 +194,7 @@ export type UserInput = {
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
-  "id" | "text" | "updatedAt"
+  "id" | "text" | "updatedAt" | "likeCount" | "likedByMe"
 >;
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -267,9 +274,7 @@ export type FetchTweetsForLineQueryVariables = {
 };
 
 export type FetchTweetsForLineQuery = { __typename?: "Query" } & {
-  replies: Array<
-    { __typename?: "Tweet" } & Pick<Tweet, "id" | "text" | "updatedAt">
-  >;
+  replies: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
 };
 
 export type PostUpdateMutationVariables = {
@@ -307,4 +312,12 @@ export type TweetCreateMutationVariables = {
 
 export type TweetCreateMutation = { __typename?: "Mutation" } & {
   tweetCreate: { __typename?: "Tweet" } & Pick<Tweet, "id">;
+};
+
+export type TweetLikeMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type TweetLikeMutation = { __typename?: "Mutation" } & {
+  tweetLike: { __typename?: "Tweet" } & TweetFieldFragment;
 };

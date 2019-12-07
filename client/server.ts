@@ -50,12 +50,12 @@ const runServer = async () => {
   await nextApp.prepare();
   const server = express();
 
-  if (dev) {
-    server.use(
-      GRAPHQL_PATH,
-      proxy({ target: GRAPHQL_ENDPOINT, changeOrigin: true })
-    );
-  }
+  // if (dev) {
+  server.use(
+    GRAPHQL_PATH,
+    proxy({ target: GRAPHQL_ENDPOINT, changeOrigin: true })
+  );
+  // }
   server.get(
     "*",
     bodyParser.json(),

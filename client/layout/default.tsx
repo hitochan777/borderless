@@ -18,7 +18,7 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-const Layout: React.StatelessComponent = ({ children }) => {
+const Layout: React.FC = ({ children }) => {
   const { state } = useStateValue();
   const { data, error, loading: queryLoading } = useQuery<FetchViewerQuery>(
     FETCH_VIEWER_QUERY,

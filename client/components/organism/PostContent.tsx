@@ -150,14 +150,20 @@ export const PostContent: React.FC<Props> = ({
             justify="center"
           >
             <Grid item>
-              <Avatar
-                alt={user.username}
-                src={`https://api.adorable.io/avatars/30/${user.username}@borderless.png`}
-                className={classes.avatar}
-              />
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">{user.username}</Typography>
+              <Link href="/[username]" as={`/${user.username}`}>
+                <Grid container spacing={1}>
+                  <Grid item>
+                    <Avatar
+                      alt={user.username}
+                      src={`https://api.adorable.io/avatars/30/${user.username}@borderless.png`}
+                      className={classes.avatar}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1">{user.username}</Typography>
+                  </Grid>
+                </Grid>
+              </Link>
             </Grid>
             <Grid item>
               <Chip

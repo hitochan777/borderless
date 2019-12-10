@@ -14,6 +14,7 @@ import {
   PostCreateMutation,
   PostCreateMutationVariables
 } from "@/generated/types";
+import { useViewer } from "@/hooks/useViewer";
 import { transformToGql } from "@/service/slate";
 
 const useCreatePost = () => {
@@ -30,8 +31,18 @@ const PostNewPage: NextPage = () => {
   const { value, setValue, selection, setSelection } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const { createPost, loading, error } = useCreatePost();
+  const { viewer } = useViewer();
+
+  useEffect(() => {
+    if (!viewer || error) {
+      alert("I am sorry but something happened during submission");
+    }
+  }, [error, viewer]);
 
   const handleSubmit = async (isDraft = true) => {
+    if (!viewer) {
+      throw new Error("viewer information is empty");
+    }
     await createPost({
       variables: {
         post: {
@@ -41,14 +52,8 @@ const PostNewPage: NextPage = () => {
         }
       }
     });
-    Router.push("/me");
+    Router.push(`/${viewer.username}`);
   };
-
-  useEffect(() => {
-    if (error) {
-      alert("I am sorry but something happened during submission");
-    }
-  }, [error]);
 
   return (
     <Layout>

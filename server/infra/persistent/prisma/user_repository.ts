@@ -42,6 +42,23 @@ export class UserRepository {
     return this.createEntity(user);
   }
 
+  async findByUsername(username: string): Promise<User | null> {
+    const users = await this.photon.users.findMany({
+      where: {
+        username
+      }
+    });
+
+    if (users.length > 1) {
+      throw new Error("Multiple users found");
+    }
+    if (users.length === 0) {
+      return null;
+    }
+
+    return this.createEntity(users[0]);
+  }
+
   async findByIdOrCreate(uid: string): Promise<User | null> {
     const user = await this.findByUid(uid);
     if (user) {

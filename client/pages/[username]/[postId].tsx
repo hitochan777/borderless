@@ -22,20 +22,20 @@ const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
 
 PostIndexPage.getInitialProps = async ctx => {
   const { query } = ctx;
-  const { id, lid: lineId } = query;
-  if (id === "") {
+  const { postId, lid: lineId } = query;
+  if (postId === "") {
     throw new Error("post ID is not provided");
   }
   if (lineId === "") {
     throw new Error("line ID is not provided");
   }
-  if (typeof id !== "string") {
+  if (typeof postId !== "string") {
     throw new Error("You might have specified multiple post IDs");
   }
   if (lineId !== undefined && typeof lineId !== "string") {
     throw new Error("You might have specified multiple post IDs");
   }
-  return { id, focusedLineId: lineId === undefined ? null : lineId };
+  return { id: postId, focusedLineId: lineId === undefined ? null : lineId };
 };
 
 export default PostIndexPage;

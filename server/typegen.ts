@@ -134,6 +134,7 @@ export interface NexusGenFieldTypes {
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     search: NexusGenRootTypes['Post'][]; // [Post!]!
     tweet: NexusGenRootTypes['Tweet']; // Tweet!
+    user: NexusGenRootTypes['User']; // User!
     viewer: NexusGenRootTypes['User']; // User!
   }
   Tweet: { // field return type
@@ -204,6 +205,9 @@ export interface NexusGenArgTypes {
     }
     tweet: { // args
       id: string; // ID!
+    }
+    user: { // args
+      username: string; // String!
     }
   }
 }

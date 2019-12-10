@@ -122,6 +122,7 @@ export type Query = {
   replies: Array<Tweet>;
   langs: Array<Language>;
   viewer: User;
+  user: User;
 };
 
 export type QuerySearchArgs = {
@@ -142,6 +143,10 @@ export type QueryTweetArgs = {
 
 export type QueryRepliesArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryUserArgs = {
+  username: Scalars["String"];
 };
 
 /** Anything that can be replied */
@@ -228,7 +233,28 @@ export type FetchViewerQuery = { __typename?: "Query" } & {
     "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
   > & {
       posts: Array<
-        { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
+        { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
+            language: { __typename?: "Language" } & Pick<
+              Language,
+              "id" | "name"
+            >;
+            user: { __typename?: "User" } & Pick<User, "username">;
+          }
+      >;
+    };
+};
+
+export type FetchUserByUsernameQueryVariables = {
+  username: Scalars["String"];
+};
+
+export type FetchUserByUsernameQuery = { __typename?: "Query" } & {
+  user: { __typename?: "User" } & Pick<
+    User,
+    "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
+  > & {
+      posts: Array<
+        { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
             language: { __typename?: "Language" } & Pick<
               Language,
               "id" | "name"

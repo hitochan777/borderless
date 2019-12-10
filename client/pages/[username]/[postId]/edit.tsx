@@ -11,23 +11,17 @@ import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
 import {
   POST_UPDATE_MUTATION,
-  FETCH_POST_BY_ID_QUERY
+  FETCH_POST_BY_ID_QUERY,
+  FETCH_VIEWER_QUERY
 } from "@/constant/graphql";
 import {
   PostUpdateMutation,
   PostUpdateMutationVariables,
   FetchPostByIdQuery,
-  FetchPostByIdQueryVariables
+  FetchPostByIdQueryVariables,
+  FetchViewerQuery
 } from "@/generated/types";
 import { transformToGql, transformfromGql } from "@/service/slate";
-
-const usePostById = (id: string) => {
-  const { data, loading, error } = useQuery<
-    FetchPostByIdQuery,
-    FetchPostByIdQueryVariables
-  >(FETCH_POST_BY_ID_QUERY, { variables: { id } });
-  return { data, loading, error };
-};
 
 const useUpdatePost = () => {
   const [updatePost, { loading, error }] = useMutation<
@@ -43,10 +37,16 @@ interface Props {
 
 const PostEditPage: NextPage<Props> = ({ id }) => {
   const {
-    data: fetchPostData,
-    loading: fetchPostLoading,
-    error: fetchPostError
-  } = usePostById(id);
+    data: queryData,
+    error: queryError,
+    loading: queryLoading
+  } = useQuery<
+    FetchViewerQuery & FetchPostByIdQuery,
+    FetchPostByIdQueryVariables
+  >(
+    { ...FETCH_VIEWER_QUERY, ...FETCH_POST_BY_ID_QUERY },
+    { variables: { id } }
+  );
   const { value, setValue, selection, setSelection } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const {
@@ -55,14 +55,14 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
     error: updatePostError
   } = useUpdatePost();
   useEffect(() => {
-    if (!fetchPostLoading && fetchPostData) {
-      const parsedEditorState = transformfromGql(fetchPostData.post.lines);
+    if (!queryLoading && queryData) {
+      const parsedEditorState = transformfromGql(queryData.post.lines);
       setValue(parsedEditorState);
-      setLanguage(fetchPostData.post.language.id);
+      setLanguage(queryData.post.language.id);
     }
-  }, [fetchPostLoading, fetchPostData]);
+  }, [queryLoading, queryData]);
 
-  const loading = updatePostLoading || fetchPostLoading;
+  const loading = updatePostLoading || queryLoading;
 
   const handleSubmit = async (isDraft = true) => {
     await updatePost({
@@ -75,14 +75,14 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
         }
       }
     });
-    Router.push("/me");
+    Router.push(`/${queryData?.viewer.username}`);
   };
 
   useEffect(() => {
-    if (fetchPostError || updatePostError) {
+    if (queryError || updatePostError) {
       alert("I am sorry but something happened during submission");
     }
-  }, [fetchPostError, updatePostError]);
+  }, [queryError, updatePostError]);
 
   return (
     <Layout>

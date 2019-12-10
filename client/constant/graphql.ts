@@ -68,6 +68,31 @@ export const FETCH_VIEWER_QUERY = gql`
         user {
           username
         }
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const FETCH_USER_BY_USERNAME_QUERY = gql`
+  query fetchUserByUsername($username: String!) {
+    user(username: $username) {
+      id
+      username
+      email
+      fluentLanguages
+      learningLanguages
+      posts {
+        id
+        title
+        language {
+          id
+          name
+        }
+        user {
+          username
+        }
+        updatedAt
       }
     }
   }

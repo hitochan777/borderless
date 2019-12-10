@@ -111,5 +111,17 @@ export const Query = queryType({
         return result;
       }
     });
+
+    t.field("user", {
+      type: "User",
+      args: { username: stringArg({ required: true }) },
+      async resolve(_, { username }, { repositories: { userRepository } }) {
+        const result = await userRepository.findByUsername(username);
+        if (result === null) {
+          throw new Error("User not found");
+        }
+        return result;
+      }
+    });
   }
 });

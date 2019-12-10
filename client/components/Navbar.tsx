@@ -10,6 +10,7 @@ import CreateIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 
+import { useViewer } from "@/hooks/useViewer";
 import { useStateValue } from "@/store";
 import { FullSearchBox } from "./molecule/SearchBox";
 
@@ -31,6 +32,7 @@ const Navbar: React.StatelessComponent = () => {
   const { state, actions } = useStateValue();
   const classes = useStyles();
   const router = useRouter();
+  const { viewer } = useViewer();
 
   return (
     <div className={classes.root}>
@@ -54,7 +56,7 @@ const Navbar: React.StatelessComponent = () => {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href="/me">
+                <Link href={`/${viewer ? viewer.username : ""}`}>
                   <AccountCircle />
                 </Link>
               </MenuItem>

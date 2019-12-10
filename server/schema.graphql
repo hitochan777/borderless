@@ -86,6 +86,7 @@ type Query {
     """tweet id"""
     id: ID!
   ): Tweet!
+  user(username: String!): User!
   viewer: User!
 }
 

@@ -75,7 +75,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
         }
       }
     });
-    Router.push(`/${queryData?.viewer.username}`);
+    Router.push(`/`);
   };
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
           }}
         />
         <Box mt={4}>
-          <pre>{JSON.stringify(value, null, 2)}</pre>
+          {/*<pre>{JSON.stringify(value, null, 2)}</pre>*/}
           <Editor
             value={value}
             setValue={setValue}
@@ -139,9 +139,9 @@ function assert(condition: any, msg?: string): asserts condition {
 PostEditPage.getInitialProps = async (
   ctx: NextPageContext
 ): Promise<{ id: string }> => {
-  const { id } = ctx.query;
-  assert(typeof id === "string");
-  return { id };
+  const { postId } = ctx.query;
+  assert(typeof postId === "string");
+  return { id: postId };
 };
 
 export default PostEditPage;

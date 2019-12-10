@@ -118,6 +118,7 @@ export const PostContent: React.FC<Props> = ({
         }
       ]
     });
+    setComment("");
   };
 
   const handleLineHover = (lineId: string) => {
@@ -177,7 +178,10 @@ export const PostContent: React.FC<Props> = ({
             <Grid item>{dayjs(updatedAt).fromNow()}</Grid>
             <Grid item>
               {isDraft ? (
-                <Link href="/post/[id]/edit" as={`/post/${id}/edit`}>
+                <Link
+                  href="/[username]/[postId]/edit"
+                  as={`/${user.username}/${id}/edit`}
+                >
                   <Button
                     variant="contained"
                     color="primary"

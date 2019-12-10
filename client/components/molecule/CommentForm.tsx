@@ -27,9 +27,9 @@ export const CommentForm: React.FC<Props> = ({
             fullWidth
             multiline
             rows="4"
-            defaultValue="Default Value"
             margin="normal"
             variant="outlined"
+            placeholder="Write your comment here!"
             onChange={handleChange}
             value={value}
           />

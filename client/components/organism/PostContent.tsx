@@ -126,8 +126,8 @@ export const PostContent: React.FC<Props> = ({
 
   const handleLineClick = (lineId: string) => {
     Router.push(
-      { pathname: `/post/[id]`, query: { lid: lineId } },
-      `/post/${id}?lid=${lineId}`
+      { pathname: `/[username]/[postId]`, query: { lid: lineId } },
+      `/${user.username}/${id}?lid=${lineId}`
     );
   };
 

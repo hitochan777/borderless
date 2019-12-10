@@ -23,7 +23,7 @@ export const PostCard: React.FC<Props> = ({
   updatedAt
 }) => {
   return (
-    <Link href="/[username]/[id]" as={`/${username}/${id}`}>
+    <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
       <Card>
         <CardContent>
           <Typography variant="h3">{title}</Typography>

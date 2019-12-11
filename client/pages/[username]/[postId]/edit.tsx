@@ -11,15 +11,13 @@ import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
 import {
   POST_UPDATE_MUTATION,
-  FETCH_POST_BY_ID_QUERY,
-  FETCH_VIEWER_QUERY
+  FETCH_POST_BY_ID_QUERY
 } from "@/constant/graphql";
 import {
   PostUpdateMutation,
   PostUpdateMutationVariables,
   FetchPostByIdQuery,
-  FetchPostByIdQueryVariables,
-  FetchViewerQuery
+  FetchPostByIdQueryVariables
 } from "@/generated/types";
 import { transformToGql, transformfromGql } from "@/service/slate";
 
@@ -33,18 +31,16 @@ const useUpdatePost = () => {
 
 interface Props {
   id: string;
+  username: string;
 }
 
-const PostEditPage: NextPage<Props> = ({ id }) => {
+const PostEditPage: NextPage<Props> = ({ id, username }) => {
   const {
     data: queryData,
     error: queryError,
     loading: queryLoading
-  } = useQuery<
-    FetchViewerQuery & FetchPostByIdQuery,
-    FetchPostByIdQueryVariables
-  >(
-    { ...FETCH_VIEWER_QUERY, ...FETCH_POST_BY_ID_QUERY },
+  } = useQuery<FetchPostByIdQuery, FetchPostByIdQueryVariables>(
+    FETCH_POST_BY_ID_QUERY,
     { variables: { id } }
   );
   const { value, setValue, selection, setSelection } = useEditorState();
@@ -75,7 +71,7 @@ const PostEditPage: NextPage<Props> = ({ id }) => {
         }
       }
     });
-    Router.push(`/`);
+    Router.push("/[username]/[postId]", `/${username}/${id}`);
   };
 
   useEffect(() => {
@@ -138,10 +134,11 @@ function assert(condition: any, msg?: string): asserts condition {
 
 PostEditPage.getInitialProps = async (
   ctx: NextPageContext
-): Promise<{ id: string }> => {
-  const { postId } = ctx.query;
+): Promise<{ id: string; username: string }> => {
+  const { postId, username } = ctx.query;
   assert(typeof postId === "string");
-  return { id: postId };
+  assert(typeof username === "string");
+  return { id: postId, username };
 };
 
 export default PostEditPage;

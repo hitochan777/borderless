@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Navbar: React.FC = () => {
-  const { state, actions } = useStateValue();
+  const { actions } = useStateValue();
   const classes = useStyles();
   const router = useRouter();
   const { viewer } = useViewer();
@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
               router.push(`/search?lang=${query.language}`);
             }}
           />
-          {state.user ? (
+          {viewer ? (
             <>
               <MenuItem>
                 <Link href="/post/new">

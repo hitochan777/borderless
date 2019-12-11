@@ -50,6 +50,10 @@ const runServer = async () => {
   await nextApp.prepare();
   const server = express();
 
+  server.get("/favicon.ico", (_, res) => {
+    res.status(404).send("Not Found");
+  });
+
   // if (dev) {
   server.use(
     GRAPHQL_PATH,

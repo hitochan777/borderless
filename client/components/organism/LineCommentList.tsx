@@ -8,6 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 
 import dayjs from "@/lib/time";
 import {
@@ -26,7 +27,16 @@ interface Props {
   lineId: string;
 }
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: theme.spacing(2),
+    height: "65vh",
+    overflowY: "scroll"
+  }
+}));
+
 export const LineCommentList: React.FC<Props> = ({ lineId }) => {
+  const classes = useStyles();
   const { data, error, loading } = useQuery<
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
@@ -51,7 +61,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
     throw new Error("unexpected error");
   }
   return (
-    <List>
+    <List className={classes.root}>
       {data.replies.map(reply => (
         <React.Fragment key={reply.id}>
           <ListItem>

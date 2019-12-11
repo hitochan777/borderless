@@ -5,11 +5,13 @@ import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 
+import { theme } from "@/constant/theme";
 import "@/lib/firebase";
 import { State } from "@/store/state";
 import { defaultState, actionDefs, StateProvider } from "@/store";
 import { useAuthEffect } from "@/hooks/useAuthEffect";
 import withApolloClient from "@/lib/with-apollo-client";
+import { ThemeProvider } from "@material-ui/core";
 
 const auth = async (context: NextPageContext) => {
   let user = null;
@@ -80,11 +82,13 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
           console.debug("[UPDATE]", prevState, newState);
         }}
       >
-        <ApolloProvider client={apolloClient}>
-          <AuthProvider>
-            <Component {...pageProps} />
-          </AuthProvider>
-        </ApolloProvider>
+        <ThemeProvider theme={theme}>
+          <ApolloProvider client={apolloClient}>
+            <AuthProvider>
+              <Component {...pageProps} />
+            </AuthProvider>
+          </ApolloProvider>
+        </ThemeProvider>
       </StateProvider>
     );
   }

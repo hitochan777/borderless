@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
+import Box from "@material-ui/core/Box";
 
 import Loading from "@/components/Loading";
 import { PostCard } from "@/components/PostCard";
@@ -28,9 +29,9 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
     throw new Error();
   }
   return (
-    <ul>
+    <>
       {data.feed.map(post => (
-        <li key={post.id}>
+        <Box key={post.id} mb="1rem">
           <PostCard
             id={post.id}
             title={post.title}
@@ -38,8 +39,8 @@ export const Feed: React.StatelessComponent<Props> = ({ uid }) => {
             language={post.language.name}
             updatedAt={post.updatedAt}
           />
-        </li>
+        </Box>
       ))}
-    </ul>
+    </>
   );
 };

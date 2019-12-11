@@ -278,7 +278,7 @@ export const Mutation = mutationType({
         if (!user) {
           throw new Error("User not found");
         }
-        await tweetRepository.addLike(user.id, tweetId);
+        await tweetRepository.toggleLike(user.id, tweetId);
         const maybeTweet = await tweetRepository.findTweetById(tweetId);
         if (!maybeTweet) {
           throw new Error("Tweet not found");

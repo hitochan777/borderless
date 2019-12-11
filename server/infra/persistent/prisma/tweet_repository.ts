@@ -104,21 +104,42 @@ export class TweetRepository {
     return rawReplies.map(reply => this.createEntity(reply));
   }
 
-  async addLike(userId: ID, tweetId: ID) {
-    await this.photon.likes.create({
-      data: {
+  async toggleLike(userId: ID, tweetId: ID) {
+    const likes = await this.photon.likes.findMany({
+      where: {
         repliable: {
-          connect: {
-            id: tweetId
-          }
+          id: tweetId
         },
         user: {
-          connect: {
-            id: userId
-          }
+          id: userId
         }
       }
     });
+    if (likes.length > 1) {
+      throw new Error("Multiple likes by the same user found");
+    }
+    if (likes.length === 1) {
+      await this.photon.likes.delete({
+        where: {
+          id: likes[0].id
+        }
+      });
+    } else {
+      await this.photon.likes.create({
+        data: {
+          repliable: {
+            connect: {
+              id: tweetId
+            }
+          },
+          user: {
+            connect: {
+              id: userId
+            }
+          }
+        }
+      });
+    }
   }
 
   async countLike(userId: ID, tweetId: ID): Promise<number> {

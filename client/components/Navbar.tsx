@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Navbar: React.StatelessComponent = () => {
+const Navbar: React.FC = () => {
   const { state, actions } = useStateValue();
   const classes = useStyles();
   const router = useRouter();
@@ -56,7 +56,10 @@ const Navbar: React.StatelessComponent = () => {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href={`/${viewer ? viewer.username : ""}`}>
+                <Link
+                  href="/[username]"
+                  as={`/${viewer ? viewer.username : ""}`}
+                >
                   <AccountCircle />
                 </Link>
               </MenuItem>

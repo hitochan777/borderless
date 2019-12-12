@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "@prisma/photon": "2.0.0-preview018.1",
+    "@prisma/photon": "2.0.0-preview018.2",
     "@types/cookie": "^0.3.3",
     "apollo-server-micro": "^2.9.11",
     "cookie": "^0.4.0",

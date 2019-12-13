@@ -11831,10 +11831,10 @@ slate-react@^0.54.0:
     is-plain-object "^3.0.0"
     scroll-into-view-if-needed "^2.2.20"
 
-slate@^0.53.0:
-  version "0.53.0"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.53.0.tgz#cb20df5531dbc1d90341df5856342bb1d65fd60d"
-  integrity sha512-qdTNTp+QKghw6QSCEMQm+Mp3fXaMfgn57m5p1JVlSJA0uYkkQnsrPVJuweY2mqacgq+xDiRgvPDvrhZfsjJ/gw==
+slate@^0.54.0:
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.54.0.tgz#960d85f8f71f218f9d2b080df4dd1094d20a41c3"
+  integrity sha512-tPDWC3lnaO4gHaN5fwMPavJofyp/fUzM9dd4wm/YB5S3KYflQHZKQ2ZOa4h3mp1eQBpQt74QuNCMeKMnH9FxVg==
   dependencies:
     "@types/esrever" "^0.2.0"
     esrever "^0.2.0"

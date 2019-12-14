@@ -126,13 +126,6 @@ export const PostContent: React.FC<Props> = ({
     setHoveredLine(lineId);
   };
 
-  const handleLineClick = (lineId: string) => {
-    Router.push(
-      { pathname: `/[username]/[postId]`, query: { lid: lineId } },
-      `/${user.username}/${id}?lid=${lineId}`
-    );
-  };
-
   const handleLanguageClick = (language: string) => {
     Router.push(`/search?lang=${language}`);
   };
@@ -206,36 +199,41 @@ export const PostContent: React.FC<Props> = ({
 
           <div>
             {lines.map((line, index) => (
-              <Grid
+              <Link
                 key={index}
-                container
-                spacing={2}
-                justify="space-between"
-                className={
-                  (line.id === focusedLineId ? classes.focusedLine : "") +
-                  " " +
-                  (line.id === hoveredLine ? classes.hoveredLine : "")
-                }
-                onClick={() => {
-                  handleLineClick(line.id);
+                href={{
+                  pathname: "/[username]/[postId]",
+                  query: { lid: line.id }
                 }}
-                onMouseOver={() => {
-                  handleLineHover(line.id);
-                }}
+                as={`/${user.username}/${id}?lid=${line.id}`}
               >
-                <Grid item>
-                  <Typography key={index} variant="body1" component="p">
-                    {line.text}
-                  </Typography>
+                <Grid
+                  container
+                  spacing={2}
+                  justify="space-between"
+                  className={
+                    (line.id === focusedLineId ? classes.focusedLine : "") +
+                    " " +
+                    (line.id === hoveredLine ? classes.hoveredLine : "")
+                  }
+                  onMouseOver={() => {
+                    handleLineHover(line.id);
+                  }}
+                >
+                  <Grid item>
+                    <Typography key={index} variant="body1" component="p">
+                      {line.text}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    {line.replies.length > 0 && (
+                      <Badge badgeContent={line.replies.length} color="primary">
+                        <CommentIcon />
+                      </Badge>
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  {line.replies.length > 0 && (
-                    <Badge badgeContent={line.replies.length} color="primary">
-                      <CommentIcon />
-                    </Badge>
-                  )}
-                </Grid>
-              </Grid>
+              </Link>
             ))}
           </div>
         </Paper>

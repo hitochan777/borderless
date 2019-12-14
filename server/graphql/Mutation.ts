@@ -247,6 +247,7 @@ export const Mutation = mutationType({
         if (!maybePost) {
           throw new Error("Post not found");
         }
+        console.log("post found", maybePost);
         return maybePost;
       }
     });

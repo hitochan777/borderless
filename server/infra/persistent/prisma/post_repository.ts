@@ -207,9 +207,9 @@ export class PostRepository {
     }
   }
 
-  async countLike(userId: ID, postId: ID): Promise<number> {
+  async countLike(postId: ID): Promise<number> {
     const likes = await this.photon.likes.findMany({
-      where: { user: { id: userId }, repliable: { id: postId } }
+      where: { repliable: { id: postId } }
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }

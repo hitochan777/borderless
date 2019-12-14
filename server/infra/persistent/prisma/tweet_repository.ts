@@ -142,9 +142,9 @@ export class TweetRepository {
     }
   }
 
-  async countLike(userId: ID, tweetId: ID): Promise<number> {
+  async countLike(tweetId: ID): Promise<number> {
     const likes = await this.photon.likes.findMany({
-      where: { user: { id: userId }, repliable: { id: tweetId } }
+      where: { repliable: { id: tweetId } }
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }

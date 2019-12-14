@@ -64,13 +64,21 @@ export const Post = objectType({
     });
     t.int("likeCount", {
       async resolve(root, _, { repositories: { postRepository } }) {
-        const count = await postRepository.countLike(root.userId, root.id);
+        const count = await postRepository.countLike(root.id);
         return count;
       }
     });
     t.boolean("likedByMe", {
-      async resolve(root, _, { repositories: { postRepository } }) {
-        return await postRepository.likedByMe(root.userId, root.id);
+      async resolve(
+        post,
+        _,
+        { uid, repositories: { postRepository, userRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid as string);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        return await postRepository.likedByMe(user.id, post.id);
       }
     });
   }

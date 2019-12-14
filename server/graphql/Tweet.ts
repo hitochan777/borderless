@@ -48,14 +48,22 @@ export const Tweet = objectType({
       }
     });
     t.int("likeCount", {
-      async resolve(root, _, { repositories: { tweetRepository } }) {
-        const count = await tweetRepository.countLike(root.userId, root.id);
+      async resolve(post, _, { repositories: { tweetRepository } }) {
+        const count = await tweetRepository.countLike(post.id);
         return count;
       }
     });
     t.boolean("likedByMe", {
-      async resolve(root, _, { repositories: { tweetRepository } }) {
-        return await tweetRepository.likedByMe(root.userId, root.id);
+      async resolve(
+        tweet,
+        _,
+        { uid, repositories: { tweetRepository, userRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid as string);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        return await tweetRepository.likedByMe(user.id, tweet.id);
       }
     });
   }

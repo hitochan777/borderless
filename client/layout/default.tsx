@@ -30,7 +30,6 @@ const Layout: React.FC = ({ children }) => {
   let shouldShowFillInfoModal = false;
   let formData;
   if (state.user) {
-    console.log(viewer);
     if (!viewer) {
       throw new Error("Unexpected error");
     }

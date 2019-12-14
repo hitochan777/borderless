@@ -10,9 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import CommentIcon from "@material-ui/icons/Comment";
 import Badge from "@material-ui/core/Badge";
 import Link from "next/link";
+import IconButton from "@material-ui/core/IconButton";
 import { useMutation } from "@apollo/react-hooks";
+import { POST_LIKE_MUTATION } from "@/constant/graphql";
+import { PostLikeMutation, PostLikeMutationVariables } from "@/generated/types";
 
 import dayjs from "@/lib/time";
+import { LikeIcon } from "@/components/molecule/LikeIcon";
 import {
   TWEET_CREATE_MUTATION,
   FETCH_TWEETS_FOR_LINE_QUERY,
@@ -67,6 +71,8 @@ export interface Props {
   };
   isDraft: boolean;
   updatedAt: Date;
+  likedByMe: boolean;
+  likeCount: number;
 }
 
 const useCreateTweet = () => {
@@ -84,11 +90,21 @@ export const PostContent: React.FC<Props> = ({
   lines,
   language,
   isDraft,
-  updatedAt
+  updatedAt,
+  likeCount,
+  likedByMe
 }) => {
   const classes = useStyles();
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
+
+  const [tweetLike] = useMutation<PostLikeMutation, PostLikeMutationVariables>(
+    POST_LIKE_MUTATION
+  );
+
+  const handleLikeClick = async (id: string) => {
+    await tweetLike({ variables: { id } });
+  };
   const { createTweet, loading: createTweetLoading } = useCreateTweet();
 
   const handleCommentFormChange = (newComment: string) => {
@@ -194,6 +210,13 @@ export const PostContent: React.FC<Props> = ({
                   Published
                 </Button>
               )}
+            </Grid>
+            <Grid item>
+              <IconButton onClick={() => handleLikeClick(id)}>
+                <Badge color="primary" badgeContent={likeCount}>
+                  <LikeIcon liked={likedByMe} />
+                </Badge>
+              </IconButton>
             </Grid>
           </Grid>
 

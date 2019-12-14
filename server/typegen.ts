@@ -104,6 +104,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     logout: boolean; // Boolean!
     postCreate: NexusGenRootTypes['Post']; // Post!
+    postLike: NexusGenRootTypes['Post']; // Post!
     postUpdate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
     tweetCreate: NexusGenRootTypes['Tweet']; // Tweet!
@@ -120,6 +121,8 @@ export interface NexusGenFieldTypes {
     isDraft: boolean; // Boolean!
     json: string; // String!
     language: NexusGenRootTypes['Language']; // Language!
+    likeCount: number; // Int!
+    likedByMe: boolean; // Boolean!
     lines: NexusGenRootTypes['Line'][]; // [Line!]!
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     title: string; // String!
@@ -168,6 +171,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     postCreate: { // args
       post: NexusGenInputs['PostInput']; // PostInput!
+    }
+    postLike: { // args
+      id: string; // ID!
     }
     postUpdate: { // args
       id: string; // ID!

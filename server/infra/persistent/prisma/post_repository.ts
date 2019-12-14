@@ -168,4 +168,56 @@ export class PostRepository {
     });
     return posts.map(post => this.createEntity(post));
   }
+
+  async toggleLike(userId: ID, postId: ID) {
+    const likes = await this.photon.likes.findMany({
+      where: {
+        repliable: {
+          id: postId
+        },
+        user: {
+          id: userId
+        }
+      }
+    });
+    if (likes.length > 1) {
+      throw new Error("Multiple likes by the same user found");
+    }
+    if (likes.length === 1) {
+      await this.photon.likes.delete({
+        where: {
+          id: likes[0].id
+        }
+      });
+    } else {
+      await this.photon.likes.create({
+        data: {
+          repliable: {
+            connect: {
+              id: postId
+            }
+          },
+          user: {
+            connect: {
+              id: userId
+            }
+          }
+        }
+      });
+    }
+  }
+
+  async countLike(userId: ID, postId: ID): Promise<number> {
+    const likes = await this.photon.likes.findMany({
+      where: { user: { id: userId }, repliable: { id: postId } }
+    }); // FIXME: use count method when it becomes available
+    return likes.length;
+  }
+
+  async likedByMe(userId: ID, postId: ID): Promise<boolean> {
+    const likes = await this.photon.likes.findMany({
+      where: { user: { id: userId }, repliable: { id: postId } }
+    });
+    return likes.length > 0;
+  }
 }

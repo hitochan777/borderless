@@ -40,6 +40,7 @@ export type Mutation = {
   userUpdate: User;
   postCreate: Post;
   postUpdate: Post;
+  postLike: Post;
   tweetCreate: Tweet;
   tweetLike: Tweet;
   logout: Scalars["Boolean"];
@@ -62,6 +63,10 @@ export type MutationPostCreateArgs = {
 export type MutationPostUpdateArgs = {
   id: Scalars["ID"];
   post: PostInput;
+};
+
+export type MutationPostLikeArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationTweetCreateArgs = {
@@ -104,6 +109,8 @@ export type Post = Node & {
   replies: Array<Tweet>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
+  likeCount: Scalars["Int"];
+  likedByMe: Scalars["Boolean"];
 };
 
 export type PostInput = {
@@ -121,7 +128,7 @@ export type Query = {
   tweet: Tweet;
   replies: Array<Tweet>;
   langs: Array<Language>;
-  viewer?: Maybe<User>;
+  viewer: User;
   user: User;
 };
 
@@ -207,7 +214,7 @@ export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
 
 export type PostFieldFragment = { __typename?: "Post" } & Pick<
   Post,
-  "id" | "title" | "json" | "isDraft" | "updatedAt"
+  "id" | "title" | "json" | "isDraft" | "updatedAt" | "likedByMe" | "likeCount"
 > & {
     lines: Array<
       { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -224,22 +231,20 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
 export type FetchViewerQueryVariables = {};
 
 export type FetchViewerQuery = { __typename?: "Query" } & {
-  viewer: Maybe<
-    { __typename?: "User" } & Pick<
-      User,
-      "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-    > & {
-        posts: Array<
-          { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
-              language: { __typename?: "Language" } & Pick<
-                Language,
-                "id" | "name"
-              >;
-              user: { __typename?: "User" } & Pick<User, "username">;
-            }
-        >;
-      }
-  >;
+  viewer: { __typename?: "User" } & Pick<
+    User,
+    "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
+  > & {
+      posts: Array<
+        { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
+            language: { __typename?: "Language" } & Pick<
+              Language,
+              "id" | "name"
+            >;
+            user: { __typename?: "User" } & Pick<User, "username">;
+          }
+      >;
+    };
 };
 
 export type FetchUserByUsernameQueryVariables = {
@@ -314,6 +319,14 @@ export type PostCreateMutationVariables = {
 
 export type PostCreateMutation = { __typename?: "Mutation" } & {
   postCreate: { __typename?: "Post" } & Pick<Post, "id">;
+};
+
+export type PostLikeMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type PostLikeMutation = { __typename?: "Mutation" } & {
+  postLike: { __typename?: "Post" } & PostFieldFragment;
 };
 
 export type UserUpdateMutationVariables = {

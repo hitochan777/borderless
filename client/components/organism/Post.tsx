@@ -17,7 +17,9 @@ export const PostPresenter: React.FC<PresenterProps> = ({
   lines,
   language,
   user,
-  updatedAt
+  updatedAt,
+  likeCount,
+  likedByMe
 }) => {
   return (
     <PostContent
@@ -28,6 +30,8 @@ export const PostPresenter: React.FC<PresenterProps> = ({
       language={language}
       user={user}
       updatedAt={updatedAt}
+      likeCount={likeCount}
+      likedByMe={likedByMe}
     />
   );
 };
@@ -67,6 +71,8 @@ export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
       language={data.post.language}
       user={data.post.user}
       updatedAt={new Date(data.post.updatedAt)}
+      likedByMe={data.post.likedByMe}
+      likeCount={data.post.likeCount}
     />
   );
 };

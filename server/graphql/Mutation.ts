@@ -227,6 +227,30 @@ export const Mutation = mutationType({
         return updatedPost;
       }
     });
+    t.field("postLike", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "Post",
+      args: {
+        id: idArg({ required: true })
+      },
+      async resolve(
+        _,
+        { id: postId },
+        { uid, repositories: { postRepository, userRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid as string);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        await postRepository.toggleLike(user.id, postId);
+        const maybePost = await postRepository.findById(postId);
+        if (!maybePost) {
+          throw new Error("Post not found");
+        }
+        return maybePost;
+      }
+    });
+
     t.field("tweetCreate", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Tweet",
@@ -261,6 +285,29 @@ export const Mutation = mutationType({
         }
 
         return tweet;
+      }
+    });
+    t.field("tweetLike", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "Tweet",
+      args: {
+        id: idArg({ required: true })
+      },
+      async resolve(
+        _,
+        { id: tweetId },
+        { uid, repositories: { tweetRepository, userRepository } }
+      ) {
+        const user = await userRepository.findByUid(uid as string);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        await tweetRepository.toggleLike(user.id, tweetId);
+        const maybeTweet = await tweetRepository.findTweetById(tweetId);
+        if (!maybeTweet) {
+          throw new Error("Tweet not found");
+        }
+        return maybeTweet;
       }
     });
     t.field("tweetLike", {

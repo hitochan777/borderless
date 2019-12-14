@@ -29,6 +29,7 @@ input LineInput {
 type Mutation {
   logout: Boolean!
   postCreate(post: PostInput!): Post!
+  postLike(id: ID!): Post!
   postUpdate(id: ID!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   tweetCreate(tweet: TweetInput!): Tweet!
@@ -59,6 +60,8 @@ type Post implements Node {
   isDraft: Boolean!
   json: String!
   language: Language!
+  likeCount: Int!
+  likedByMe: Boolean!
   lines: [Line!]!
   replies: [Tweet!]!
   title: String!

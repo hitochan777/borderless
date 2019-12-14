@@ -62,5 +62,16 @@ export const Post = objectType({
         return root.updatedAt;
       }
     });
+    t.int("likeCount", {
+      async resolve(root, _, { repositories: { postRepository } }) {
+        const count = await postRepository.countLike(root.userId, root.id);
+        return count;
+      }
+    });
+    t.boolean("likedByMe", {
+      async resolve(root, _, { repositories: { postRepository } }) {
+        return await postRepository.likedByMe(root.userId, root.id);
+      }
+    });
   }
 });

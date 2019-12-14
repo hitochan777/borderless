@@ -46,6 +46,8 @@ export const POST_FIELD_FRAGMENT = gql`
     }
     isDraft
     updatedAt
+    likedByMe
+    likeCount
   }
   ${TWEET_FIELD_FRAGMENT}
 `;
@@ -158,6 +160,15 @@ export const POST_CREATE_MUTATION = gql`
       id
     }
   }
+`;
+
+export const POST_LIKE_MUTATION = gql`
+  mutation postLike($id: ID!) {
+    postLike(id: $id) {
+      ...postField
+    }
+  }
+  ${POST_FIELD_FRAGMENT}
 `;
 
 export const USER_UPDATE_MUTATION = gql`

@@ -136,28 +136,31 @@ export class PostRepository {
     langs: Language[],
     currentUserId: ID = ""
   ): Promise<Post[]> {
-    const posts = await this.photon.posts.findMany({
-      where: {
-        AND: [
+    const conditions: any[] = [
+      {
+        OR: [
           {
-            language: {
-              in: langs
-            }
+            published: true
           },
           {
-            OR: [
-              {
-                published: true
-              },
-              {
-                published: false,
-                user: {
-                  id: currentUserId
-                }
-              }
-            ]
+            published: false,
+            user: {
+              id: currentUserId
+            }
           }
         ]
+      }
+    ];
+    if (langs.length > 0) {
+      conditions.push({
+        language: {
+          in: langs
+        }
+      });
+    }
+    const posts = await this.photon.posts.findMany({
+      where: {
+        AND: conditions
       },
       include: {
         user: true

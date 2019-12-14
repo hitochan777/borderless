@@ -9,7 +9,7 @@ import {
   FetchSearchResultQuery,
   FetchSearchResultQueryVariables
 } from "@/generated/types";
-import Loading from "@/components/Loading";
+// import Loading from "@/components/Loading";
 import { PostCard } from "@/components/PostCard";
 
 interface Props {
@@ -25,7 +25,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
   });
 
   if (loading) {
-    return <Loading />;
+    return <></>;
   }
   if (error) {
     throw error;

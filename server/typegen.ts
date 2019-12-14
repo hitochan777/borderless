@@ -191,9 +191,6 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    feed: { // args
-      uid: string; // String!
-    }
     post: { // args
       id: string; // ID!
     }

@@ -2,6 +2,7 @@ import * as firebase from "firebase";
 import { useEffect } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 
 import { useStateValue } from "@/store";
 
@@ -23,6 +24,7 @@ export const useAuthEffect = () => {
   const { actions } = useStateValue();
   const { setUser, setLoading } = actions;
   const [signin] = useMutation(SIGNIN);
+  const router = useRouter();
 
   useAsyncEffect(async () => {
     const result = await firebase.auth().getRedirectResult();
@@ -33,6 +35,7 @@ export const useAuthEffect = () => {
       await signin({ variables: { token } });
       setUser(result.user.uid);
       setLoading(false);
+      router.push("/");
     }
   });
 };

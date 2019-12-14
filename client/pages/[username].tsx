@@ -9,7 +9,6 @@ import {
   FetchUserByUsernameQuery,
   FetchUserByUsernameQueryVariables
 } from "@/generated/types";
-import Loading from "@/components/Loading";
 import { PostCard } from "@/components/PostCard";
 
 interface Props {
@@ -20,10 +19,10 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
   const { data, error, loading } = useQuery<
     FetchUserByUsernameQuery,
     FetchUserByUsernameQueryVariables
-  >(FETCH_USER_BY_USERNAME_QUERY, { variables: { username: username } });
+  >(FETCH_USER_BY_USERNAME_QUERY, { variables: { username } });
 
   if (loading) {
-    return <Loading />;
+    return <></>;
   }
   if (error) {
     throw error;

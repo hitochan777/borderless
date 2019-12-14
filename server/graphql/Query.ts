@@ -20,14 +20,16 @@ export const Query = queryType({
     });
     t.list.field("feed", {
       type: "Post",
-      args: {
-        uid: stringArg({ required: true })
-      },
+      args: {},
       async resolve(
         _,
-        { uid },
-        { repositories: { userRepository, postRepository } }
+        __,
+        { uid, repositories: { userRepository, postRepository } }
       ) {
+        if (!uid) {
+          const posts = await postRepository.findByLanguages([], "");
+          return posts;
+        }
         const user = await userRepository.findByUid(uid);
         if (!user) {
           throw new Error("User not found");
@@ -95,16 +97,11 @@ export const Query = queryType({
       }
     });
     t.field("viewer", {
-      authorize: (_, __, { uid }) => {
-        return uid !== null;
-      },
+      authorize: (_, __, { uid }) => uid !== null,
       type: "User",
       args: {},
       async resolve(_, __, { uid, repositories: { userRepository } }) {
-        if (uid === null) {
-          throw new Error("uid is empty");
-        }
-        const result = await userRepository.findByUid(uid);
+        const result = await userRepository.findByUid(uid as string);
         if (result === null) {
           throw new Error("User not found");
         }

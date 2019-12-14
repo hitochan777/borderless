@@ -2,7 +2,6 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 
 import Select from "../Select";
-import Loading from "../Loading";
 import { FETCH_LANGUAGES_QUERY } from "@/constant/graphql";
 import { FetchLanguagesQuery } from "@/generated/types";
 
@@ -12,16 +11,14 @@ interface Props {
   value: string;
 }
 
-const LanguagSelector: React.FunctionComponent<Props> = ({
-  label,
-  value,
-  onChange
-}) => {
+const LanguagSelector: React.FC<Props> = ({ label, value, onChange }) => {
   const { data, error, loading } = useQuery<FetchLanguagesQuery>(
     FETCH_LANGUAGES_QUERY
   );
   if (loading) {
-    return <Loading />;
+    return (
+      <Select value={value} onChange={onChange} options={[]} label={label} />
+    );
   }
   if (error) {
     throw new Error("Error during fetching languages");

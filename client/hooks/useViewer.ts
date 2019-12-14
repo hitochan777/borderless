@@ -22,7 +22,8 @@ export const useViewer = () => {
     throw error;
   }
   if (!data || !data.viewer) {
-    throw new Error("data is empty");
+    return { viewer: null, loading: false };
+    // throw new Error("data is empty");
   }
 
   return { viewer: data.viewer, loading };

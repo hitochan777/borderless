@@ -108,8 +108,8 @@ export const FETCH_POST_BY_ID_QUERY = gql`
 `;
 
 export const FETCH_FEED_FOR_USER_QUERY = gql`
-  query fetchFeedForUser($uid: String!) {
-    feed(uid: $uid) {
+  query fetchFeedForUser {
+    feed {
       ...postField
     }
   }

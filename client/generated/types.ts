@@ -121,16 +121,12 @@ export type Query = {
   tweet: Tweet;
   replies: Array<Tweet>;
   langs: Array<Language>;
-  viewer: User;
+  viewer?: Maybe<User>;
   user: User;
 };
 
 export type QuerySearchArgs = {
   query: SearchInput;
-};
-
-export type QueryFeedArgs = {
-  uid: Scalars["String"];
 };
 
 export type QueryPostArgs = {
@@ -228,20 +224,22 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
 export type FetchViewerQueryVariables = {};
 
 export type FetchViewerQuery = { __typename?: "Query" } & {
-  viewer: { __typename?: "User" } & Pick<
-    User,
-    "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-  > & {
-      posts: Array<
-        { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
-            language: { __typename?: "Language" } & Pick<
-              Language,
-              "id" | "name"
-            >;
-            user: { __typename?: "User" } & Pick<User, "username">;
-          }
-      >;
-    };
+  viewer: Maybe<
+    { __typename?: "User" } & Pick<
+      User,
+      "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
+    > & {
+        posts: Array<
+          { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
+              language: { __typename?: "Language" } & Pick<
+                Language,
+                "id" | "name"
+              >;
+              user: { __typename?: "User" } & Pick<User, "username">;
+            }
+        >;
+      }
+  >;
 };
 
 export type FetchUserByUsernameQueryVariables = {
@@ -273,9 +271,7 @@ export type FetchPostByIdQuery = { __typename?: "Query" } & {
   post: { __typename?: "Post" } & PostFieldFragment;
 };
 
-export type FetchFeedForUserQueryVariables = {
-  uid: Scalars["String"];
-};
+export type FetchFeedForUserQueryVariables = {};
 
 export type FetchFeedForUserQuery = { __typename?: "Query" } & {
   feed: Array<{ __typename?: "Post" } & PostFieldFragment>;

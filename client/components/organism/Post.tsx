@@ -3,7 +3,6 @@ import { useQuery } from "@apollo/react-hooks";
 
 import { FETCH_POST_BY_ID_QUERY } from "@/constant/graphql";
 import { FetchPostByIdQuery } from "@/generated/types";
-import Loading from "@/components/Loading";
 import {
   PostContent,
   Props as PostContentProps
@@ -11,7 +10,7 @@ import {
 
 type PresenterProps = PostContentProps;
 
-export const PostPresenter: React.StatelessComponent<PresenterProps> = ({
+export const PostPresenter: React.FC<PresenterProps> = ({
   id,
   focusedLineId,
   isDraft,
@@ -47,7 +46,7 @@ export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
   );
 
   if (loading) {
-    return <Loading />;
+    return <></>;
   }
   if (error) {
     throw error;

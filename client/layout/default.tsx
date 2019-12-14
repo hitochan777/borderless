@@ -1,14 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { useQuery } from "@apollo/react-hooks";
 
 import { GlobalStyle } from "./global-style";
 import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
-import { FETCH_VIEWER_QUERY } from "@/constant/graphql";
-import { FetchViewerQuery } from "@/generated/types";
+import { useViewer } from "@/hooks/useViewer";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -20,10 +18,7 @@ const LoadingWrapper = styled.div`
 
 const Layout: React.FC = ({ children }) => {
   const { state } = useStateValue();
-  const { data, error, loading: queryLoading } = useQuery<FetchViewerQuery>(
-    FETCH_VIEWER_QUERY,
-    { skip: state.user === null }
-  );
+  const { viewer, loading: queryLoading } = useViewer();
   const loading = state.loading || (state.user && queryLoading);
   if (loading) {
     return (
@@ -35,14 +30,12 @@ const Layout: React.FC = ({ children }) => {
   let shouldShowFillInfoModal = false;
   let formData;
   if (state.user) {
-    if (error) {
-      throw error;
-    }
-    if (!data) {
+    console.log(viewer);
+    if (!viewer) {
       throw new Error("Unexpected error");
     }
 
-    const { email, username, learningLanguages, fluentLanguages } = data.viewer;
+    const { email, username, learningLanguages, fluentLanguages } = viewer;
     const isInfoEmpty =
       email.length === 0 ||
       username.length === 0 ||

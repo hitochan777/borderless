@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { createEditor, Node, Editor as SlateEditor } from "slate";
+import { createEditor, Node, Editor as SlateEditor, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 
@@ -33,16 +33,16 @@ export const Editor: React.FC<EditorProps> = ({ value, setValue }) => {
   const onChange = (newValue: Node[]) => {
     setValue(newValue);
   };
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withReact(withHistory(createEditor())), []);
   const onEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
-    editor.exec({ type: "insert_break" });
+    SlateEditor.insertBreak(editor);
     const [match] = SlateEditor.nodes(editor, {
       match: node => node.type === "line"
     });
     if (match) {
       const path = match[1];
-      SlateEditor.setNodes(editor, { id: undefined }, { at: path });
+      Transforms.setNodes(editor, { id: undefined }, { at: path });
     }
   };
 

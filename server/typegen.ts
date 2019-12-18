@@ -192,7 +192,6 @@ export interface NexusGenArgTypes {
       id: string; // ID!
     }
     userUpdate: { // args
-      id: string; // String!
       user: NexusGenInputs['UserInput']; // UserInput!
     }
   }

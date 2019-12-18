@@ -67,7 +67,6 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     }
     await updateUser({
       variables: {
-        id: state.user,
         user: {
           ...values,
           fluentLanguages: values.fluentLanguages.map(l => +l),

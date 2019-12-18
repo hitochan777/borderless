@@ -69,16 +69,8 @@ export const Post = objectType({
       }
     });
     t.boolean("likedByMe", {
-      async resolve(
-        post,
-        _,
-        { uid, repositories: { postRepository, userRepository } }
-      ) {
-        const user = await userRepository.findByUid(uid as string);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        return await postRepository.likedByMe(user.id, post.id);
+      async resolve(post, _, { uid, repositories: { postRepository } }) {
+        return await postRepository.likedByMe(uid as string, post.id);
       }
     });
   }

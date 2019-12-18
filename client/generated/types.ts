@@ -52,7 +52,6 @@ export type MutationUserCreateArgs = {
 };
 
 export type MutationUserUpdateArgs = {
-  id: Scalars["String"];
   user: UserInput;
 };
 
@@ -330,7 +329,6 @@ export type PostLikeMutation = { __typename?: "Mutation" } & {
 };
 
 export type UserUpdateMutationVariables = {
-  id: Scalars["String"];
   user: UserInput;
 };
 

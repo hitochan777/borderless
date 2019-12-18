@@ -35,7 +35,7 @@ type Mutation {
   tweetCreate(tweet: TweetInput!): Tweet!
   tweetLike(id: ID!): Tweet!
   userCreate(id: ID!): User!
-  userUpdate(id: String!, user: UserInput!): User!
+  userUpdate(user: UserInput!): User!
 }
 
 interface Node {

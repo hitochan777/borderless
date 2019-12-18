@@ -30,7 +30,7 @@ export const Query = queryType({
           const posts = await postRepository.findByLanguages([], "");
           return posts;
         }
-        const user = await userRepository.findByUid(uid);
+        const user = await userRepository.findById(uid);
         if (!user) {
           throw new Error("User not found");
         }
@@ -101,7 +101,7 @@ export const Query = queryType({
       type: "User",
       args: {},
       async resolve(_, __, { uid, repositories: { userRepository } }) {
-        const result = await userRepository.findByUid(uid as string);
+        const result = await userRepository.findById(uid as string);
         if (result === null) {
           throw new Error("User not found");
         }

@@ -20,7 +20,6 @@ model Like {
 
 model User {
   id                String  @default(cuid()) @id @unique
-  uid               String  @unique
   email             String  @unique
   username          String
   fluentLanguages   String?

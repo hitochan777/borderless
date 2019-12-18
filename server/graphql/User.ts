@@ -19,8 +19,7 @@ export const User = objectType({
         _,
         { repositories: { userRepository, postRepository } }
       ) {
-        // postRepository.findByUser only accept user.id not uid
-        const user = await userRepository.findByUid(root.uid);
+        const user = await userRepository.findById(root.id);
         if (!user) {
           throw new Error("user is empty");
         }

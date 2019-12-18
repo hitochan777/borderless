@@ -40,6 +40,78 @@
     },
     {
       "stepType": "CreateModel",
+      "model": "Like"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Like",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Like",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Like",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Like",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Like",
+      "field": "id",
+      "directive": "unique"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Like",
+      "field": "user",
+      "type": "User",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Like",
+      "field": "repliable",
+      "type": "Repliable",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Like",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Like",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Like",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateModel",
       "model": "User"
     },
     {
@@ -78,19 +150,6 @@
     {
       "stepType": "CreateField",
       "model": "User",
-      "field": "uid",
-      "type": "String",
-      "arity": "required"
-    },
-    {
-      "stepType": "CreateDirective",
-      "model": "User",
-      "field": "uid",
-      "directive": "unique"
-    },
-    {
-      "stepType": "CreateField",
-      "model": "User",
       "field": "email",
       "type": "String",
       "arity": "required"
@@ -121,6 +180,40 @@
       "field": "learningLanguages",
       "type": "String",
       "arity": "optional"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "createdAt",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "User",
+      "field": "createdAt",
+      "directive": "default",
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "User",
+      "field": "updatedAt",
+      "directive": "updatedAt"
     },
     {
       "stepType": "CreateModel",
@@ -282,8 +375,8 @@
     {
       "stepType": "CreateField",
       "model": "Tweet",
-      "field": "text",
-      "type": "String",
+      "field": "post",
+      "type": "Post",
       "arity": "required"
     },
     {

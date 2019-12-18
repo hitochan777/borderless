@@ -43,7 +43,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
     FETCH_POST_BY_ID_QUERY,
     { variables: { id } }
   );
-  const { value, setValue, selection, setSelection } = useEditorState();
+  const { value, setValue } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const {
     updatePost,
@@ -92,12 +92,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
         />
         <Box mt={4}>
           {/*<pre>{JSON.stringify(value, null, 2)}</pre>*/}
-          <Editor
-            value={value}
-            setValue={setValue}
-            selection={selection}
-            setSelection={setSelection}
-          />
+          <Editor value={value} setValue={setValue} />
         </Box>
         <Box mt={4}>
           <Button

@@ -54,16 +54,8 @@ export const Tweet = objectType({
       }
     });
     t.boolean("likedByMe", {
-      async resolve(
-        tweet,
-        _,
-        { uid, repositories: { tweetRepository, userRepository } }
-      ) {
-        const user = await userRepository.findByUid(uid as string);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        return await tweetRepository.likedByMe(user.id, tweet.id);
+      async resolve(tweet, _, { uid, repositories: { tweetRepository } }) {
+        return await tweetRepository.likedByMe(uid as string, tweet.id);
       }
     });
   }

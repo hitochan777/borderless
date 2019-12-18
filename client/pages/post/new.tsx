@@ -28,7 +28,7 @@ const useCreatePost = () => {
 };
 
 const PostNewPage: NextPage = () => {
-  const { value, setValue, selection, setSelection } = useEditorState();
+  const { value, setValue } = useEditorState();
   const [language, setLanguage] = useState<string>("");
   const { createPost, loading, error } = useCreatePost();
   const { viewer } = useViewer();
@@ -66,12 +66,7 @@ const PostNewPage: NextPage = () => {
           }}
         />
         <Box mt={4}>
-          <Editor
-            value={value}
-            setValue={setValue}
-            selection={selection}
-            setSelection={setSelection}
-          />
+          <Editor value={value} setValue={setValue} />
         </Box>
         <Box mt={4}>
           <Button

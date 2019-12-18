@@ -1,11 +1,10 @@
 import { Language } from "../value/language";
-import { NullableID } from "../types";
+import { ID } from "../types";
 import { Base } from "./base";
 
 export class User extends Base {
   constructor(
-    _id: NullableID,
-    public uid: string,
+    _id: ID,
     public email: string,
     public username: string,
     public fluentLanguages: Language[],

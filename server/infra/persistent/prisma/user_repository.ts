@@ -13,7 +13,6 @@ export class UserRepository {
   createEntity(user: UserModel) {
     return new User(
       user.id,
-      user.uid,
       user.email,
       user.username,
       this.transformFrom(user.fluentLanguages || ""),
@@ -23,15 +22,6 @@ export class UserRepository {
     );
   }
 
-  async findByUid(uid: string): Promise<User | null> {
-    const user = await this.photon.users.findOne({ where: { uid } });
-
-    if (user === null) {
-      return null;
-    }
-
-    return this.createEntity(user);
-  }
   async findById(id: ID): Promise<User | null> {
     const user = await this.photon.users.findOne({ where: { id } });
 
@@ -60,16 +50,16 @@ export class UserRepository {
   }
 
   async findByIdOrCreate(uid: string): Promise<User | null> {
-    const user = await this.findByUid(uid);
+    const user = await this.findById(uid);
     if (user) {
       return user;
     }
-    const newUser = new User(null, uid, "", "", [], []);
+    const newUser = new User(uid, "", "", [], []);
     return this.create(newUser);
   }
 
-  async createOnlyWithUid(uid: ID): Promise<User | null> {
-    const newUser = new User(null, uid, "", "", [], []);
+  async createOnlyWithId(uid: ID): Promise<User | null> {
+    const newUser = new User(uid, "", "", [], []);
     const createdUser = await this.create(newUser);
     return createdUser;
   }
@@ -77,7 +67,7 @@ export class UserRepository {
   async create(user: User): Promise<User | null> {
     const createdUser = await this.photon.users.create({
       data: {
-        uid: user.uid,
+        id: user.id,
         email: user.email,
         username: user.username,
         fluentLanguages: this.transformTo(user.fluentLanguages),
@@ -89,7 +79,7 @@ export class UserRepository {
   async update(uid: string, user: User): Promise<User | null> {
     const updatedUser = await this.photon.users.update({
       where: {
-        uid
+        id: uid
       },
       data: {
         email: user.email,

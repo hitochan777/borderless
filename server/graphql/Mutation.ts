@@ -15,7 +15,7 @@ export const Mutation = mutationType({
         id: idArg({ required: true })
       },
       resolve: async (_, { id }, { repositories: { userRepository } }) => {
-        const createdUser = await userRepository.createOnlyWithUid(id);
+        const createdUser = await userRepository.createOnlyWithId(id);
         if (createdUser === null) {
           throw new Error(`failed to create user with uid = ${id}`);
         }
@@ -27,7 +27,7 @@ export const Mutation = mutationType({
         if (!uid) {
           return false;
         }
-        const user = await userRepository.findByUid(uid);
+        const user = await userRepository.findById(uid);
         if (!user) {
           return false;
         }
@@ -35,23 +35,24 @@ export const Mutation = mutationType({
       },
       type: "User",
       args: {
-        id: stringArg({ required: true }),
         user: arg({ type: "UserInput", required: true })
       },
       resolve: async (
         _,
-        { id, user },
+        { user },
         { uid, repositories: { userRepository } }
       ) => {
+        if (!uid) {
+          throw new Error("failed to update user");
+        }
         const userEntity = new User(
-          id,
-          uid || "",
+          uid,
           user.email,
           user.username,
           user.fluentLanguages,
           user.learningLanguages
         );
-        const updatedUser = await userRepository.update(id, userEntity);
+        const updatedUser = await userRepository.update(uid, userEntity);
         if (!updatedUser) {
           throw new Error("failed to update user");
         }
@@ -67,26 +68,11 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { post: postInput },
-        {
-          repositories: {
-            userRepository,
-            postRepository,
-            lineMarkerRepository
-          },
-          uid
-        }
+        { repositories: { postRepository, lineMarkerRepository }, uid }
       ) => {
-        if (!uid) {
-          throw new Error("uid is empty");
-        }
-        const user = await userRepository.findByUid(uid);
-        if (!user) {
-          throw new Error("user not found");
-        }
-
         // Step1: create post with empty content and get ID
         const newPost = Post.create({
-          userId: user.id,
+          userId: uid as string,
           language: postInput.language,
           lines: [],
           isDraft: postInput.isDraft
@@ -143,20 +129,16 @@ export const Mutation = mutationType({
       authorize: async (
         _,
         { id },
-        { uid, repositories: { userRepository, postRepository } }
+        { uid, repositories: { postRepository } }
       ) => {
         if (!uid) {
-          return false;
-        }
-        const user = await userRepository.findByUid(uid);
-        if (!user) {
           return false;
         }
         const post = await postRepository.findById(id);
         if (!post) {
           return false;
         }
-        return post.userId === user.id;
+        return post.userId === (uid as string);
       },
       type: "Post",
       args: {
@@ -166,23 +148,8 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { id, post: postInput },
-        {
-          repositories: {
-            userRepository,
-            postRepository,
-            lineMarkerRepository
-          },
-          uid
-        }
+        { repositories: { postRepository, lineMarkerRepository }, uid }
       ) => {
-        if (!uid) {
-          throw new Error("uid is empty");
-        }
-        const user = await userRepository.findByUid(uid);
-        if (!user) {
-          throw new Error("user not found");
-        }
-
         const lines: Line[] = [];
 
         for (const [index, postInputLine] of postInput.lines.entries()) {
@@ -214,7 +181,7 @@ export const Mutation = mutationType({
 
         const post = new Post(
           id,
-          user.id,
+          uid as string,
           postInput.language,
           lines,
           postInput.isDraft
@@ -236,13 +203,9 @@ export const Mutation = mutationType({
       async resolve(
         _,
         { id: postId },
-        { uid, repositories: { postRepository, userRepository } }
+        { uid, repositories: { postRepository } }
       ) {
-        const user = await userRepository.findByUid(uid as string);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        await postRepository.toggleLike(user.id, postId);
+        await postRepository.toggleLike(uid as string, postId);
         const maybePost = await postRepository.findById(postId);
         if (!maybePost) {
           throw new Error("Post not found");
@@ -261,25 +224,15 @@ export const Mutation = mutationType({
       resolve: async (
         _,
         { tweet: tweetInput },
-        {
-          repositories: { postRepository, tweetRepository, userRepository },
-          uid
-        }
+        { repositories: { postRepository, tweetRepository }, uid }
       ) => {
-        if (!uid) {
-          throw new Error("uid is empty");
-        }
-        const user = await userRepository.findByUid(uid);
-        if (!user) {
-          throw new Error("user not found");
-        }
         const post = await postRepository.findById(tweetInput.postId);
         if (!post) {
           throw new Error("post not found");
         }
         const tweet = await tweetRepository.create({
           ...tweetInput,
-          userId: user.id
+          userId: uid as string
         });
         if (!tweet) {
           throw new Error("Failed to create a tweet");
@@ -299,7 +252,7 @@ export const Mutation = mutationType({
         { id: tweetId },
         { uid, repositories: { tweetRepository, userRepository } }
       ) {
-        const user = await userRepository.findByUid(uid as string);
+        const user = await userRepository.findById(uid as string);
         if (!user) {
           throw new Error("User not found");
         }
@@ -322,7 +275,7 @@ export const Mutation = mutationType({
         { id: tweetId },
         { uid, repositories: { tweetRepository, userRepository } }
       ) {
-        const user = await userRepository.findByUid(uid as string);
+        const user = await userRepository.findById(uid as string);
         if (!user) {
           throw new Error("User not found");
         }

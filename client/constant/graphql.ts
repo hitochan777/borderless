@@ -172,8 +172,8 @@ export const POST_LIKE_MUTATION = gql`
 `;
 
 export const USER_UPDATE_MUTATION = gql`
-  mutation userUpdate($id: String!, $user: UserInput!) {
-    userUpdate(id: $id, user: $user) {
+  mutation userUpdate($user: UserInput!) {
+    userUpdate(user: $user) {
       id
       email
       username

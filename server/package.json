@@ -21,7 +21,7 @@
     "typescript": "3.7.4"
   },
   "scripts": {
-    "start": "TS_NODE_FILES=true node -r ts-node/register/transpile-only node_modules/.bin/micro",
+    "start": "NODE_ENV=production TS_NODE_FILES=true node -r ts-node/register/transpile-only node_modules/.bin/micro",
     "dev": "TS_NODE_FILES=true node -r ts-node/register node_modules/.bin/micro-dev -p 3001 --ignore prisma/dev.db ./index.ts",
     "inspect": "node --inspect -r ts-node/register node_modules/.bin/micro-dev -p 3001 ./index.ts",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",

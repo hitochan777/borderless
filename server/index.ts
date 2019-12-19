@@ -91,7 +91,8 @@ const createServer = async () => {
       }
       console.info(response);
       return response;
-    }
+    },
+    playground: process.env.NODE_ENV !== "production"
   });
   return server;
 };

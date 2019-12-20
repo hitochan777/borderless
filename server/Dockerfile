@@ -2,6 +2,8 @@
 # https://hub.docker.com/_/node
 FROM node:12-slim
 
+ARG PRODUCTION_DB_URL
+
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 

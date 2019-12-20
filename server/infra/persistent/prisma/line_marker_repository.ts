@@ -4,8 +4,8 @@ import { ID } from "../../../types";
 
 export class LineMarkerRepository {
   private photon: Photon;
-  constructor() {
-    this.photon = new Photon();
+  constructor(driver: Photon) {
+    this.photon = driver;
   }
   async generateIds(num: number, postId: ID): Promise<ID[]> {
     const repliableIds = [];

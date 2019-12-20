@@ -10,6 +10,7 @@ import { PostRepository } from "./infra/persistent/prisma/post_repository";
 import { TweetRepository } from "./infra/persistent/prisma/tweet_repository";
 import { LineMarkerRepository } from "./infra/persistent/prisma/line_marker_repository";
 import { SlateService } from "./infra/service/slate_service";
+import { Photon } from "@prisma/photon";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -19,11 +20,15 @@ if (admin.apps.length === 0) {
 }
 
 export const buildRepositoryContainer = (): RepositoryContainer => {
+  const driver = new Photon({
+    datasources: { db: process.env.NODE_ENV },
+    debug: process.env.DEBUG
+  });
   return {
-    userRepository: new UserRepository(),
-    postRepository: new PostRepository(),
-    tweetRepository: new TweetRepository(),
-    lineMarkerRepository: new LineMarkerRepository()
+    userRepository: new UserRepository(driver),
+    postRepository: new PostRepository(driver),
+    tweetRepository: new TweetRepository(driver),
+    lineMarkerRepository: new LineMarkerRepository(driver)
   };
 };
 

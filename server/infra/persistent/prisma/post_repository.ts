@@ -6,8 +6,8 @@ import { Language } from "../../../value/language";
 
 export class PostRepository {
   private photon: Photon;
-  constructor() {
-    this.photon = new Photon();
+  constructor(driver: Photon) {
+    this.photon = driver;
   }
 
   createEntity(post: PostModel & { user: UserModel }): Post {

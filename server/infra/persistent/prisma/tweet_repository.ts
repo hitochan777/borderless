@@ -11,8 +11,8 @@ import { ID } from "../../../types";
 
 export class TweetRepository {
   private photon: Photon;
-  constructor() {
-    this.photon = new Photon();
+  constructor(driver: Photon) {
+    this.photon = driver;
   }
 
   async create({

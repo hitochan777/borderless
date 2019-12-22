@@ -3,11 +3,6 @@ datasource db {
   url      = "file:dev.db"
 }
 
-datasource production {
-  provider = "mysql"
-  url      = env("PRODUCTION_DB_URL")
-}
-
 generator photon {
   provider = "photonjs"
 }

@@ -18,10 +18,7 @@ import {
 
 import dayjs from "@/lib/time";
 import { LikeIcon } from "@/components/molecule/LikeIcon";
-import {
-  useTweetCreateMutation,
-  useTweetLikeMutation
-} from "@/generated/types";
+import { useTweetCreateMutation, usePostLikeMutation } from "@/generated/types";
 import { LineCommentList } from "@/components/organism/LineCommentList";
 import { CommentForm } from "@/components/molecule/CommentForm";
 
@@ -86,10 +83,10 @@ export const PostContent: React.FC<Props> = ({
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
 
-  const [tweetLike] = useTweetLikeMutation();
+  const [postLike] = usePostLikeMutation();
 
   const handleLikeClick = async (id: string) => {
-    await tweetLike({ variables: { id } });
+    await postLike({ variables: { id } });
   };
   const [createTweet, createTweetResult] = useTweetCreateMutation();
 

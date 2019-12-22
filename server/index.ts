@@ -15,13 +15,12 @@ import { Photon } from "@prisma/photon";
 if (admin.apps.length === 0) {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
-    databaseURL: "database URL here"
+    databaseURL: "https://polyglot-3f093.firebaseio.com"
   });
 }
 
 export const buildRepositoryContainer = (): RepositoryContainer => {
   const driver = new Photon({
-    datasources: { db: process.env.NODE_ENV },
     debug: process.env.DEBUG
   });
   return {
@@ -59,7 +58,13 @@ const extractToken = (
   return "";
 };
 
-export const createContext = () => async ({
+export const createContext = ({
+  repositories,
+  services
+}: {
+  repositories: RepositoryContainer;
+  services: ServiceContainer;
+}) => async ({
   req,
   res
 }: {
@@ -78,15 +83,17 @@ export const createContext = () => async ({
   return {
     uid,
     res,
-    repositories: buildRepositoryContainer(),
-    services: buildServiceContainer()
+    repositories,
+    services
   };
 };
 
 // addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
-  const context = createContext();
+  const repositories = buildRepositoryContainer();
+  const services = buildServiceContainer();
+  const context = createContext({ repositories, services });
   const server = new ApolloServer({
     schema,
     context,

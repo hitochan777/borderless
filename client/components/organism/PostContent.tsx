@@ -11,20 +11,16 @@ import CommentIcon from "@material-ui/icons/Comment";
 import Badge from "@material-ui/core/Badge";
 import Link from "next/link";
 import IconButton from "@material-ui/core/IconButton";
-import { useMutation } from "@apollo/react-hooks";
-import { POST_LIKE_MUTATION } from "@/constant/graphql";
-import { PostLikeMutation, PostLikeMutationVariables } from "@/generated/types";
+import {
+  FETCH_TWEETS_FOR_LINE_QUERY,
+  FETCH_POST_BY_ID_QUERY
+} from "@/constant/graphql";
 
 import dayjs from "@/lib/time";
 import { LikeIcon } from "@/components/molecule/LikeIcon";
 import {
-  TWEET_CREATE_MUTATION,
-  FETCH_TWEETS_FOR_LINE_QUERY,
-  FETCH_POST_BY_ID_QUERY
-} from "@/constant/graphql";
-import {
-  TweetCreateMutation,
-  TweetCreateMutationVariables
+  useTweetCreateMutation,
+  useTweetLikeMutation
 } from "@/generated/types";
 import { LineCommentList } from "@/components/organism/LineCommentList";
 import { CommentForm } from "@/components/molecule/CommentForm";
@@ -75,14 +71,6 @@ export interface Props {
   likeCount: number;
 }
 
-const useCreateTweet = () => {
-  const [createTweet, { loading, error }] = useMutation<
-    TweetCreateMutation,
-    TweetCreateMutationVariables
-  >(TWEET_CREATE_MUTATION);
-  return { createTweet, loading, error };
-};
-
 export const PostContent: React.FC<Props> = ({
   id,
   focusedLineId,
@@ -98,14 +86,12 @@ export const PostContent: React.FC<Props> = ({
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
 
-  const [tweetLike] = useMutation<PostLikeMutation, PostLikeMutationVariables>(
-    POST_LIKE_MUTATION
-  );
+  const [tweetLike] = useTweetLikeMutation();
 
   const handleLikeClick = async (id: string) => {
     await tweetLike({ variables: { id } });
   };
-  const { createTweet, loading: createTweetLoading } = useCreateTweet();
+  const [createTweet, createTweetResult] = useTweetCreateMutation();
 
   const handleCommentFormChange = (newComment: string) => {
     setComment(newComment);
@@ -264,7 +250,7 @@ export const PostContent: React.FC<Props> = ({
       <Grid item xs={5}>
         <CommentForm
           onSubmit={postTweet}
-          disabled={createTweetLoading}
+          disabled={createTweetResult.loading}
           onChange={handleCommentFormChange}
           value={comment}
         />

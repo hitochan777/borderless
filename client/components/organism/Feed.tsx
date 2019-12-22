@@ -1,15 +1,11 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
 import Box from "@material-ui/core/Box";
 
 import { PostCard } from "@/components/PostCard";
-import { FETCH_FEED_FOR_USER_QUERY } from "@/constant/graphql";
-import { FetchFeedForUserQuery } from "@/generated/types";
+import { useFetchFeedForUserQuery } from "@/generated/types";
 
 export const Feed: React.FC = () => {
-  const { data, error, loading } = useQuery<FetchFeedForUserQuery>(
-    FETCH_FEED_FOR_USER_QUERY
-  );
+  const { data, loading, error } = useFetchFeedForUserQuery();
 
   if (loading) {
     return <></>;

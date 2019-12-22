@@ -1,8 +1,6 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
 
-import { FETCH_POST_BY_ID_QUERY } from "@/constant/graphql";
-import { FetchPostByIdQuery } from "@/generated/types";
+import { useFetchPostByIdQuery } from "@/generated/types";
 import {
   PostContent,
   Props as PostContentProps
@@ -42,12 +40,7 @@ export interface Props {
 }
 
 export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
-  const { data, error, loading } = useQuery<FetchPostByIdQuery>(
-    FETCH_POST_BY_ID_QUERY,
-    {
-      variables: { id }
-    }
-  );
+  const { data, error, loading } = useFetchPostByIdQuery({ variables: { id } });
 
   if (loading) {
     return <></>;

@@ -87,7 +87,7 @@ migration ..20191222205820
 +model Like {
 +  id String @default(cuid()) @id
 +  user User
-+  repliable Repliable 
++  repliable Repliable
 +  createdAt DateTime  @default(now())
 +}
 +
@@ -128,5 +128,3 @@ migration ..20191222205820
 +  updatedAt DateTime  @updatedAt
 +}
 ```
-
-

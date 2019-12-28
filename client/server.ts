@@ -6,27 +6,44 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-if (admin.apps.length === 0) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-    databaseURL: "database URL here"
-  });
-}
-
 const port = parseInt(process.env.PORT as string, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
+
+if (admin.apps.length === 0) {
+  if (dev) {
+    admin.initializeApp({
+      credential: admin.credential.applicationDefault(),
+      databaseURL: "database URL here"
+    });
+  }
+  // } else {
+  //   admin.credential.cert({
+  //     projectId: process.env.FIREBASE_PROJECT_ID,
+  //     clientEmail: process.env.CLIENT_EMAIL,
+  //     privateKey: "-----BEGIN PRIVATE KEY-----<KEY>-----END PRIVATE KEY-----\n"
+  //   });
+  // }
+}
+
+const getUidFromCookie = async (req: Request): Promise<string | null> => {
+  const sessionCookie = req.cookies && req.cookies.session;
+  if (sessionCookie) {
+    const decodedIdToken = await admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true);
+    return decodedIdToken.uid; // eslint-disable-line require-atomic-updates
+  }
+  return null;
+};
 
 const withAuthHandler = (handler: any) => async (
   req: Request,
   res: Response
 ) => {
   try {
-    const sessionCookie = req.cookies && req.cookies.session;
-    if (sessionCookie) {
-      const decodedIdToken = await admin
-        .auth()
-        .verifySessionCookie(sessionCookie, true);
-      req.headers["uid"] = decodedIdToken.uid; // eslint-disable-line require-atomic-updates
+    const uid = await getUidFromCookie(req);
+    if (uid) {
+      req.headers["uid"] = uid;
     }
   } catch (error) {
     console.log(error);
@@ -41,8 +58,15 @@ const withAuthHandler = (handler: any) => async (
   return handler(req, res);
 };
 
-const GRAPHQL_PATH = "/graphql";
-const GRAPHQL_ENDPOINT = "http://localhost:3001";
+const extractToken = (authorization: string) => {
+  if (authorization !== "") {
+    const authElements = authorization.split(" ");
+    if (authElements.length === 2) {
+      return authElements[1];
+    }
+  }
+  return "";
+};
 
 const runServer = async () => {
   const nextApp = next({ dev });
@@ -54,12 +78,37 @@ const runServer = async () => {
     res.status(404).send("Not Found");
   });
 
-  // if (dev) {
-  server.use(
-    GRAPHQL_PATH,
-    proxy({ target: GRAPHQL_ENDPOINT, changeOrigin: true })
-  );
-  // }
+  if (dev) {
+    /*
+     * In development mode, this server also serves as a proxy for backend GraphQL server.
+     * It simulates the data passed by Google Cloud Endpoint
+     */
+    const GRAPHQL_PATH = "/graphql";
+    const GRAPHQL_ENDPOINT = "http://localhost:3001";
+    let payload!: { id: string };
+    server.use(
+      GRAPHQL_PATH,
+      async (req, _, next) => {
+        if (req.headers.authorization) {
+          const sessionCookie = extractToken(req.headers.authorization);
+          const decodedIdToken = await admin
+            .auth()
+            .verifySessionCookie(sessionCookie, true);
+          payload = { id: decodedIdToken.uid };
+        }
+        next();
+      },
+      proxy(GRAPHQL_ENDPOINT, {
+        onProxyReq(proxyReq, _, __) {
+          proxyReq.setHeader(
+            "X-Endpoint-API-UserInfo",
+            Buffer.from(JSON.stringify(payload)).toString("base64")
+          );
+        },
+        changeOrigin: true
+      })
+    );
+  }
   server.get(
     "*",
     bodyParser.json(),

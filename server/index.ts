@@ -37,7 +37,6 @@ export const buildServiceContainer = (): ServiceContainer => {
 };
 
 const getUidFromHeader = (header: string | undefined): string | null => {
-  console.log(header);
   if (!header) {
     return null;
   }
@@ -67,7 +66,6 @@ export const createContext = ({
   req: IncomingMessage;
   res: ServerResponse;
 }): Promise<GraphQLContext> => {
-  console.log(req.headers);
   const uid = getUidFromHeader(
     req.headers["x-endpoint-api-userinfo"] as string | undefined
   );

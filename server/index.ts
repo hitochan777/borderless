@@ -40,7 +40,7 @@ const getUidFromHeader = (header: string | undefined): string | null => {
   if (!header) {
     return null;
   }
-  const ascii = new Buffer(header, "base64").toString("ascii");
+  const ascii = new Buffer(header, "base64").toString("utf-8");
 
   const payload: {
     issuer?: string;

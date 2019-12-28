@@ -12,17 +12,18 @@ const dev = process.env.NODE_ENV !== "production";
 if (admin.apps.length === 0) {
   if (dev) {
     admin.initializeApp({
-      credential: admin.credential.applicationDefault(),
+      credential: process.env.FIREBASE_CREDENTIAL
+        ? admin.credential.cert(
+            JSON.parse(
+              Buffer.from(process.env.FIREBASE_CREDENTIAL, "base64").toString(
+                "utf-8"
+              )
+            )
+          )
+        : admin.credential.applicationDefault(),
       databaseURL: "database URL here"
     });
   }
-  // } else {
-  //   admin.credential.cert({
-  //     projectId: process.env.FIREBASE_PROJECT_ID,
-  //     clientEmail: process.env.CLIENT_EMAIL,
-  //     privateKey: "-----BEGIN PRIVATE KEY-----<KEY>-----END PRIVATE KEY-----\n"
-  //   });
-  // }
 }
 
 const getUidFromCookie = async (req: Request): Promise<string | null> => {

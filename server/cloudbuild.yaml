@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/borderless-260514/api', '--build-arg', 'PRODUCTION_DB_URL=mysql://root:Ai3vyqucf9gE5tmh@/borderless_prod?sslmode=prefer','.' ]
+images:
+- 'gcr.io/borderless-260514/api'

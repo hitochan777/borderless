@@ -1,7 +1,6 @@
 import { ApolloServer } from "apollo-server-micro";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
-import { parse } from "cookie";
 
 import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
 import { schema } from "./schema";
@@ -37,25 +36,22 @@ export const buildServiceContainer = (): ServiceContainer => {
   };
 };
 
-const extractToken = (
-  maybeAuthorization?: string,
-  maybeSessionCookie?: string
-) => {
-  if (maybeAuthorization && maybeSessionCookie) {
-    return "";
+const getUidFromHeader = (header: string | undefined): string | null => {
+  console.log(header);
+  if (!header) {
+    return null;
   }
-  const authorization = maybeAuthorization || "";
-  if (authorization !== "") {
-    const authElements = authorization.split(" ");
-    if (authElements.length === 2) {
-      return authElements[1];
-    }
+  const ascii = new Buffer(header, "base64").toString("ascii");
+
+  const payload: {
+    issuer?: string;
+    id?: string;
+    email?: string;
+  } = JSON.parse(ascii);
+  if (!payload.id) {
+    return null;
   }
-  const sessionCookie = maybeSessionCookie || "";
-  if (sessionCookie !== "") {
-    return sessionCookie;
-  }
-  return "";
+  return payload.id;
 };
 
 export const createContext = ({
@@ -68,18 +64,13 @@ export const createContext = ({
   req,
   res
 }: {
-  req: ExtendedServerRequest;
+  req: IncomingMessage;
   res: ServerResponse;
 }): Promise<GraphQLContext> => {
-  let uid = null;
-  const token = extractToken(
-    req.headers.authorization,
-    req.cookies && req.cookies["session"]
+  console.log(req.headers);
+  const uid = getUidFromHeader(
+    req.headers["x-endpoint-api-userinfo"] as string | undefined
   );
-  if (token !== "") {
-    const user = await admin.auth().verifySessionCookie(token, true);
-    uid = user.uid;
-  }
   return {
     uid,
     res,
@@ -87,8 +78,6 @@ export const createContext = ({
     services
   };
 };
-
-// addMockFunctionsToSchema({ schema });
 
 const createServer = async () => {
   const repositories = buildRepositoryContainer();
@@ -109,28 +98,9 @@ const createServer = async () => {
   return server;
 };
 
-type Handler = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  ...restArgs: any[]
-) => void;
-type ExtendedServerRequest = IncomingMessage & {
-  cookies?: { [key: string]: string };
-};
-
-const cookie = (handler: Handler) => (
-  req: ExtendedServerRequest,
-  res: ServerResponse,
-  ...restArgs: any[]
-) => {
-  const cookies = parse((req.headers && req.headers.cookie) || "");
-  req.cookies = cookies;
-  return handler(req, res, ...restArgs);
-};
-
 const createHandler = async () => {
   const server = await createServer();
-  return cookie(server.createHandler());
+  return server.createHandler();
 };
 
 export default createHandler();

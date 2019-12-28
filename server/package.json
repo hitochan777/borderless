@@ -5,7 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "@prisma/photon": "2.0.0-preview019",
+    "@types/cookie": "^0.3.3",
     "apollo-server-micro": "^2.9.11",
+    "cookie": "^0.4.0",
     "firebase-admin": "^8.8.0",
     "graphql": "^14.5.8",
     "nexus": "^0.11.7",

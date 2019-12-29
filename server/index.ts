@@ -1,6 +1,7 @@
 import { ApolloServer } from "apollo-server-micro";
 import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
+import cookie from "cookie";
 
 import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
 import { schema } from "./schema";
@@ -44,21 +45,39 @@ export const buildServiceContainer = (): ServiceContainer => {
   };
 };
 
-const getUidFromHeader = (header: string | undefined): string | null => {
-  if (!header) {
-    return null;
+const getUidFromCookie = async (
+  sessionCookie: string | undefined
+): Promise<string | null> => {
+  if (sessionCookie) {
+    const decodedIdToken = await admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true);
+    return decodedIdToken.uid; // eslint-disable-line require-atomic-updates
   }
-  const ascii = new Buffer(header, "base64").toString("utf-8");
+  return null;
+};
 
-  const payload: {
-    issuer?: string;
-    id?: string;
-    email?: string;
-  } = JSON.parse(ascii);
-  if (!payload.id) {
-    return null;
+const extractToken = (authorization: string) => {
+  if (authorization !== "") {
+    const authElements = authorization.split(" ");
+    if (authElements.length === 2) {
+      return authElements[1];
+    }
   }
-  return payload.id;
+  return "";
+};
+
+const getUidFromAuthorization = async (
+  authorization: string | undefined
+): Promise<string | null> => {
+  if (authorization) {
+    const sessionCookie = extractToken(authorization);
+    const decodedIdToken = await admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true);
+    return decodedIdToken.uid;
+  }
+  return null;
 };
 
 export const createContext = ({
@@ -74,9 +93,14 @@ export const createContext = ({
   req: IncomingMessage;
   res: ServerResponse;
 }): Promise<GraphQLContext> => {
-  const uid = getUidFromHeader(
-    req.headers["x-endpoint-api-userinfo"] as string | undefined
-  );
+  let uid = await getUidFromAuthorization(req.headers.authorization);
+  if (!uid) {
+    if (!req.headers.cookie) {
+      uid = null;
+    } else {
+      uid = await getUidFromCookie(cookie.parse(req.headers.cookie)["session"]);
+    }
+  }
   return {
     uid,
     res,

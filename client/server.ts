@@ -57,16 +57,6 @@ const withAuthHandler = (handler: any) => async (
   return handler(req, res);
 };
 
-const extractToken = (authorization: string) => {
-  if (authorization !== "") {
-    const authElements = authorization.split(" ");
-    if (authElements.length === 2) {
-      return authElements[1];
-    }
-  }
-  return "";
-};
-
 const runServer = async () => {
   const nextApp = next({ dev });
   const nextAppHandler = nextApp.getRequestHandler();
@@ -84,26 +74,9 @@ const runServer = async () => {
      */
     const GRAPHQL_PATH = "/graphql";
     const GRAPHQL_ENDPOINT = "http://localhost:3001";
-    let payload!: { id: string };
     server.use(
       GRAPHQL_PATH,
-      async (req, _, next) => {
-        if (req.headers.authorization) {
-          const sessionCookie = extractToken(req.headers.authorization);
-          const decodedIdToken = await admin
-            .auth()
-            .verifySessionCookie(sessionCookie, true);
-          payload = { id: decodedIdToken.uid };
-        }
-        next();
-      },
       proxy(GRAPHQL_ENDPOINT, {
-        onProxyReq(proxyReq, _, __) {
-          proxyReq.setHeader(
-            "X-Endpoint-API-UserInfo",
-            Buffer.from(JSON.stringify(payload)).toString("base64")
-          );
-        },
         changeOrigin: true
       })
     );

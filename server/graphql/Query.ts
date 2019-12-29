@@ -97,7 +97,9 @@ export const Query = queryType({
       }
     });
     t.field("viewer", {
-      authorize: (_, __, { uid }) => uid !== null,
+      authorize: (_, __, { uid }) => {
+        return uid !== null;
+      },
       type: "User",
       args: {},
       async resolve(_, __, { uid, repositories: { userRepository } }) {

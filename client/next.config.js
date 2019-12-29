@@ -14,5 +14,8 @@ module.exports = {
     config.plugins = [...config.plugins];
 
     return config;
+  },
+  env: {
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
   }
 };

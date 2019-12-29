@@ -13,8 +13,16 @@ import { Photon } from "@prisma/photon";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-    databaseURL: "https://polyglot-3f093.firebaseio.com"
+    credential: process.env.FIREBASE_CREDENTIAL
+      ? admin.credential.cert(
+          JSON.parse(
+            Buffer.from(process.env.FIREBASE_CREDENTIAL, "base64").toString(
+              "utf-8"
+            )
+          )
+        )
+      : admin.credential.applicationDefault(),
+    databaseURL: "database URL here"
   });
 }
 

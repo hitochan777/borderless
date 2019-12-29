@@ -1,4 +1,4 @@
-import * as firebase from "firebase";
+import firebase from "firebase";
 import ApolloClient from "apollo-client";
 import gql from "graphql-tag";
 

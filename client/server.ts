@@ -10,20 +10,18 @@ const port = parseInt(process.env.PORT as string, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 
 if (admin.apps.length === 0) {
-  if (dev) {
-    admin.initializeApp({
-      credential: process.env.FIREBASE_CREDENTIAL
-        ? admin.credential.cert(
-            JSON.parse(
-              Buffer.from(process.env.FIREBASE_CREDENTIAL, "base64").toString(
-                "utf-8"
-              )
+  admin.initializeApp({
+    credential: process.env.FIREBASE_CREDENTIAL
+      ? admin.credential.cert(
+          JSON.parse(
+            Buffer.from(process.env.FIREBASE_CREDENTIAL, "base64").toString(
+              "utf-8"
             )
           )
-        : admin.credential.applicationDefault(),
-      databaseURL: "database URL here"
-    });
-  }
+        )
+      : admin.credential.applicationDefault(),
+    databaseURL: "database URL here"
+  });
 }
 
 const getUidFromCookie = async (req: Request): Promise<string | null> => {

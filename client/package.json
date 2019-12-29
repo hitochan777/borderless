@@ -84,5 +84,8 @@
     "babel-loader": "8.0.6",
     "react-docgen-typescript-loader": "3.6.0",
     "ts-loader": "6.2.1"
+  },
+  "resolutions": {
+    "jss": "10.0.0"
   }
 }

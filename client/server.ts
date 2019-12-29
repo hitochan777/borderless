@@ -29,7 +29,7 @@ const getUidFromCookie = async (req: Request): Promise<string | null> => {
   if (sessionCookie) {
     const decodedIdToken = await admin
       .auth()
-      .verifySessionCookie(sessionCookie, true);
+      .verifySessionCookie(sessionCookie);
     return decodedIdToken.uid; // eslint-disable-line require-atomic-updates
   }
   return null;

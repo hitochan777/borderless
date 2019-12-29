@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build' 
+    - '-t'
+    - 'gcr.io/borderless-260514/app'
+    - '--build-arg'
+    - 'GRAPHQL_ENDPOINT=https://gateway-yeoxwg6j3a-an.a.run.app/graphql'
+    - '.'
+images:
+- 'gcr.io/borderless-260514/app'

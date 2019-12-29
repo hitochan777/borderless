@@ -51,7 +51,7 @@ const getUidFromCookie = async (
   if (sessionCookie) {
     const decodedIdToken = await admin
       .auth()
-      .verifySessionCookie(sessionCookie, true);
+      .verifySessionCookie(sessionCookie);
     return decodedIdToken.uid; // eslint-disable-line require-atomic-updates
   }
   return null;
@@ -123,7 +123,8 @@ const createServer = async () => {
       console.info(response);
       return response;
     },
-    playground: process.env.NODE_ENV !== "production"
+    playground: process.env.NODE_ENV !== "production",
+    tracing: true
   });
   return server;
 };

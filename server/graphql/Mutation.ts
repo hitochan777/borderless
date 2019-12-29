@@ -250,36 +250,9 @@ export const Mutation = mutationType({
       async resolve(
         _,
         { id: tweetId },
-        { uid, repositories: { tweetRepository, userRepository } }
+        { uid, repositories: { tweetRepository } }
       ) {
-        const user = await userRepository.findById(uid as string);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        await tweetRepository.toggleLike(user.id, tweetId);
-        const maybeTweet = await tweetRepository.findTweetById(tweetId);
-        if (!maybeTweet) {
-          throw new Error("Tweet not found");
-        }
-        return maybeTweet;
-      }
-    });
-    t.field("tweetLike", {
-      authorize: (_, __, { uid }) => uid !== null,
-      type: "Tweet",
-      args: {
-        id: idArg({ required: true })
-      },
-      async resolve(
-        _,
-        { id: tweetId },
-        { uid, repositories: { tweetRepository, userRepository } }
-      ) {
-        const user = await userRepository.findById(uid as string);
-        if (!user) {
-          throw new Error("User not found");
-        }
-        await tweetRepository.toggleLike(user.id, tweetId);
+        await tweetRepository.toggleLike(uid as string, tweetId);
         const maybeTweet = await tweetRepository.findTweetById(tweetId);
         if (!maybeTweet) {
           throw new Error("Tweet not found");

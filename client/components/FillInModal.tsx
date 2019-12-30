@@ -69,8 +69,8 @@ export const FillInModal: React.StatelessComponent<Props> = ({
       variables: {
         user: {
           ...values,
-          fluentLanguages: values.fluentLanguages.map(l => +l),
-          learningLanguages: values.learningLanguages.map(l => +l)
+          fluentLanguages: values.fluentLanguages,
+          learningLanguages: values.learningLanguages
         }
       }
     });

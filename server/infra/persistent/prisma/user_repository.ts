@@ -93,11 +93,11 @@ export class UserRepository {
   }
 
   private transformTo(languages: Language[]): string {
-    return languages.join(",");
+    return languages.map(language => language.code).join(",");
   }
   private transformFrom(languages: string): Language[] {
     return languages.trim().length === 0
       ? []
-      : languages.split(",").map(langId => +langId);
+      : languages.split(",").map(langCode => new Language(langCode));
   }
 }

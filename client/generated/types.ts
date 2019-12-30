@@ -116,7 +116,7 @@ export type Post = Node & {
 };
 
 export type PostInput = {
-  language: Scalars["Int"];
+  language: Scalars["String"];
   lines: Array<LineInput>;
   isDraft: Scalars["Boolean"];
 };
@@ -158,7 +158,7 @@ export type QueryUserArgs = {
 export type Repliable = Tweet | Line;
 
 export type SearchInput = {
-  language?: Maybe<Scalars["Int"]>;
+  language?: Maybe<Scalars["String"]>;
 };
 
 export type Tweet = Node & {
@@ -188,8 +188,8 @@ export type User = Node & {
   id: Scalars["ID"];
   username: Scalars["String"];
   email: Scalars["String"];
-  fluentLanguages: Array<Scalars["Int"]>;
-  learningLanguages: Array<Scalars["Int"]>;
+  fluentLanguages: Array<Scalars["String"]>;
+  learningLanguages: Array<Scalars["String"]>;
   posts: Array<Post>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
@@ -198,8 +198,8 @@ export type User = Node & {
 export type UserInput = {
   username: Scalars["String"];
   email: Scalars["String"];
-  fluentLanguages: Array<Scalars["Int"]>;
-  learningLanguages: Array<Scalars["Int"]>;
+  fluentLanguages: Array<Scalars["String"]>;
+  learningLanguages: Array<Scalars["String"]>;
 };
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<

@@ -30,11 +30,11 @@ export interface NexusGenInputs {
   }
   PostInput: { // input type
     isDraft: boolean; // Boolean!
-    language: number; // Int!
+    language: string; // String!
     lines: NexusGenInputs['LineInput'][]; // [LineInput!]!
   }
   SearchInput: { // input type
-    language?: number | null; // Int
+    language?: string | null; // String
   }
   TweetInput: { // input type
     inReplyTo: string; // ID!
@@ -43,8 +43,8 @@ export interface NexusGenInputs {
   }
   UserInput: { // input type
     email: string; // String!
-    fluentLanguages: number[]; // [Int!]!
-    learningLanguages: number[]; // [Int!]!
+    fluentLanguages: string[]; // [String!]!
+    learningLanguages: string[]; // [String!]!
     username: string; // String!
   }
 }
@@ -155,9 +155,9 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     createdAt: any | null; // Date
     email: string; // String!
-    fluentLanguages: number[]; // [Int!]!
+    fluentLanguages: string[]; // [String!]!
     id: string; // ID!
-    learningLanguages: number[]; // [Int!]!
+    learningLanguages: string[]; // [String!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     updatedAt: any | null; // Date
     username: string; // String!

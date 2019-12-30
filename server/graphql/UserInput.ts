@@ -6,11 +6,11 @@ export const UserInput = inputObjectType({
     t.string("username", { nullable: false });
     t.string("email", { nullable: false });
     t.list.field("fluentLanguages", {
-      type: "Int",
+      type: "String",
       nullable: false
     });
     t.list.field("learningLanguages", {
-      type: "Int",
+      type: "String",
       nullable: false
     });
   }

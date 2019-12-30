@@ -71,7 +71,7 @@ type Post implements Node {
 
 input PostInput {
   isDraft: Boolean! = true
-  language: Int!
+  language: String!
   lines: [LineInput!]!
 }
 
@@ -97,7 +97,7 @@ type Query {
 union Repliable = Line | Tweet
 
 input SearchInput {
-  language: Int
+  language: String
 }
 
 type Tweet implements Node {
@@ -124,11 +124,11 @@ input TweetInput {
 type User implements Node {
   createdAt: Date
   email: String!
-  fluentLanguages: [Int!]!
+  fluentLanguages: [String!]!
 
   """Unique identifier for the resource"""
   id: ID!
-  learningLanguages: [Int!]!
+  learningLanguages: [String!]!
   posts: [Post!]!
   updatedAt: Date
   username: String!
@@ -136,7 +136,7 @@ type User implements Node {
 
 input UserInput {
   email: String!
-  fluentLanguages: [Int!]!
-  learningLanguages: [Int!]!
+  fluentLanguages: [String!]!
+  learningLanguages: [String!]!
   username: String!
 }

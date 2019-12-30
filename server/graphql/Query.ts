@@ -14,7 +14,9 @@ export const Query = queryType({
           const posts = await postRepository.findAll();
           return posts;
         }
-        const posts = await postRepository.findByLanguages([query.language]);
+        const posts = await postRepository.findByLanguages([
+          new value.Language(query.language)
+        ]);
         return posts;
       }
     });
@@ -88,12 +90,10 @@ export const Query = queryType({
       type: "Language",
       args: {},
       resolve(_, __, ___) {
-        return Object.keys(value.Language)
-          .filter(value => !isNaN(+value))
-          .map(id => ({
-            id,
-            name: value.Language[+id]
-          }));
+        return value.Language.getAllLanguages().map(language => ({
+          id: language.code,
+          name: language.name
+        }));
       }
     });
     t.field("viewer", {

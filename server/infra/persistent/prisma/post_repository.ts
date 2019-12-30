@@ -14,7 +14,7 @@ export class PostRepository {
     return new Post(
       post.id,
       post.user.id,
-      post.language,
+      new Language(post.language),
       JSON.parse(post.content),
       !post.published,
       post.createdAt,
@@ -35,7 +35,7 @@ export class PostRepository {
             id: postInput.userId
           }
         },
-        language: postInput.language,
+        language: postInput.language.code,
         published: !postInput.isDraft,
         content: "{}"
       },
@@ -68,7 +68,7 @@ export class PostRepository {
             id: post.userId
           }
         },
-        language: post.language,
+        language: post.language.code,
         content: contentString,
         published: !post.isDraft
       },
@@ -154,7 +154,7 @@ export class PostRepository {
     if (langs.length > 0) {
       conditions.push({
         language: {
-          in: langs
+          in: langs.map(lang => lang.code)
         }
       });
     }

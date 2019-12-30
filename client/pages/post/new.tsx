@@ -57,7 +57,7 @@ const PostNewPage: NextPage = () => {
       variables: {
         post: {
           lines: transformToGql(value),
-          language: +language,
+          language,
           isDraft
         }
       }

@@ -5,6 +5,7 @@ import { Post } from "../entity/post";
 import { Line } from "../entity/line";
 import { User } from "../entity/user";
 import { LineContent } from "../entity/line_content";
+import { Language } from "../value/language";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -49,8 +50,8 @@ export const Mutation = mutationType({
           uid,
           user.email,
           user.username,
-          user.fluentLanguages,
-          user.learningLanguages
+          user.fluentLanguages.map(language => new Language(language)),
+          user.learningLanguages.map(language => new Language(language))
         );
         const updatedUser = await userRepository.update(uid, userEntity);
         if (!updatedUser) {
@@ -73,7 +74,7 @@ export const Mutation = mutationType({
         // Step1: create post with empty content and get ID
         const newPost = Post.create({
           userId: uid as string,
-          language: postInput.language,
+          language: new Language(postInput.language),
           lines: [],
           isDraft: postInput.isDraft
         });
@@ -182,7 +183,7 @@ export const Mutation = mutationType({
         const post = new Post(
           id,
           uid as string,
-          postInput.language,
+          new Language(postInput.language),
           lines,
           postInput.isDraft
         );

@@ -21,7 +21,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >(FETCH_SEARCH_RESULT_QUERY, {
-    variables: { query: { language: language ? +language : undefined } }
+    variables: { query: { language: language as string } }
   });
 
   if (loading) {

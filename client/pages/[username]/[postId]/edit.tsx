@@ -66,7 +66,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
         id,
         post: {
           lines: transformToGql(value),
-          language: +language,
+          language,
           isDraft
         }
       }

@@ -38,8 +38,8 @@ export const Post = objectType({
       type: "Language",
       resolve(root) {
         return {
-          id: `${root.language}`,
-          name: value.Language[root.language]
+          id: root.language.code,
+          name: root.language.name
         };
       }
     });

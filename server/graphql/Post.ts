@@ -1,7 +1,5 @@
 import { objectType } from "nexus";
 
-import * as value from "../value/language";
-
 export const Post = objectType({
   name: "Post",
   definition(t) {
@@ -23,17 +21,17 @@ export const Post = objectType({
       async resolve(root, _) {
         return root.lines;
       }
-    }),
-      t.field("user", {
-        type: "User",
-        async resolve(root, _, { repositories: { userRepository } }) {
-          const user = await userRepository.findById(root.userId);
-          if (!user) {
-            throw new Error("User not found");
-          }
-          return user;
+    });
+    t.field("user", {
+      type: "User",
+      async resolve(root, _, { repositories: { userRepository } }) {
+        const user = await userRepository.findById(root.userId);
+        if (!user) {
+          throw new Error("User not found");
         }
-      });
+        return user;
+      }
+    });
     t.field("language", {
       type: "Language",
       resolve(root) {

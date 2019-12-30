@@ -4,8 +4,7 @@ import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import ApolloClient from "apollo-client";
-
-// import { logger } from "../../logger";
+import gql from "graphql-tag";
 
 interface ApolloInitOptions {
   getToken: () => string | undefined;
@@ -34,16 +33,12 @@ const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
 const onErrorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) =>
-      // logger.error(
-      //   `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      // )
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
     );
   }
   if (networkError) {
-    // logger.error(`[Network error]: ${networkError}`);
     console.error(`[Network error]: ${networkError}`);
   }
 });
@@ -53,6 +48,20 @@ const httpLink = createHttpLink({
   credentials: "same-origin"
 });
 
+const typeDefs = gql`
+  extend type Query {
+    uid: String
+    loading: Boolean!
+    errorMessage: String
+  }
+
+  extend type Mutation {
+    setUid(user: String): Boolean!
+    setLoading(loading: Boolean!): Boolean!
+    setErrorMessage(errorMessage: String): Boolean!
+  }
+`;
+
 const create = (initialState: any, options: ApolloInitOptions) =>
   new ApolloClient({
     link: ApolloLink.from([
@@ -61,7 +70,24 @@ const create = (initialState: any, options: ApolloInitOptions) =>
       httpLink
     ]),
     cache: new InMemoryCache().restore(initialState || {}),
-    ssrMode: !isBrowser
+    ssrMode: !isBrowser,
+    resolvers: {
+      Mutation: {
+        setUid: (_root, { uid }, { cache }) => {
+          cache.writeData({ data: { uid } });
+          return null;
+        },
+        setLoading: (_root, { loading }, { cache }) => {
+          cache.writeData({ data: { loading } });
+          return null;
+        },
+        setErrorMessage: (_root, { errorMessage }, { cache }) => {
+          cache.writeData({ data: { errorMessage: errorMessage } });
+          return null;
+        }
+      }
+    },
+    typeDefs
   });
 
 const initApollo = (initialState: any = {}, options: ApolloInitOptions) => {

@@ -7,8 +7,6 @@ import nextCookie from "next-cookies";
 
 import { theme } from "@/constant/theme";
 import "@/lib/firebase";
-import { State } from "@/store/state";
-import { defaultState, actionDefs, StateProvider } from "@/store";
 import { useAuthEffect } from "@/hooks/useAuthEffect";
 import withApolloClient from "@/lib/with-apollo-client";
 import { ThemeProvider } from "@material-ui/core";
@@ -51,7 +49,7 @@ const AuthProvider = ({ children }: { children: any }) => {
   return children;
 };
 
-class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
+class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
   static async getInitialProps({ Component, ctx }: AppContext) {
     let pageProps = {};
 
@@ -63,35 +61,18 @@ class MyApp extends App<{ apolloClient: ApolloClient<any>; user: string }> {
   }
 
   render() {
-    const { Component, pageProps, apolloClient, user } = this.props;
+    const { Component, pageProps, apolloClient } = this.props;
 
-    const context = {
-      apolloClient
-    };
-
-    const initialState = {
-      ...defaultState,
-      ...{ user: user }
-    };
     return (
-      <StateProvider
-        initialState={initialState}
-        actionDefs={actionDefs}
-        context={context}
-        callback={(prevState: State, newState: State) => {
-          console.debug("[UPDATE]", prevState, newState);
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <ApolloProvider client={apolloClient}>
-            <AuthProvider>
-              <Component {...pageProps} />
-            </AuthProvider>
-          </ApolloProvider>
-        </ThemeProvider>
-      </StateProvider>
+      <ThemeProvider theme={theme}>
+        <ApolloProvider client={apolloClient}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </ApolloProvider>
+      </ThemeProvider>
     );
   }
 }
 
-export default withAuth(withApolloClient(MyApp));
+export default withApolloClient(withAuth(MyApp));

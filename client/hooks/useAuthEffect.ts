@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-
-import { useStateValue } from "@/store";
+import { useSetUidMutation, useSetLoadingMutation } from "@/generated/types";
 
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {
@@ -21,20 +20,20 @@ const SIGNIN = gql`
 `;
 
 export const useAuthEffect = () => {
-  const { actions } = useStateValue();
-  const { setUser, setLoading } = actions;
+  const [setUid] = useSetUidMutation();
+  const [setLoading] = useSetLoadingMutation();
   const [signin] = useMutation(SIGNIN);
   const router = useRouter();
 
   useAsyncEffect(async () => {
     const result = await firebase.auth().getRedirectResult();
     if (result.user) {
-      setLoading(true);
+      setLoading({ variables: { loading: true } });
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
       await signin({ variables: { token } });
-      setUser(result.user.uid);
-      setLoading(false);
+      setUid({ variables: { uid: result.user.uid } });
+      setLoading({ variables: { loading: false } });
       router.push("/");
     }
   });

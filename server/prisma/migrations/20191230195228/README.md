@@ -76,5 +76,3 @@ migration 20191222205820..20191230195228
    createdAt DateTime  @default(now())
    updatedAt DateTime  @updatedAt
 ```
-
-

@@ -10,6 +10,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  LanguageCode: any;
 };
 
 export type AuthData = {
@@ -17,10 +18,9 @@ export type AuthData = {
   token: Scalars["String"];
 };
 
-export type Language = Node & {
+export type Language = {
   __typename?: "Language";
-  /** Unique identifier for the resource */
-  id: Scalars["ID"];
+  id: Scalars["LanguageCode"];
   name: Scalars["String"];
 };
 
@@ -39,6 +39,9 @@ export type LineInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  setUid: Scalars["Boolean"];
+  setLoading: Scalars["Boolean"];
+  setErrorMessage: Scalars["Boolean"];
   userCreate: User;
   userUpdate: User;
   postCreate: Post;
@@ -48,6 +51,18 @@ export type Mutation = {
   tweetLike: Tweet;
   logout: Scalars["Boolean"];
   signin: AuthData;
+};
+
+export type MutationSetUidArgs = {
+  user?: Maybe<Scalars["String"]>;
+};
+
+export type MutationSetLoadingArgs = {
+  loading: Scalars["Boolean"];
+};
+
+export type MutationSetErrorMessageArgs = {
+  errorMessage?: Maybe<Scalars["String"]>;
 };
 
 export type MutationUserCreateArgs = {
@@ -123,6 +138,9 @@ export type PostInput = {
 
 export type Query = {
   __typename?: "Query";
+  uid?: Maybe<Scalars["String"]>;
+  loading: Scalars["Boolean"];
+  errorMessage?: Maybe<Scalars["String"]>;
   search: Array<Post>;
   feed: Array<Post>;
   posts: Array<Post>;
@@ -357,6 +375,55 @@ export type TweetLikeMutationVariables = {
 export type TweetLikeMutation = { __typename?: "Mutation" } & {
   tweetLike: { __typename?: "Tweet" } & TweetFieldFragment;
 };
+
+export type LogoutMutationVariables = {};
+
+export type LogoutMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "logout"
+>;
+
+export type SetUidMutationVariables = {
+  uid?: Maybe<Scalars["String"]>;
+};
+
+export type SetUidMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "setUid"
+>;
+
+export type SetLoadingMutationVariables = {
+  loading: Scalars["Boolean"];
+};
+
+export type SetLoadingMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "setLoading"
+>;
+
+export type SetErrorMessageMutationVariables = {
+  errorMessage?: Maybe<Scalars["String"]>;
+};
+
+export type SetErrorMessageMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "setErrorMessage"
+>;
+
+export type GetUidQueryVariables = {};
+
+export type GetUidQuery = { __typename?: "Query" } & Pick<Query, "uid">;
+
+export type GetLoadingQueryVariables = {};
+
+export type GetLoadingQuery = { __typename?: "Query" } & Pick<Query, "loading">;
+
+export type GetErrorMessageQueryVariables = {};
+
+export type GetErrorMessageQuery = { __typename?: "Query" } & Pick<
+  Query,
+  "errorMessage"
+>;
 
 export const TweetFieldFragmentDoc = gql`
   fragment tweetField on Tweet {
@@ -1136,4 +1203,344 @@ export type TweetLikeMutationResult = ApolloReactCommon.MutationResult<
 export type TweetLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TweetLikeMutation,
   TweetLikeMutationVariables
+>;
+export const LogoutDocument = gql`
+  mutation logout {
+    logout
+  }
+`;
+export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    LogoutMutation,
+    LogoutMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    baseOptions
+  );
+}
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = ApolloReactCommon.MutationResult<
+  LogoutMutation
+>;
+export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
+export const SetUidDocument = gql`
+  mutation setUid($uid: String) {
+    setUid(user: $uid) @client
+  }
+`;
+export type SetUidMutationFn = ApolloReactCommon.MutationFunction<
+  SetUidMutation,
+  SetUidMutationVariables
+>;
+
+/**
+ * __useSetUidMutation__
+ *
+ * To run a mutation, you first call `useSetUidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetUidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setUidMutation, { data, loading, error }] = useSetUidMutation({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *   },
+ * });
+ */
+export function useSetUidMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetUidMutation,
+    SetUidMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<SetUidMutation, SetUidMutationVariables>(
+    SetUidDocument,
+    baseOptions
+  );
+}
+export type SetUidMutationHookResult = ReturnType<typeof useSetUidMutation>;
+export type SetUidMutationResult = ApolloReactCommon.MutationResult<
+  SetUidMutation
+>;
+export type SetUidMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetUidMutation,
+  SetUidMutationVariables
+>;
+export const SetLoadingDocument = gql`
+  mutation setLoading($loading: Boolean!) {
+    setLoading(loading: $loading) @client
+  }
+`;
+export type SetLoadingMutationFn = ApolloReactCommon.MutationFunction<
+  SetLoadingMutation,
+  SetLoadingMutationVariables
+>;
+
+/**
+ * __useSetLoadingMutation__
+ *
+ * To run a mutation, you first call `useSetLoadingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetLoadingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setLoadingMutation, { data, loading, error }] = useSetLoadingMutation({
+ *   variables: {
+ *      loading: // value for 'loading'
+ *   },
+ * });
+ */
+export function useSetLoadingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetLoadingMutation,
+    SetLoadingMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    SetLoadingMutation,
+    SetLoadingMutationVariables
+  >(SetLoadingDocument, baseOptions);
+}
+export type SetLoadingMutationHookResult = ReturnType<
+  typeof useSetLoadingMutation
+>;
+export type SetLoadingMutationResult = ApolloReactCommon.MutationResult<
+  SetLoadingMutation
+>;
+export type SetLoadingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetLoadingMutation,
+  SetLoadingMutationVariables
+>;
+export const SetErrorMessageDocument = gql`
+  mutation setErrorMessage($errorMessage: String) {
+    setErrorMessage(errorMessage: $errorMessage) @client
+  }
+`;
+export type SetErrorMessageMutationFn = ApolloReactCommon.MutationFunction<
+  SetErrorMessageMutation,
+  SetErrorMessageMutationVariables
+>;
+
+/**
+ * __useSetErrorMessageMutation__
+ *
+ * To run a mutation, you first call `useSetErrorMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetErrorMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setErrorMessageMutation, { data, loading, error }] = useSetErrorMessageMutation({
+ *   variables: {
+ *      errorMessage: // value for 'errorMessage'
+ *   },
+ * });
+ */
+export function useSetErrorMessageMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetErrorMessageMutation,
+    SetErrorMessageMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    SetErrorMessageMutation,
+    SetErrorMessageMutationVariables
+  >(SetErrorMessageDocument, baseOptions);
+}
+export type SetErrorMessageMutationHookResult = ReturnType<
+  typeof useSetErrorMessageMutation
+>;
+export type SetErrorMessageMutationResult = ApolloReactCommon.MutationResult<
+  SetErrorMessageMutation
+>;
+export type SetErrorMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetErrorMessageMutation,
+  SetErrorMessageMutationVariables
+>;
+export const GetUidDocument = gql`
+  query getUid {
+    uid @client(always: true)
+  }
+`;
+
+/**
+ * __useGetUidQuery__
+ *
+ * To run a query within a React component, call `useGetUidQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUidQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUidQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetUidQuery,
+    GetUidQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<GetUidQuery, GetUidQueryVariables>(
+    GetUidDocument,
+    baseOptions
+  );
+}
+export function useGetUidLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetUidQuery,
+    GetUidQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<GetUidQuery, GetUidQueryVariables>(
+    GetUidDocument,
+    baseOptions
+  );
+}
+export type GetUidQueryHookResult = ReturnType<typeof useGetUidQuery>;
+export type GetUidLazyQueryHookResult = ReturnType<typeof useGetUidLazyQuery>;
+export type GetUidQueryResult = ApolloReactCommon.QueryResult<
+  GetUidQuery,
+  GetUidQueryVariables
+>;
+export const GetLoadingDocument = gql`
+  query getLoading {
+    loading @client(always: true)
+  }
+`;
+
+/**
+ * __useGetLoadingQuery__
+ *
+ * To run a query within a React component, call `useGetLoadingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLoadingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLoadingQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLoadingQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetLoadingQuery,
+    GetLoadingQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<GetLoadingQuery, GetLoadingQueryVariables>(
+    GetLoadingDocument,
+    baseOptions
+  );
+}
+export function useGetLoadingLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetLoadingQuery,
+    GetLoadingQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetLoadingQuery,
+    GetLoadingQueryVariables
+  >(GetLoadingDocument, baseOptions);
+}
+export type GetLoadingQueryHookResult = ReturnType<typeof useGetLoadingQuery>;
+export type GetLoadingLazyQueryHookResult = ReturnType<
+  typeof useGetLoadingLazyQuery
+>;
+export type GetLoadingQueryResult = ApolloReactCommon.QueryResult<
+  GetLoadingQuery,
+  GetLoadingQueryVariables
+>;
+export const GetErrorMessageDocument = gql`
+  query getErrorMessage {
+    errorMessage @client(always: true)
+  }
+`;
+
+/**
+ * __useGetErrorMessageQuery__
+ *
+ * To run a query within a React component, call `useGetErrorMessageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetErrorMessageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetErrorMessageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetErrorMessageQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetErrorMessageQuery,
+    GetErrorMessageQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<
+    GetErrorMessageQuery,
+    GetErrorMessageQueryVariables
+  >(GetErrorMessageDocument, baseOptions);
+}
+export function useGetErrorMessageLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetErrorMessageQuery,
+    GetErrorMessageQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetErrorMessageQuery,
+    GetErrorMessageQueryVariables
+  >(GetErrorMessageDocument, baseOptions);
+}
+export type GetErrorMessageQueryHookResult = ReturnType<
+  typeof useGetErrorMessageQuery
+>;
+export type GetErrorMessageLazyQueryHookResult = ReturnType<
+  typeof useGetErrorMessageLazyQuery
+>;
+export type GetErrorMessageQueryResult = ApolloReactCommon.QueryResult<
+  GetErrorMessageQuery,
+  GetErrorMessageQueryVariables
 >;

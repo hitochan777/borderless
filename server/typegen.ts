@@ -12,6 +12,7 @@ import { core } from "nexus"
 declare global {
   interface NexusGenCustomDefinitionMethods<TypeName extends string> {
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+    language<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "LanguageCode";
   }
 }
 
@@ -57,7 +58,7 @@ export interface NexusGenRootTypes {
     token: string; // String!
   }
   Language: { // root type
-    id: string; // ID!
+    id: any; // LanguageCode!
     name: string; // String!
   }
   Line: entity_line.Line;
@@ -69,13 +70,14 @@ export interface NexusGenRootTypes {
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Language'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
   String: string;
   Int: number;
   Float: number;
   Boolean: boolean;
   ID: string;
   Date: any;
+  LanguageCode: any;
   Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
 }
 
@@ -93,7 +95,7 @@ export interface NexusGenFieldTypes {
     token: string; // String!
   }
   Language: { // field return type
-    id: string; // ID!
+    id: any; // LanguageCode!
     name: string; // String!
   }
   Line: { // field return type
@@ -216,7 +218,7 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   Repliable: "Line" | "Tweet"
-  Node: "Post" | "Language" | "Line" | "Tweet" | "User"
+  Node: "Post" | "Line" | "Tweet" | "User"
 }
 
 export interface NexusGenInheritedFields {}
@@ -229,7 +231,7 @@ export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = "Node";
 
-export type NexusGenScalarNames = "Boolean" | "Date" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "Date" | "Float" | "ID" | "Int" | "LanguageCode" | "String";
 
 export type NexusGenUnionNames = "Repliable";
 

@@ -8,11 +8,12 @@ type AuthData {
 
 scalar Date
 
-type Language implements Node {
-  """Unique identifier for the resource"""
-  id: ID!
+type Language {
+  id: LanguageCode!
   name: String!
 }
+
+scalar LanguageCode
 
 type Line implements Node {
   """Unique identifier for the resource"""

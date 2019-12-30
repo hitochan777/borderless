@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 import { GlobalStyle } from "./global-style";
-import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
 import { useViewer } from "@/hooks/useViewer";
+import { useUid } from "@/store";
+import { useLoading } from "@/store";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -17,9 +18,10 @@ const LoadingWrapper = styled.div`
 `;
 
 const Layout: React.FC = ({ children }) => {
-  const { state } = useStateValue();
+  const uid = useUid();
+  const globalLoading = useLoading();
   const { viewer, loading: queryLoading } = useViewer();
-  const loading = state.loading || (state.user && queryLoading);
+  const loading = globalLoading || queryLoading;
   if (loading) {
     return (
       <LoadingWrapper>
@@ -29,7 +31,7 @@ const Layout: React.FC = ({ children }) => {
   }
   let shouldShowFillInfoModal = false;
   let formData;
-  if (state.user) {
+  if (uid) {
     if (!viewer) {
       throw new Error("Unexpected error");
     }
@@ -41,7 +43,7 @@ const Layout: React.FC = ({ children }) => {
       learningLanguages.length === 0 ||
       fluentLanguages.length === 0;
 
-    if (state.user && isInfoEmpty) {
+    if (uid && isInfoEmpty) {
       shouldShowFillInfoModal = true;
       formData = {
         email,

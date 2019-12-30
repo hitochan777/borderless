@@ -12,7 +12,6 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { MultiSelect } from "./molecule/MultiSelect";
 import Loading from "./Loading";
-import { useStateValue } from "@/store";
 import {
   FETCH_LANGUAGES_QUERY,
   USER_UPDATE_MUTATION
@@ -22,6 +21,7 @@ import {
   UserUpdateMutation,
   UserUpdateMutationVariables
 } from "@/generated/types";
+import { useUid } from "@/store";
 
 interface Props {
   open: boolean;
@@ -44,7 +44,7 @@ interface Props {
   formData: FormValues | undefined;
 }
 
-export const FillInModal: React.StatelessComponent<Props> = ({
+export const FillInModal: React.FC<Props> = ({
   open,
   formData = {
     email: "",
@@ -53,16 +53,16 @@ export const FillInModal: React.StatelessComponent<Props> = ({
     learningLanguages: []
   }
 }) => {
-  const { state } = useStateValue();
   const [
     updateUser,
     { loading: signupLoading, error: signupError }
   ] = useMutation<UserUpdateMutation, UserUpdateMutationVariables>(
     USER_UPDATE_MUTATION
   );
+  const uid = useUid();
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
-    if (!state.user) {
+    if (!uid) {
       throw new Error("uid should not be empty when updating user");
     }
     await updateUser({

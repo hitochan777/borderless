@@ -199,3 +199,47 @@ export const TWEET_LIKE_MUTATION = gql`
   }
   ${TWEET_FIELD_FRAGMENT}
 `;
+
+export const LOGOUT_MUTATION = gql`
+  mutation logout {
+    logout
+  }
+`;
+
+// client side queries/mutations
+
+export const SET_UID = gql`
+  mutation setUid($uid: String) {
+    setUid(user: $uid) @client
+  }
+`;
+
+export const SET_LOADING_MUTATION = gql`
+  mutation setLoading($loading: Boolean!) {
+    setLoading(loading: $loading) @client
+  }
+`;
+
+export const SET_ERROR_MESSAGE_MUTATION = gql`
+  mutation setErrorMessage($errorMessage: String) {
+    setErrorMessage(errorMessage: $errorMessage) @client
+  }
+`;
+
+export const GET_UID_QUERY = gql`
+  query getUid {
+    uid @client(always: true)
+  }
+`;
+
+export const GET_LOADING_QUERY = gql`
+  query getLoading {
+    loading @client(always: true)
+  }
+`;
+
+export const GET_ERROR_MESSAGE_QUERY = gql`
+  query getErrorMessage {
+    errorMessage @client(always: true)
+  }
+`;

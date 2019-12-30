@@ -27,7 +27,7 @@ const withApolloClient = (
         ctx: { req }
       } = appContext;
 
-      let appProps = {};
+      let appProps: { [key: string]: any } = {};
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(appContext);
       }
@@ -35,7 +35,7 @@ const withApolloClient = (
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
       const apollo = initApollo(
-        {},
+        { data: { uid: appProps.user } },
         {
           getToken: () => {
             const parsed = parseCookies(req);

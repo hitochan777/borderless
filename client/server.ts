@@ -42,7 +42,7 @@ const withAuthHandler = (handler: any) => async (
   try {
     const uid = await getUidFromCookie(req);
     if (uid) {
-      req.headers["uid"] = uid;
+      req.headers["uid"] = uid; // eslint-disable-line require-atomic-updates
     }
   } catch (error) {
     console.log(error);

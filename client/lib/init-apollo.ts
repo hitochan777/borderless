@@ -30,19 +30,6 @@ const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
     };
   });
 
-const onErrorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    );
-  }
-  if (networkError) {
-    console.error(`[Network error]: ${networkError}`);
-  }
-});
-
 const httpLink = createHttpLink({
   uri: process.env.GRAPHQL_ENDPOINT,
   credentials: "same-origin"
@@ -62,14 +49,34 @@ const typeDefs = gql`
   }
 `;
 
-const create = (initialState: any, options: ApolloInitOptions) =>
-  new ApolloClient({
+const create = (
+  initialState: any = {},
+  initialLocalState: any = {},
+  options: ApolloInitOptions
+) => {
+  const cache = new InMemoryCache().restore(initialState);
+  cache.writeData(initialLocalState);
+  const client = new ApolloClient({
     link: ApolloLink.from([
-      onErrorLink,
+      onError(({ graphQLErrors, networkError }) => {
+        if (graphQLErrors) {
+          graphQLErrors.map(({ message, locations, path }) =>
+            console.error(
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            )
+          );
+          client.writeData({
+            data: { errorMessage: graphQLErrors[0].message }
+          });
+        }
+        if (networkError) {
+          console.error(`[Network error]: ${networkError}`);
+        }
+      }),
       createAuthorizationLink(options),
       httpLink
     ]),
-    cache: new InMemoryCache().restore(initialState || {}),
+    cache,
     ssrMode: !isBrowser,
     resolvers: {
       Mutation: {
@@ -82,24 +89,30 @@ const create = (initialState: any, options: ApolloInitOptions) =>
           return null;
         },
         setErrorMessage: (_root, { errorMessage }, { cache }) => {
-          cache.writeData({ data: { errorMessage: errorMessage } });
+          cache.writeData({ data: { errorMessage } });
           return null;
         }
       }
     },
     typeDefs
   });
+  return client;
+};
 
-const initApollo = (initialState: any = {}, options: ApolloInitOptions) => {
+const initApollo = (
+  initialState: any = {},
+  initialLocalState: any = {},
+  options: ApolloInitOptions
+) => {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!isBrowser) {
-    return create(initialState, options);
+    return create(initialState, initialLocalState, options);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = create(initialState, options);
+    apolloClient = create(initialState, initialLocalState, options);
   }
 
   return apolloClient;

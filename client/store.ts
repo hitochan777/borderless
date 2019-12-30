@@ -1,4 +1,8 @@
-import { useGetUidQuery, useGetLoadingQuery } from "@/generated/types";
+import {
+  useGetUidQuery,
+  useGetLoadingQuery,
+  useGetErrorMessageQuery
+} from "@/generated/types";
 
 export const useUid = (): string | null | undefined => {
   const { data } = useGetUidQuery();
@@ -18,4 +22,16 @@ export const useLoading = (): boolean => {
     return false;
   }
   return !!data.loading;
+};
+
+export const useErrorMessage = (): string | null | undefined => {
+  const { data } = useGetErrorMessageQuery();
+  if (!data) {
+    return null;
+  }
+  if (!data.errorMessage) {
+    // convert undefined and null to null
+    return null;
+  }
+  return data.errorMessage;
 };

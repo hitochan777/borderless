@@ -35,7 +35,8 @@ const withApolloClient = (
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
       const apollo = initApollo(
-        { data: { uid: appProps.user } },
+        {},
+        { data: { uid: appProps.user, loading: false, errorMessage: null } },
         {
           getToken: () => {
             const parsed = parseCookies(req);
@@ -77,11 +78,15 @@ const withApolloClient = (
 
     constructor(props: any) {
       super(props);
-      this.apolloClient = initApollo(props.apolloState, {
-        getToken: () => {
-          return undefined;
+      this.apolloClient = initApollo(
+        props.apolloState,
+        { data: { uid: props.user, loading: false, errorMessage: null } },
+        {
+          getToken: () => {
+            return undefined;
+          }
         }
-      });
+      );
     }
 
     render() {

@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import { Snackbar } from "@material-ui/core";
 
 import { GlobalStyle } from "./global-style";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
 import { useViewer } from "@/hooks/useViewer";
-import { useUid } from "@/store";
+import { useUid, useErrorMessage } from "@/store";
+import { useSetErrorMessageMutation } from "@/generated/types";
 import { useLoading } from "@/store";
 
 const LoadingWrapper = styled.div`
@@ -19,8 +21,10 @@ const LoadingWrapper = styled.div`
 
 const Layout: React.FC = ({ children }) => {
   const uid = useUid();
+  const errorMessage = useErrorMessage();
   const globalLoading = useLoading();
   const { viewer, loading: queryLoading } = useViewer();
+  const [setErrorMessage] = useSetErrorMessageMutation();
   const loading = globalLoading || queryLoading;
   if (loading) {
     return (
@@ -59,6 +63,15 @@ const Layout: React.FC = ({ children }) => {
       <GlobalStyle />
       <Navbar />
       <FillInModal open={shouldShowFillInfoModal} formData={formData} />
+      <Snackbar
+        open={!!errorMessage}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        message={errorMessage}
+        autoHideDuration={2000}
+        onClose={() => {
+          setErrorMessage({ variables: { errorMessage: null } });
+        }}
+      />
       <main>{children}</main>
     </>
   );

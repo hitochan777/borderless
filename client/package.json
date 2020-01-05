@@ -6,6 +6,7 @@
   "scripts": {
     "build": "next build",
     "dev": "ts-node --project tsconfig.server.json server.ts",
+    "debug": "TS_NODE_PROJECT=./tsconfig.server.json node --inspect -r ts-node/register server.ts",
     "start": "NODE_ENV=production ts-node --project tsconfig.server.json server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",

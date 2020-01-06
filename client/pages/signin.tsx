@@ -1,17 +1,25 @@
 import React from "react";
 import { Grid, Box } from "@material-ui/core";
+import firebase from "firebase";
 
-import { useStateValue } from "@/store";
 import Layout from "@/layout/default";
 import { GoogleLoginButton } from "@/components/molecule/GoogleLoginButton";
 
+const signIn = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithRedirect(provider);
+};
+
 const SignIn: React.FC = () => {
-  const { actions } = useStateValue();
   return (
     <Layout>
       <Box marginTop="30vh">
         <Grid container justify="center">
-          <GoogleLoginButton onClick={() => actions.signIn()} />
+          <GoogleLoginButton
+            onClick={() => {
+              signIn();
+            }}
+          />
         </Grid>
       </Box>
     </Layout>

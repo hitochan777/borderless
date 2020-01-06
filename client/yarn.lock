@@ -10950,11 +10950,6 @@ react-sizeme@^2.6.7:
     shallowequal "^1.1.0"
     throttle-debounce "^2.1.0"
 
-react-state-action-hooks@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-state-action-hooks/-/react-state-action-hooks-1.1.0.tgz#0ddf3c7af8e263bf00b7a02383a59c589c656c4d"
-  integrity sha512-OOyNDKlkbSslguZsL24fiSovJ8eN6MMT2O8bnUrjaLLGjMm1u6FU7nEWOibcZXYVpXG0syODpPejEWPODApxvA==
-
 react-syntax-highlighter@^8.0.1:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-8.1.0.tgz#59103ff17a828a27ed7c8f035ae2558f09b6b78c"

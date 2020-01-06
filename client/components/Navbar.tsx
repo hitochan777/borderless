@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,10 +9,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CreateIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
+import firebase from "firebase";
+import { useApolloClient } from "@apollo/react-hooks";
 
+import { UidContext } from "@/context";
 import { useViewer } from "@/hooks/useViewer";
-import { useStateValue } from "@/store";
 import { FullSearchBox } from "./molecule/SearchBox";
+import { useSetLoadingMutation, useLogoutMutation } from "@/generated/types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,11 +31,33 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const useSignOut = () => {
+  const { setUid } = useContext(UidContext);
+  const [setLoading] = useSetLoadingMutation();
+  const [logout] = useLogoutMutation();
+  const apolloClient = useApolloClient();
+  const signOut = async () => {
+    setLoading({ variables: { loading: true } });
+    try {
+      await firebase.auth().signOut();
+      apolloClient.resetStore();
+      await logout();
+    } catch (error) {
+      console.log(error);
+      console.error("Faild to sign out");
+    } finally {
+      setUid(null);
+      setLoading({ variables: { loading: false } });
+    }
+  };
+  return signOut;
+};
+
 const Navbar: React.FC = () => {
-  const { actions } = useStateValue();
   const classes = useStyles();
   const router = useRouter();
   const { viewer } = useViewer();
+  const signOut = useSignOut();
 
   return (
     <div className={classes.root}>
@@ -63,7 +88,7 @@ const Navbar: React.FC = () => {
                   <AccountCircle />
                 </Link>
               </MenuItem>
-              <Button color="inherit" onClick={actions.signOut}>
+              <Button color="inherit" onClick={signOut}>
                 Logout
               </Button>
             </>

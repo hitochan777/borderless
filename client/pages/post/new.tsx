@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NextPage } from "next";
 import Router from "next/router";
 import { useMutation } from "@apollo/react-hooks";
@@ -40,14 +40,8 @@ const useCreatePost = () => {
 const PostNewPage: NextPage = () => {
   const { value, setValue } = useEditorState();
   const [language, setLanguage] = useState<string>("");
-  const { createPost, loading, error } = useCreatePost();
+  const { createPost, loading } = useCreatePost();
   const { viewer } = useViewer();
-
-  useEffect(() => {
-    if (!viewer || error) {
-      alert("I am sorry but something happened during submission");
-    }
-  }, [error, viewer]);
 
   const handleSubmit = async (isDraft = true) => {
     if (!viewer) {

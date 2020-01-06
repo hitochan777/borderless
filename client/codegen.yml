@@ -3,6 +3,7 @@ schema: "http://localhost:3001/graphql"
 documents: "./constant/graphql.ts"
 generates:
   generated/types.ts:
+    schema: './lib/init-apollo.ts'
     plugins:
       - typescript
       - typescript-operations

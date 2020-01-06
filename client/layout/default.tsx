@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { Snackbar } from "@material-ui/core";
 
 import { GlobalStyle } from "./global-style";
-import { useStateValue } from "../store";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { FillInModal } from "../components/FillInModal";
 import { useViewer } from "@/hooks/useViewer";
+import { useUid, useErrorMessage } from "@/store";
+import { useSetErrorMessageMutation } from "@/generated/types";
+import { useLoading } from "@/store";
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -17,9 +20,12 @@ const LoadingWrapper = styled.div`
 `;
 
 const Layout: React.FC = ({ children }) => {
-  const { state } = useStateValue();
+  const uid = useUid();
+  const errorMessage = useErrorMessage();
+  const globalLoading = useLoading();
   const { viewer, loading: queryLoading } = useViewer();
-  const loading = state.loading || (state.user && queryLoading);
+  const [setErrorMessage] = useSetErrorMessageMutation();
+  const loading = globalLoading || queryLoading;
   if (loading) {
     return (
       <LoadingWrapper>
@@ -29,7 +35,7 @@ const Layout: React.FC = ({ children }) => {
   }
   let shouldShowFillInfoModal = false;
   let formData;
-  if (state.user) {
+  if (uid) {
     if (!viewer) {
       throw new Error("Unexpected error");
     }
@@ -41,7 +47,7 @@ const Layout: React.FC = ({ children }) => {
       learningLanguages.length === 0 ||
       fluentLanguages.length === 0;
 
-    if (state.user && isInfoEmpty) {
+    if (uid && isInfoEmpty) {
       shouldShowFillInfoModal = true;
       formData = {
         email,
@@ -57,6 +63,15 @@ const Layout: React.FC = ({ children }) => {
       <GlobalStyle />
       <Navbar />
       <FillInModal open={shouldShowFillInfoModal} formData={formData} />
+      <Snackbar
+        open={!!errorMessage}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        message={errorMessage}
+        autoHideDuration={2000}
+        onClose={() => {
+          setErrorMessage({ variables: { errorMessage: null } });
+        }}
+      />
       <main>{children}</main>
     </>
   );

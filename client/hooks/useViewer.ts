@@ -1,18 +1,12 @@
-import { useQuery } from "@apollo/react-hooks";
-
-import { FETCH_VIEWER_QUERY } from "@/constant/graphql";
-import { FetchViewerQuery } from "@/generated/types";
-import { useStateValue } from "@/store";
+import { useFetchViewerQuery } from "@/generated/types";
+import { useUid } from "@/store";
 
 export const useViewer = () => {
-  const { state } = useStateValue();
-  const { data, error, loading } = useQuery<FetchViewerQuery>(
-    FETCH_VIEWER_QUERY,
-    {
-      skip: state.user === null
-    }
-  );
-  if (state.user === null) {
+  const uid = useUid();
+  const { data, error, loading } = useFetchViewerQuery({
+    skip: uid === null
+  });
+  if (uid === null) {
     return { viewer: null, loading: false };
   }
   if (loading) {
@@ -23,7 +17,6 @@ export const useViewer = () => {
   }
   if (!data || !data.viewer) {
     return { viewer: null, loading: false };
-    // throw new Error("data is empty");
   }
 
   return { viewer: data.viewer, loading };

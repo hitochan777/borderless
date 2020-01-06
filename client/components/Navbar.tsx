@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,13 +12,10 @@ import Button from "@material-ui/core/Button";
 import firebase from "firebase";
 import { useApolloClient } from "@apollo/react-hooks";
 
+import { UidContext } from "@/context";
 import { useViewer } from "@/hooks/useViewer";
 import { FullSearchBox } from "./molecule/SearchBox";
-import {
-  useSetUidMutation,
-  useSetLoadingMutation,
-  useLogoutMutation
-} from "@/generated/types";
+import { useSetLoadingMutation, useLogoutMutation } from "@/generated/types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const useSignOut = () => {
-  const [setUid] = useSetUidMutation();
+  const { setUid } = useContext(UidContext);
   const [setLoading] = useSetLoadingMutation();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
@@ -49,7 +46,7 @@ const useSignOut = () => {
       console.log(error);
       console.error("Faild to sign out");
     } finally {
-      setUid({ variables: { uid: null } });
+      setUid(null);
       setLoading({ variables: { loading: false } });
     }
   };

@@ -1,19 +1,11 @@
-import {
-  useGetUidQuery,
-  useGetLoadingQuery,
-  useGetErrorMessageQuery
-} from "@/generated/types";
+import { useContext } from "react";
+import { useGetLoadingQuery, useGetErrorMessageQuery } from "@/generated/types";
+
+import { UidContext } from "@/context";
 
 export const useUid = (): string | null | undefined => {
-  const { data } = useGetUidQuery();
-  if (!data) {
-    return null;
-  }
-  if (!data.uid) {
-    // convert undefined and null to null
-    return null;
-  }
-  return data.uid;
+  const { uid } = useContext(UidContext);
+  return uid;
 };
 
 export const useLoading = (): boolean => {

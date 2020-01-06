@@ -80,7 +80,7 @@ const withApolloClient = (
       super(props);
       this.apolloClient = initApollo(
         props.apolloState,
-        { data: { uid: props.user, loading: false, errorMessage: null } },
+        { data: { loading: false, errorMessage: null } },
         {
           getToken: () => {
             return undefined;

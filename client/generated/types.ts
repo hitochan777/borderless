@@ -39,7 +39,6 @@ export type LineInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  setUid: Scalars["Boolean"];
   setLoading: Scalars["Boolean"];
   setErrorMessage: Scalars["Boolean"];
   userCreate: User;
@@ -51,10 +50,6 @@ export type Mutation = {
   tweetLike: Tweet;
   logout: Scalars["Boolean"];
   signin: AuthData;
-};
-
-export type MutationSetUidArgs = {
-  user?: Maybe<Scalars["String"]>;
 };
 
 export type MutationSetLoadingArgs = {
@@ -138,7 +133,6 @@ export type PostInput = {
 
 export type Query = {
   __typename?: "Query";
-  uid?: Maybe<Scalars["String"]>;
   loading: Scalars["Boolean"];
   errorMessage?: Maybe<Scalars["String"]>;
   search: Array<Post>;
@@ -383,15 +377,6 @@ export type LogoutMutation = { __typename?: "Mutation" } & Pick<
   "logout"
 >;
 
-export type SetUidMutationVariables = {
-  uid?: Maybe<Scalars["String"]>;
-};
-
-export type SetUidMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "setUid"
->;
-
 export type SetLoadingMutationVariables = {
   loading: Scalars["Boolean"];
 };
@@ -409,10 +394,6 @@ export type SetErrorMessageMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "setErrorMessage"
 >;
-
-export type GetUidQueryVariables = {};
-
-export type GetUidQuery = { __typename?: "Query" } & Pick<Query, "uid">;
 
 export type GetLoadingQueryVariables = {};
 
@@ -1249,52 +1230,6 @@ export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
 >;
-export const SetUidDocument = gql`
-  mutation setUid($uid: String) {
-    setUid(user: $uid) @client
-  }
-`;
-export type SetUidMutationFn = ApolloReactCommon.MutationFunction<
-  SetUidMutation,
-  SetUidMutationVariables
->;
-
-/**
- * __useSetUidMutation__
- *
- * To run a mutation, you first call `useSetUidMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetUidMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [setUidMutation, { data, loading, error }] = useSetUidMutation({
- *   variables: {
- *      uid: // value for 'uid'
- *   },
- * });
- */
-export function useSetUidMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    SetUidMutation,
-    SetUidMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<SetUidMutation, SetUidMutationVariables>(
-    SetUidDocument,
-    baseOptions
-  );
-}
-export type SetUidMutationHookResult = ReturnType<typeof useSetUidMutation>;
-export type SetUidMutationResult = ApolloReactCommon.MutationResult<
-  SetUidMutation
->;
-export type SetUidMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  SetUidMutation,
-  SetUidMutationVariables
->;
 export const SetLoadingDocument = gql`
   mutation setLoading($loading: Boolean!) {
     setLoading(loading: $loading) @client
@@ -1390,55 +1325,6 @@ export type SetErrorMessageMutationResult = ApolloReactCommon.MutationResult<
 export type SetErrorMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<
   SetErrorMessageMutation,
   SetErrorMessageMutationVariables
->;
-export const GetUidDocument = gql`
-  query getUid {
-    uid @client(always: true)
-  }
-`;
-
-/**
- * __useGetUidQuery__
- *
- * To run a query within a React component, call `useGetUidQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUidQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUidQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetUidQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetUidQuery,
-    GetUidQueryVariables
-  >
-) {
-  return ApolloReactHooks.useQuery<GetUidQuery, GetUidQueryVariables>(
-    GetUidDocument,
-    baseOptions
-  );
-}
-export function useGetUidLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetUidQuery,
-    GetUidQueryVariables
-  >
-) {
-  return ApolloReactHooks.useLazyQuery<GetUidQuery, GetUidQueryVariables>(
-    GetUidDocument,
-    baseOptions
-  );
-}
-export type GetUidQueryHookResult = ReturnType<typeof useGetUidQuery>;
-export type GetUidLazyQueryHookResult = ReturnType<typeof useGetUidLazyQuery>;
-export type GetUidQueryResult = ApolloReactCommon.QueryResult<
-  GetUidQuery,
-  GetUidQueryVariables
 >;
 export const GetLoadingDocument = gql`
   query getLoading {

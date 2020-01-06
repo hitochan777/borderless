@@ -1,9 +1,11 @@
 import firebase from "firebase";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import { useSetUidMutation, useSetLoadingMutation } from "@/generated/types";
+
+import { useSetLoadingMutation } from "@/generated/types";
+import { UidContext } from "@/context";
 
 export function useAsyncEffect(effect: () => Promise<any>) {
   useEffect(() => {
@@ -20,7 +22,7 @@ const SIGNIN = gql`
 `;
 
 export const useAuthEffect = () => {
-  const [setUid] = useSetUidMutation();
+  const { setUid } = useContext(UidContext);
   const [setLoading] = useSetLoadingMutation();
   const [signin] = useMutation(SIGNIN);
   const router = useRouter();
@@ -32,7 +34,7 @@ export const useAuthEffect = () => {
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
       await signin({ variables: { token } });
-      setUid({ variables: { uid: result.user.uid } });
+      setUid(result.user.uid);
       setLoading({ variables: { loading: false } });
       router.push("/");
     }

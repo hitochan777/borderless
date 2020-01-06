@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import App, { AppContext } from "next/app";
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
+import { ThemeProvider } from "@material-ui/core";
 
 import { theme } from "@/constant/theme";
 import "@/lib/firebase";
 import { useAuthEffect } from "@/hooks/useAuthEffect";
 import withApolloClient from "@/lib/with-apollo-client";
-import { ThemeProvider } from "@material-ui/core";
+import { UidContext } from "@/context";
 
 const auth = async (context: NextPageContext) => {
   let user = null;
@@ -23,25 +24,25 @@ const auth = async (context: NextPageContext) => {
 const withAuth = (
   App: React.ComponentType<any> & { getInitialProps?: Function }
 ) => {
-  return class AuthenticatedApp extends React.Component {
-    static async getInitialProps(context: AppContext) {
-      const { ctx } = context;
-      const { user } = await auth(ctx);
-
-      const componentProps =
-        App.getInitialProps && (await App.getInitialProps(context));
-
-      return { ...componentProps, user };
-    }
-
-    constructor(props: any) {
-      super(props);
-    }
-
-    render() {
-      return <App {...this.props} />;
-    }
+  const WithAuth = ({ ...props }) => {
+    const [uid, setUid] = useState<string | null>(props.user);
+    return (
+      <UidContext.Provider value={{ uid, setUid }}>
+        <App {...props} />
+      </UidContext.Provider>
+    );
   };
+
+  WithAuth.getInitialProps = async (context: AppContext) => {
+    const { ctx } = context;
+    const { user } = await auth(ctx);
+
+    const componentProps =
+      App.getInitialProps && (await App.getInitialProps(context));
+
+    return { ...componentProps, user };
+  };
+  return WithAuth;
 };
 
 const AuthProvider = ({ children }: { children: any }) => {

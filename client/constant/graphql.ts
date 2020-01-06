@@ -208,12 +208,6 @@ export const LOGOUT_MUTATION = gql`
 
 // client side queries/mutations
 
-export const SET_UID = gql`
-  mutation setUid($uid: String) {
-    setUid(user: $uid) @client
-  }
-`;
-
 export const SET_LOADING_MUTATION = gql`
   mutation setLoading($loading: Boolean!) {
     setLoading(loading: $loading) @client
@@ -223,12 +217,6 @@ export const SET_LOADING_MUTATION = gql`
 export const SET_ERROR_MESSAGE_MUTATION = gql`
   mutation setErrorMessage($errorMessage: String) {
     setErrorMessage(errorMessage: $errorMessage) @client
-  }
-`;
-
-export const GET_UID_QUERY = gql`
-  query getUid {
-    uid @client(always: true)
   }
 `;
 

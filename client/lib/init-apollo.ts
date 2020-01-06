@@ -37,13 +37,11 @@ const httpLink = createHttpLink({
 
 const typeDefs = gql`
   extend type Query {
-    uid: String
     loading: Boolean!
     errorMessage: String
   }
 
   extend type Mutation {
-    setUid(user: String): Boolean!
     setLoading(loading: Boolean!): Boolean!
     setErrorMessage(errorMessage: String): Boolean!
   }
@@ -80,10 +78,6 @@ const create = (
     ssrMode: !isBrowser,
     resolvers: {
       Mutation: {
-        setUid: (_root, { uid }, { cache }) => {
-          cache.writeData({ data: { uid } });
-          return null;
-        },
         setLoading: (_root, { loading }, { cache }) => {
           cache.writeData({ data: { loading } });
           return null;

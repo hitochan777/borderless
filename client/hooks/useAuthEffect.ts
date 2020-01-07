@@ -5,14 +5,11 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 
-import { useSetLoadingMutation } from "@/generated/types";
+import {
+  useSetLoadingMutation,
+  useSetErrorMessageMutation
+} from "@/generated/types";
 import { UidContext } from "@/context";
-
-export function useAsyncEffect(effect: () => Promise<any>) {
-  useEffect(() => {
-    effect().catch(e => console.warn("useAsyncEffect error", e));
-  }, []);
-}
 
 const SIGNIN = gql`
   mutation signin($token: String!) {
@@ -25,19 +22,29 @@ const SIGNIN = gql`
 export const useAuthEffect = () => {
   const { setUid } = useContext(UidContext);
   const [setLoading] = useSetLoadingMutation();
+  const [setErrorMessage] = useSetErrorMessageMutation();
   const [signin] = useMutation(SIGNIN);
   const router = useRouter();
 
-  useAsyncEffect(async () => {
+  const login = async () => {
     const result = await firebase.auth().getRedirectResult();
     if (result.user) {
-      setLoading({ variables: { loading: true } });
       const token = await result.user.getIdToken();
       // FIXME: const csrfToken = getCookie("csrfToken");
       await signin({ variables: { token } });
       setUid(result.user.uid);
-      setLoading({ variables: { loading: false } });
       router.push("/");
     }
-  });
+  };
+
+  useEffect(() => {
+    setLoading({ variables: { loading: true } });
+    login()
+      .catch(_e => {
+        setErrorMessage({ variables: { errorMessage: "Failed to login" } });
+      })
+      .finally(() => {
+        setLoading({ variables: { loading: false } });
+      });
+  }, []);
 };

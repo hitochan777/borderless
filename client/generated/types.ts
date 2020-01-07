@@ -26,7 +26,6 @@ export type Language = {
 
 export type Line = Node & {
   __typename?: "Line";
-  /** Unique identifier for the resource */
   id: Scalars["ID"];
   partialLines: Array<PartialLine>;
   replies: Array<Tweet>;
@@ -39,37 +38,25 @@ export type LineInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  setLoading: Scalars["Boolean"];
-  setErrorMessage: Scalars["Boolean"];
-  userCreate: User;
-  userUpdate: User;
+  logout: Scalars["Boolean"];
   postCreate: Post;
-  postUpdate: Post;
   postLike: Post;
+  postUpdate: Post;
+  setErrorMessage: Scalars["Boolean"];
+  setLoading: Scalars["Boolean"];
+  signin: AuthData;
   tweetCreate: Tweet;
   tweetLike: Tweet;
-  logout: Scalars["Boolean"];
-  signin: AuthData;
-};
-
-export type MutationSetLoadingArgs = {
-  loading: Scalars["Boolean"];
-};
-
-export type MutationSetErrorMessageArgs = {
-  errorMessage?: Maybe<Scalars["String"]>;
-};
-
-export type MutationUserCreateArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationUserUpdateArgs = {
-  user: UserInput;
+  userCreate: User;
+  userUpdate: User;
 };
 
 export type MutationPostCreateArgs = {
   post: PostInput;
+};
+
+export type MutationPostLikeArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationPostUpdateArgs = {
@@ -77,8 +64,16 @@ export type MutationPostUpdateArgs = {
   post: PostInput;
 };
 
-export type MutationPostLikeArgs = {
-  id: Scalars["ID"];
+export type MutationSetErrorMessageArgs = {
+  errorMessage?: Maybe<Scalars["String"]>;
+};
+
+export type MutationSetLoadingArgs = {
+  loading: Scalars["Boolean"];
+};
+
+export type MutationSigninArgs = {
+  token: Scalars["String"];
 };
 
 export type MutationTweetCreateArgs = {
@@ -89,12 +84,15 @@ export type MutationTweetLikeArgs = {
   id: Scalars["ID"];
 };
 
-export type MutationSigninArgs = {
-  token: Scalars["String"];
+export type MutationUserCreateArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationUserUpdateArgs = {
+  user: UserInput;
 };
 
 export type Node = {
-  /** Unique identifier for the resource */
   id: Scalars["ID"];
 };
 
@@ -110,7 +108,6 @@ export type PartialLineInput = {
 
 export type Post = Node & {
   __typename?: "Post";
-  /** Unique identifier for the resource */
   id: Scalars["ID"];
   json: Scalars["String"];
   title: Scalars["String"];
@@ -133,28 +130,20 @@ export type PostInput = {
 
 export type Query = {
   __typename?: "Query";
-  loading: Scalars["Boolean"];
   errorMessage?: Maybe<Scalars["String"]>;
-  search: Array<Post>;
   feed: Array<Post>;
-  posts: Array<Post>;
-  post: Post;
-  tweet: Tweet;
-  replies: Array<Tweet>;
   langs: Array<Language>;
-  viewer: User;
+  loading: Scalars["Boolean"];
+  post: Post;
+  posts: Array<Post>;
+  replies: Array<Tweet>;
+  search: Array<Post>;
+  tweet: Tweet;
   user: User;
-};
-
-export type QuerySearchArgs = {
-  query: SearchInput;
+  viewer: User;
 };
 
 export type QueryPostArgs = {
-  id: Scalars["ID"];
-};
-
-export type QueryTweetArgs = {
   id: Scalars["ID"];
 };
 
@@ -162,11 +151,18 @@ export type QueryRepliesArgs = {
   id: Scalars["ID"];
 };
 
+export type QuerySearchArgs = {
+  query: SearchInput;
+};
+
+export type QueryTweetArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryUserArgs = {
   username: Scalars["String"];
 };
 
-/** Anything that can be replied */
 export type Repliable = Tweet | Line;
 
 export type SearchInput = {
@@ -175,7 +171,6 @@ export type SearchInput = {
 
 export type Tweet = Node & {
   __typename?: "Tweet";
-  /** Unique identifier for the resource */
   id: Scalars["ID"];
   text: Scalars["String"];
   inReplyTo?: Maybe<Scalars["Int"]>;
@@ -196,7 +191,6 @@ export type TweetInput = {
 
 export type User = Node & {
   __typename?: "User";
-  /** Unique identifier for the resource */
   id: Scalars["ID"];
   username: Scalars["String"];
   email: Scalars["String"];

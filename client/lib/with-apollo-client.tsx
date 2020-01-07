@@ -36,7 +36,6 @@ const withApolloClient = (
       // and extract the resulting data
       const apollo = initApollo(
         {},
-        { data: { uid: appProps.user, loading: false, errorMessage: null } },
         {
           getToken: () => {
             const parsed = parseCookies(req);
@@ -78,15 +77,11 @@ const withApolloClient = (
 
     constructor(props: any) {
       super(props);
-      this.apolloClient = initApollo(
-        props.apolloState,
-        { data: { loading: false, errorMessage: null } },
-        {
-          getToken: () => {
-            return undefined;
-          }
+      this.apolloClient = initApollo(props.apolloState, {
+        getToken: () => {
+          return undefined;
         }
-      );
+      });
     }
 
     render() {

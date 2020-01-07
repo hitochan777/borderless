@@ -2,13 +2,15 @@ import React, { useContext } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import CreateIcon from "@material-ui/icons/Mail";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Button from "@material-ui/core/Button";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  MenuItem,
+  Button,
+  Fab
+} from "@material-ui/core";
+import { Add as AddIcon, AccountCircle } from "@material-ui/icons";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useApolloClient } from "@apollo/react-hooks";
@@ -17,6 +19,7 @@ import { UidContext } from "@/context";
 import { useViewer } from "@/hooks/useViewer";
 import { FullSearchBox } from "./molecule/SearchBox";
 import { useSetLoadingMutation, useLogoutMutation } from "@/generated/types";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,6 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1
+    },
+    createFab: {
+      position: "fixed",
+      bottom: 20,
+      right: 20
     }
   })
 );
@@ -71,18 +79,15 @@ const Navbar: React.FC = () => {
               Borderless
             </Typography>
           </Link>
-          <FullSearchBox
-            executeSearch={async query => {
-              router.push(`/search?lang=${query.language}`);
-            }}
-          />
+          <Box marginRight={1}>
+            <FullSearchBox
+              executeSearch={async query => {
+                router.push(`/search?lang=${query.language}`);
+              }}
+            />
+          </Box>
           {viewer ? (
             <>
-              <MenuItem>
-                <Link href="/post/new">
-                  <CreateIcon />
-                </Link>
-              </MenuItem>
               <MenuItem>
                 <Link
                   href="/[username]"
@@ -97,20 +102,18 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <MenuItem>
-                <Link href="/signin">
-                  <a>Sign in</a>
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href="/signin">
-                  <a>Sign up</a>
-                </Link>
-              </MenuItem>
+              <Link href="/signin">
+                <Button color="inherit">Sign in</Button>
+              </Link>
             </>
           )}
         </Toolbar>
       </AppBar>
+      <Fab color="primary" aria-label="add" className={classes.createFab}>
+        <Link href="/post/new">
+          <AddIcon />
+        </Link>
+      </Fab>
     </div>
   );
 };

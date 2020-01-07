@@ -5,6 +5,7 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import ApolloClient from "apollo-client";
 import gql from "graphql-tag";
+import fetch from "isomorphic-unfetch";
 
 interface ApolloInitOptions {
   getToken: () => string | undefined;
@@ -13,11 +14,6 @@ interface ApolloInitOptions {
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 const isBrowser = typeof window !== "undefined";
-
-// Polyfill fetch() on the server (used by apollo-client)
-if (!isBrowser) {
-  (global as any).fetch = fetch;
-}
 
 const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
   setContext((_, { headers }) => {
@@ -32,7 +28,8 @@ const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
 
 const httpLink = createHttpLink({
   uri: process.env.GRAPHQL_ENDPOINT,
-  credentials: "same-origin"
+  credentials: "same-origin",
+  fetch
 });
 
 const typeDefs = gql`

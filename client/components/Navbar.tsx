@@ -36,17 +36,19 @@ const useSignOut = () => {
   const [setLoading] = useSetLoadingMutation();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+  const router = useRouter();
   const signOut = async () => {
     setLoading({ variables: { loading: true } });
     try {
       await firebase.auth().signOut();
       apolloClient.resetStore();
       await logout();
+      setUid(null);
+      setLoading({ variables: { loading: false } });
+      router.push("/");
     } catch (error) {
       console.log(error);
       console.error("Faild to sign out");
-    } finally {
-      setUid(null);
       setLoading({ variables: { loading: false } });
     }
   };

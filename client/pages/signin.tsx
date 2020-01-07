@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Box } from "@material-ui/core";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 import Layout from "@/layout/default";
 import { GoogleLoginButton } from "@/components/molecule/GoogleLoginButton";

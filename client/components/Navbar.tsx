@@ -9,7 +9,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CreateIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { useApolloClient } from "@apollo/react-hooks";
 
 import { UidContext } from "@/context";

@@ -98,14 +98,8 @@ export const FillInModal: React.FC<Props> = ({
     name
   }));
   return (
-    <Formik
-      initialValues={formData}
-      onSubmit={handleSubmit}
-      render={({
-        handleChange,
-        handleSubmit,
-        values
-      }: FormikProps<FormValues>) => (
+    <Formik initialValues={formData} onSubmit={handleSubmit}>
+      {({ handleChange, handleSubmit, values }: FormikProps<FormValues>) => (
         <StyledForm>
           <Dialog open={open} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
@@ -160,6 +154,6 @@ export const FillInModal: React.FC<Props> = ({
           </Dialog>
         </StyledForm>
       )}
-    ></Formik>
+    </Formik>
   );
 };

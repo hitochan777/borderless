@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import styled from "styled-components";
 import { Snackbar } from "@material-ui/core";
 
@@ -19,7 +20,7 @@ const LoadingWrapper = styled.div`
   justify-content: center;
 `;
 
-const Layout: React.FC = ({ children }) => {
+const Layout: React.FC<{ title?: string }> = ({ children, title = "parc" }) => {
   const uid = useUid();
   const errorMessage = useErrorMessage();
   const globalLoading = useLoading();
@@ -60,6 +61,11 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <>
+      <Head>
+        <title>{title}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <GlobalStyle />
       <Navbar />
       <FillInModal open={shouldShowFillInfoModal} formData={formData} />

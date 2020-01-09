@@ -77,7 +77,7 @@ input PostInput {
 }
 
 type Query {
-  feed: [Post!]!
+  feed(limit: Int, offset: Int): [Post!]!
   langs: [Language!]!
   post(id: ID!): Post!
   posts: [Post!]!

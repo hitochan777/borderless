@@ -1,4 +1,4 @@
-import { queryType, stringArg, idArg, arg } from "nexus";
+import { queryType, stringArg, idArg, arg, intArg } from "nexus";
 
 import * as value from "../value/language";
 
@@ -22,14 +22,20 @@ export const Query = queryType({
     });
     t.list.field("feed", {
       type: "Post",
-      args: {},
+      args: {
+        offset: intArg({ required: false }),
+        limit: intArg({ required: false })
+      },
       async resolve(
         _,
-        __,
+        { offset, limit },
         { uid, repositories: { userRepository, postRepository } }
       ) {
         if (!uid) {
-          const posts = await postRepository.findByLanguages([], "");
+          const posts = await postRepository.findByLanguages([], "", {
+            offset,
+            limit
+          });
           return posts;
         }
         const user = await userRepository.findById(uid);
@@ -38,7 +44,8 @@ export const Query = queryType({
         }
         const posts = await postRepository.findByLanguages(
           user.fluentLanguages,
-          user.id
+          user.id,
+          { offset, limit }
         );
         return posts;
       }

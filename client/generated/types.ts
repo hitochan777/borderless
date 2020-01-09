@@ -143,6 +143,11 @@ export type Query = {
   viewer: User;
 };
 
+export type QueryFeedArgs = {
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+};
+
 export type QueryPostArgs = {
   id: Scalars["ID"];
 };
@@ -284,7 +289,10 @@ export type FetchPostByIdQuery = { __typename?: "Query" } & {
   post: { __typename?: "Post" } & PostFieldFragment;
 };
 
-export type FetchFeedForUserQueryVariables = {};
+export type FetchFeedForUserQueryVariables = {
+  offset?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+};
 
 export type FetchFeedForUserQuery = { __typename?: "Query" } & {
   feed: Array<{ __typename?: "Post" } & PostFieldFragment>;
@@ -648,8 +656,8 @@ export type FetchPostByIdQueryResult = ApolloReactCommon.QueryResult<
   FetchPostByIdQueryVariables
 >;
 export const FetchFeedForUserDocument = gql`
-  query fetchFeedForUser {
-    feed {
+  query fetchFeedForUser($offset: Int, $limit: Int) {
+    feed(offset: $offset, limit: $limit) {
       ...postField
     }
   }
@@ -668,6 +676,8 @@ export const FetchFeedForUserDocument = gql`
  * @example
  * const { data, loading, error } = useFetchFeedForUserQuery({
  *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

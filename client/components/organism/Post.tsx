@@ -39,7 +39,7 @@ export interface Props {
   focusedLineId: string | null;
 }
 
-export const Post: React.FunctionComponent<Props> = ({ id, focusedLineId }) => {
+export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
   const { data, error, loading } = useFetchPostByIdQuery({ variables: { id } });
 
   if (loading) {

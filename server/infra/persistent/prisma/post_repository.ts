@@ -134,7 +134,8 @@ export class PostRepository {
 
   async findByLanguages(
     langs: Language[],
-    currentUserId: ID = ""
+    currentUserId: ID = "",
+    { offset = 0, limit = 20 } = { offset: 0, limit: 20 }
   ): Promise<Post[]> {
     const conditions: any[] = [
       {
@@ -164,7 +165,9 @@ export class PostRepository {
       },
       include: {
         user: true
-      }
+      },
+      skip: offset,
+      first: limit
     });
     return posts.map(post => this.createEntity(post));
   }

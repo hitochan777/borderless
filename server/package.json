@@ -18,7 +18,7 @@
     "micro-dev": "3.0.0",
     "prisma2": "2.0.0-preview019",
     "ts-loader": "6.2.1",
-    "ts-node": "8.5.4",
+    "ts-node": "8.6.0",
     "typescript": "3.7.4"
   },
   "scripts": {

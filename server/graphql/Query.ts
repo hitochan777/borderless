@@ -23,8 +23,8 @@ export const Query = queryType({
     t.list.field("feed", {
       type: "Post",
       args: {
-        offset: intArg({ required: false }),
-        limit: intArg({ required: false })
+        offset: intArg({ default: 0, required: true }),
+        limit: intArg({ default: 20, required: true })
       },
       async resolve(
         _,

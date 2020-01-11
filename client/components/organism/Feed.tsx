@@ -15,11 +15,11 @@ const throttle = (func: () => void, timeFrame: number) => {
   };
 };
 
-const useScrollDetect = (fn: () => void, threshold: number = 80) => {
+const useScrollDetect = (fn: () => void, threshold = 80) => {
   const throttledFn = throttle(fn, 1000);
   useEffect(() => {
     let scrollPos = 0;
-    const handleScroll = ({}: any) => {
+    const handleScroll = (): void => {
       const {
         clientHeight,
         scrollTop,

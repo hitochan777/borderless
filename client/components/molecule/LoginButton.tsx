@@ -44,7 +44,10 @@ const StyledText = styled.span`
   font-family: "Roboto", arial, sans-serif;
 `;
 
-export const GoogleLoginButton: React.FC<{ onClick: any }> = ({ ...props }) => {
+export const LoginButton: React.FC<{ onClick: any }> = ({
+  children,
+  ...props
+}) => {
   return (
     <StyledButton type="button" {...props}>
       <StyledIcon>
@@ -70,7 +73,7 @@ export const GoogleLoginButton: React.FC<{ onClick: any }> = ({ ...props }) => {
           />
         </svg>
       </StyledIcon>
-      <StyledText>Sign in with Google</StyledText>
+      <StyledText>{children}</StyledText>
     </StyledButton>
   );
 };

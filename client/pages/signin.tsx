@@ -5,11 +5,20 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 import Layout from "@/layout/default";
-import { GoogleLoginButton } from "@/components/molecule/GoogleLoginButton";
+import { LoginButton } from "@/components/molecule/LoginButton";
 
-const signIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithRedirect(provider);
+type Provider = "google" | "twitter";
+
+const signIn = (provider: Provider) => {
+  const providerMap = {
+    google: firebase.auth.GoogleAuthProvider,
+    twitter: firebase.auth.TwitterAuthProvider
+  };
+  if (!providerMap[provider]) {
+    throw new Error(`Unknown provider ${provider}`);
+  }
+  const providerInstance = new providerMap[provider]();
+  firebase.auth().signInWithRedirect(providerInstance);
 };
 
 const useStyles = makeStyles(theme => ({
@@ -34,23 +43,22 @@ const SignIn: React.FC = () => {
             Sign in
           </Typography>
           <Box marginTop={5} />
-          <GoogleLoginButton
+          <LoginButton
             onClick={() => {
-              signIn();
+              signIn("google");
             }}
-          />
+          >
+            Sign in with Google
+          </LoginButton>
+
           <Box marginTop={2} />
-          <GoogleLoginButton
+          <LoginButton
             onClick={() => {
-              signIn();
+              signIn("twitter");
             }}
-          />
-          <Box marginTop={2} />
-          <GoogleLoginButton
-            onClick={() => {
-              signIn();
-            }}
-          />
+          >
+            Sign in with Twitter
+          </LoginButton>
         </Paper>
       </Container>
     </Layout>

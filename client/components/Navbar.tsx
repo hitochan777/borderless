@@ -109,11 +109,13 @@ const Navbar: React.FC = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Fab color="primary" aria-label="add" className={classes.createFab}>
-        <Link href="/post/new">
-          <AddIcon />
-        </Link>
-      </Fab>
+      {viewer && (
+        <Fab color="primary" aria-label="add" className={classes.createFab}>
+          <Link href="/post/new">
+            <AddIcon />
+          </Link>
+        </Fab>
+      )}
     </div>
   );
 };

@@ -144,8 +144,8 @@ export type Query = {
 };
 
 export type QueryFeedArgs = {
-  offset?: Maybe<Scalars["Int"]>;
-  limit?: Maybe<Scalars["Int"]>;
+  offset?: Scalars["Int"];
+  limit?: Scalars["Int"];
 };
 
 export type QueryPostArgs = {

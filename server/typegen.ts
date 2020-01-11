@@ -199,8 +199,8 @@ export interface NexusGenArgTypes {
   }
   Query: {
     feed: { // args
-      limit?: number | null; // Int
-      offset?: number | null; // Int
+      limit: number; // Int!
+      offset: number; // Int!
     }
     post: { // args
       id: string; // ID!

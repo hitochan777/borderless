@@ -1,6 +1,6 @@
 # Use the official lightweight Node.js 12 image.
 # https://hub.docker.com/_/node
-FROM node:12-slim
+FROM node:12.14.0-slim
 
 ENV PRODUCTION_DB_URL=""
 ENV DEVELOPMENT_DB_URL=""
@@ -20,7 +20,7 @@ RUN yarn
 COPY . ./
 
 # Generate ORM engine
-RUN npm run generate:prisma
+RUN yarn generate:prisma
 
 ENTRYPOINT ["sh"]
 # Run the web service on container startup.

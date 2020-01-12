@@ -167,7 +167,10 @@ export class PostRepository {
         user: true
       },
       skip: offset,
-      first: limit
+      first: limit,
+      orderBy: {
+        updatedAt: "desc"
+      }
     });
     return posts.map(post => this.createEntity(post));
   }

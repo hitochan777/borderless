@@ -1,7 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import { useQuery } from "@apollo/react-hooks";
-import Box from "@material-ui/core/Box";
+import { Box, Grid } from "@material-ui/core";
 import Layout from "@/layout/default";
 
 import { FETCH_USER_BY_USERNAME_QUERY } from "@/constant/graphql";
@@ -33,19 +33,21 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
 
   return (
     <Layout>
-      <Box paddingLeft="30%" paddingRight="30%">
-        {data.user.posts.map(post => (
-          <Box key={post.id} mb="1rem">
-            <PostCard
-              id={post.id}
-              title={post.title}
-              username={post.user.username}
-              language={post.language.name}
-              updatedAt={post.updatedAt}
-            />
-          </Box>
-        ))}
-      </Box>
+      <Grid container justify="center">
+        <Grid item xs={12} sm={8}>
+          {data.user.posts.map(post => (
+            <Box key={post.id} mb="1rem">
+              <PostCard
+                id={post.id}
+                title={post.title}
+                username={post.user.username}
+                language={post.language.name}
+                updatedAt={post.updatedAt}
+              />
+            </Box>
+          ))}
+        </Grid>
+      </Grid>
     </Layout>
   );
 };

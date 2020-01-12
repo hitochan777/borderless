@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  useTheme
+} from "@material-ui/core/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -8,7 +13,8 @@ import {
   Typography,
   MenuItem,
   Button,
-  Fab
+  Fab,
+  useMediaQuery
 } from "@material-ui/core";
 import { Add as AddIcon, AccountCircle } from "@material-ui/icons";
 import firebase from "firebase/app";
@@ -69,6 +75,8 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const { viewer } = useViewer();
   const signOut = useSignOut();
+  const theme = useTheme();
+  const isLargerThanSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <div className={classes.root}>
@@ -80,11 +88,13 @@ const Navbar: React.FC = () => {
             </Typography>
           </Link>
           <Box marginRight={1}>
-            <FullSearchBox
-              executeSearch={async query => {
-                router.push(`/search?lang=${query.language}`);
-              }}
-            />
+            {isLargerThanSm && (
+              <FullSearchBox
+                executeSearch={async query => {
+                  router.push(`/search?lang=${query.language}`);
+                }}
+              />
+            )}
           </Box>
           {viewer ? (
             <>

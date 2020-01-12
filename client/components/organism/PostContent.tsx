@@ -24,7 +24,7 @@ import { CommentForm } from "@/components/molecule/CommentForm";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
     margin: "auto",
     minHeight: "80vh"
   },
@@ -131,7 +131,7 @@ export const PostContent: React.FC<Props> = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={7}>
+      <Grid item xs={12} sm={7}>
         <Paper className={classes.paper}>
           <Typography gutterBottom variant="h4" align="center">
             {lines[0].text}
@@ -244,7 +244,7 @@ export const PostContent: React.FC<Props> = ({
           </div>
         </Paper>
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={12} sm={5}>
         <CommentForm
           onSubmit={postTweet}
           disabled={createTweetResult.loading}

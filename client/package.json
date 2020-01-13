@@ -67,7 +67,7 @@
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
     "slate-react": "^0.57.1",
-    "styled-components": "^4.4.1",
+    "styled-components": "^5.0.0",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.4"
   },

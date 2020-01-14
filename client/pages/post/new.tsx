@@ -81,7 +81,7 @@ const PostNewPage: NextPage = () => {
                   handleSubmit(false);
                 }}
                 disabled={loading}
-                color="secondary"
+                color="primary"
               >
                 {loading ? "Submitting..." : "Publish"}
               </Button>
@@ -92,7 +92,6 @@ const PostNewPage: NextPage = () => {
                   handleSubmit(true);
                 }}
                 disabled={loading}
-                color="primary"
               >
                 {loading ? "Submitting..." : "Save as Draft"}
               </Button>

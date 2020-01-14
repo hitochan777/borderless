@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 import Layout from "@/layout/default";
 import { Post } from "@/components/organism/Post";
-import Box from "@material-ui/core/Box";
+import { Grid } from "@material-ui/core";
 
 interface Props {
   id: string;
@@ -13,9 +13,11 @@ interface Props {
 const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
   return (
     <Layout>
-      <Box paddingLeft="20%" paddingRight="20%">
-        <Post id={id} focusedLineId={focusedLineId} />
-      </Box>
+      <Grid container justify="center">
+        <Grid item xs={12} sm={8}>
+          <Post id={id} focusedLineId={focusedLineId} />
+        </Grid>
+      </Grid>
     </Layout>
   );
 };

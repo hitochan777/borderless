@@ -1,5 +1,5 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
+import { Grid } from "@material-ui/core";
 
 import Layout from "@/layout/default";
 import { Feed } from "@/components/organism/Feed";
@@ -7,9 +7,11 @@ import { Feed } from "@/components/organism/Feed";
 const Index = () => {
   return (
     <Layout>
-      <Box paddingLeft="30%" paddingRight="30%">
-        <Feed />
-      </Box>
+      <Grid container justify="center">
+        <Grid item xs={12} sm={8}>
+          <Feed />
+        </Grid>
+      </Grid>
     </Layout>
   );
 };

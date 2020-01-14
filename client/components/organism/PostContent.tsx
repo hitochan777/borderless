@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Router from "next/router";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from "@material-ui/core/styles";
-import CommentIcon from "@material-ui/icons/Comment";
-import Badge from "@material-ui/core/Badge";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Comment as CommentIcon, Close as CloseIcon } from "@material-ui/icons";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Chip,
+  Typography,
+  Grid,
+  Button,
+  Paper,
+  Dialog,
+  AppBar,
+  Toolbar,
+  IconButton,
+  useMediaQuery
+} from "@material-ui/core";
 import Link from "next/link";
-import IconButton from "@material-ui/core/IconButton";
+
 import {
   FETCH_TWEETS_FOR_LINE_QUERY,
   FETCH_POST_BY_ID_QUERY
 } from "@/constant/graphql";
-
 import dayjs from "@/lib/time";
 import { LikeIcon } from "@/components/molecule/LikeIcon";
 import { useTweetCreateMutation, usePostLikeMutation } from "@/generated/types";
@@ -24,7 +31,7 @@ import { CommentForm } from "@/components/molecule/CommentForm";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
     margin: "auto",
     minHeight: "80vh"
   },
@@ -44,6 +51,9 @@ const useStyles = makeStyles(theme => ({
   },
   hoveredLine: {
     backgroundColor: "#eee"
+  },
+  commentAppBar: {
+    textAlign: "center"
   }
 }));
 
@@ -82,6 +92,15 @@ export const PostContent: React.FC<Props> = ({
   const classes = useStyles();
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
+  const theme = useTheme();
+  const isLargerThanSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const focusedLine = useMemo(() => {
+    const currentLines = lines.filter(line => line.id === focusedLineId);
+    if (currentLines.length === 0) {
+      return null;
+    }
+    return currentLines[0];
+  }, [focusedLineId]);
 
   const [postLike] = usePostLikeMutation();
 
@@ -129,10 +148,22 @@ export const PostContent: React.FC<Props> = ({
     Router.push(`/search?lang=${language}`);
   };
 
+  const commentSection = (
+    <>
+      <CommentForm
+        onSubmit={postTweet}
+        disabled={createTweetResult.loading}
+        onChange={handleCommentFormChange}
+        value={comment}
+      />
+      {focusedLineId !== null && <LineCommentList lineId={focusedLineId} />}
+    </>
+  );
+
   return (
     <Grid container spacing={2}>
-      <Grid item xs={7}>
-        <Paper className={classes.paper}>
+      <Grid item xs={12} sm={7}>
+        <Paper className={classes.paper} elevation={isLargerThanSm ? 1 : 0}>
           <Typography gutterBottom variant="h4" align="center">
             {lines[0].text}
           </Typography>
@@ -244,15 +275,37 @@ export const PostContent: React.FC<Props> = ({
           </div>
         </Paper>
       </Grid>
-      <Grid item xs={5}>
-        <CommentForm
-          onSubmit={postTweet}
-          disabled={createTweetResult.loading}
-          onChange={handleCommentFormChange}
-          value={comment}
-        />
-        {focusedLineId !== null && <LineCommentList lineId={focusedLineId} />}
-      </Grid>
+
+      {isLargerThanSm ? (
+        <Grid item xs={12} sm={5}>
+          {commentSection}
+        </Grid>
+      ) : (
+        <Dialog fullScreen scroll="paper" open={focusedLineId !== null}>
+          <AppBar position="relative" className={classes.commentAppBar}>
+            <Toolbar>
+              <Link
+                href={{
+                  pathname: "/[username]/[postId]"
+                }}
+                as={`/${user.username}/${id}`}
+              >
+                <IconButton edge="start" color="inherit" aria-label="close">
+                  <CloseIcon />
+                </IconButton>
+              </Link>
+            </Toolbar>
+          </AppBar>
+          <div>
+            <Box padding={3}>
+              <Typography variant="h5">
+                {focusedLine && focusedLine.text}
+              </Typography>
+            </Box>
+            {commentSection}
+          </div>
+        </Dialog>
+      )}
     </Grid>
   );
 };

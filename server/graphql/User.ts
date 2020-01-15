@@ -7,15 +7,21 @@ export const User = objectType({
     t.string("username");
     t.string("email");
     t.list.field("fluentLanguages", {
-      type: "String",
+      type: "Language",
       resolve(root) {
-        return root.fluentLanguages.map(lang => lang.code);
+        return root.fluentLanguages.map(lang => ({
+          id: lang.code,
+          name: lang.name
+        }));
       }
     });
     t.list.field("learningLanguages", {
-      type: "String",
+      type: "Language",
       resolve(root) {
-        return root.learningLanguages.map(lang => lang.code);
+        return root.learningLanguages.map(lang => ({
+          id: lang.code,
+          name: lang.name
+        }));
       }
     });
     t.list.field("posts", {

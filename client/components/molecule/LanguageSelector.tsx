@@ -1,20 +1,24 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
 
 import Select from "../Select";
-import { FETCH_LANGUAGES_QUERY } from "@/constant/graphql";
-import { FetchLanguagesQuery } from "@/generated/types";
+import { useFetchLanguagesQuery } from "@/generated/types";
 
 interface Props {
   label: string;
   onChange: (value: string) => void;
   value: string;
+  relatedOnly?: boolean;
 }
 
-const LanguagSelector: React.FC<Props> = ({ label, value, onChange }) => {
-  const { data, error, loading } = useQuery<FetchLanguagesQuery>(
-    FETCH_LANGUAGES_QUERY
-  );
+const LanguagSelector: React.FC<Props> = ({
+  label,
+  value,
+  onChange,
+  relatedOnly = false
+}) => {
+  const { data, error, loading } = useFetchLanguagesQuery({
+    variables: { relatedOnly }
+  });
   if (loading) {
     return (
       <Select value={value} onChange={onChange} options={[]} label={label} />

@@ -9,8 +9,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
   LanguageCode: any;
+  Date: any;
 };
 
 export type AuthData = {
@@ -148,6 +148,10 @@ export type QueryFeedArgs = {
   limit?: Scalars["Int"];
 };
 
+export type QueryLangsArgs = {
+  relatedOnly?: Maybe<Scalars["Boolean"]>;
+};
+
 export type QueryPostArgs = {
   id: Scalars["ID"];
 };
@@ -199,8 +203,8 @@ export type User = Node & {
   id: Scalars["ID"];
   username: Scalars["String"];
   email: Scalars["String"];
-  fluentLanguages: Array<Scalars["String"]>;
-  learningLanguages: Array<Scalars["String"]>;
+  fluentLanguages: Array<Language>;
+  learningLanguages: Array<Language>;
   posts: Array<Post>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
@@ -244,10 +248,13 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
 export type FetchViewerQueryVariables = {};
 
 export type FetchViewerQuery = { __typename?: "Query" } & {
-  viewer: { __typename?: "User" } & Pick<
-    User,
-    "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-  > & {
+  viewer: { __typename?: "User" } & Pick<User, "id" | "username" | "email"> & {
+      fluentLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+      learningLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
       posts: Array<
         { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
             language: { __typename?: "Language" } & Pick<
@@ -265,10 +272,13 @@ export type FetchUserByUsernameQueryVariables = {
 };
 
 export type FetchUserByUsernameQuery = { __typename?: "Query" } & {
-  user: { __typename?: "User" } & Pick<
-    User,
-    "id" | "username" | "email" | "fluentLanguages" | "learningLanguages"
-  > & {
+  user: { __typename?: "User" } & Pick<User, "id" | "username" | "email"> & {
+      fluentLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+      learningLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
       posts: Array<
         { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
             language: { __typename?: "Language" } & Pick<
@@ -306,7 +316,9 @@ export type FetchSearchResultQuery = { __typename?: "Query" } & {
   search: Array<{ __typename?: "Post" } & PostFieldFragment>;
 };
 
-export type FetchLanguagesQueryVariables = {};
+export type FetchLanguagesQueryVariables = {
+  relatedOnly?: Maybe<Scalars["Boolean"]>;
+};
 
 export type FetchLanguagesQuery = { __typename?: "Query" } & {
   langs: Array<{ __typename?: "Language" } & Pick<Language, "id" | "name">>;
@@ -352,8 +364,15 @@ export type UserUpdateMutationVariables = {
 export type UserUpdateMutation = { __typename?: "Mutation" } & {
   userUpdate: { __typename?: "User" } & Pick<
     User,
-    "id" | "email" | "username" | "fluentLanguages" | "learningLanguages"
-  >;
+    "id" | "email" | "username"
+  > & {
+      fluentLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+      learningLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+    };
 };
 
 export type TweetCreateMutationVariables = {
@@ -463,8 +482,14 @@ export const FetchViewerDocument = gql`
       id
       username
       email
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
       posts {
         id
         title
@@ -532,8 +557,14 @@ export const FetchUserByUsernameDocument = gql`
       id
       username
       email
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
       posts {
         id
         title
@@ -771,8 +802,8 @@ export type FetchSearchResultQueryResult = ApolloReactCommon.QueryResult<
   FetchSearchResultQueryVariables
 >;
 export const FetchLanguagesDocument = gql`
-  query fetchLanguages {
-    langs {
+  query fetchLanguages($relatedOnly: Boolean = true) {
+    langs(relatedOnly: $relatedOnly) {
       id
       name
     }
@@ -791,6 +822,7 @@ export const FetchLanguagesDocument = gql`
  * @example
  * const { data, loading, error } = useFetchLanguagesQuery({
  *   variables: {
+ *      relatedOnly: // value for 'relatedOnly'
  *   },
  * });
  */
@@ -1040,8 +1072,14 @@ export const UserUpdateDocument = gql`
       id
       email
       username
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
     }
   }
 `;

@@ -6,9 +6,9 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import styled from "styled-components";
 
 import Layout from "@/layout/default";
+import { BottomNavigation } from "@/components/BottomNavigation";
 import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
 import { POST_CREATE_MUTATION, FETCH_VIEWER_QUERY } from "@/constant/graphql";
@@ -18,14 +18,6 @@ import {
 } from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
 import { transformToGql } from "@/service/slate";
-
-const BottomNavigation = styled.div`
-  margin: ${props => props.theme.spacing};
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-`;
 
 const useCreatePost = () => {
   const [createPost, { loading, error }] = useMutation<
@@ -63,6 +55,7 @@ const PostNewPage: NextPage = () => {
     <Layout>
       <Container maxWidth="sm">
         <LanguageSelector
+          relatedOnly
           label="Language"
           value={language}
           onChange={value => {

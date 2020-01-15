@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { NextPage, NextPageContext } from "next";
 import Router from "next/router";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import { Container, Button, Box, Grid } from "@material-ui/core";
 
 import Layout from "@/layout/default";
+import { BottomNavigation } from "@/components/BottomNavigation";
 import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
 import {
@@ -84,6 +83,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
     <Layout>
       <Container maxWidth="sm">
         <LanguageSelector
+          relatedOnly
           label="Language"
           value={language}
           onChange={value => {
@@ -94,28 +94,32 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
           {/*<pre>{JSON.stringify(value, null, 2)}</pre>*/}
           <Editor value={value} setValue={setValue} />
         </Box>
-        <Box mt={4}>
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleSubmit(false);
-            }}
-            disabled={loading}
-            color="secondary"
-          >
-            {loading ? "Submitting..." : "Publish"}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleSubmit(true);
-            }}
-            disabled={loading}
-            color="primary"
-          >
-            {loading ? "Submitting..." : "Save as Draft"}
-          </Button>
-        </Box>
+        <BottomNavigation>
+          <Box marginBottom={2}>
+            <Grid container justify="center">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleSubmit(false);
+                }}
+                disabled={loading}
+                color="primary"
+              >
+                {loading ? "Submitting..." : "Publish"}
+              </Button>
+              <Box marginRight={2} />
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleSubmit(true);
+                }}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Save as Draft"}
+              </Button>
+            </Grid>
+          </Box>
+        </BottomNavigation>
       </Container>
     </Layout>
   );

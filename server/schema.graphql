@@ -78,7 +78,7 @@ input PostInput {
 
 type Query {
   feed(limit: Int! = 20, offset: Int! = 0): [Post!]!
-  langs: [Language!]!
+  langs(relatedOnly: Boolean = false): [Language!]!
   post(id: ID!): Post!
   posts: [Post!]!
   replies(
@@ -125,11 +125,11 @@ input TweetInput {
 type User implements Node {
   createdAt: Date
   email: String!
-  fluentLanguages: [String!]!
+  fluentLanguages: [Language!]!
 
   """Unique identifier for the resource"""
   id: ID!
-  learningLanguages: [String!]!
+  learningLanguages: [Language!]!
   posts: [Post!]!
   updatedAt: Date
   username: String!

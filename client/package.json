@@ -12,7 +12,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "generate:graphql": "graphql-codegen --watch --config codegen.yml",
-    "format": "cd .. && yarn format && cd client"
+    "format": "cd .. && yarn format && cd client",
+    "deploy": "gcloud builds submit && gcloud run deploy app --image gcr.io/borderless-260514/app --platform managed --allow-unauthenticated"
   },
   "repository": {
     "type": "git",

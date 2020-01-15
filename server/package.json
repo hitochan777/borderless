@@ -29,6 +29,7 @@
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:nexus": "ts-node -T schema.ts",
     "generate:prisma": "prisma2 generate",
-    "format": "cd .. && yarn format && cd server"
+    "format": "cd .. && yarn format && cd server",
+    "deploy": "gcloud builds submit && gcloud run deploy api --image gcr.io/borderless-260514/api --platform managed --allow-unauthenticated"
   }
 }

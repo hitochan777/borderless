@@ -3,6 +3,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
+import { useTranslation } from "@/i18n";
+
 interface Props {
   onSubmit: () => void;
   onChange: (text: string) => void;
@@ -16,6 +18,7 @@ export const CommentForm: React.FC<Props> = ({
   onChange,
   value
 }) => {
+  const { t } = useTranslation("common");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -29,7 +32,7 @@ export const CommentForm: React.FC<Props> = ({
             rows="4"
             margin="normal"
             variant="outlined"
-            placeholder="Write your comment here!"
+            placeholder={t("write-comment-here")}
             onChange={handleChange}
             value={value}
           />
@@ -43,7 +46,7 @@ export const CommentForm: React.FC<Props> = ({
                 onClick={onSubmit}
                 disabled={disabled}
               >
-                Post
+                {t("post")}
               </Button>
             </Grid>
           </Grid>

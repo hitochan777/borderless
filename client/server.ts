@@ -5,6 +5,9 @@ import proxy from "http-proxy-middleware";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import nextI18NextMiddleware from "next-i18next/middleware";
+
+import nextI18next from "./i18n";
 
 const port = parseInt(process.env.PORT as string, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -86,6 +89,7 @@ const runServer = async () => {
     bodyParser.json(),
     cors(),
     cookieParser(),
+    nextI18NextMiddleware(nextI18next),
     withAuthHandler(nextAppHandler)
   );
 

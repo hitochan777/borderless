@@ -6,6 +6,7 @@ import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 import { ThemeProvider } from "@material-ui/core";
 
+import { appWithTranslation } from "@/i18n";
 import { theme } from "@/constant/theme";
 import "@/lib/firebase";
 import { useAuthEffect } from "@/hooks/useAuthEffect";
@@ -76,4 +77,4 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
   }
 }
 
-export default withApolloClient(withAuth(MyApp));
+export default appWithTranslation(withApolloClient(withAuth(MyApp)));

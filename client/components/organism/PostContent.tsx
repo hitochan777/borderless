@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import Link from "next/link";
 
+import { useTranslation } from "@/i18n";
 import {
   FETCH_TWEETS_FOR_LINE_QUERY,
   FETCH_POST_BY_ID_QUERY
@@ -89,6 +90,7 @@ export const PostContent: React.FC<Props> = ({
   likeCount,
   likedByMe
 }) => {
+  const { t } = useTranslation("common");
   const classes = useStyles();
   const [hoveredLine, setHoveredLine] = useState<string | null>(null);
   const [comment, setComment] = useState("");
@@ -211,7 +213,7 @@ export const PostContent: React.FC<Props> = ({
                     color="primary"
                     className={classes.button}
                   >
-                    Edit
+                    {t("edit")}
                   </Button>
                 </Link>
               ) : (

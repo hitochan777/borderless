@@ -157,9 +157,9 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     createdAt: any | null; // Date
     email: string; // String!
-    fluentLanguages: string[]; // [String!]!
+    fluentLanguages: NexusGenRootTypes['Language'][]; // [Language!]!
     id: string; // ID!
-    learningLanguages: string[]; // [String!]!
+    learningLanguages: NexusGenRootTypes['Language'][]; // [Language!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     updatedAt: any | null; // Date
     username: string; // String!
@@ -201,6 +201,9 @@ export interface NexusGenArgTypes {
     feed: { // args
       limit: number; // Int!
       offset: number; // Int!
+    }
+    langs: { // args
+      relatedOnly?: boolean | null; // Boolean
     }
     post: { // args
       id: string; // ID!

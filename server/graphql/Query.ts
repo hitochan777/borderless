@@ -1,4 +1,4 @@
-import { queryType, stringArg, idArg, arg, intArg } from "nexus";
+import { queryType, stringArg, idArg, arg, intArg, booleanArg } from "nexus";
 
 import * as value from "../value/language";
 
@@ -95,8 +95,22 @@ export const Query = queryType({
     });
     t.list.field("langs", {
       type: "Language",
-      args: {},
-      resolve(_, __, ___) {
+      args: { relatedOnly: booleanArg({ required: false, default: false }) },
+      async resolve(
+        _root,
+        { relatedOnly },
+        { uid, repositories: { userRepository } }
+      ) {
+        if (relatedOnly) {
+          const result = await userRepository.findById(uid as string);
+          if (result === null) {
+            throw new Error("User not found");
+          }
+          return [
+            ...result.fluentLanguages,
+            ...result.learningLanguages
+          ].map(lang => ({ id: lang.code, name: lang.name }));
+        }
         return value.Language.getAllLanguages().map(language => ({
           id: language.code,
           name: language.name

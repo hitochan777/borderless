@@ -58,8 +58,14 @@ export const FETCH_VIEWER_QUERY = gql`
       id
       username
       email
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
       posts {
         id
         title
@@ -82,8 +88,14 @@ export const FETCH_USER_BY_USERNAME_QUERY = gql`
       id
       username
       email
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
       posts {
         id
         title
@@ -128,8 +140,8 @@ export const FETCH_SEARCH_RESULT_QUERY = gql`
 `;
 
 export const FETCH_LANGUAGES_QUERY = gql`
-  query fetchLanguages {
-    langs {
+  query fetchLanguages($relatedOnly: Boolean = true) {
+    langs(relatedOnly: $relatedOnly) {
       id
       name
     }
@@ -177,8 +189,14 @@ export const USER_UPDATE_MUTATION = gql`
       id
       email
       username
-      fluentLanguages
-      learningLanguages
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
     }
   }
 `;

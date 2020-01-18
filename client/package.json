@@ -52,14 +52,14 @@
     "cors": "^2.8.5",
     "dayjs": "^1.8.19",
     "express": "^4.17.1",
-    "firebase": "^7.6.2",
-    "firebase-admin": "^8.9.0",
+    "firebase": "^7.7.0",
+    "firebase-admin": "^8.9.1",
     "formik": "^2.1.2",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "http-proxy-middleware": "^0.20.0",
     "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.1.7",
+    "next": "^9.2.0",
     "next-cookies": "^2.0.3",
     "next-i18next": "^4.0.0",
     "npm-check-updates": "^4.0.1",
@@ -70,7 +70,7 @@
     "slate-react": "^0.57.1",
     "styled-components": "^5.0.0",
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@babel/core": "7.8.3",

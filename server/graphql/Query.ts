@@ -101,7 +101,7 @@ export const Query = queryType({
         { relatedOnly },
         { uid, repositories: { userRepository } }
       ) {
-        if (relatedOnly) {
+        if (uid && relatedOnly) {
           const result = await userRepository.findById(uid as string);
           if (result === null) {
             throw new Error("User not found");

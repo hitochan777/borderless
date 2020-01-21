@@ -7,6 +7,10 @@ export const TWEET_FIELD_FRAGMENT = gql`
     updatedAt
     likeCount
     likedByMe
+    postedBy {
+      id
+      username
+    }
   }
 `;
 

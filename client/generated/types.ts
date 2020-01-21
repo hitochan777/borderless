@@ -220,7 +220,7 @@ export type UserInput = {
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
   "id" | "text" | "updatedAt" | "likeCount" | "likedByMe"
->;
+> & { postedBy: { __typename?: "User" } & Pick<User, "id" | "username"> };
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
     partialLines: Array<
@@ -434,6 +434,10 @@ export const TweetFieldFragmentDoc = gql`
     updatedAt
     likeCount
     likedByMe
+    postedBy {
+      id
+      username
+    }
   }
 `;
 export const LineFieldFragmentDoc = gql`

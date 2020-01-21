@@ -15,6 +15,7 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  Link as MuiLink,
   useMediaQuery
 } from "@material-ui/core";
 import Link from "next/link";
@@ -187,7 +188,11 @@ export const PostContent: React.FC<Props> = ({
                     />
                   </Grid>
                   <Grid item>
-                    <Typography variant="subtitle1">{user.username}</Typography>
+                    <MuiLink>
+                      <Typography variant="subtitle1">
+                        {user.username}
+                      </Typography>
+                    </MuiLink>
                   </Grid>
                 </Grid>
               </Link>

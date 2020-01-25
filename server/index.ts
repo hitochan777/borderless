@@ -10,7 +10,7 @@ import { PostRepository } from "./infra/persistent/prisma/post_repository";
 import { TweetRepository } from "./infra/persistent/prisma/tweet_repository";
 import { LineMarkerRepository } from "./infra/persistent/prisma/line_marker_repository";
 import { SlateService } from "./infra/service/slate_service";
-import { Photon } from "@prisma/photon";
+import { PrismaClient } from "@prisma/client";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -28,7 +28,7 @@ if (admin.apps.length === 0) {
 }
 
 export const buildRepositoryContainer = (): RepositoryContainer => {
-  const driver = new Photon({
+  const driver = new PrismaClient({
     debug: process.env.DEBUG
   });
   return {

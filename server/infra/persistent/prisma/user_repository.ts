@@ -1,13 +1,13 @@
-import { Photon, User as UserModel } from "@prisma/photon";
+import { PrismaClient, User as UserModel } from "@prisma/client";
 
 import { User } from "../../../entity/user";
 import { ID } from "../../../types";
 import { Language } from "../../../value/language";
 
 export class UserRepository {
-  private photon: Photon;
-  constructor(driver: Photon) {
-    this.photon = driver;
+  private prismaClient: PrismaClient;
+  constructor(driver: PrismaClient) {
+    this.prismaClient = driver;
   }
 
   createEntity(user: UserModel) {
@@ -23,7 +23,7 @@ export class UserRepository {
   }
 
   async findById(id: ID): Promise<User | null> {
-    const user = await this.photon.users.findOne({ where: { id } });
+    const user = await this.prismaClient.users.findOne({ where: { id } });
 
     if (user === null) {
       return null;
@@ -33,7 +33,7 @@ export class UserRepository {
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    const users = await this.photon.users.findMany({
+    const users = await this.prismaClient.users.findMany({
       where: {
         username
       }
@@ -65,7 +65,7 @@ export class UserRepository {
   }
 
   async create(user: User): Promise<User | null> {
-    const createdUser = await this.photon.users.create({
+    const createdUser = await this.prismaClient.users.create({
       data: {
         id: user.id,
         email: user.email,
@@ -77,7 +77,7 @@ export class UserRepository {
     return this.createEntity(createdUser);
   }
   async update(uid: string, user: User): Promise<User | null> {
-    const updatedUser = await this.photon.users.update({
+    const updatedUser = await this.prismaClient.users.update({
       where: {
         id: uid
       },

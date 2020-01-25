@@ -1,12 +1,16 @@
-import { Photon, Post as PostModel, User as UserModel } from "@prisma/photon";
+import {
+  PrismaClient,
+  Post as PostModel,
+  User as UserModel
+} from "@prisma/client";
 
 import { Post } from "../../../entity/post";
 import { ID } from "../../../types";
 import { Language } from "../../../value/language";
 
 export class PostRepository {
-  private photon: Photon;
-  constructor(driver: Photon) {
+  private photon: PrismaClient;
+  constructor(driver: PrismaClient) {
     this.photon = driver;
   }
 

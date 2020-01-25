@@ -1,17 +1,17 @@
 import {
-  Photon,
+  PrismaClient,
   Tweet as TweetModel,
   Post as PostModel,
   Repliable as RepliableModel,
   User as UserModel
-} from "@prisma/photon";
+} from "@prisma/client";
 
 import { Tweet } from "../../../entity/tweet";
 import { ID } from "../../../types";
 
 export class TweetRepository {
-  private photon: Photon;
-  constructor(driver: Photon) {
+  private photon: PrismaClient;
+  constructor(driver: PrismaClient) {
     this.photon = driver;
   }
 

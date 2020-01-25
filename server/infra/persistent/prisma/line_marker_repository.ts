@@ -1,10 +1,10 @@
-import { Photon } from "@prisma/photon";
+import { PrismaClient } from "@prisma/client";
 
 import { ID } from "../../../types";
 
 export class LineMarkerRepository {
-  private photon: Photon;
-  constructor(driver: Photon) {
+  private photon: PrismaClient;
+  constructor(driver: PrismaClient) {
     this.photon = driver;
   }
   async generateIds(num: number, postId: ID): Promise<ID[]> {

@@ -11,7 +11,7 @@ datasource production {
 }
 
 generator photon {
-  provider = "photonjs"
+  provider = "prisma-client-js"
 }
 
 model Repliable {

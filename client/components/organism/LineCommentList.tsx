@@ -26,9 +26,7 @@ interface Props {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: theme.spacing(2),
-    height: "65vh",
-    overflowY: "scroll"
+    marginTop: theme.spacing(2)
   }
 }));
 

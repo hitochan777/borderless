@@ -163,10 +163,12 @@ export const PostContent: React.FC<Props> = ({
     </>
   );
 
+  const elevation = isLargerThanSm ? 1 : 0;
+
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={7}>
-        <Paper className={classes.paper} elevation={isLargerThanSm ? 1 : 0}>
+      <Grid item xs={12} sm={12}>
+        <Paper className={classes.paper} elevation={elevation}>
           <Typography gutterBottom variant="h4" align="center">
             {lines[0].text}
           </Typography>
@@ -282,37 +284,38 @@ export const PostContent: React.FC<Props> = ({
           </div>
         </Paper>
       </Grid>
-
-      {isLargerThanSm ? (
-        <Grid item xs={12} sm={5}>
+      <Dialog
+        fullScreen={!isLargerThanSm}
+        fullWidth={isLargerThanSm}
+        scroll="paper"
+        open={focusedLineId !== null}
+        onBackdropClick={() => {
+          Router.push("/[username]/[postId]", `/${user.username}/${id}`);
+        }}
+      >
+        <AppBar position="relative" className={classes.commentAppBar}>
+          <Toolbar>
+            <Link
+              href={{
+                pathname: "/[username]/[postId]"
+              }}
+              as={`/${user.username}/${id}`}
+            >
+              <IconButton edge="start" color="inherit" aria-label="close">
+                <CloseIcon />
+              </IconButton>
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <div>
+          <Box padding={3}>
+            <Typography variant="h5">
+              {focusedLine && focusedLine.text}
+            </Typography>
+          </Box>
           {commentSection}
-        </Grid>
-      ) : (
-        <Dialog fullScreen scroll="paper" open={focusedLineId !== null}>
-          <AppBar position="relative" className={classes.commentAppBar}>
-            <Toolbar>
-              <Link
-                href={{
-                  pathname: "/[username]/[postId]"
-                }}
-                as={`/${user.username}/${id}`}
-              >
-                <IconButton edge="start" color="inherit" aria-label="close">
-                  <CloseIcon />
-                </IconButton>
-              </Link>
-            </Toolbar>
-          </AppBar>
-          <div>
-            <Box padding={3}>
-              <Typography variant="h5">
-                {focusedLine && focusedLine.text}
-              </Typography>
-            </Box>
-            {commentSection}
-          </div>
-        </Dialog>
-      )}
+        </div>
+      </Dialog>
     </Grid>
   );
 };

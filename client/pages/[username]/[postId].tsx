@@ -14,7 +14,7 @@ const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={4}>
           <Post id={id} focusedLineId={focusedLineId} />
         </Grid>
       </Grid>

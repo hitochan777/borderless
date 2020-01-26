@@ -93,6 +93,9 @@ export class PostRepository {
       },
       include: {
         user: true
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     });
 

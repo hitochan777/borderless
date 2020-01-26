@@ -1,14 +1,9 @@
 import React from "react";
 import { NextPage } from "next";
-import { useQuery } from "@apollo/react-hooks";
 import { Box, Grid } from "@material-ui/core";
 import Layout from "@/layout/default";
 
-import { FETCH_USER_BY_USERNAME_QUERY } from "@/constant/graphql";
-import {
-  FetchUserByUsernameQuery,
-  FetchUserByUsernameQueryVariables
-} from "@/generated/types";
+import { useFetchUserByUsernameQuery } from "@/generated/types";
 import { PostCard } from "@/components/PostCard";
 
 interface Props {
@@ -16,10 +11,9 @@ interface Props {
 }
 
 const UserIndexPage: NextPage<Props> = ({ username }) => {
-  const { data, error, loading } = useQuery<
-    FetchUserByUsernameQuery,
-    FetchUserByUsernameQueryVariables
-  >(FETCH_USER_BY_USERNAME_QUERY, { variables: { username } });
+  const { data, error, loading } = useFetchUserByUsernameQuery({
+    variables: { username }
+  });
 
   if (loading) {
     return <></>;
@@ -34,7 +28,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={4}>
           {data.user.posts.map(post => (
             <Box key={post.id} mb="1rem">
               <PostCard

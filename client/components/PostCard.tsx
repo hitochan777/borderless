@@ -26,7 +26,7 @@ export const PostCard: React.FC<Props> = ({
     <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
       <Card>
         <CardContent>
-          <Typography variant="h3">{title}</Typography>
+          <Typography variant="h5">{title}</Typography>
           <Avatar
             alt={username}
             src={`https://api.adorable.io/avatars/30/${username}@borderless.png`}

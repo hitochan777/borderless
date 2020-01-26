@@ -150,7 +150,6 @@ export const FillInModal: React.FC<Props> = ({
                 {"Let's Go!"}
               </Button>
             </DialogActions>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
           </Dialog>
         </StyledForm>
       )}

@@ -99,7 +99,10 @@ export class TweetRepository {
           id: repliableId
         }
       },
-      include: { post: true, inReplyTo: true, user: true }
+      include: { post: true, inReplyTo: true, user: true },
+      orderBy: {
+        createdAt: "desc"
+      }
     });
     return rawReplies.map(reply => this.createEntity(reply));
   }

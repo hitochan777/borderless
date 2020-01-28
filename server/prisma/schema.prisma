@@ -48,6 +48,7 @@ model Post {
 model Tweet {
   id        String  @default(cuid()) @id
   content   String
+  correction String
   inReplyTo Repliable
   user      User
   post      Post

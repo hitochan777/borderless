@@ -45,5 +45,3 @@ migration 20191230195228..20200129221851
    post      Post
    createdAt DateTime  @default(now())
 ```
-
-

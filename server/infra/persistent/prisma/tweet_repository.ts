@@ -19,11 +19,13 @@ export class TweetRepository {
     userId,
     postId,
     text,
+    correction,
     inReplyTo
   }: {
     userId: ID;
     postId: ID;
     text: string;
+    correction?: string | undefined | null;
     inReplyTo: ID;
   }) {
     if (userId === null) {
@@ -51,7 +53,8 @@ export class TweetRepository {
             id: inReplyTo
           }
         },
-        content: text
+        content: text,
+        correction
       },
       include: {
         user: true,
@@ -87,6 +90,7 @@ export class TweetRepository {
       tweet.inReplyTo.id,
       tweet.post.id,
       tweet.content,
+      tweet.correction,
       tweet.createdAt,
       tweet.updatedAt
     );

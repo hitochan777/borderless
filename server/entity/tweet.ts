@@ -8,6 +8,7 @@ export class Tweet extends Base {
     public inReplyTo: ID | null,
     public postId: ID,
     public text: string,
+    public correction: string | null,
     public createdAt: Date | null,
     public updatedAt: Date | null
   ) {

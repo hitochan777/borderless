@@ -5,6 +5,9 @@ export const Tweet = objectType({
   definition(t) {
     t.implements("Node");
     t.string("text");
+    t.string("correction", {
+      nullable: true
+    });
     t.int("inReplyTo", {
       nullable: true
     });

@@ -1,12 +1,12 @@
 datasource development {
   provider = "sqlite"
-  url      = env("DEVELOPMENT_DB_URL")
+  url = "***"
   enabled  = env("DEVELOPMENT_DB_URL")
 }
 
 datasource production {
   provider = "mysql"
-  url      = env("PRODUCTION_DB_URL")
+  url = "***"
   enabled  = env("PRODUCTION_DB_URL")
 }
 

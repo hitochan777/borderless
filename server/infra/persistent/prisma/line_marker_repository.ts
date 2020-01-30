@@ -10,7 +10,7 @@ export class LineMarkerRepository {
   async generateIds(num: number, postId: ID): Promise<ID[]> {
     const repliableIds = [];
     for (let i = 0; i < num; i++) {
-      const createdRepliable = await this.photon.repliables.create({
+      const createdRepliable = await this.photon.repliable.create({
         data: {}
       });
       repliableIds.push(createdRepliable.id);
@@ -26,7 +26,7 @@ export class LineMarkerRepository {
     });
     const lineMarkerIds = [];
     for (let i = 0; i < num; i++) {
-      const createdLineMarker = await this.photon.lineMarkers.create({
+      const createdLineMarker = await this.photon.lineMarker.create({
         data: {
           id: lineMarkers[i].id,
           post: {

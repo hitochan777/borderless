@@ -10,7 +10,7 @@ export class UserRepository {
     this.prismaClient = driver;
   }
 
-  createEntity(user: UserModel) {
+  createEntity(user: UserModel): User {
     return new User(
       user.id,
       user.email,
@@ -23,7 +23,7 @@ export class UserRepository {
   }
 
   async findById(id: ID): Promise<User | null> {
-    const user = await this.prismaClient.users.findOne({ where: { id } });
+    const user = await this.prismaClient.user.findOne({ where: { id } });
 
     if (user === null) {
       return null;
@@ -33,7 +33,7 @@ export class UserRepository {
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    const users = await this.prismaClient.users.findMany({
+    const users = await this.prismaClient.user.findMany({
       where: {
         username
       }
@@ -65,7 +65,7 @@ export class UserRepository {
   }
 
   async create(user: User): Promise<User | null> {
-    const createdUser = await this.prismaClient.users.create({
+    const createdUser = await this.prismaClient.user.create({
       data: {
         id: user.id,
         email: user.email,
@@ -77,7 +77,7 @@ export class UserRepository {
     return this.createEntity(createdUser);
   }
   async update(uid: string, user: User): Promise<User | null> {
-    const updatedUser = await this.prismaClient.users.update({
+    const updatedUser = await this.prismaClient.user.update({
       where: {
         id: uid
       },

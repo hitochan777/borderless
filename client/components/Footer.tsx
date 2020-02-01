@@ -13,6 +13,10 @@ const useStyles = makeStyles(theme => ({
 
 const Footer: React.FC = () => {
   const classes = useStyles();
-  return <footer className={classes.footer}>Park©2020</footer>;
+  return (
+    <footer className={classes.footer}>
+      Parc©2020 made by hitochan777 with ♥
+    </footer>
+  );
 };
 export default Footer;

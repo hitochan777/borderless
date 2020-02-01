@@ -80,7 +80,7 @@
     "@graphql-codegen/typescript": "1.12.1",
     "@graphql-codegen/typescript-operations": "1.12.1",
     "@graphql-codegen/typescript-react-apollo": "1.12.1",
-    "@zeit/next-source-maps": "^0.0.3",
+    "@zeit/next-source-maps": "0.0.3",
     "babel-loader": "8.0.6",
     "react-docgen-typescript-loader": "3.6.0",
     "ts-loader": "6.2.1"

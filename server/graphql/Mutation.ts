@@ -282,7 +282,7 @@ export const Mutation = mutationType({
         { token },
         { res, repositories: { userRepository } }
       ) => {
-        const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+        const expiresIn = 60 * 60 * 24 * 14 * 1000; // 14 days
         try {
           const sessionCookie = await admin
             .auth()

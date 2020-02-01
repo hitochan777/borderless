@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Avatar,
   Divider,
@@ -19,18 +18,25 @@ import {
   useTweetLikeMutation,
   useFetchTweetsForLineQuery
 } from "@/generated/types";
+import { PrettyReply } from "@/components/molecule/PrettyReply";
 
 interface Props {
   lineId: string;
+  line: string;
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2)
+  },
+  avatar: {
+    width: "30px",
+    height: "auto",
+    display: "inline-block"
   }
 }));
 
-export const LineCommentList: React.FC<Props> = ({ lineId }) => {
+export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   const classes = useStyles();
   const { data, error, loading } = useFetchTweetsForLineQuery({
     variables: { id: lineId }
@@ -55,22 +61,17 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
       {data.replies.map(reply => (
         <React.Fragment key={reply.id}>
           <ListItem>
-            <ListItemAvatar>
-              <Avatar
-                alt={reply.postedBy.username}
-                src={`https://api.adorable.io/avatars/30/${reply.postedBy.username}@borderless.png`}
-              />
-            </ListItemAvatar>
-
             <ListItemText>
               <div>
+                <Avatar
+                  className={classes.avatar}
+                  alt={reply.postedBy.username}
+                  src={`https://api.adorable.io/avatars/30/${reply.postedBy.username}@borderless.png`}
+                />
                 <Link href="/[username]" as={`/${reply.postedBy.username}`}>
                   <MuiLink>{reply.postedBy.username}</MuiLink>
                 </Link>{" "}
                 {dayjs(reply.updatedAt).fromNow()}
-              </div>
-              <div>
-                {reply.text}
                 <IconButton onClick={() => handleLikeClick(reply.id)}>
                   <Badge color="primary" badgeContent={reply.likeCount}>
                     {" "}
@@ -78,7 +79,13 @@ export const LineCommentList: React.FC<Props> = ({ lineId }) => {
                   </Badge>
                 </IconButton>
               </div>
-              <div></div>
+              <div>
+                <PrettyReply
+                  line={line}
+                  correction={reply.correction || undefined}
+                  reply={reply.text}
+                />
+              </div>
             </ListItemText>
           </ListItem>
           <Divider />

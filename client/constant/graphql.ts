@@ -4,6 +4,7 @@ export const TWEET_FIELD_FRAGMENT = gql`
   fragment tweetField on Tweet {
     id
     text
+    correction
     updatedAt
     likeCount
     likedByMe

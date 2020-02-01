@@ -1,4 +1,6 @@
-module.exports = {
+const withSourceMaps = require("@zeit/next-source-maps");
+
+const config = {
   // target: "serverless",
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -19,3 +21,5 @@ module.exports = {
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
   }
 };
+
+module.exports = withSourceMaps(config);

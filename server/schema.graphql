@@ -102,6 +102,7 @@ input SearchInput {
 }
 
 type Tweet implements Node {
+  correction: String
   createdAt: Date
 
   """Unique identifier for the resource"""
@@ -117,6 +118,7 @@ type Tweet implements Node {
 }
 
 input TweetInput {
+  correction: String
   inReplyTo: ID!
   postId: ID!
   text: String!

@@ -30,8 +30,8 @@ export class PostRepository {
     if (postInput.userId === null) {
       throw new Error("You cannot set userId to null");
     }
-    const repliable = await this.photon.repliables.create({ data: {} });
-    const newPost = await this.photon.posts.create({
+    const repliable = await this.photon.repliable.create({ data: {} });
+    const newPost = await this.photon.post.create({
       data: {
         id: repliable.id,
         user: {
@@ -49,7 +49,7 @@ export class PostRepository {
     });
     return this.createEntity(newPost);
   }
-  async update(post: Post) {
+  async update(post: Post): Promise<Post> {
     if (!post.id) {
       throw new Error("ID is not set");
     }
@@ -62,7 +62,7 @@ export class PostRepository {
 
     const contentString = JSON.stringify(post.lines);
 
-    const updatedPost = await this.photon.posts.update({
+    const updatedPost = await this.photon.post.update({
       where: {
         id: post.id
       },
@@ -85,7 +85,7 @@ export class PostRepository {
   }
 
   async findByUser(userId: ID): Promise<Post[]> {
-    const posts = await this.photon.posts.findMany({
+    const posts = await this.photon.post.findMany({
       where: {
         user: {
           id: userId
@@ -103,7 +103,7 @@ export class PostRepository {
   }
 
   async findById(id: ID): Promise<Post | null> {
-    const post = await this.photon.posts.findOne({
+    const post = await this.photon.post.findOne({
       where: {
         id
       },
@@ -118,7 +118,7 @@ export class PostRepository {
   }
 
   async findAll(currentUserId: ID = ""): Promise<Post[]> {
-    const posts = await this.photon.posts.findMany({
+    const posts = await this.photon.post.findMany({
       where: {
         OR: [
           {
@@ -166,7 +166,7 @@ export class PostRepository {
         }
       });
     }
-    const posts = await this.photon.posts.findMany({
+    const posts = await this.photon.post.findMany({
       where: {
         AND: conditions
       },
@@ -182,8 +182,8 @@ export class PostRepository {
     return posts.map(post => this.createEntity(post));
   }
 
-  async toggleLike(userId: ID, postId: ID) {
-    const likes = await this.photon.likes.findMany({
+  async toggleLike(userId: ID, postId: ID): Promise<void> {
+    const likes = await this.photon.like.findMany({
       where: {
         repliable: {
           id: postId
@@ -197,13 +197,13 @@ export class PostRepository {
       throw new Error("Multiple likes by the same user found");
     }
     if (likes.length === 1) {
-      await this.photon.likes.delete({
+      await this.photon.like.delete({
         where: {
           id: likes[0].id
         }
       });
     } else {
-      await this.photon.likes.create({
+      await this.photon.like.create({
         data: {
           repliable: {
             connect: {
@@ -221,14 +221,14 @@ export class PostRepository {
   }
 
   async countLike(postId: ID): Promise<number> {
-    const likes = await this.photon.likes.findMany({
+    const likes = await this.photon.like.findMany({
       where: { repliable: { id: postId } }
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }
 
   async likedByMe(userId: ID, postId: ID): Promise<boolean> {
-    const likes = await this.photon.likes.findMany({
+    const likes = await this.photon.like.findMany({
       where: { user: { id: userId }, repliable: { id: postId } }
     });
     return likes.length > 0;

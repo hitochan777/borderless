@@ -38,6 +38,7 @@ export interface NexusGenInputs {
     language?: string | null; // String
   }
   TweetInput: { // input type
+    correction?: string | null; // String
     inReplyTo: string; // ID!
     postId: string; // ID!
     text: string; // String!
@@ -143,6 +144,7 @@ export interface NexusGenFieldTypes {
     viewer: NexusGenRootTypes['User']; // User!
   }
   Tweet: { // field return type
+    correction: string | null; // String
     createdAt: any | null; // Date
     id: string; // ID!
     inReplyTo: number | null; // Int

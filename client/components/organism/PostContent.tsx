@@ -121,11 +121,22 @@ export const PostContent: React.FC<Props> = ({
       alert("you need to focus on some line");
       return;
     }
+    const corrections = [...comment.matchAll(/```(.*?)```/gs)];
+    if (corrections.length > 1) {
+      alert("You cannot post multiple corrections at once");
+      return;
+    }
+    const commentWithoutCorrection = comment
+      .replace(/```(.*?)```/gs, "")
+      .trim();
+
     await createTweet({
       variables: {
         tweet: {
           postId: id,
-          text: comment,
+          text: commentWithoutCorrection,
+          correction:
+            corrections.length === 1 ? corrections[0][1].trim() : null,
           inReplyTo: focusedLineId
         }
       },
@@ -158,8 +169,14 @@ export const PostContent: React.FC<Props> = ({
         disabled={createTweetResult.loading}
         onChange={handleCommentFormChange}
         value={comment}
+        line={focusedLine ? focusedLine.text : ""}
       />
-      {focusedLineId !== null && <LineCommentList lineId={focusedLineId} />}
+      {focusedLineId !== null && (
+        <LineCommentList
+          lineId={focusedLineId}
+          line={focusedLine ? focusedLine.text : ""}
+        />
+      )}
     </>
   );
 
@@ -307,14 +324,14 @@ export const PostContent: React.FC<Props> = ({
             </Link>
           </Toolbar>
         </AppBar>
-        <div>
-          <Box padding={3}>
+        <Box padding={3}>
+          <Box marginBottom={1}>
             <Typography variant="h5">
               {focusedLine && focusedLine.text}
             </Typography>
           </Box>
           {commentSection}
-        </div>
+        </Box>
       </Dialog>
     </Grid>
   );

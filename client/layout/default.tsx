@@ -6,6 +6,7 @@ import { Snackbar } from "@material-ui/core";
 import { GlobalStyle } from "./global-style";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { FillInModal } from "../components/FillInModal";
 import { useViewer } from "@/hooks/useViewer";
 import { useUid, useErrorMessage } from "@/store";
@@ -67,7 +68,6 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = "parc" }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <GlobalStyle />
-      <Navbar />
       <FillInModal open={shouldShowFillInfoModal} formData={formData} />
       <Snackbar
         open={!!errorMessage}
@@ -78,7 +78,9 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = "parc" }) => {
           setErrorMessage({ variables: { errorMessage: null } });
         }}
       />
-      <main>{children}</main>
+      <Navbar />
+      <main style={{ minHeight: "90vh" }}>{children}</main>
+      <Footer />
     </>
   );
 };

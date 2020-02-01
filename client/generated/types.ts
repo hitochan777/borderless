@@ -182,6 +182,7 @@ export type Tweet = Node & {
   __typename?: "Tweet";
   id: Scalars["ID"];
   text: Scalars["String"];
+  correction?: Maybe<Scalars["String"]>;
   inReplyTo?: Maybe<Scalars["Int"]>;
   postedBy: User;
   post: Post;
@@ -196,6 +197,7 @@ export type TweetInput = {
   inReplyTo: Scalars["ID"];
   postId: Scalars["ID"];
   text: Scalars["String"];
+  correction?: Maybe<Scalars["String"]>;
 };
 
 export type User = Node & {
@@ -219,7 +221,7 @@ export type UserInput = {
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
-  "id" | "text" | "updatedAt" | "likeCount" | "likedByMe"
+  "id" | "text" | "correction" | "updatedAt" | "likeCount" | "likedByMe"
 > & { postedBy: { __typename?: "User" } & Pick<User, "id" | "username"> };
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -431,6 +433,7 @@ export const TweetFieldFragmentDoc = gql`
   fragment tweetField on Tweet {
     id
     text
+    correction
     updatedAt
     likeCount
     likedByMe

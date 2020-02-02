@@ -1,5 +1,5 @@
 import React from "react";
-import { InputLabel, FormControl, TextField } from "@material-ui/core";
+import { FormControl, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
 type OptionValue = string | number;
@@ -24,7 +24,6 @@ const Select = <T extends OptionValue>({
 }: Props<T>) => {
   return (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
       <Autocomplete
         value={value}
         onChange={(_event: object, newValue: Option<T> | null) => {
@@ -33,7 +32,7 @@ const Select = <T extends OptionValue>({
         options={options}
         getOptionLabel={option => option.label}
         renderInput={params => (
-          <TextField {...params} variant="standard" fullWidth />
+          <TextField {...params} variant="standard" fullWidth label={label} />
         )}
       />
     </FormControl>

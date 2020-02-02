@@ -3,10 +3,15 @@ import React from "react";
 import Select from "../Select";
 import { useFetchLanguagesQuery } from "@/generated/types";
 
+interface LanguageOption {
+  value: string;
+  label: string;
+}
+
 interface Props {
   label: string;
-  onChange: (value: string) => void;
-  value: string;
+  onChange: (value: LanguageOption | null) => void;
+  value: LanguageOption | null;
   relatedOnly?: boolean;
 }
 
@@ -21,7 +26,12 @@ const LanguagSelector: React.FC<Props> = ({
   });
   if (loading) {
     return (
-      <Select value={value} onChange={onChange} options={[]} label={label} />
+      <Select<string>
+        value={value}
+        onChange={onChange}
+        options={[]}
+        label={label}
+      />
     );
   }
   if (error) {
@@ -30,16 +40,16 @@ const LanguagSelector: React.FC<Props> = ({
   if (!data) {
     throw new Error("Fetched data is empty");
   }
-  const LANGUAGES = data.langs.map(({ id, name }) => ({
+  const languageOptions: LanguageOption[] = data.langs.map(({ id, name }) => ({
     value: id,
-    displayString: name
+    label: name
   }));
 
   return (
     <Select
       value={value}
       onChange={onChange}
-      options={LANGUAGES}
+      options={languageOptions}
       label={label}
     />
   );

@@ -81,20 +81,26 @@ interface Props {
 }
 
 export const FullSearchBox: React.FC<Props> = ({ executeSearch }) => {
-  const [language, setLanguage] = useState<string>("");
+  const [language, setLanguage] = useState<string | null>(null);
   const classes = useFullSearchBoxStyles();
 
   const onSubmit = (evt: React.FormEvent<HTMLDivElement>) => {
     evt.preventDefault();
     const query = {
-      language
+      language: language || ""
     };
     executeSearch(query);
   };
 
   return (
     <Paper component="form" className={classes.root} onSubmit={onSubmit}>
-      <LanguageSelector onChange={setLanguage} label="" value={language} />
+      <LanguageSelector
+        onChange={value => {
+          setLanguage(value);
+        }}
+        label=""
+        value={language}
+      />
       <SearchBox />
       <Divider className={classes.divider} orientation="vertical" />
       <IconButton

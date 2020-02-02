@@ -31,7 +31,7 @@ const useCreatePost = () => {
 
 const PostNewPage: NextPage = () => {
   const { value, setValue } = useEditorState();
-  const [language, setLanguage] = useState<string>("");
+  const [language, setLanguage] = useState<string | null>("");
   const { createPost, loading } = useCreatePost();
   const { viewer } = useViewer();
 
@@ -43,7 +43,7 @@ const PostNewPage: NextPage = () => {
       variables: {
         post: {
           lines: transformToGql(value),
-          language,
+          language: language || "",
           isDraft
         }
       }

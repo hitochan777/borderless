@@ -1,37 +1,41 @@
-import * as React from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import MaterialUISelect from "@material-ui/core/Select";
+import React from "react";
+import { InputLabel, FormControl, TextField } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 
-interface Props {
+type OptionValue = string | number;
+
+type Option<T extends OptionValue> = {
+  value: T;
   label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; displayString: string }[];
-}
+};
 
-const Select: React.FunctionComponent<Props> = ({
+type Props<T extends OptionValue> = {
+  label: string;
+  value: Option<T> | null;
+  onChange: (value: Option<T> | null) => void;
+  options: Option<T>[];
+};
+
+const Select = <T extends OptionValue>({
   label,
   value,
   onChange,
   options
-}) => {
+}: Props<T>) => {
   return (
     <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
-      <MaterialUISelect
+      <Autocomplete
         value={value}
-        onChange={e => {
-          onChange(e.target.value as string);
+        onChange={(_event: object, newValue: Option<T> | null) => {
+          onChange(newValue);
         }}
-      >
-        {options.map(({ value, displayString }) => (
-          <MenuItem key={value} value={value}>
-            {displayString}
-          </MenuItem>
-        ))}
-      </MaterialUISelect>
+        options={options}
+        getOptionLabel={option => option.label}
+        renderInput={params => (
+          <TextField {...params} variant="standard" fullWidth />
+        )}
+      />
     </FormControl>
   );
 };

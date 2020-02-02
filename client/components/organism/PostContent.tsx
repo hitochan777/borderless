@@ -261,43 +261,48 @@ export const PostContent: React.FC<Props> = ({
           </Grid>
 
           <div>
-            {lines.map((line, index) => (
-              <Link
-                key={index}
-                href={{
-                  pathname: "/[username]/[postId]",
-                  query: { lid: line.id }
-                }}
-                as={`/${user.username}/${id}?lid=${line.id}`}
-              >
-                <Grid
-                  container
-                  spacing={2}
-                  justify="space-between"
-                  className={
-                    (line.id === focusedLineId ? classes.focusedLine : "") +
-                    " " +
-                    (line.id === hoveredLine ? classes.hoveredLine : "")
-                  }
-                  onMouseOver={() => {
-                    handleLineHover(line.id);
+            {lines
+              .filter(line => line.text.length > 0)
+              .map((line, index) => (
+                <Link
+                  key={index}
+                  href={{
+                    pathname: "/[username]/[postId]",
+                    query: { lid: line.id }
                   }}
+                  as={`/${user.username}/${id}?lid=${line.id}`}
                 >
-                  <Grid item>
-                    <Typography key={index} variant="body1" component="p">
-                      {line.text}
-                    </Typography>
+                  <Grid
+                    container
+                    spacing={2}
+                    justify="space-between"
+                    className={
+                      (line.id === focusedLineId ? classes.focusedLine : "") +
+                      " " +
+                      (line.id === hoveredLine ? classes.hoveredLine : "")
+                    }
+                    onMouseOver={() => {
+                      handleLineHover(line.id);
+                    }}
+                  >
+                    <Grid item>
+                      <Typography key={index} variant="body1" component="p">
+                        {line.text}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      {line.replies.length > 0 && (
+                        <Badge
+                          badgeContent={line.replies.length}
+                          color="primary"
+                        >
+                          <CommentIcon />
+                        </Badge>
+                      )}
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    {line.replies.length > 0 && (
-                      <Badge badgeContent={line.replies.length} color="primary">
-                        <CommentIcon />
-                      </Badge>
-                    )}
-                  </Grid>
-                </Grid>
-              </Link>
-            ))}
+                </Link>
+              ))}
           </div>
         </Paper>
       </Grid>

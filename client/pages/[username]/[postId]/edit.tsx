@@ -43,12 +43,13 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
     { variables: { id } }
   );
   const { value, setValue } = useEditorState();
-  const [language, setLanguage] = useState<string>("");
+  const [language, setLanguage] = useState<string | null>("");
   const {
     updatePost,
     loading: updatePostLoading,
     error: updatePostError
   } = useUpdatePost();
+
   useEffect(() => {
     if (!queryLoading && queryData) {
       const parsedEditorState = transformfromGql(queryData.post.lines);
@@ -65,7 +66,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
         id,
         post: {
           lines: transformToGql(value),
-          language,
+          language: language || "",
           isDraft
         }
       }

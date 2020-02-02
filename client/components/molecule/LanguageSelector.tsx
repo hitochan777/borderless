@@ -10,8 +10,8 @@ interface LanguageOption {
 
 interface Props {
   label: string;
-  onChange: (value: LanguageOption | null) => void;
-  value: LanguageOption | null;
+  onChange: (value: string | null) => void;
+  value: string | null;
   relatedOnly?: boolean;
 }
 
@@ -24,11 +24,17 @@ const LanguagSelector: React.FC<Props> = ({
   const { data, error, loading } = useFetchLanguagesQuery({
     variables: { relatedOnly }
   });
+
+  const handleChange = (value: LanguageOption | null) => {
+    if (value) {
+      onChange(value.value);
+    }
+  };
   if (loading) {
     return (
       <Select<string>
-        value={value}
-        onChange={onChange}
+        value={null}
+        onChange={handleChange}
         options={[]}
         label={label}
       />
@@ -44,11 +50,11 @@ const LanguagSelector: React.FC<Props> = ({
     value: id,
     label: name
   }));
-
+  const filtered = languageOptions.filter(option => option.value === value);
   return (
     <Select
-      value={value}
-      onChange={onChange}
+      value={filtered[0]}
+      onChange={handleChange}
       options={languageOptions}
       label={label}
     />

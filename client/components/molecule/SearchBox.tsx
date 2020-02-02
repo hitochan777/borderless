@@ -81,16 +81,13 @@ interface Props {
 }
 
 export const FullSearchBox: React.FC<Props> = ({ executeSearch }) => {
-  const [language, setLanguage] = useState<{
-    value: string;
-    label: string;
-  } | null>(null);
+  const [language, setLanguage] = useState<string | null>(null);
   const classes = useFullSearchBoxStyles();
 
   const onSubmit = (evt: React.FormEvent<HTMLDivElement>) => {
     evt.preventDefault();
     const query = {
-      language: language?.value || ""
+      language: language || ""
     };
     executeSearch(query);
   };

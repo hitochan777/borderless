@@ -231,6 +231,13 @@ export const Mutation = mutationType({
         if (!post) {
           throw new Error("post not found");
         }
+        if (
+          tweetInput.text.trim().length === 0 &&
+          (tweetInput.correction === null ||
+            tweetInput.correction?.trim().length === 0)
+        ) {
+          throw new Error("You cannot post empty tweet");
+        }
         const tweet = await tweetRepository.create({
           ...tweetInput,
           userId: uid as string

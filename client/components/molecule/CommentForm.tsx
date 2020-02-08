@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Grid,
@@ -11,6 +11,8 @@ import {
 import FormatStrikethroughIcon from "@material-ui/icons/FormatStrikethrough";
 import { useTranslation } from "@/i18n";
 
+import { PrettyReply } from "@/components/molecule/PrettyReply";
+
 interface Props {
   onSubmit: () => void;
   onChange: (text: string) => void;
@@ -21,6 +23,25 @@ interface Props {
 
 type TabKey = "write" | "preview";
 
+const parseRawReply = (
+  raw: string,
+  onFail?: () => void
+): { correction?: string; text: string } => {
+  const corrections = [...raw.matchAll(/```(.*?)```/gs)];
+  if (corrections.length > 1) {
+    if (onFail) {
+      onFail();
+    }
+    return { correction: "", text: "" };
+  }
+  const commentWithoutCorrection = raw.replace(/```(.*?)```/gs, "").trim();
+
+  return {
+    correction: corrections[0] && corrections[0][1],
+    text: commentWithoutCorrection
+  };
+};
+
 export const CommentForm: React.FC<Props> = ({
   onSubmit,
   disabled,
@@ -29,6 +50,22 @@ export const CommentForm: React.FC<Props> = ({
   value
 }) => {
   const [currentTab, setCurrentTab] = useState<TabKey>("write");
+  const [parsedReply, setParsedReply] = useState<{
+    correction?: string;
+    text: string;
+  }>({ text: "" });
+  useEffect(() => {
+    if (currentTab !== "preview") {
+      return;
+    }
+    setParsedReply(
+      parseRawReply(value, () => {
+        setCurrentTab("write");
+        alert("something is wrong with your writing format");
+      })
+    );
+  }, [currentTab]);
+
   const { t } = useTranslation("common");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -89,7 +126,11 @@ export const CommentForm: React.FC<Props> = ({
             />
           )}
           {currentTab === "preview" && (
-            <span> Preview is yet to be implemented!</span>
+            <PrettyReply
+              line={line}
+              correction={parsedReply.correction}
+              reply={parsedReply.text}
+            />
           )}
         </Grid>
         <Grid container>

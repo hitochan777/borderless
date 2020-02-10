@@ -84,6 +84,9 @@ export const Feed: React.FC = () => {
             id={post.id}
             title={post.title}
             username={post.user.username}
+            description={post.lines
+              .map(line => line.partialLines.map(pl => pl.text).join(""))
+              .join("")}
             language={post.language.name}
             updatedAt={post.updatedAt}
           />

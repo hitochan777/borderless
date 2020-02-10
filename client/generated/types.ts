@@ -281,15 +281,7 @@ export type FetchUserByUsernameQuery = { __typename?: "Query" } & {
       learningLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
-      posts: Array<
-        { __typename?: "Post" } & Pick<Post, "id" | "title" | "updatedAt"> & {
-            language: { __typename?: "Language" } & Pick<
-              Language,
-              "id" | "name"
-            >;
-            user: { __typename?: "User" } & Pick<User, "username">;
-          }
-      >;
+      posts: Array<{ __typename?: "Post" } & PostFieldFragment>;
     };
 };
 
@@ -573,19 +565,11 @@ export const FetchUserByUsernameDocument = gql`
         name
       }
       posts {
-        id
-        title
-        language {
-          id
-          name
-        }
-        user {
-          username
-        }
-        updatedAt
+        ...postField
       }
     }
   }
+  ${PostFieldFragmentDoc}
 `;
 
 /**

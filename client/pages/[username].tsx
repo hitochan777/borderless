@@ -37,6 +37,9 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
                 username={post.user.username}
                 language={post.language.name}
                 updatedAt={post.updatedAt}
+                description={post.lines
+                  .map(line => line.partialLines.map(pl => pl.text).join(""))
+                  .join("")}
               />
             </Box>
           ))}

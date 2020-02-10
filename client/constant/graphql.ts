@@ -102,19 +102,11 @@ export const FETCH_USER_BY_USERNAME_QUERY = gql`
         name
       }
       posts {
-        id
-        title
-        language {
-          id
-          name
-        }
-        user {
-          username
-        }
-        updatedAt
+        ...postField
       }
     }
   }
+  ${POST_FIELD_FRAGMENT}
 `;
 
 export const FETCH_POST_BY_ID_QUERY = gql`

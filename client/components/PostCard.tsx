@@ -1,10 +1,14 @@
 import React from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  Chip,
+  Typography,
+  Avatar
+} from "@material-ui/core";
 import Link from "next/link";
-
 import dayjs from "@/lib/time";
 
 interface Props {
@@ -13,31 +17,49 @@ interface Props {
   username: string;
   language: string;
   updatedAt: Date;
+  description: string;
 }
+
+const MAX_DESCRIPTION_LEN = 100;
 
 export const PostCard: React.FC<Props> = ({
   id,
   title,
   username,
   language,
-  updatedAt
+  updatedAt,
+  description
 }) => {
   return (
     <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
       <Card>
+        <CardHeader
+          avatar={
+            <Avatar
+              alt={username}
+              src={`https://api.adorable.io/avatars/30/${username}@borderless.png`}
+            />
+          }
+          title={title}
+          subheader={`${username} ${dayjs(updatedAt).fromNow()}`}
+          action={
+            <Chip
+              label={language}
+              size="small"
+              onClick={e => {
+                e.preventDefault();
+                // TODO: To route to search result page
+              }}
+            />
+          }
+        ></CardHeader>
         <CardContent>
-          <Typography variant="h5">{title}</Typography>
-          <Avatar
-            alt={username}
-            src={`https://api.adorable.io/avatars/30/${username}@borderless.png`}
-          />
-          <Typography color="textSecondary">
-            {username} ({dayjs(updatedAt).fromNow()})
-          </Typography>
-          <Typography color="primary" gutterBottom>
-            {language}
+          <Typography color="textPrimary">
+            {description.substr(0, MAX_DESCRIPTION_LEN) +
+              (description.length > MAX_DESCRIPTION_LEN ? "..." : "")}
           </Typography>
         </CardContent>
+        <CardActions></CardActions>
       </Card>
     </Link>
   );

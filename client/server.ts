@@ -1,7 +1,7 @@
 import express, { Response, Request } from "express";
 import admin from "firebase-admin";
 import next from "next";
-import proxy from "http-proxy-middleware";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -79,7 +79,7 @@ const runServer = async () => {
     const GRAPHQL_ENDPOINT = "http://localhost:3001";
     server.use(
       GRAPHQL_PATH,
-      proxy(GRAPHQL_ENDPOINT, {
+      createProxyMiddleware(GRAPHQL_ENDPOINT, {
         changeOrigin: true
       })
     );

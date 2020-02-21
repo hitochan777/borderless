@@ -37,7 +37,7 @@
     "@types/http-proxy-middleware": "^0.19.3",
     "@types/react": "^16.9.19",
     "@types/slate-react": "^0.22.9",
-    "@types/styled-components": "^4.4.2",
+    "@types/styled-components": "^5.0.0",
     "@zeit/next-source-maps": "0.0.3",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",

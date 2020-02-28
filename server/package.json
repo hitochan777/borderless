@@ -20,7 +20,7 @@
     "prisma2": "2.0.0-preview022",
     "ts-loader": "6.2.1",
     "ts-node": "8.6.2",
-    "typescript": "3.8.2"
+    "typescript": "3.8.3"
   },
   "scripts": {
     "start": "NODE_ENV=production TS_NODE_FILES=true node -r ts-node/register/transpile-only node_modules/.bin/micro",

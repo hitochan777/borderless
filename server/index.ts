@@ -28,9 +28,7 @@ if (admin.apps.length === 0) {
 }
 
 export const buildRepositoryContainer = (): RepositoryContainer => {
-  const driver = new PrismaClient({
-    debug: process.env.DEBUG
-  });
+  const driver = new PrismaClient();
   return {
     userRepository: new UserRepository(driver),
     postRepository: new PostRepository(driver),

@@ -17,6 +17,7 @@ export * from "./PartialLine";
 
 // Input Object
 export * from "./UserInput";
+export * from "./UserSettingInput";
 export * from "./PostInput";
 export * from "./LineInput";
 export * from "./PartialLineInput";

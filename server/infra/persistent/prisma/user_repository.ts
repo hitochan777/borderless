@@ -17,6 +17,7 @@ export class UserRepository {
       user.username,
       this.transformFrom(user.fluentLanguages || ""),
       this.transformFrom(user.learningLanguages || ""),
+      user.timezone,
       user.createdAt,
       user.updatedAt
     );
@@ -54,12 +55,12 @@ export class UserRepository {
     if (user) {
       return user;
     }
-    const newUser = new User(uid, "", "", [], []);
+    const newUser = new User(uid, "", "", [], [], "");
     return this.create(newUser);
   }
 
   async createOnlyWithId(uid: ID): Promise<User | null> {
-    const newUser = new User(uid, "", "", [], []);
+    const newUser = new User(uid, "", "", [], [], "");
     const createdUser = await this.create(newUser);
     return createdUser;
   }
@@ -76,7 +77,7 @@ export class UserRepository {
     });
     return this.createEntity(createdUser);
   }
-  async update(uid: string, user: User): Promise<User | null> {
+  async update(uid: string, user: User): Promise<User> {
     const updatedUser = await this.prismaClient.user.update({
       where: {
         id: uid

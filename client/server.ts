@@ -55,6 +55,8 @@ const withAuthHandler = (handler: any) => async (
       );
     } else {
       res.clearCookie("session");
+      res.redirect(301, "/signin");
+      return;
     }
   }
   return handler(req, res);

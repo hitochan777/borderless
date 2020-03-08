@@ -4,15 +4,15 @@
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "^2.0.0-preview021",
+    "@prisma/client": "^2.0.0-preview023",
     "@types/cookie": "^0.3.3",
-    "apollo-server-micro": "^2.9.16",
+    "apollo-server-micro": "^2.11.0",
     "cookie": "^0.4.0",
     "firebase-admin": "^8.9.2",
     "graphql": "^14.6.0",
     "iso-639-1": "^2.1.0",
     "nexus": "^0.11.7",
-    "npm-check-updates": "^4.0.1",
+    "npm-check-updates": "^4.0.4",
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {

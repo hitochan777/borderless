@@ -78,9 +78,13 @@ const useFullSearchBoxStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   executeSearch: (query: { language: string }) => Promise<void>;
+  withTextSearch?: boolean;
 }
 
-export const FullSearchBox: React.FC<Props> = ({ executeSearch }) => {
+export const FullSearchBox: React.FC<Props> = ({
+  executeSearch,
+  withTextSearch = false
+}) => {
   const [language, setLanguage] = useState<string | null>(null);
   const classes = useFullSearchBoxStyles();
 
@@ -101,8 +105,12 @@ export const FullSearchBox: React.FC<Props> = ({ executeSearch }) => {
         label=""
         value={language}
       />
-      <SearchBox />
-      <Divider className={classes.divider} orientation="vertical" />
+      {withTextSearch && (
+        <>
+          <SearchBox />
+          <Divider className={classes.divider} orientation="vertical" />{" "}
+        </>
+      )}
       <IconButton
         type="submit"
         className={classes.iconButton}

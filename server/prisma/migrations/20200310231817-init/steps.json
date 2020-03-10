@@ -21,7 +21,7 @@
         "source": "development"
       },
       "argument": "url",
-      "value": "\"file:dev.db\""
+      "value": "env(\"DB_URL\")"
     },
     {
       "tag": "CreateModel",
@@ -236,6 +236,17 @@
       "arity": "Required"
     },
     {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "username"
+        },
+        "directive": "unique"
+      }
+    },
+    {
       "tag": "CreateField",
       "model": "User",
       "field": "fluentLanguages",
@@ -248,6 +259,13 @@
       "field": "learningLanguages",
       "type": "String",
       "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "timezone",
+      "type": "String",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",
@@ -357,7 +375,7 @@
       "tag": "CreateField",
       "model": "Post",
       "field": "language",
-      "type": "Int",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -477,6 +495,13 @@
       "field": "content",
       "type": "String",
       "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Tweet",
+      "field": "correction",
+      "type": "String",
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",

@@ -26,7 +26,7 @@ export class UserRepository {
   async findById(id: ID): Promise<User | null> {
     const user = await this.prismaClient.user.findOne({ where: { id } });
 
-    if (user === null) {
+    if (!user) {
       return null;
     }
 
@@ -55,12 +55,12 @@ export class UserRepository {
     if (user) {
       return user;
     }
-    const newUser = new User(uid, "", "", [], [], "");
+    const newUser = new User(uid, "", "", [], []);
     return this.create(newUser);
   }
 
   async createOnlyWithId(uid: ID): Promise<User | null> {
-    const newUser = new User(uid, "", "", [], [], "");
+    const newUser = new User(uid, "", "", [], []);
     const createdUser = await this.create(newUser);
     return createdUser;
   }
@@ -71,12 +71,14 @@ export class UserRepository {
         id: user.id,
         email: user.email,
         username: user.username,
+        timezone: user.timezone,
         fluentLanguages: this.transformTo(user.fluentLanguages),
         learningLanguages: this.transformTo(user.learningLanguages)
       }
     });
     return this.createEntity(createdUser);
   }
+
   async update(uid: string, user: User): Promise<User> {
     const updatedUser = await this.prismaClient.user.update({
       where: {

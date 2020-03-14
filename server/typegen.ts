@@ -49,6 +49,11 @@ export interface NexusGenInputs {
     learningLanguages: string[]; // [String!]!
     username: string; // String!
   }
+  UserSettingInput: { // input type
+    fluentLanguages: string[]; // [String!]!
+    learningLanguages: string[]; // [String!]!
+    timezone?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -89,6 +94,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   SearchInput: NexusGenInputs['SearchInput'];
   TweetInput: NexusGenInputs['TweetInput'];
   UserInput: NexusGenInputs['UserInput'];
+  UserSettingInput: NexusGenInputs['UserSettingInput'];
 }
 
 export interface NexusGenFieldTypes {
@@ -114,6 +120,7 @@ export interface NexusGenFieldTypes {
     tweetLike: NexusGenRootTypes['Tweet']; // Tweet!
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
+    userUpdateSetting: NexusGenRootTypes['User']; // User!
   }
   PartialLine: { // field return type
     text: string; // String!
@@ -198,6 +205,9 @@ export interface NexusGenArgTypes {
     userUpdate: { // args
       user: NexusGenInputs['UserInput']; // UserInput!
     }
+    userUpdateSetting: { // args
+      user: NexusGenInputs['UserSettingInput']; // UserSettingInput!
+    }
   }
   Query: {
     feed: { // args
@@ -234,7 +244,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
-export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "SearchInput" | "TweetInput" | "UserInput";
+export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "SearchInput" | "TweetInput" | "UserInput" | "UserSettingInput";
 
 export type NexusGenEnumNames = never;
 

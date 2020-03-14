@@ -23,6 +23,37 @@ export const Mutation = mutationType({
         return createdUser;
       }
     });
+    t.field("userUpdateSetting", {
+      authorize: async (_, __, { uid }) => {
+        return !!uid;
+      },
+      type: "User",
+      args: {
+        user: arg({ type: "UserSettingInput", required: true })
+      },
+      resolve: async (
+        _,
+        { user: userSetting },
+        { uid, repositories: { userRepository } }
+      ) => {
+        if (!uid) {
+          throw new Error("failed to update user");
+        }
+        const user = await userRepository.findById(uid);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        user.fluentLanguages = userSetting.fluentLanguages.map(
+          language => new Language(language)
+        );
+        user.learningLanguages = userSetting.learningLanguages.map(
+          language => new Language(language)
+        );
+        user.timezone = userSetting.timezone || "+00:00";
+        const updatedUser = await userRepository.update(uid, user);
+        return updatedUser;
+      }
+    });
     t.field("userUpdate", {
       authorize: async (_, __, { uid, repositories: { userRepository } }) => {
         if (!uid) {

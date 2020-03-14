@@ -1,13 +1,6 @@
 datasource development {
   provider = "sqlite"
   url = "***"
-  enabled  = env("DEVELOPMENT_DB_URL")
-}
-
-datasource production {
-  provider = "mysql"
-  url = "***"
-  enabled  = env("PRODUCTION_DB_URL")
 }
 
 generator photon {
@@ -31,6 +24,7 @@ model User {
   username          String  @unique
   fluentLanguages   String?
   learningLanguages String?
+  timezone  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }

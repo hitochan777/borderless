@@ -17,6 +17,7 @@ export class UserRepository {
       user.username,
       this.transformFrom(user.fluentLanguages || ""),
       this.transformFrom(user.learningLanguages || ""),
+      user.timezone,
       user.createdAt,
       user.updatedAt
     );
@@ -25,7 +26,7 @@ export class UserRepository {
   async findById(id: ID): Promise<User | null> {
     const user = await this.prismaClient.user.findOne({ where: { id } });
 
-    if (user === null) {
+    if (!user) {
       return null;
     }
 
@@ -70,13 +71,15 @@ export class UserRepository {
         id: user.id,
         email: user.email,
         username: user.username,
+        timezone: user.timezone,
         fluentLanguages: this.transformTo(user.fluentLanguages),
         learningLanguages: this.transformTo(user.learningLanguages)
       }
     });
     return this.createEntity(createdUser);
   }
-  async update(uid: string, user: User): Promise<User | null> {
+
+  async update(uid: string, user: User): Promise<User> {
     const updatedUser = await this.prismaClient.user.update({
       where: {
         id: uid

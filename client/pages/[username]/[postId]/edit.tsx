@@ -19,6 +19,7 @@ import {
   FetchPostByIdQueryVariables
 } from "@/generated/types";
 import { transformToGql, transformfromGql } from "@/service/slate";
+import { assert } from "@/lib/assert";
 
 const useUpdatePost = () => {
   const [updatePost, { loading, error }] = useMutation<
@@ -125,12 +126,6 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
     </Layout>
   );
 };
-
-function assert(condition: any, msg?: string): asserts condition {
-  if (!condition) {
-    throw new Error(msg);
-  }
-}
 
 PostEditPage.getInitialProps = async (
   ctx: NextPageContext

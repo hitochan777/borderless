@@ -13,6 +13,7 @@ declare global {
   interface NexusGenCustomDefinitionMethods<TypeName extends string> {
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
     language<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "LanguageCode";
+    timezone<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Timezone";
   }
 }
 
@@ -52,7 +53,7 @@ export interface NexusGenInputs {
   UserSettingInput: { // input type
     fluentLanguages: string[]; // [String!]!
     learningLanguages: string[]; // [String!]!
-    timezone?: string | null; // String
+    timezone?: any | null; // Timezone
   }
 }
 
@@ -84,6 +85,7 @@ export interface NexusGenRootTypes {
   ID: string;
   Date: any;
   LanguageCode: any;
+  Timezone: any;
   Repliable: NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'];
 }
 
@@ -170,6 +172,7 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     learningLanguages: NexusGenRootTypes['Language'][]; // [Language!]!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    timezone: any; // Timezone!
     updatedAt: any | null; // Date
     username: string; // String!
   }
@@ -250,7 +253,7 @@ export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = "Node";
 
-export type NexusGenScalarNames = "Boolean" | "Date" | "Float" | "ID" | "Int" | "LanguageCode" | "String";
+export type NexusGenScalarNames = "Boolean" | "Date" | "Float" | "ID" | "Int" | "LanguageCode" | "String" | "Timezone";
 
 export type NexusGenUnionNames = "Repliable";
 

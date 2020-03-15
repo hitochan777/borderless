@@ -27,3 +27,4 @@ export * from "./SearchInput";
 // Scalar
 export * from "./DateScalar";
 export * from "./LanguageCodeScalar";
+export * from "./TimezoneScalar";

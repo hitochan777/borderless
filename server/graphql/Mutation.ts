@@ -49,7 +49,7 @@ export const Mutation = mutationType({
         user.learningLanguages = userSetting.learningLanguages.map(
           language => new Language(language)
         );
-        user.timezone = userSetting.timezone || "+00:00";
+        user.timezone = userSetting.timezone || "Etc/GMT";
         const updatedUser = await userRepository.update(uid, user);
         return updatedUser;
       }

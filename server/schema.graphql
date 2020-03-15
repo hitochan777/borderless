@@ -102,6 +102,8 @@ input SearchInput {
   language: String
 }
 
+scalar Timezone
+
 type Tweet implements Node {
   correction: String
   createdAt: Date
@@ -134,6 +136,7 @@ type User implements Node {
   id: ID!
   learningLanguages: [Language!]!
   posts: [Post!]!
+  timezone: Timezone!
   updatedAt: Date
   username: String!
 }
@@ -148,5 +151,5 @@ input UserInput {
 input UserSettingInput {
   fluentLanguages: [String!]!
   learningLanguages: [String!]!
-  timezone: String
+  timezone: Timezone
 }

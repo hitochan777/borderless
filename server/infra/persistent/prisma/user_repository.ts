@@ -89,7 +89,8 @@ export class UserRepository {
         email: user.email,
         username: user.username,
         fluentLanguages: this.transformTo(user.fluentLanguages),
-        learningLanguages: this.transformTo(user.learningLanguages)
+        learningLanguages: this.transformTo(user.learningLanguages),
+        timezone: user.timezone
       }
     });
 

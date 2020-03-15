@@ -16,7 +16,7 @@ export const TimezoneScalar = scalarType({
   name: "Timezone",
   serialize: value => value,
   parseValue: value => {
-    return new Date(value);
+    return assertStringIsTimezone(value);
   },
   parseLiteral: ast => {
     if (ast.kind !== "StringValue") {

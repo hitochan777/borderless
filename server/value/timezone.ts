@@ -1,10 +1,4 @@
-export interface Timezone {
-  offset: string;
-  timezone: string;
-  name: string;
-}
-
-export const Timezones: Timezone[] = [
+export const timezoneInfos = [
   {
     name: "Midway Island, American Samoa",
     timezone: "Etc/GMT+11",
@@ -340,4 +334,6 @@ export const Timezones: Timezone[] = [
     offset: "UTC+13:00"
   },
   { name: "Samoa", timezone: "Pacific/Apia", offset: "UTC+13:00" }
-];
+] as const;
+
+export type Timezone = typeof timezoneInfos[number]["timezone"];

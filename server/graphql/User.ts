@@ -6,6 +6,7 @@ export const User = objectType({
     t.implements("Node");
     t.string("username");
     t.string("email");
+    t.timezone("timezone");
     t.list.field("fluentLanguages", {
       type: "Language",
       resolve(root) {

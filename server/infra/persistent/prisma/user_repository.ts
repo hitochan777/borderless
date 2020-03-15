@@ -3,6 +3,7 @@ import { PrismaClient, User as UserModel } from "@prisma/client";
 import { User } from "../../../entity/user";
 import { ID } from "../../../types";
 import { Language } from "../../../value/language";
+import { Timezone } from "../../../value/timezone";
 
 export class UserRepository {
   private prismaClient: PrismaClient;
@@ -17,7 +18,7 @@ export class UserRepository {
       user.username,
       this.transformFrom(user.fluentLanguages || ""),
       this.transformFrom(user.learningLanguages || ""),
-      user.timezone,
+      user.timezone as Timezone,
       user.createdAt,
       user.updatedAt
     );
@@ -88,7 +89,8 @@ export class UserRepository {
         email: user.email,
         username: user.username,
         fluentLanguages: this.transformTo(user.fluentLanguages),
-        learningLanguages: this.transformTo(user.learningLanguages)
+        learningLanguages: this.transformTo(user.learningLanguages),
+        timezone: user.timezone
       }
     });
 

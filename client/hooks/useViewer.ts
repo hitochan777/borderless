@@ -10,7 +10,7 @@ export const useViewer = () => {
     return { viewer: null, loading: false };
   }
   if (loading) {
-    return { data: null, loading: true };
+    return { viewer: null, loading: true };
   }
   if (error) {
     throw error;

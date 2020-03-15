@@ -63,6 +63,7 @@ export const FETCH_VIEWER_QUERY = gql`
       id
       username
       email
+      timezone
       fluentLanguages {
         id
         name
@@ -194,6 +195,23 @@ export const USER_UPDATE_MUTATION = gql`
         id
         name
       }
+    }
+  }
+`;
+
+export const USER_UPDATE_SETTING_MUTATION = gql`
+  mutation userUpdateSetting($user: UserSettingInput!) {
+    userUpdateSetting(user: $user) {
+      id
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
+      timezone
     }
   }
 `;

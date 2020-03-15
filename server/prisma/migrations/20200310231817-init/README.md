@@ -9,7 +9,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 CREATE TABLE "quaint"."Repliable" (
     "id" TEXT NOT NULL  ,
     PRIMARY KEY ("id")
-) 
+)
 
 CREATE TABLE "quaint"."Like" (
     "createdAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
@@ -18,7 +18,7 @@ CREATE TABLE "quaint"."Like" (
     "user" TEXT NOT NULL  ,
     PRIMARY KEY ("id"),FOREIGN KEY ("repliable") REFERENCES "Repliable"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
 FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE
-) 
+)
 
 CREATE TABLE "quaint"."User" (
     "createdAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
@@ -30,7 +30,7 @@ CREATE TABLE "quaint"."User" (
     "updatedAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
     "username" TEXT NOT NULL DEFAULT '' ,
     PRIMARY KEY ("id")
-) 
+)
 
 CREATE TABLE "quaint"."Post" (
     "content" TEXT NOT NULL DEFAULT '' ,
@@ -41,7 +41,7 @@ CREATE TABLE "quaint"."Post" (
     "updatedAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
     "user" TEXT NOT NULL  ,
     PRIMARY KEY ("id"),FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE
-) 
+)
 
 CREATE TABLE "quaint"."Tweet" (
     "content" TEXT NOT NULL DEFAULT '' ,
@@ -55,7 +55,7 @@ CREATE TABLE "quaint"."Tweet" (
     PRIMARY KEY ("id"),FOREIGN KEY ("inReplyTo") REFERENCES "Repliable"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
 FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
 FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE
-) 
+)
 
 CREATE TABLE "quaint"."LineMarker" (
     "createdAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
@@ -63,7 +63,7 @@ CREATE TABLE "quaint"."LineMarker" (
     "post" TEXT NOT NULL  ,
     "updatedAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
     PRIMARY KEY ("id"),FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE
-) 
+)
 
 CREATE UNIQUE INDEX "quaint"."User.email" ON "User"("email")
 
@@ -94,7 +94,7 @@ migration ..20200310231817-init
 +model Like {
 +  id String @default(cuid()) @id
 +  user User
-+  repliable Repliable 
++  repliable Repliable
 +  createdAt DateTime  @default(now())
 +}
 +
@@ -137,5 +137,3 @@ migration ..20200310231817-init
 +  updatedAt DateTime  @updatedAt
 +}
 ```
-
-

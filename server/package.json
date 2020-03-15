@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "micro-dev": "3.0.0",
-    "prisma2": "2.0.0-preview023",
+    "prisma2": "2.0.0-previewnull-1",
     "ts-loader": "6.2.1",
     "ts-node": "8.6.2",
     "typescript": "3.8.3"

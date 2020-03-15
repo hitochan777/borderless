@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Timezone: any;
   LanguageCode: any;
   Date: any;
 };
@@ -49,6 +50,7 @@ export type Mutation = {
   tweetLike: Tweet;
   userCreate: User;
   userUpdate: User;
+  userUpdateSetting: User;
 };
 
 export type MutationPostCreateArgs = {
@@ -90,6 +92,10 @@ export type MutationUserCreateArgs = {
 
 export type MutationUserUpdateArgs = {
   user: UserInput;
+};
+
+export type MutationUserUpdateSettingArgs = {
+  user: UserSettingInput;
 };
 
 export type Node = {
@@ -205,6 +211,7 @@ export type User = Node & {
   id: Scalars["ID"];
   username: Scalars["String"];
   email: Scalars["String"];
+  timezone: Scalars["Timezone"];
   fluentLanguages: Array<Language>;
   learningLanguages: Array<Language>;
   posts: Array<Post>;
@@ -217,6 +224,12 @@ export type UserInput = {
   email: Scalars["String"];
   fluentLanguages: Array<Scalars["String"]>;
   learningLanguages: Array<Scalars["String"]>;
+};
+
+export type UserSettingInput = {
+  fluentLanguages: Array<Scalars["String"]>;
+  learningLanguages: Array<Scalars["String"]>;
+  timezone?: Maybe<Scalars["Timezone"]>;
 };
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
@@ -250,7 +263,10 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
 export type FetchViewerQueryVariables = {};
 
 export type FetchViewerQuery = { __typename?: "Query" } & {
-  viewer: { __typename?: "User" } & Pick<User, "id" | "username" | "email"> & {
+  viewer: { __typename?: "User" } & Pick<
+    User,
+    "id" | "username" | "email" | "timezone"
+  > & {
       fluentLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
@@ -360,6 +376,21 @@ export type UserUpdateMutation = { __typename?: "Mutation" } & {
     User,
     "id" | "email" | "username"
   > & {
+      fluentLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+      learningLanguages: Array<
+        { __typename?: "Language" } & Pick<Language, "id" | "name">
+      >;
+    };
+};
+
+export type UserUpdateSettingMutationVariables = {
+  user: UserSettingInput;
+};
+
+export type UserUpdateSettingMutation = { __typename?: "Mutation" } & {
+  userUpdateSetting: { __typename?: "User" } & Pick<User, "id" | "timezone"> & {
       fluentLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
@@ -481,6 +512,7 @@ export const FetchViewerDocument = gql`
       id
       username
       email
+      timezone
       fluentLanguages {
         id
         name
@@ -1116,6 +1148,65 @@ export type UserUpdateMutationResult = ApolloReactCommon.MutationResult<
 export type UserUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   UserUpdateMutation,
   UserUpdateMutationVariables
+>;
+export const UserUpdateSettingDocument = gql`
+  mutation userUpdateSetting($user: UserSettingInput!) {
+    userUpdateSetting(user: $user) {
+      id
+      fluentLanguages {
+        id
+        name
+      }
+      learningLanguages {
+        id
+        name
+      }
+      timezone
+    }
+  }
+`;
+export type UserUpdateSettingMutationFn = ApolloReactCommon.MutationFunction<
+  UserUpdateSettingMutation,
+  UserUpdateSettingMutationVariables
+>;
+
+/**
+ * __useUserUpdateSettingMutation__
+ *
+ * To run a mutation, you first call `useUserUpdateSettingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserUpdateSettingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userUpdateSettingMutation, { data, loading, error }] = useUserUpdateSettingMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useUserUpdateSettingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UserUpdateSettingMutation,
+    UserUpdateSettingMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    UserUpdateSettingMutation,
+    UserUpdateSettingMutationVariables
+  >(UserUpdateSettingDocument, baseOptions);
+}
+export type UserUpdateSettingMutationHookResult = ReturnType<
+  typeof useUserUpdateSettingMutation
+>;
+export type UserUpdateSettingMutationResult = ApolloReactCommon.MutationResult<
+  UserUpdateSettingMutation
+>;
+export type UserUpdateSettingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UserUpdateSettingMutation,
+  UserUpdateSettingMutationVariables
 >;
 export const TweetCreateDocument = gql`
   mutation tweetCreate($tweet: TweetInput!) {

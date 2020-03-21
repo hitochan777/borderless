@@ -1,6 +1,6 @@
 datasource development {
   provider = "sqlite"
-  url      = env("DB_URL")
+  url = "***"
 }
 
 generator photon {

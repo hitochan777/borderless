@@ -15,23 +15,11 @@ export class TweetRepository {
     this.photon = driver;
   }
 
-  async create({
-    userId,
-    postId,
-    text,
-    correction,
-    inReplyTo
-  }: {
-    userId: ID;
-    postId: ID;
-    text: string;
-    correction?: string | undefined | null;
-    inReplyTo: ID;
-  }): Promise<Tweet> {
-    if (userId === null) {
+  async create(tweet: Tweet): Promise<Tweet> {
+    if (tweet.userId === null) {
       throw new Error("user ID is not set");
     }
-    if (postId === null) {
+    if (tweet.postId === null) {
       throw new Error("post ID is not set");
     }
     const repliable = await this.photon.repliable.create({ data: {} });
@@ -40,21 +28,21 @@ export class TweetRepository {
         id: repliable.id,
         user: {
           connect: {
-            id: userId
+            id: tweet.userId
           }
         },
         post: {
           connect: {
-            id: postId
+            id: tweet.postId
           }
         },
         inReplyTo: {
           connect: {
-            id: inReplyTo
+            id: tweet.inReplyTo
           }
         },
-        content: text,
-        correction
+        content: tweet.text,
+        correction: tweet.correction
       },
       include: {
         user: true,
@@ -66,7 +54,16 @@ export class TweetRepository {
     return this.createEntity(createdTweet);
   }
 
-  async findTweetById(id: ID): Promise<Tweet | null> {
+  async createMany(tweets: Tweet[]): Promise<Tweet[]> {
+    const promises = [];
+    for (const tweet of tweets) {
+      // FIXME: bulk insert is preferred but no way to do this at this moment
+      promises.push(this.create(tweet));
+    }
+    return Promise.all(promises);
+  }
+
+  async findOneById(id: ID): Promise<Tweet | null> {
     const tweet = await this.photon.tweet.findOne({
       where: { id },
       include: { post: true, inReplyTo: true, user: true }
@@ -75,6 +72,14 @@ export class TweetRepository {
       return null;
     }
     return this.createEntity(tweet);
+  }
+
+  async findManyByIds(ids: ID[]): Promise<Tweet[]> {
+    const tweets = await this.photon.tweet.findMany({
+      where: { id: { in: ids } },
+      include: { post: true, inReplyTo: true, user: true }
+    });
+    return tweets.map(tweet => this.createEntity(tweet));
   }
 
   createEntity(

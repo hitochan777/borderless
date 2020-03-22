@@ -76,7 +76,7 @@ export const Query = queryType({
         id: idArg({ required: true, description: "tweet id" })
       },
       async resolve(_, { id }, { repositories: { tweetRepository } }) {
-        const tweet = await tweetRepository.findTweetById(id);
+        const tweet = await tweetRepository.findOneById(id);
         if (!tweet) {
           throw new Error("tweet not found");
         }

@@ -14,6 +14,7 @@ export * from "./Language";
 export * from "./Tweet";
 export * from "./AuthData";
 export * from "./PartialLine";
+export * from "./CorrectionGroup";
 
 // Input Object
 export * from "./UserInput";

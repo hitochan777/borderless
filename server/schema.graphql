@@ -6,6 +6,18 @@ type AuthData {
   token: String!
 }
 
+type CorrectionGroup implements Node {
+  corrections: [Tweet!]!
+  createdAt: Date
+
+  """Unique identifier for the resource"""
+  id: ID!
+  post: Post!
+  postedBy: User!
+  summaryComment: Tweet
+  updatedAt: Date
+}
+
 scalar Date
 
 type Language {
@@ -28,6 +40,7 @@ input LineInput {
 }
 
 type Mutation {
+  correctionGroupCreate(corrections: [TweetInput!]!, summaryComment: TweetInput): CorrectionGroup!
   logout: Boolean!
   postCreate(post: PostInput!): Post!
   postLike(id: ID!): Post!

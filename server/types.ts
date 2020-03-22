@@ -1,9 +1,12 @@
 import { ServerResponse } from "http";
 
-import { UserRepository } from "./infra/persistent/prisma/user_repository";
-import { PostRepository } from "./infra/persistent/prisma/post_repository";
-import { TweetRepository } from "./infra/persistent/prisma/tweet_repository";
-import { LineMarkerRepository } from "./infra/persistent/prisma/line_marker_repository";
+import {
+  UserRepository,
+  PostRepository,
+  TweetRepository,
+  LineMarkerRepository,
+  CorrectionGroupRepository
+} from "./infra/persistent/prisma";
 import { SlateService } from "./infra/service/slate_service";
 
 export interface RepositoryContainer {
@@ -11,6 +14,7 @@ export interface RepositoryContainer {
   postRepository: PostRepository;
   tweetRepository: TweetRepository;
   lineMarkerRepository: LineMarkerRepository;
+  corretionGroupRepository: CorrectionGroupRepository;
 }
 
 export interface ServiceContainer {

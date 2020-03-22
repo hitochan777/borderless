@@ -233,6 +233,29 @@ export const TWEET_LIKE_MUTATION = gql`
   ${TWEET_FIELD_FRAGMENT}
 `;
 
+export const CORRECTION_GROUP_CREATE_MUTATION = gql`
+  mutation correctionGroupCreate(
+    $corrections: [TweetInput!]!
+    $summaryComment: TweetInput!
+  ) {
+    correctionGroupCreate(
+      corrections: $corrections
+      summaryComment: $summaryComment
+    ) {
+      id
+      corrections {
+        ...tweetField
+      }
+      summaryComment {
+        ...tweetField
+      }
+      updatedAt
+      createdAt
+    }
+  }
+  ${TWEET_FIELD_FRAGMENT}
+`;
+
 export const LOGOUT_MUTATION = gql`
   mutation logout {
     logout

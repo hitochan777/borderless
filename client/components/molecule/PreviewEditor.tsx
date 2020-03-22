@@ -78,7 +78,7 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
     onChange(newCommentParts.join(""));
   };
   return (
-    <>
+    <div>
       <Grid container justify="space-between">
         <div>
           <Tabs
@@ -118,6 +118,6 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
           reply={parsedReply.text}
         />
       )}
-    </>
+    </div>
   );
 };

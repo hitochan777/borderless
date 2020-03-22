@@ -11,17 +11,17 @@ export class LineMarkerRepository {
     const repliableIds = [];
     for (let i = 0; i < num; i++) {
       const createdRepliable = await this.photon.repliable.create({
-        data: {}
+        data: {},
       });
       repliableIds.push(createdRepliable.id);
     }
     if (repliableIds.length !== num) {
       throw new Error(`Could not generate ${num} repliables`);
     }
-    const lineMarkers: { id: ID; postId: ID }[] = repliableIds.map(id => {
+    const lineMarkers: { id: ID; postId: ID }[] = repliableIds.map((id) => {
       return {
         id,
-        postId
+        postId,
       };
     });
     const lineMarkerIds = [];
@@ -31,10 +31,10 @@ export class LineMarkerRepository {
           id: lineMarkers[i].id,
           post: {
             connect: {
-              id: lineMarkers[i].postId
-            }
-          }
-        }
+              id: lineMarkers[i].postId,
+            },
+          },
+        },
       });
 
       lineMarkerIds.push(createdLineMarker.id);

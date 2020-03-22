@@ -27,7 +27,7 @@ export const MultiSelect: React.StatelessComponent<Props> = ({
   onChange,
   options,
   label,
-  name
+  name,
 }) => {
   const idNameTable = options.reduce<{ [id: string]: string }>(
     (curIdNameTable, { value, name }) =>

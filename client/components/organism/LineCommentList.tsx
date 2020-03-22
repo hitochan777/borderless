@@ -9,14 +9,14 @@ import {
   Badge,
   IconButton,
   makeStyles,
-  Link as MuiLink
+  Link as MuiLink,
 } from "@material-ui/core";
 
 import dayjs from "@/lib/time";
 import { LikeIcon } from "@/components/molecule/LikeIcon";
 import {
   useTweetLikeMutation,
-  useFetchTweetsForLineQuery
+  useFetchTweetsForLineQuery,
 } from "@/generated/types";
 import { PrettyReply } from "@/components/molecule/PrettyReply";
 
@@ -25,21 +25,21 @@ interface Props {
   line: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   avatar: {
     width: "30px",
     height: "auto",
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 }));
 
 export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   const classes = useStyles();
   const { data, error, loading } = useFetchTweetsForLineQuery({
-    variables: { id: lineId }
+    variables: { id: lineId },
   });
   const [tweetLike] = useTweetLikeMutation();
 
@@ -58,7 +58,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   }
   return (
     <List className={classes.root}>
-      {data.replies.map(reply => (
+      {data.replies.map((reply) => (
         <React.Fragment key={reply.id}>
           <ListItem>
             <ListItemText>

@@ -20,7 +20,7 @@ const Select = <T extends OptionValue>({
   label,
   value,
   onChange,
-  options
+  options,
 }: Props<T>) => {
   return (
     <FormControl fullWidth>
@@ -30,8 +30,8 @@ const Select = <T extends OptionValue>({
           onChange(newValue);
         }}
         options={options}
-        getOptionLabel={option => option.label}
-        renderInput={params => (
+        getOptionLabel={(option) => option.label}
+        renderInput={(params) => (
           <TextField {...params} variant="standard" fullWidth label={label} />
         )}
       />

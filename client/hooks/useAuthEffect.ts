@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 import {
   useSetLoadingMutation,
-  useSetErrorMessageMutation
+  useSetErrorMessageMutation,
 } from "@/generated/types";
 import { UidContext } from "@/context";
 
@@ -40,7 +40,7 @@ export const useAuthEffect = () => {
   useEffect(() => {
     setLoading({ variables: { loading: true } });
     login()
-      .catch(_e => {
+      .catch((_e) => {
         setErrorMessage({ variables: { errorMessage: "Failed to login" } });
       })
       .finally(() => {

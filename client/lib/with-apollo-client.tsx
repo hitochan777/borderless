@@ -24,7 +24,7 @@ const withApolloClient = (
       const {
         Component,
         router,
-        ctx: { req }
+        ctx: { req },
       } = appContext;
 
       let appProps: { [key: string]: any } = {};
@@ -40,7 +40,7 @@ const withApolloClient = (
           getToken: () => {
             const parsed = parseCookies(req);
             return parsed && parsed["session"];
-          }
+          },
         }
       );
       if (!isBrowser) {
@@ -71,7 +71,7 @@ const withApolloClient = (
 
       return {
         ...appProps,
-        apolloState
+        apolloState,
       };
     }
 
@@ -80,7 +80,7 @@ const withApolloClient = (
       this.apolloClient = initApollo(props.apolloState, {
         getToken: () => {
           return undefined;
-        }
+        },
       });
     }
 

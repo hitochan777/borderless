@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "polyglot-3f093",
   storageBucket: "polyglot-3f093.appspot.com",
   messagingSenderId: "1045048195124",
-  appId: "1:1045048195124:web:41e1fe0602adcf69"
+  appId: "1:1045048195124:web:41e1fe0602adcf69",
 };
 
 if (!firebase.apps.length) {

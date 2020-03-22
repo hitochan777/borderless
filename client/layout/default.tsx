@@ -54,8 +54,8 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = "parc" }) => {
       formData = {
         email,
         username,
-        learningLanguages: learningLanguages.map(l => `${l}`),
-        fluentLanguages: fluentLanguages.map(l => `${l}`)
+        learningLanguages: learningLanguages.map((l) => `${l}`),
+        fluentLanguages: fluentLanguages.map((l) => `${l}`),
       };
     }
   }

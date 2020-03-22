@@ -9,7 +9,7 @@ export const LanguageScalar = scalarType({
     const lang = new Language(value); // validate string
     return lang.code;
   },
-  parseValue: value => {
+  parseValue: (value) => {
     try {
       const lang = new Language(value);
       return lang;
@@ -17,7 +17,7 @@ export const LanguageScalar = scalarType({
       throw new UserInputError("Invalid language", {});
     }
   },
-  parseLiteral: ast => {
+  parseLiteral: (ast) => {
     if (ast.kind !== "StringValue") {
       return null;
     }
@@ -28,5 +28,5 @@ export const LanguageScalar = scalarType({
       throw new UserInputError("Invalid language", {});
     }
   },
-  asNexusMethod: "language"
+  asNexusMethod: "language",
 });

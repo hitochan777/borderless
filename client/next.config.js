@@ -10,7 +10,7 @@ const config = {
         fs: "empty",
         child_process: "empty",
         net: "empty",
-        tls: "empty"
+        tls: "empty",
       };
     }
     config.plugins = [...config.plugins];
@@ -18,8 +18,8 @@ const config = {
     return config;
   },
   env: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
-  }
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+  },
 };
 
 module.exports = withSourceMaps(config);

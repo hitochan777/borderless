@@ -6,22 +6,22 @@ export class SlateService {
       object: "value",
       document: {
         object: "document",
-        data: {}
-      }
+        data: {},
+      },
     };
-    const nodes = lines.map(line => {
-      const nodes = line.lineContent.partialLines.map(partialLine => {
+    const nodes = lines.map((line) => {
+      const nodes = line.lineContent.partialLines.map((partialLine) => {
         return {
           object: "text",
           text: partialLine.subtext,
-          marks: partialLine.referers
+          marks: partialLine.referers,
         };
       });
       return {
         object: "block",
         type: "line",
         data: {},
-        nodes
+        nodes,
       };
     });
     json.document.nodes = nodes;

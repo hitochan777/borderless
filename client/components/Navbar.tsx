@@ -3,7 +3,7 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  useTheme
+  useTheme,
 } from "@material-ui/core/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import {
   MenuItem,
   Button,
   Fab,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
 import { Add as AddIcon, AccountCircle } from "@material-ui/icons";
 import firebase from "firebase/app";
@@ -30,19 +30,19 @@ import { Box } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     createFab: {
       position: "fixed",
       bottom: 20,
-      right: 20
-    }
+      right: 20,
+    },
   })
 );
 
@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
           <Box marginRight={1}>
             {isLargerThanSm && (
               <FullSearchBox
-                executeSearch={async query => {
+                executeSearch={async (query) => {
                   router.push(`/search?lang=${query.language}`);
                 }}
               />

@@ -6,5 +6,5 @@ export const PostInput = inputObjectType({
     t.string("language", { required: true });
     t.list.field("lines", { type: "LineInput", required: true });
     t.boolean("isDraft", { default: true, required: true });
-  }
+  },
 });

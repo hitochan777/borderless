@@ -5,5 +5,5 @@ export const LineInput = inputObjectType({
   definition(t) {
     t.id("id", { required: false });
     t.list.field("partialLines", { type: "PartialLineInput", required: true });
-  }
+  },
 });

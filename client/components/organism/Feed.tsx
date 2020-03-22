@@ -23,7 +23,7 @@ const useScrollDetect = (fn: () => void, threshold = 80) => {
       const {
         clientHeight,
         scrollTop,
-        scrollHeight
+        scrollHeight,
       } = document.documentElement;
       if (document.documentElement.getBoundingClientRect().top > scrollPos) {
         // scrolled upward
@@ -53,16 +53,16 @@ export const Feed: React.FC = () => {
     fetchMore({
       variables: {
         offset: data.feed.length,
-        limit: 1
+        limit: 1,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
           return prev;
         }
         return Object.assign({}, prev, {
-          feed: [...prev.feed, ...fetchMoreResult.feed]
+          feed: [...prev.feed, ...fetchMoreResult.feed],
         });
-      }
+      },
     });
   };
   useScrollDetect(handleLoadMore);
@@ -78,14 +78,14 @@ export const Feed: React.FC = () => {
   }
   return (
     <>
-      {data.feed.map(post => (
+      {data.feed.map((post) => (
         <Box key={post.id} mb="1rem">
           <PostCard
             id={post.id}
             title={post.title}
             username={post.user.username}
             description={post.lines
-              .map(line => line.partialLines.map(pl => pl.text).join(""))
+              .map((line) => line.partialLines.map((pl) => pl.text).join(""))
               .join("")}
             language={post.language.name}
             updatedAt={post.updatedAt}

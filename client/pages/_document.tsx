@@ -12,9 +12,9 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => {
+          enhanceApp: (App) => (props) => {
             return sheets.collect(<App {...props} />);
-          }
+          },
         });
 
       const initialProps = await Document.getInitialProps(ctx);
@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
             {sheets.getStyleElement()}
             {sheet.getStyleElement()}
           </>
-        )
+        ),
       };
     } finally {
       sheet.seal();

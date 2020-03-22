@@ -33,7 +33,7 @@ export class Post extends Base {
       return "";
     }
     return this.lines[0].lineContent.partialLines
-      .map(partialLine => partialLine.subtext)
+      .map((partialLine) => partialLine.subtext)
       .join("");
   }
 }

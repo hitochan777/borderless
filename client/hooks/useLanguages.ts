@@ -6,18 +6,18 @@ export const useLanguages = () => {
     return {
       data: null,
       error,
-      loading
+      loading,
     };
   }
 
   const languages = data.langs.map(({ id, name }) => ({
     value: id,
-    name
+    name,
   }));
 
   return {
     languages,
     loading,
-    error
+    error,
   };
 };

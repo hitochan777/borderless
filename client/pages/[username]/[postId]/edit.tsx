@@ -10,13 +10,13 @@ import { Editor, useEditorState } from "@/components/molecule/Editor";
 import LanguageSelector from "@/components/molecule/LanguageSelector";
 import {
   POST_UPDATE_MUTATION,
-  FETCH_POST_BY_ID_QUERY
+  FETCH_POST_BY_ID_QUERY,
 } from "@/constant/graphql";
 import {
   PostUpdateMutation,
   PostUpdateMutationVariables,
   FetchPostByIdQuery,
-  FetchPostByIdQueryVariables
+  FetchPostByIdQueryVariables,
 } from "@/generated/types";
 import { transformToGql, transformfromGql } from "@/service/slate";
 import { assert } from "@/lib/assert";
@@ -38,7 +38,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
   const {
     data: queryData,
     error: queryError,
-    loading: queryLoading
+    loading: queryLoading,
   } = useQuery<FetchPostByIdQuery, FetchPostByIdQueryVariables>(
     FETCH_POST_BY_ID_QUERY,
     { variables: { id } }
@@ -48,7 +48,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
   const {
     updatePost,
     loading: updatePostLoading,
-    error: updatePostError
+    error: updatePostError,
   } = useUpdatePost();
 
   useEffect(() => {
@@ -68,9 +68,9 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
         post: {
           lines: transformToGql(value),
           language: language || "",
-          isDraft
-        }
-      }
+          isDraft,
+        },
+      },
     });
     Router.push("/[username]/[postId]", `/${username}/${id}`);
   };
@@ -88,7 +88,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
           relatedOnly
           label="Language"
           value={language}
-          onChange={value => {
+          onChange={(value) => {
             setLanguage(value);
           }}
         />

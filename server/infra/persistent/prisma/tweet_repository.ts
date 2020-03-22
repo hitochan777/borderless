@@ -3,7 +3,7 @@ import {
   Tweet as TweetModel,
   Post as PostModel,
   Repliable as RepliableModel,
-  User as UserModel
+  User as UserModel,
 } from "@prisma/client";
 
 import { Tweet } from "../../../entity/tweet";
@@ -28,27 +28,27 @@ export class TweetRepository {
         id: repliable.id,
         user: {
           connect: {
-            id: tweet.userId
-          }
+            id: tweet.userId,
+          },
         },
         post: {
           connect: {
-            id: tweet.postId
-          }
+            id: tweet.postId,
+          },
         },
         inReplyTo: {
           connect: {
-            id: tweet.inReplyTo
-          }
+            id: tweet.inReplyTo,
+          },
         },
         content: tweet.text,
-        correction: tweet.correction
+        correction: tweet.correction,
       },
       include: {
         user: true,
         post: true,
-        inReplyTo: true
-      }
+        inReplyTo: true,
+      },
     });
 
     return this.createEntity(createdTweet);
@@ -66,7 +66,7 @@ export class TweetRepository {
   async findOneById(id: ID): Promise<Tweet | null> {
     const tweet = await this.photon.tweet.findOne({
       where: { id },
-      include: { post: true, inReplyTo: true, user: true }
+      include: { post: true, inReplyTo: true, user: true },
     });
     if (tweet === null) {
       return null;
@@ -77,9 +77,9 @@ export class TweetRepository {
   async findManyByIds(ids: ID[]): Promise<Tweet[]> {
     const tweets = await this.photon.tweet.findMany({
       where: { id: { in: ids } },
-      include: { post: true, inReplyTo: true, user: true }
+      include: { post: true, inReplyTo: true, user: true },
     });
-    return tweets.map(tweet => this.createEntity(tweet));
+    return tweets.map((tweet) => this.createEntity(tweet));
   }
 
   createEntity(
@@ -105,27 +105,27 @@ export class TweetRepository {
     const rawReplies = await this.photon.tweet.findMany({
       where: {
         inReplyTo: {
-          id: repliableId
-        }
+          id: repliableId,
+        },
       },
       include: { post: true, inReplyTo: true, user: true },
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     });
-    return rawReplies.map(reply => this.createEntity(reply));
+    return rawReplies.map((reply) => this.createEntity(reply));
   }
 
   async toggleLike(userId: ID, tweetId: ID): Promise<void> {
     const likes = await this.photon.like.findMany({
       where: {
         repliable: {
-          id: tweetId
+          id: tweetId,
         },
         user: {
-          id: userId
-        }
-      }
+          id: userId,
+        },
+      },
     });
     if (likes.length > 1) {
       throw new Error("Multiple likes by the same user found");
@@ -133,37 +133,37 @@ export class TweetRepository {
     if (likes.length === 1) {
       await this.photon.like.delete({
         where: {
-          id: likes[0].id
-        }
+          id: likes[0].id,
+        },
       });
     } else {
       await this.photon.like.create({
         data: {
           repliable: {
             connect: {
-              id: tweetId
-            }
+              id: tweetId,
+            },
           },
           user: {
             connect: {
-              id: userId
-            }
-          }
-        }
+              id: userId,
+            },
+          },
+        },
       });
     }
   }
 
   async countLike(tweetId: ID): Promise<number> {
     const likes = await this.photon.like.findMany({
-      where: { repliable: { id: tweetId } }
+      where: { repliable: { id: tweetId } },
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }
 
   async likedByMe(userId: ID, tweetId: ID): Promise<boolean> {
     const likes = await this.photon.like.findMany({
-      where: { user: { id: userId }, repliable: { id: tweetId } }
+      where: { user: { id: userId }, repliable: { id: tweetId } },
     });
     return likes.length > 0;
   }

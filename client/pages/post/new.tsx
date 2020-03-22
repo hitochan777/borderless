@@ -14,7 +14,7 @@ import LanguageSelector from "@/components/molecule/LanguageSelector";
 import { POST_CREATE_MUTATION, FETCH_VIEWER_QUERY } from "@/constant/graphql";
 import {
   PostCreateMutation,
-  PostCreateMutationVariables
+  PostCreateMutationVariables,
 } from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
 import { transformToGql } from "@/service/slate";
@@ -24,7 +24,7 @@ const useCreatePost = () => {
     PostCreateMutation,
     PostCreateMutationVariables
   >(POST_CREATE_MUTATION, {
-    refetchQueries: [{ query: FETCH_VIEWER_QUERY }]
+    refetchQueries: [{ query: FETCH_VIEWER_QUERY }],
   });
   return { createPost, loading, error };
 };
@@ -44,9 +44,9 @@ const PostNewPage: NextPage = () => {
         post: {
           lines: transformToGql(value),
           language: language || "",
-          isDraft
-        }
-      }
+          isDraft,
+        },
+      },
     });
     Router.push(`/${viewer.username}`);
   };
@@ -58,7 +58,7 @@ const PostNewPage: NextPage = () => {
           relatedOnly
           label="Language"
           value={language}
-          onChange={value => {
+          onChange={(value) => {
             setLanguage(value);
           }}
         />

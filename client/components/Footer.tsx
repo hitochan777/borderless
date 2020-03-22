@@ -1,14 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     bottom: 0,
     width: "100%",
     backgroundColor: theme.palette.primary.main,
     color: "white",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 }));
 
 const Footer: React.FC = () => {

@@ -17,7 +17,7 @@ export const CommentForm: React.FC<Props> = ({
   disabled,
   onChange,
   line,
-  value
+  value,
 }) => {
   const { t } = useTranslation("common");
 

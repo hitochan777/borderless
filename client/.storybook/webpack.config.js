@@ -7,14 +7,14 @@ module.exports = ({ config }) => {
       {
         loader: require.resolve("ts-loader"),
         options: {
-          configFile: "tsconfig.storybook.json"
-        }
+          configFile: "tsconfig.storybook.json",
+        },
       },
       // Optional
       {
-        loader: require.resolve("react-docgen-typescript-loader")
-      }
-    ]
+        loader: require.resolve("react-docgen-typescript-loader"),
+      },
+    ],
   });
   config.resolve.extensions.push(".ts", ".tsx");
   config.resolve.alias["@"] = path.resolve(__dirname, "../");

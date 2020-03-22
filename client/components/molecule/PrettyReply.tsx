@@ -10,11 +10,11 @@ interface Props {
 }
 
 const getOldParts = (parts: jsdiff.Change[]) => {
-  return parts.filter(part => !part.added || part.removed);
+  return parts.filter((part) => !part.added || part.removed);
 };
 
 const getNewParts = (parts: jsdiff.Change[]) => {
-  return parts.filter(part => part.added || !part.removed);
+  return parts.filter((part) => part.added || !part.removed);
 };
 
 const getChangePartColor = (
@@ -36,26 +36,27 @@ interface ChangedPartProps {
 }
 
 const ChangedPart = styled.span<ChangedPartProps>`
-  background-color: ${props => getChangePartColor(props.added, props.removed)};
+  background-color: ${(props) =>
+    getChangePartColor(props.added, props.removed)};
 `;
 
 const DiffPanel: React.FC<{ oldStr: string; newStr: string }> = ({
   oldStr,
-  newStr
+  newStr,
 }) => {
   const diff = jsdiff.diffChars(oldStr, newStr);
   return (
     <div
       style={{
         border: "1px solid #e1e4e8",
-        borderRadius: "5px"
+        borderRadius: "5px",
       }}
     >
       <div style={{ padding: "5px" }}>Correction</div>
       <div
         style={{
           backgroundColor: "#ffeef0",
-          padding: "5px"
+          padding: "5px",
         }}
       >
         {getOldParts(diff).map((part, index) => (
@@ -67,7 +68,7 @@ const DiffPanel: React.FC<{ oldStr: string; newStr: string }> = ({
       <div
         style={{
           backgroundColor: "#e6ffed",
-          padding: "5px"
+          padding: "5px",
         }}
       >
         {getNewParts(diff).map((part, index) => (

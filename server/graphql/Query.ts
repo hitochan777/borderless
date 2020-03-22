@@ -7,7 +7,7 @@ export const Query = queryType({
     t.list.field("search", {
       type: "Post",
       args: {
-        query: arg({ type: "SearchInput", required: true })
+        query: arg({ type: "SearchInput", required: true }),
       },
       async resolve(_, { query }, { repositories: { postRepository } }) {
         if (!query.language) {
@@ -15,16 +15,16 @@ export const Query = queryType({
           return posts;
         }
         const posts = await postRepository.findByLanguages([
-          new value.Language(query.language)
+          new value.Language(query.language),
         ]);
         return posts;
-      }
+      },
     });
     t.list.field("feed", {
       type: "Post",
       args: {
         offset: intArg({ default: 0, required: true }),
-        limit: intArg({ default: 20, required: true })
+        limit: intArg({ default: 20, required: true }),
       },
       async resolve(
         _,
@@ -34,7 +34,7 @@ export const Query = queryType({
         if (!uid) {
           const posts = await postRepository.findByLanguages([], "", {
             offset,
-            limit
+            limit,
           });
           return posts;
         }
@@ -48,19 +48,19 @@ export const Query = queryType({
           { offset, limit }
         );
         return posts;
-      }
+      },
     });
     t.list.field("posts", {
       type: "Post",
       args: {},
       resolve(_, __, ___) {
         return [];
-      }
+      },
     });
     t.field("post", {
       type: "Post",
       args: {
-        id: idArg({ required: true })
+        id: idArg({ required: true }),
       },
       async resolve(_, { id }, { repositories: { postRepository } }) {
         const post = await postRepository.findById(id);
@@ -68,12 +68,12 @@ export const Query = queryType({
           throw new Error("post not found");
         }
         return post;
-      }
+      },
     });
     t.field("tweet", {
       type: "Tweet",
       args: {
-        id: idArg({ required: true, description: "tweet id" })
+        id: idArg({ required: true, description: "tweet id" }),
       },
       async resolve(_, { id }, { repositories: { tweetRepository } }) {
         const tweet = await tweetRepository.findOneById(id);
@@ -81,17 +81,17 @@ export const Query = queryType({
           throw new Error("tweet not found");
         }
         return tweet;
-      }
+      },
     });
     t.list.field("replies", {
       type: "Tweet",
       args: {
-        id: idArg({ required: true, description: "repliable ID" })
+        id: idArg({ required: true, description: "repliable ID" }),
       },
       async resolve(_, { id }, { repositories: { tweetRepository } }) {
         const tweets = await tweetRepository.findRepliesTo(id);
         return tweets;
-      }
+      },
     });
     t.list.field("langs", {
       type: "Language",
@@ -108,14 +108,14 @@ export const Query = queryType({
           }
           return [
             ...result.fluentLanguages,
-            ...result.learningLanguages
-          ].map(lang => ({ id: lang.code, name: lang.name }));
+            ...result.learningLanguages,
+          ].map((lang) => ({ id: lang.code, name: lang.name }));
         }
-        return value.Language.getAllLanguages().map(language => ({
+        return value.Language.getAllLanguages().map((language) => ({
           id: language.code,
-          name: language.name
+          name: language.name,
         }));
-      }
+      },
     });
     t.field("viewer", {
       authorize: (_, __, { uid }) => {
@@ -129,7 +129,7 @@ export const Query = queryType({
           throw new Error("User not found");
         }
         return result;
-      }
+      },
     });
 
     t.field("user", {
@@ -141,7 +141,7 @@ export const Query = queryType({
           throw new Error("User not found");
         }
         return result;
-      }
+      },
     });
-  }
+  },
 });

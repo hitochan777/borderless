@@ -5,12 +5,12 @@ export const UserSettingInput = inputObjectType({
   definition(t) {
     t.list.field("fluentLanguages", {
       type: "String",
-      nullable: false
+      nullable: false,
     });
     t.list.field("learningLanguages", {
       type: "String",
-      nullable: false
+      nullable: false,
     });
     t.timezone("timezone");
-  }
+  },
 });

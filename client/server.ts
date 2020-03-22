@@ -23,7 +23,7 @@ if (admin.apps.length === 0) {
           )
         )
       : admin.credential.applicationDefault(),
-    databaseURL: "database URL here"
+    databaseURL: "database URL here",
   });
 }
 
@@ -82,7 +82,7 @@ const runServer = async () => {
     server.use(
       GRAPHQL_PATH,
       createProxyMiddleware(GRAPHQL_ENDPOINT, {
-        changeOrigin: true
+        changeOrigin: true,
       })
     );
   }

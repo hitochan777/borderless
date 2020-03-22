@@ -15,7 +15,7 @@ export const Mutation = mutationType({
       authorize: (_, __, { uid }) => uid !== null,
       type: "User",
       args: {
-        id: idArg({ required: true })
+        id: idArg({ required: true }),
       },
       resolve: async (_, { id }, { repositories: { userRepository } }) => {
         const createdUser = await userRepository.createOnlyWithId(id);
@@ -23,7 +23,7 @@ export const Mutation = mutationType({
           throw new Error(`failed to create user with uid = ${id}`);
         }
         return createdUser;
-      }
+      },
     });
     t.field("userUpdateSetting", {
       authorize: async (_, __, { uid }) => {
@@ -31,7 +31,7 @@ export const Mutation = mutationType({
       },
       type: "User",
       args: {
-        user: arg({ type: "UserSettingInput", required: true })
+        user: arg({ type: "UserSettingInput", required: true }),
       },
       resolve: async (
         _,
@@ -46,15 +46,15 @@ export const Mutation = mutationType({
           throw new Error("User not found");
         }
         user.fluentLanguages = userSetting.fluentLanguages.map(
-          language => new Language(language)
+          (language) => new Language(language)
         );
         user.learningLanguages = userSetting.learningLanguages.map(
-          language => new Language(language)
+          (language) => new Language(language)
         );
         user.timezone = userSetting.timezone || "Etc/GMT";
         const updatedUser = await userRepository.update(uid, user);
         return updatedUser;
-      }
+      },
     });
     t.field("userUpdate", {
       authorize: async (_, __, { uid, repositories: { userRepository } }) => {
@@ -69,7 +69,7 @@ export const Mutation = mutationType({
       },
       type: "User",
       args: {
-        user: arg({ type: "UserInput", required: true })
+        user: arg({ type: "UserInput", required: true }),
       },
       resolve: async (
         _,
@@ -83,21 +83,21 @@ export const Mutation = mutationType({
           uid,
           user.email,
           user.username,
-          user.fluentLanguages.map(language => new Language(language)),
-          user.learningLanguages.map(language => new Language(language))
+          user.fluentLanguages.map((language) => new Language(language)),
+          user.learningLanguages.map((language) => new Language(language))
         );
         const updatedUser = await userRepository.update(uid, userEntity);
         if (!updatedUser) {
           throw new Error("failed to update user");
         }
         return updatedUser;
-      }
+      },
     });
     t.field("postCreate", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Post",
       args: {
-        post: arg({ type: "PostInput", required: true })
+        post: arg({ type: "PostInput", required: true }),
       },
       resolve: async (
         _,
@@ -109,7 +109,7 @@ export const Mutation = mutationType({
           userId: uid as string,
           language: new Language(postInput.language),
           lines: [],
-          isDraft: postInput.isDraft
+          isDraft: postInput.isDraft,
         });
         console.log("creating post");
         const createdPost = await postRepository.create(newPost);
@@ -137,11 +137,11 @@ export const Mutation = mutationType({
         for (const [index, markerId] of lineMarkerIds.entries()) {
           const lineContent: LineContent = {
             partialLines: postInput.lines[index].partialLines.map(
-              partialLine => ({
+              (partialLine) => ({
                 subtext: partialLine.subtext,
-                referers: []
+                referers: [],
               })
-            )
+            ),
           };
           const line = new Line(markerId, createdPost.id, lineContent, []);
           lines.push(line);
@@ -157,7 +157,7 @@ export const Mutation = mutationType({
         }
 
         return updatedPost;
-      }
+      },
     });
     t.field("postUpdate", {
       authorize: async (
@@ -177,7 +177,7 @@ export const Mutation = mutationType({
       type: "Post",
       args: {
         id: idArg({ required: true }),
-        post: arg({ type: "PostInput", required: true })
+        post: arg({ type: "PostInput", required: true }),
       },
       resolve: async (
         _,
@@ -189,11 +189,11 @@ export const Mutation = mutationType({
         for (const [index, postInputLine] of postInput.lines.entries()) {
           const lineContent: LineContent = {
             partialLines: postInput.lines[index].partialLines.map(
-              partialLine => ({
+              (partialLine) => ({
                 subtext: partialLine.subtext,
-                referers: []
+                referers: [],
               })
-            )
+            ),
           };
           const line = new Line(postInputLine.id ?? null, id, lineContent, []);
 
@@ -201,7 +201,8 @@ export const Mutation = mutationType({
         }
 
         // create line markers for new lines
-        const numNewLines = lines.filter(line => line.isNotPersisted()).length;
+        const numNewLines = lines.filter((line) => line.isNotPersisted())
+          .length;
         const lineMarkerIds = await lineMarkerRepository.generateIds(
           numNewLines,
           id
@@ -226,13 +227,13 @@ export const Mutation = mutationType({
         }
 
         return updatedPost;
-      }
+      },
     });
     t.field("postLike", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Post",
       args: {
-        id: idArg({ required: true })
+        id: idArg({ required: true }),
       },
       async resolve(
         _,
@@ -246,14 +247,14 @@ export const Mutation = mutationType({
         }
         console.log("post found", maybePost);
         return maybePost;
-      }
+      },
     });
 
     t.field("tweetCreate", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Tweet",
       args: {
-        tweet: arg({ type: "TweetInput", required: true })
+        tweet: arg({ type: "TweetInput", required: true }),
       },
       resolve: async (
         _,
@@ -288,13 +289,13 @@ export const Mutation = mutationType({
         }
 
         return tweet;
-      }
+      },
     });
     t.field("tweetLike", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Tweet",
       args: {
-        id: idArg({ required: true })
+        id: idArg({ required: true }),
       },
       async resolve(
         _,
@@ -307,7 +308,7 @@ export const Mutation = mutationType({
           throw new Error("Tweet not found");
         }
         return maybeTweet;
-      }
+      },
     });
 
     t.field("correctionGroupCreate", {
@@ -315,7 +316,7 @@ export const Mutation = mutationType({
       type: "CorrectionGroup",
       args: {
         corrections: arg({ type: "TweetInput", list: true, required: true }),
-        summaryComment: arg({ type: "TweetInput", required: false })
+        summaryComment: arg({ type: "TweetInput", required: false }),
       },
       async resolve(
         _,
@@ -323,7 +324,7 @@ export const Mutation = mutationType({
         { uid, repositories: { tweetRepository, corretionGroupRepository } }
       ) {
         const correctionTweets = correctionsInput.map(
-          correction =>
+          (correction) =>
             new Tweet(
               null,
               uid as string,
@@ -365,7 +366,7 @@ export const Mutation = mutationType({
           correctionGroup
         );
         return maybeCorrectionGroup;
-      }
+      },
     });
 
     t.field("logout", {
@@ -377,12 +378,12 @@ export const Mutation = mutationType({
           cookie.serialize("session", "", { maxAge: 0 })
         );
         return true;
-      }
+      },
     });
     t.field("signin", {
       type: "AuthData",
       args: {
-        token: stringArg({ required: true })
+        token: stringArg({ required: true }),
       },
       resolve: async (
         _,
@@ -402,20 +403,20 @@ export const Mutation = mutationType({
           const options = {
             maxAge: expiresIn,
             httpOnly: true,
-            secure: false
+            secure: false,
           };
           res.setHeader(
             "Set-Cookie",
             cookie.serialize("session", sessionCookie, options)
           );
           return {
-            token: sessionCookie
+            token: sessionCookie,
           };
         } catch (error) {
           console.log(error);
           throw new Error("UNAUTHORIZED");
         }
-      }
+      },
     });
-  }
+  },
 });

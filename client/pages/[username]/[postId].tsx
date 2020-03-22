@@ -22,7 +22,7 @@ const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
   );
 };
 
-PostIndexPage.getInitialProps = async ctx => {
+PostIndexPage.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const { postId, lid: lineId } = query;
   if (postId === "") {

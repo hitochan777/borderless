@@ -10,7 +10,7 @@ import {
   PostRepository,
   TweetRepository,
   LineMarkerRepository,
-  CorrectionGroupRepository
+  CorrectionGroupRepository,
 } from "./infra/persistent/prisma";
 import { SlateService } from "./infra/service/slate_service";
 import { PrismaClient } from "@prisma/client";
@@ -26,7 +26,7 @@ if (admin.apps.length === 0) {
           )
         )
       : admin.credential.applicationDefault(),
-    databaseURL: "database URL here"
+    databaseURL: "database URL here",
   });
 }
 
@@ -37,13 +37,13 @@ export const buildRepositoryContainer = (): RepositoryContainer => {
     postRepository: new PostRepository(driver),
     tweetRepository: new TweetRepository(driver),
     lineMarkerRepository: new LineMarkerRepository(driver),
-    corretionGroupRepository: new CorrectionGroupRepository(driver)
+    corretionGroupRepository: new CorrectionGroupRepository(driver),
   };
 };
 
 export const buildServiceContainer = (): ServiceContainer => {
   return {
-    editorService: new SlateService()
+    editorService: new SlateService(),
   };
 };
 
@@ -84,13 +84,13 @@ const getUidFromAuthorization = async (
 
 export const createContext = ({
   repositories,
-  services
+  services,
 }: {
   repositories: RepositoryContainer;
   services: ServiceContainer;
 }) => async ({
   req,
-  res
+  res,
 }: {
   req: IncomingMessage;
   res: ServerResponse;
@@ -107,7 +107,7 @@ export const createContext = ({
     uid,
     res,
     repositories,
-    services
+    services,
   };
 };
 
@@ -118,7 +118,7 @@ const createServer = async () => {
   const server = new ApolloServer({
     schema,
     context,
-    formatResponse: response => {
+    formatResponse: (response) => {
       if (!response) {
         throw new Error("response is null");
       }
@@ -126,7 +126,7 @@ const createServer = async () => {
       return response;
     },
     playground: process.env.NODE_ENV !== "production",
-    tracing: true
+    tracing: true,
   });
   return server;
 };

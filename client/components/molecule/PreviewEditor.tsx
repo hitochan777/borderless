@@ -5,7 +5,7 @@ import {
   TextField,
   Tabs,
   IconButton,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 import FormatStrikethroughIcon from "@material-ui/icons/FormatStrikethrough";
 import { useTranslation } from "@/i18n";
@@ -35,7 +35,7 @@ const parseRawReply = (
 
   return {
     correction: corrections[0] && corrections[0][1],
-    text: commentWithoutCorrection
+    text: commentWithoutCorrection,
   };
 };
 

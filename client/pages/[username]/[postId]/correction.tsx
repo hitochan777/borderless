@@ -5,7 +5,7 @@ import {
   Button,
   Box,
   Typography,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import styled from "styled-components";
 
@@ -13,7 +13,7 @@ import Layout from "@/layout/default";
 import { assert, assertIsDefined } from "@/lib/assert";
 import {
   useFetchPostByIdQuery,
-  useCorrectionGroupCreateMutation
+  useCorrectionGroupCreateMutation,
 } from "@/generated/types";
 import { PreviewEditor } from "@/components/molecule/PreviewEditor";
 
@@ -25,8 +25,8 @@ interface Props {
 const StyledLine = styled.div`
   padding-left: 5px;
   height: 2rem;
-  border-left: 10px ${props => props.theme.palette.primary.main} solid;
-  background-color: ${props => props.theme.palette.primary.light};
+  border-left: 10px ${(props) => props.theme.palette.primary.main} solid;
+  background-color: ${(props) => props.theme.palette.primary.light};
 `;
 
 const Line: React.FC<{
@@ -67,7 +67,7 @@ const initialState: State = {
   hoveredId: null,
   focusedId: null,
   comments: {},
-  overallComment: null
+  overallComment: null,
 };
 
 const reducer: React.Reducer<State, Action> = (state, action) => {
@@ -75,25 +75,25 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
     case "updateHoveredId":
       return {
         ...state,
-        hoveredId: action.hoveredId
+        hoveredId: action.hoveredId,
       };
     case "updateFocusedId":
       return {
         ...state,
-        focusedId: action.focusedId
+        focusedId: action.focusedId,
       };
     case "upsertComment":
       return {
         ...state,
         comments: {
           ...state.comments,
-          [action.id]: { lineId: action.id, text: action.comment }
-        }
+          [action.id]: { lineId: action.id, text: action.comment },
+        },
       };
     case "updateOverallComment":
       return {
         ...state,
-        overallComment: action.comment
+        overallComment: action.comment,
       };
 
     default:
@@ -105,10 +105,10 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [
     createCorrectionGroup,
-    { loading: isSubmittingCorrection }
+    { loading: isSubmittingCorrection },
   ] = useCorrectionGroupCreateMutation();
   const { data, loading } = useFetchPostByIdQuery({
-    variables: { id: postId }
+    variables: { id: postId },
   });
   if (loading) {
     return <span>loading...</span>;
@@ -148,7 +148,7 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
       return {
         text: commentWithoutCorrection,
         correction: corrections.length === 1 ? corrections[0][1].trim() : null,
-        error: false
+        error: false,
       };
     };
     await createCorrectionGroup({
@@ -157,7 +157,7 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
           postId,
           inReplyTo: postId,
           // FIXME: if overallComment is null then do not post summaryComment in the first place
-          text: state.overallComment ?? ""
+          text: state.overallComment ?? "",
         },
         corrections: Object.entries(state.comments).map(([lineId, comment]) => {
           const { text, correction } = parseRawComment(comment.text);
@@ -165,10 +165,10 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
             postId,
             inReplyTo: lineId,
             text,
-            correction
+            correction,
           };
-        })
-      }
+        }),
+      },
     });
   };
 
@@ -177,7 +177,7 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
     <Layout>
       <Container maxWidth="sm">
         <Box marginBottom={2}>
-          {data.post.lines.map(line => (
+          {data.post.lines.map((line) => (
             <div key={line.id}>
               <Line onMouseOver={onMouseOver} lineId={line.id}>
                 <Typography variant="body1">
@@ -187,13 +187,13 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
                       currentLineId={line.id}
                     />
                   )}
-                  {line.partialLines.map(pl => pl.text).join("")}
+                  {line.partialLines.map((pl) => pl.text).join("")}
                 </Typography>
               </Line>
               {line.id === state.focusedId && (
                 <PreviewEditor
                   onChange={onChangeEditor}
-                  line={line.partialLines.map(pl => pl.text).join("")}
+                  line={line.partialLines.map((pl) => pl.text).join("")}
                   value={state.comments[state.focusedId]?.text || ""}
                 />
               )}

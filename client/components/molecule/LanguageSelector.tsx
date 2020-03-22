@@ -19,10 +19,10 @@ const LanguagSelector: React.FC<Props> = ({
   label,
   value,
   onChange,
-  relatedOnly = false
+  relatedOnly = false,
 }) => {
   const { data, error, loading } = useFetchLanguagesQuery({
-    variables: { relatedOnly }
+    variables: { relatedOnly },
   });
 
   const handleChange = (value: LanguageOption | null) => {
@@ -48,9 +48,9 @@ const LanguagSelector: React.FC<Props> = ({
   }
   const languageOptions: LanguageOption[] = data.langs.map(({ id, name }) => ({
     value: id,
-    label: name
+    label: name,
   }));
-  const filtered = languageOptions.filter(option => option.value === value);
+  const filtered = languageOptions.filter((option) => option.value === value);
   return (
     <Select
       value={filtered[0]}

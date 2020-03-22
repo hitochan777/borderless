@@ -21,15 +21,15 @@ const createAuthorizationLink = ({ getToken }: ApolloInitOptions) =>
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : ""
-      }
+        authorization: token ? `Bearer ${token}` : "",
+      },
     };
   });
 
 const httpLink = createHttpLink({
   uri: process.env.GRAPHQL_ENDPOINT,
   credentials: "same-origin",
-  fetch
+  fetch,
 });
 
 const typeDefs = gql`
@@ -56,7 +56,7 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
             )
           );
           client.writeData({
-            data: { errorMessage: graphQLErrors[0].message }
+            data: { errorMessage: graphQLErrors[0].message },
           });
         }
         if (networkError) {
@@ -64,7 +64,7 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
         }
       }),
       createAuthorizationLink(options),
-      httpLink
+      httpLink,
     ]),
     cache,
     ssrMode: !isBrowser,
@@ -77,10 +77,10 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
         setErrorMessage: (_root, { errorMessage }, { cache }) => {
           cache.writeData({ data: { errorMessage } });
           return null;
-        }
-      }
+        },
+      },
     },
-    typeDefs
+    typeDefs,
   });
   return client;
 };

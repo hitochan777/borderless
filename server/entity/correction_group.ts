@@ -19,11 +19,11 @@ export class CorrectionGroup extends Base {
     corrections: Tweet[],
     summaryComment: Tweet | null
   ): CorrectionGroup {
-    const userIds = corrections.map(correction => correction.userId);
+    const userIds = corrections.map((correction) => correction.userId);
     if (new Set(userIds).size > 1) {
       throw new Error("Found more than one unique user ids");
     }
-    const postIds = corrections.map(correction => correction.postId);
+    const postIds = corrections.map((correction) => correction.postId);
     if (new Set(postIds).size > 1) {
       throw new Error("Found more than one unique post ids");
     }
@@ -39,7 +39,7 @@ export class CorrectionGroup extends Base {
         "PostId of summary comment is different from that of corrections"
       );
     }
-    const correctionIds = corrections.map(correction => correction.id);
+    const correctionIds = corrections.map((correction) => correction.id);
     return new CorrectionGroup(
       null,
       postId,

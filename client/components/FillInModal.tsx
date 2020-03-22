@@ -14,12 +14,12 @@ import { MultiSelect } from "./molecule/MultiSelect";
 import Loading from "./Loading";
 import {
   FETCH_LANGUAGES_QUERY,
-  USER_UPDATE_MUTATION
+  USER_UPDATE_MUTATION,
 } from "@/constant/graphql";
 import {
   FetchLanguagesQuery,
   UserUpdateMutation,
-  UserUpdateMutationVariables
+  UserUpdateMutationVariables,
 } from "@/generated/types";
 import { useUid } from "@/store";
 
@@ -50,12 +50,12 @@ export const FillInModal: React.FC<Props> = ({
     email: "",
     username: "",
     fluentLanguages: [],
-    learningLanguages: []
-  }
+    learningLanguages: [],
+  },
 }) => {
   const [
     updateUser,
-    { loading: signupLoading, error: signupError }
+    { loading: signupLoading, error: signupError },
   ] = useMutation<UserUpdateMutation, UserUpdateMutationVariables>(
     USER_UPDATE_MUTATION
   );
@@ -70,16 +70,16 @@ export const FillInModal: React.FC<Props> = ({
         user: {
           ...values,
           fluentLanguages: values.fluentLanguages,
-          learningLanguages: values.learningLanguages
-        }
-      }
+          learningLanguages: values.learningLanguages,
+        },
+      },
     });
   };
 
   const {
     data,
     error: getLanguageError,
-    loading: getLanguageLoading
+    loading: getLanguageLoading,
   } = useQuery<FetchLanguagesQuery>(FETCH_LANGUAGES_QUERY);
   if (signupLoading || getLanguageLoading) {
     return <Loading />;
@@ -95,7 +95,7 @@ export const FillInModal: React.FC<Props> = ({
   }
   const LANGUAGES = data.langs.map(({ id, name }) => ({
     value: id,
-    name
+    name,
   }));
   return (
     <Formik initialValues={formData} onSubmit={handleSubmit}>

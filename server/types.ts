@@ -5,7 +5,7 @@ import {
   PostRepository,
   TweetRepository,
   LineMarkerRepository,
-  CorrectionGroupRepository
+  CorrectionGroupRepository,
 } from "./infra/persistent/prisma";
 import { SlateService } from "./infra/service/slate_service";
 

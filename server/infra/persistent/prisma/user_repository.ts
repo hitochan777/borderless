@@ -37,8 +37,8 @@ export class UserRepository {
   async findByUsername(username: string): Promise<User | null> {
     const users = await this.prismaClient.user.findMany({
       where: {
-        username
-      }
+        username,
+      },
     });
 
     if (users.length > 1) {
@@ -74,8 +74,8 @@ export class UserRepository {
         username: user.username,
         timezone: user.timezone,
         fluentLanguages: this.transformTo(user.fluentLanguages),
-        learningLanguages: this.transformTo(user.learningLanguages)
-      }
+        learningLanguages: this.transformTo(user.learningLanguages),
+      },
     });
     return this.createEntity(createdUser);
   }
@@ -83,26 +83,26 @@ export class UserRepository {
   async update(uid: string, user: User): Promise<User> {
     const updatedUser = await this.prismaClient.user.update({
       where: {
-        id: uid
+        id: uid,
       },
       data: {
         email: user.email,
         username: user.username,
         fluentLanguages: this.transformTo(user.fluentLanguages),
         learningLanguages: this.transformTo(user.learningLanguages),
-        timezone: user.timezone
-      }
+        timezone: user.timezone,
+      },
     });
 
     return this.createEntity(updatedUser);
   }
 
   private transformTo(languages: Language[]): string {
-    return languages.map(language => language.code).join(",");
+    return languages.map((language) => language.code).join(",");
   }
   private transformFrom(languages: string): Language[] {
     return languages.trim().length === 0
       ? []
-      : languages.split(",").map(langCode => new Language(langCode));
+      : languages.split(",").map((langCode) => new Language(langCode));
   }
 }

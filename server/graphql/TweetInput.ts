@@ -7,5 +7,5 @@ export const TweetInput = inputObjectType({
     t.id("postId", { required: true });
     t.string("text", { required: true });
     t.string("correction", { required: false });
-  }
+  },
 });

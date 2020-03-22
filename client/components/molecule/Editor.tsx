@@ -8,10 +8,10 @@ const defaultValue: Node[] = [
     type: "line",
     children: [
       {
-        text: ""
-      }
-    ]
-  }
+        text: "",
+      },
+    ],
+  },
 ];
 
 export const useEditorState = (
@@ -38,7 +38,7 @@ export const Editor: React.FC<EditorProps> = ({ value, setValue }) => {
     event.preventDefault();
     SlateEditor.insertBreak(editor);
     const [match] = SlateEditor.nodes(editor, {
-      match: node => node.type === "line"
+      match: (node) => node.type === "line",
     });
     if (match) {
       const path = match[1];

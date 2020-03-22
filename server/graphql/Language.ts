@@ -5,5 +5,5 @@ export const Language = objectType({
   definition(t) {
     t.language("id");
     t.string("name");
-  }
+  },
 });

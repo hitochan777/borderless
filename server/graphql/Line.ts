@@ -7,10 +7,10 @@ export const Line = objectType({
     t.list.field("partialLines", {
       type: "PartialLine",
       resolve(root) {
-        return root.lineContent.partialLines.map(partialLine => ({
-          text: partialLine.subtext
+        return root.lineContent.partialLines.map((partialLine) => ({
+          text: partialLine.subtext,
         }));
-      }
+      },
     });
     t.list.field("replies", {
       type: "Tweet",
@@ -20,7 +20,7 @@ export const Line = objectType({
         }
         const tweets = await tweetRepository.findRepliesTo(root.id);
         return tweets;
-      }
+      },
     });
-  }
+  },
 });

@@ -3,7 +3,7 @@ import {
   User as UserModel,
   Post as PostModel,
   Tweet as TweetModel,
-  CorrectionGroup as CorrectionGroupModel
+  CorrectionGroup as CorrectionGroupModel,
 } from "@prisma/client";
 
 import { CorrectionGroup } from "../../../entity/correction_group";
@@ -20,31 +20,31 @@ export class CorrectionGroupRepository {
       data: {
         user: {
           connect: {
-            id: correctionGroup.userId
-          }
+            id: correctionGroup.userId,
+          },
         },
         post: {
           connect: {
-            id: correctionGroup.postId
-          }
+            id: correctionGroup.postId,
+          },
         },
         summaryComment: {
           connect: {
-            id: correctionGroup.summaryCommentId
-          }
+            id: correctionGroup.summaryCommentId,
+          },
         },
         corrections: {
-          connect: correctionGroup.correctionIds.map(id => ({
-            id
-          }))
-        }
+          connect: correctionGroup.correctionIds.map((id) => ({
+            id,
+          })),
+        },
       },
       include: {
         corrections: true,
         summaryComment: true,
         user: true,
-        post: true
-      }
+        post: true,
+      },
     });
 
     return this.createEntity(createdCorrectionGroup);
@@ -63,7 +63,7 @@ export class CorrectionGroupRepository {
       correctionGroup.post.id,
       correctionGroup.user.id,
       correctionGroup.summaryComment?.id ?? null,
-      correctionGroup.corrections.map(correction => correction.id),
+      correctionGroup.corrections.map((correction) => correction.id),
       correctionGroup.createdAt,
       correctionGroup.updatedAt
     );

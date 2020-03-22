@@ -4,7 +4,7 @@ import { useUid } from "@/store";
 export const useViewer = () => {
   const uid = useUid();
   const { data, error, loading } = useFetchViewerQuery({
-    skip: uid === null
+    skip: uid === null,
   });
   if (uid === null) {
     return { viewer: null, loading: false };

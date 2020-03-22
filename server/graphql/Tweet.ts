@@ -6,10 +6,10 @@ export const Tweet = objectType({
     t.implements("Node");
     t.string("text");
     t.string("correction", {
-      nullable: true
+      nullable: true,
     });
     t.int("inReplyTo", {
-      nullable: true
+      nullable: true,
     });
     t.field("postedBy", {
       type: "User",
@@ -19,7 +19,7 @@ export const Tweet = objectType({
           throw new Error("user not found");
         }
         return user;
-      }
+      },
     });
     t.field("post", {
       type: "Post",
@@ -29,37 +29,37 @@ export const Tweet = objectType({
           throw new Error("post not found");
         }
         return post;
-      }
+      },
     });
     t.list.field("replies", {
       type: "Tweet",
       async resolve(root, _, { repositories: { tweetRepository } }) {
         const replies = await tweetRepository.findRepliesTo(root.id);
         return replies;
-      }
+      },
     });
     t.date("createdAt", {
       nullable: true,
       resolve(root) {
         return root.createdAt;
-      }
+      },
     });
     t.date("updatedAt", {
       nullable: true,
       resolve(root) {
         return root.updatedAt;
-      }
+      },
     });
     t.int("likeCount", {
       async resolve(post, _, { repositories: { tweetRepository } }) {
         const count = await tweetRepository.countLike(post.id);
         return count;
-      }
+      },
     });
     t.boolean("likedByMe", {
       async resolve(tweet, _, { uid, repositories: { tweetRepository } }) {
         return await tweetRepository.likedByMe(uid as string, tweet.id);
-      }
+      },
     });
-  }
+  },
 });

@@ -14,7 +14,7 @@ interface Props {
 
 const UserIndexPage: NextPage<Props> = ({ username }) => {
   const { data, error, loading } = useFetchUserByUsernameQuery({
-    variables: { username }
+    variables: { username },
   });
   const uid = useUid();
 
@@ -41,7 +41,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
               )}
             </Grid>
             <Grid item sm={12}>
-              {data.user.posts.map(post => (
+              {data.user.posts.map((post) => (
                 <Box key={post.id} mb="1rem">
                   <PostCard
                     id={post.id}
@@ -50,8 +50,8 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
                     language={post.language.name}
                     updatedAt={post.updatedAt}
                     description={post.lines
-                      .map(line =>
-                        line.partialLines.map(pl => pl.text).join("")
+                      .map((line) =>
+                        line.partialLines.map((pl) => pl.text).join("")
                       )
                       .join("")}
                   />
@@ -65,7 +65,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
   );
 };
 
-UserIndexPage.getInitialProps = async ctx => {
+UserIndexPage.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const { username } = query;
   if (username === "") {

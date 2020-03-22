@@ -7,7 +7,7 @@ import Layout from "@/layout/default";
 import { FETCH_SEARCH_RESULT_QUERY } from "@/constant/graphql";
 import {
   FetchSearchResultQuery,
-  FetchSearchResultQueryVariables
+  FetchSearchResultQueryVariables,
 } from "@/generated/types";
 // import Loading from "@/components/Loading";
 import { PostCard } from "@/components/PostCard";
@@ -21,7 +21,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >(FETCH_SEARCH_RESULT_QUERY, {
-    variables: { query: { language: language as string } }
+    variables: { query: { language: language as string } },
   });
 
   if (loading) {
@@ -39,7 +39,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
       <Grid container justify="center">
         <Grid item xs={12} sm={8}>
           {data.search.length === 0 && <span>Sorry not results found!</span>}
-          {data.search.map(post => (
+          {data.search.map((post) => (
             <Box key={post.id} mb="1rem">
               <PostCard
                 id={post.id}
@@ -48,7 +48,9 @@ const SearchPage: NextPage<Props> = ({ language }) => {
                 language={post.language.name}
                 updatedAt={post.updatedAt}
                 description={post.lines
-                  .map(line => line.partialLines.map(pl => pl.text).join(""))
+                  .map((line) =>
+                    line.partialLines.map((pl) => pl.text).join("")
+                  )
                   .join("")}
               />
             </Box>
@@ -59,7 +61,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
   );
 };
 
-SearchPage.getInitialProps = async ctx => {
+SearchPage.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const { lang } = query;
   return { language: lang };

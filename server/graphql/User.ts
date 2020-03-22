@@ -10,20 +10,20 @@ export const User = objectType({
     t.list.field("fluentLanguages", {
       type: "Language",
       resolve(root) {
-        return root.fluentLanguages.map(lang => ({
+        return root.fluentLanguages.map((lang) => ({
           id: lang.code,
-          name: lang.name
+          name: lang.name,
         }));
-      }
+      },
     });
     t.list.field("learningLanguages", {
       type: "Language",
       resolve(root) {
-        return root.learningLanguages.map(lang => ({
+        return root.learningLanguages.map((lang) => ({
           id: lang.code,
-          name: lang.name
+          name: lang.name,
         }));
-      }
+      },
     });
     t.list.field("posts", {
       type: "Post",
@@ -38,19 +38,19 @@ export const User = objectType({
         }
         const posts = await postRepository.findByUser(user.id);
         return posts;
-      }
+      },
     });
     t.date("createdAt", {
       nullable: true,
       resolve(root) {
         return root.createdAt;
-      }
+      },
     });
     t.date("updatedAt", {
       nullable: true,
       resolve(root) {
         return root.updatedAt;
-      }
+      },
     });
-  }
+  },
 });

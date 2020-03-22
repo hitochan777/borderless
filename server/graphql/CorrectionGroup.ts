@@ -12,7 +12,7 @@ export const CorrectionGroup = objectType({
           throw new Error("user not found");
         }
         return user;
-      }
+      },
     });
 
     t.field("post", {
@@ -23,7 +23,7 @@ export const CorrectionGroup = objectType({
           throw new Error("post not found");
         }
         return post;
-      }
+      },
     });
 
     t.field("summaryComment", {
@@ -40,7 +40,7 @@ export const CorrectionGroup = objectType({
           throw new Error("Tweet not found");
         }
         return maybeTweet;
-      }
+      },
     });
 
     t.list.field("corrections", {
@@ -48,20 +48,20 @@ export const CorrectionGroup = objectType({
       async resolve(root, _, { repositories: { tweetRepository } }) {
         const tweets = await tweetRepository.findManyByIds(root.correctionIds);
         return tweets;
-      }
+      },
     });
 
     t.date("createdAt", {
       nullable: true,
       resolve(root) {
         return root.createdAt;
-      }
+      },
     });
     t.date("updatedAt", {
       nullable: true,
       resolve(root) {
         return root.updatedAt;
-      }
+      },
     });
-  }
+  },
 });

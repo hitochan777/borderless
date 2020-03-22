@@ -6,7 +6,7 @@ import {
   CardActions,
   Chip,
   Typography,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
 import Link from "next/link";
 import dayjs from "@/lib/time";
@@ -28,7 +28,7 @@ export const PostCard: React.FC<Props> = ({
   username,
   language,
   updatedAt,
-  description
+  description,
 }) => {
   return (
     <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
@@ -46,7 +46,7 @@ export const PostCard: React.FC<Props> = ({
             <Chip
               label={language}
               size="small"
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 // TODO: To route to search result page
               }}

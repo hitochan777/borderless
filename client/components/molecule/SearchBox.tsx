@@ -9,7 +9,7 @@ import {
   fade,
   makeStyles,
   Theme,
-  createStyles
+  createStyles,
 } from "@material-ui/core/styles";
 
 import LanguageSelector from "./LanguageSelector";
@@ -21,20 +21,20 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.shape.borderRadius,
       backgroundColor: fade(theme.palette.common.white, 0.15),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25)
+        backgroundColor: fade(theme.palette.common.white, 0.25),
       },
       marginRight: theme.spacing(2),
       marginLeft: 0,
-      width: "100%"
+      width: "100%",
     },
     inputRoot: {
-      color: "inherit"
+      color: "inherit",
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 2),
       transition: theme.transitions.create("width"),
-      width: "100%"
-    }
+      width: "100%",
+    },
   })
 );
 
@@ -46,7 +46,7 @@ export const SearchBox: React.FC<{}> = () => {
         placeholder="Search…"
         classes={{
           root: classes.inputRoot,
-          input: classes.inputInput
+          input: classes.inputInput,
         }}
         inputProps={{ "aria-label": "search" }}
       />
@@ -60,19 +60,19 @@ const useFullSearchBoxStyles = makeStyles((theme: Theme) =>
       padding: "2px 4px",
       display: "flex",
       alignItems: "center",
-      width: 400
+      width: 400,
     },
     input: {
       marginLeft: theme.spacing(1),
-      flex: 1
+      flex: 1,
     },
     iconButton: {
-      padding: 10
+      padding: 10,
     },
     divider: {
       height: 28,
-      margin: 4
-    }
+      margin: 4,
+    },
   })
 );
 
@@ -83,7 +83,7 @@ interface Props {
 
 export const FullSearchBox: React.FC<Props> = ({
   executeSearch,
-  withTextSearch = false
+  withTextSearch = false,
 }) => {
   const [language, setLanguage] = useState<string | null>(null);
   const classes = useFullSearchBoxStyles();
@@ -91,7 +91,7 @@ export const FullSearchBox: React.FC<Props> = ({
   const onSubmit = (evt: React.FormEvent<HTMLDivElement>) => {
     evt.preventDefault();
     const query = {
-      language: language || ""
+      language: language || "",
     };
     executeSearch(query);
   };
@@ -99,7 +99,7 @@ export const FullSearchBox: React.FC<Props> = ({
   return (
     <Paper component="form" className={classes.root} onSubmit={onSubmit}>
       <LanguageSelector
-        onChange={value => {
+        onChange={(value) => {
           setLanguage(value);
         }}
         label=""

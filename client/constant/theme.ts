@@ -6,15 +6,15 @@ export const theme = createMuiTheme({
       light: "#98ee99",
       main: "#66bb6a",
       dark: "#338a3e",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     text: {
-      secondary: "#fffff"
-    }
+      secondary: "#fffff",
+    },
   },
   typography: {
     body1: {
-      fontSize: 17
-    }
-  }
+      fontSize: 17,
+    },
+  },
 });

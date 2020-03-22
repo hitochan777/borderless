@@ -1,7 +1,7 @@
 import {
   PrismaClient,
   Post as PostModel,
-  User as UserModel
+  User as UserModel,
 } from "@prisma/client";
 
 import { Post } from "../../../entity/post";
@@ -36,16 +36,16 @@ export class PostRepository {
         id: repliable.id,
         user: {
           connect: {
-            id: postInput.userId
-          }
+            id: postInput.userId,
+          },
         },
         language: postInput.language.code,
         published: !postInput.isDraft,
-        content: "{}"
+        content: "{}",
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
     return this.createEntity(newPost);
   }
@@ -56,7 +56,7 @@ export class PostRepository {
     if (!post.userId) {
       throw new Error("You cannot set userId to null");
     }
-    if (post.lines.some(line => line.isNotPersisted())) {
+    if (post.lines.some((line) => line.isNotPersisted())) {
       throw new Error("Line ID should not be null during update");
     }
 
@@ -64,21 +64,21 @@ export class PostRepository {
 
     const updatedPost = await this.photon.post.update({
       where: {
-        id: post.id
+        id: post.id,
       },
       data: {
         user: {
           connect: {
-            id: post.userId
-          }
+            id: post.userId,
+          },
         },
         language: post.language.code,
         content: contentString,
-        published: !post.isDraft
+        published: !post.isDraft,
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
 
     return this.createEntity(updatedPost);
@@ -88,28 +88,28 @@ export class PostRepository {
     const posts = await this.photon.post.findMany({
       where: {
         user: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       include: {
-        user: true
+        user: true,
       },
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     });
 
-    return posts.map(post => this.createEntity(post));
+    return posts.map((post) => this.createEntity(post));
   }
 
   async findById(id: ID): Promise<Post | null> {
     const post = await this.photon.post.findOne({
       where: {
-        id
+        id,
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
     if (post === null) {
       return null;
@@ -122,21 +122,21 @@ export class PostRepository {
       where: {
         OR: [
           {
-            published: true
+            published: true,
           },
           {
             published: false,
             user: {
-              id: currentUserId
-            }
-          }
-        ]
+              id: currentUserId,
+            },
+          },
+        ],
       },
       include: {
-        user: true
-      }
+        user: true,
+      },
     });
-    return posts.map(post => this.createEntity(post));
+    return posts.map((post) => this.createEntity(post));
   }
 
   async findByLanguages(
@@ -148,50 +148,50 @@ export class PostRepository {
       {
         OR: [
           {
-            published: true
+            published: true,
           },
           {
             published: false,
             user: {
-              id: currentUserId
-            }
-          }
-        ]
-      }
+              id: currentUserId,
+            },
+          },
+        ],
+      },
     ];
     if (langs.length > 0) {
       conditions.push({
         language: {
-          in: langs.map(lang => lang.code)
-        }
+          in: langs.map((lang) => lang.code),
+        },
       });
     }
     const posts = await this.photon.post.findMany({
       where: {
-        AND: conditions
+        AND: conditions,
       },
       include: {
-        user: true
+        user: true,
       },
       skip: offset,
       first: limit,
       orderBy: {
-        updatedAt: "desc"
-      }
+        updatedAt: "desc",
+      },
     });
-    return posts.map(post => this.createEntity(post));
+    return posts.map((post) => this.createEntity(post));
   }
 
   async toggleLike(userId: ID, postId: ID): Promise<void> {
     const likes = await this.photon.like.findMany({
       where: {
         repliable: {
-          id: postId
+          id: postId,
         },
         user: {
-          id: userId
-        }
-      }
+          id: userId,
+        },
+      },
     });
     if (likes.length > 1) {
       throw new Error("Multiple likes by the same user found");
@@ -199,37 +199,37 @@ export class PostRepository {
     if (likes.length === 1) {
       await this.photon.like.delete({
         where: {
-          id: likes[0].id
-        }
+          id: likes[0].id,
+        },
       });
     } else {
       await this.photon.like.create({
         data: {
           repliable: {
             connect: {
-              id: postId
-            }
+              id: postId,
+            },
           },
           user: {
             connect: {
-              id: userId
-            }
-          }
-        }
+              id: userId,
+            },
+          },
+        },
       });
     }
   }
 
   async countLike(postId: ID): Promise<number> {
     const likes = await this.photon.like.findMany({
-      where: { repliable: { id: postId } }
+      where: { repliable: { id: postId } },
     }); // FIXME: use count method when it becomes available
     return likes.length;
   }
 
   async likedByMe(userId: ID, postId: ID): Promise<boolean> {
     const likes = await this.photon.like.findMany({
-      where: { user: { id: userId }, repliable: { id: postId } }
+      where: { user: { id: userId }, repliable: { id: postId } },
     });
     return likes.length > 0;
   }

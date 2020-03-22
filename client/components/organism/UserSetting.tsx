@@ -17,28 +17,28 @@ interface FormValues {
 export const UserSetting: React.FC = () => {
   const [
     updateUserSetting,
-    { loading: isUpdating }
+    { loading: isUpdating },
   ] = useUserUpdateSettingMutation();
   const { viewer, loading: viewerQueryLoading } = useViewer();
   const { languages, loading: languageQueryLoading } = useLanguages();
   // const { timezones, loading: timezoneLoading } = useTimezones();
   const formik = useFormik<FormValues>({
     initialValues: {
-      learningLanguages: viewer?.learningLanguages.map(lang => lang.id) ?? [],
-      fluentLanguages: viewer?.fluentLanguages.map(lang => lang.id) ?? [],
-      timezone: viewer?.timezone ?? ""
+      learningLanguages: viewer?.learningLanguages.map((lang) => lang.id) ?? [],
+      fluentLanguages: viewer?.fluentLanguages.map((lang) => lang.id) ?? [],
+      timezone: viewer?.timezone ?? "",
     },
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       await updateUserSetting({
         variables: {
           user: {
             fluentLanguages: values.fluentLanguages,
             learningLanguages: values.learningLanguages,
-            timezone: values.timezone
-          }
-        }
+            timezone: values.timezone,
+          },
+        },
       });
-    }
+    },
   });
 
   if (viewerQueryLoading || languageQueryLoading) {

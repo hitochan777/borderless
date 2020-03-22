@@ -12,7 +12,7 @@ type Provider = "google" | "twitter";
 const signIn = (provider: Provider) => {
   const providerMap = {
     google: firebase.auth.GoogleAuthProvider,
-    twitter: firebase.auth.TwitterAuthProvider
+    twitter: firebase.auth.TwitterAuthProvider,
   };
   if (!providerMap[provider]) {
     throw new Error(`Unknown provider ${provider}`);
@@ -21,7 +21,7 @@ const signIn = (provider: Provider) => {
   firebase.auth().signInWithRedirect(providerInstance);
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     paddingTop: theme.spacing(2),
@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center",
     minHeight: "300px",
-    minWidth: "300px"
-  }
+    minWidth: "300px",
+  },
 }));
 
 const SignIn: React.FC = () => {

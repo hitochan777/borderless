@@ -5,5 +5,5 @@ export const PartialLine = objectType({
   definition(t) {
     t.string("text");
     // TODO: add markers field each of which contains comments
-  }
+  },
 });

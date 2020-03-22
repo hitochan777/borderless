@@ -18,7 +18,7 @@ CREATE TABLE "quaint"."new_CorrectionGroup" (
     PRIMARY KEY ("id"),FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("summaryComment") REFERENCES "Tweet"("id") ON DELETE SET NULL ON UPDATE CASCADE
-) 
+)
 
 INSERT INTO "quaint"."new_CorrectionGroup" ("createdAt", "id", "post", "summaryComment", "updatedAt", "user") SELECT "createdAt", "id", "post", "summaryComment", "updatedAt", "user" FROM "quaint"."CorrectionGroup"
 
@@ -64,5 +64,3 @@ migration 20200321222957-add-correction-group..20200322115146-make-summary-comme
    post      Post
    createdAt DateTime  @default(now())
 ```
-
-

@@ -16,7 +16,7 @@ CREATE TABLE "quaint"."CorrectionGroup" (
     PRIMARY KEY ("id"),FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("summaryComment") REFERENCES "Tweet"("id") ON DELETE CASCADE ON UPDATE CASCADE
-) 
+)
 
 PRAGMA foreign_keys=OFF;
 
@@ -27,7 +27,7 @@ CREATE TABLE "quaint"."new_Like" (
     "user" TEXT NOT NULL  ,
     PRIMARY KEY ("id"),FOREIGN KEY ("repliable") REFERENCES "Repliable"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE
-) 
+)
 
 INSERT INTO "quaint"."new_Like" ("createdAt", "id", "repliable", "user") SELECT "createdAt", "id", "repliable", "user" FROM "quaint"."Like"
 
@@ -50,7 +50,7 @@ CREATE TABLE "quaint"."new_Post" (
     "updatedAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
     "user" TEXT NOT NULL  ,
     PRIMARY KEY ("id"),FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE
-) 
+)
 
 INSERT INTO "quaint"."new_Post" ("content", "createdAt", "id", "language", "published", "updatedAt", "user") SELECT "content", "createdAt", "id", "language", "published", "updatedAt", "user" FROM "quaint"."Post"
 
@@ -78,7 +78,7 @@ CREATE TABLE "quaint"."new_Tweet" (
 FOREIGN KEY ("user") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY ("correctionGroup") REFERENCES "CorrectionGroup"("id") ON DELETE SET NULL ON UPDATE CASCADE
-) 
+)
 
 INSERT INTO "quaint"."new_Tweet" ("content", "correction", "createdAt", "id", "inReplyTo", "post", "updatedAt", "user") SELECT "content", "correction", "createdAt", "id", "inReplyTo", "post", "updatedAt", "user" FROM "quaint"."Tweet"
 
@@ -98,7 +98,7 @@ CREATE TABLE "quaint"."new_LineMarker" (
     "post" TEXT NOT NULL  ,
     "updatedAt" DATE NOT NULL DEFAULT '1970-01-01 00:00:00' ,
     PRIMARY KEY ("id"),FOREIGN KEY ("post") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE
-) 
+)
 
 INSERT INTO "quaint"."new_LineMarker" ("createdAt", "id", "post", "updatedAt") SELECT "createdAt", "id", "post", "updatedAt" FROM "quaint"."LineMarker"
 
@@ -147,5 +147,3 @@ migration 20200310231817-init..20200321222957-add-correction-group
    post      Post
    createdAt DateTime  @default(now())
 ```
-
-

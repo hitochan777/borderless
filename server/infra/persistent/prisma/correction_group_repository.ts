@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 
 import { CorrectionGroup } from "../../../entity/correction_group";
+import { ID } from "../../../types";
 
 export class CorrectionGroupRepository {
   private photon: PrismaClient;
@@ -48,6 +49,10 @@ export class CorrectionGroupRepository {
     });
 
     return this.createEntity(createdCorrectionGroup);
+  }
+
+  async findManyByPostId(postId: ID): Promise<CorrectionGroup[]> {
+    return []; // TODO
   }
 
   createEntity(

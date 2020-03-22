@@ -48,6 +48,19 @@ export const Post = objectType({
         return await tweetRepository.findRepliesTo(root.id);
       },
     });
+    t.list.field("corrections", {
+      type: "CorrectionGroup",
+      resolve: async (
+        root,
+        _,
+        { repositories: { corretionGroupRepository } }
+      ) => {
+        const corrections = await corretionGroupRepository.findManyByPostId(
+          root.id
+        );
+        return corrections;
+      },
+    });
     t.date("createdAt", {
       nullable: true,
       resolve(root) {

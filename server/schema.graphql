@@ -68,6 +68,7 @@ input PartialLineInput {
 }
 
 type Post implements Node {
+  corrections: [CorrectionGroup!]!
   createdAt: Date
 
   """Unique identifier for the resource"""

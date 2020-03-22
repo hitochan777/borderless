@@ -79,7 +79,7 @@ export interface NexusGenRootTypes {
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'] | NexusGenRootTypes['CorrectionGroup'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['CorrectionGroup'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'] | NexusGenRootTypes['Line'];
   String: string;
   Int: number;
   Float: number;
@@ -140,6 +140,7 @@ export interface NexusGenFieldTypes {
     text: string; // String!
   }
   Post: { // field return type
+    corrections: NexusGenRootTypes['CorrectionGroup'][]; // [CorrectionGroup!]!
     createdAt: any | null; // Date
     id: string; // ID!
     isDraft: boolean; // Boolean!
@@ -256,7 +257,7 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   Repliable: "Line" | "Tweet"
-  Node: "Post" | "Line" | "Tweet" | "User" | "CorrectionGroup"
+  Node: "Post" | "CorrectionGroup" | "Tweet" | "User" | "Line"
 }
 
 export interface NexusGenInheritedFields {}

@@ -19,6 +19,17 @@ export type AuthData = {
   token: Scalars["String"];
 };
 
+export type CorrectionGroup = Node & {
+  __typename?: "CorrectionGroup";
+  id: Scalars["ID"];
+  postedBy: User;
+  post: Post;
+  summaryComment?: Maybe<Tweet>;
+  corrections: Array<Tweet>;
+  createdAt?: Maybe<Scalars["Date"]>;
+  updatedAt?: Maybe<Scalars["Date"]>;
+};
+
 export type Language = {
   __typename?: "Language";
   id: Scalars["LanguageCode"];
@@ -39,6 +50,7 @@ export type LineInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  correctionGroupCreate: CorrectionGroup;
   logout: Scalars["Boolean"];
   postCreate: Post;
   postLike: Post;
@@ -51,6 +63,11 @@ export type Mutation = {
   userCreate: User;
   userUpdate: User;
   userUpdateSetting: User;
+};
+
+export type MutationCorrectionGroupCreateArgs = {
+  corrections: Array<TweetInput>;
+  summaryComment?: Maybe<TweetInput>;
 };
 
 export type MutationPostCreateArgs = {
@@ -414,6 +431,21 @@ export type TweetLikeMutationVariables = {
 
 export type TweetLikeMutation = { __typename?: "Mutation" } & {
   tweetLike: { __typename?: "Tweet" } & TweetFieldFragment;
+};
+
+export type CorrectionGroupCreateMutationVariables = {
+  corrections: Array<TweetInput>;
+  summaryComment: TweetInput;
+};
+
+export type CorrectionGroupCreateMutation = { __typename?: "Mutation" } & {
+  correctionGroupCreate: { __typename?: "CorrectionGroup" } & Pick<
+    CorrectionGroup,
+    "id" | "updatedAt" | "createdAt"
+  > & {
+      corrections: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
+      summaryComment?: Maybe<{ __typename?: "Tweet" } & TweetFieldFragment>;
+    };
 };
 
 export type LogoutMutationVariables = {};
@@ -1308,6 +1340,72 @@ export type TweetLikeMutationResult = ApolloReactCommon.MutationResult<
 export type TweetLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TweetLikeMutation,
   TweetLikeMutationVariables
+>;
+export const CorrectionGroupCreateDocument = gql`
+  mutation correctionGroupCreate(
+    $corrections: [TweetInput!]!
+    $summaryComment: TweetInput!
+  ) {
+    correctionGroupCreate(
+      corrections: $corrections
+      summaryComment: $summaryComment
+    ) {
+      id
+      corrections {
+        ...tweetField
+      }
+      summaryComment {
+        ...tweetField
+      }
+      updatedAt
+      createdAt
+    }
+  }
+  ${TweetFieldFragmentDoc}
+`;
+export type CorrectionGroupCreateMutationFn = ApolloReactCommon.MutationFunction<
+  CorrectionGroupCreateMutation,
+  CorrectionGroupCreateMutationVariables
+>;
+
+/**
+ * __useCorrectionGroupCreateMutation__
+ *
+ * To run a mutation, you first call `useCorrectionGroupCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCorrectionGroupCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [correctionGroupCreateMutation, { data, loading, error }] = useCorrectionGroupCreateMutation({
+ *   variables: {
+ *      corrections: // value for 'corrections'
+ *      summaryComment: // value for 'summaryComment'
+ *   },
+ * });
+ */
+export function useCorrectionGroupCreateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CorrectionGroupCreateMutation,
+    CorrectionGroupCreateMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    CorrectionGroupCreateMutation,
+    CorrectionGroupCreateMutationVariables
+  >(CorrectionGroupCreateDocument, baseOptions);
+}
+export type CorrectionGroupCreateMutationHookResult = ReturnType<
+  typeof useCorrectionGroupCreateMutation
+>;
+export type CorrectionGroupCreateMutationResult = ApolloReactCommon.MutationResult<
+  CorrectionGroupCreateMutation
+>;
+export type CorrectionGroupCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CorrectionGroupCreateMutation,
+  CorrectionGroupCreateMutationVariables
 >;
 export const LogoutDocument = gql`
   mutation logout {

@@ -4,6 +4,7 @@
  */
 
 import * as ctx from "./types"
+import * as entity_correction_group from "./entity/correction_group"
 import * as entity_line from "./entity/line"
 import * as entity_post from "./entity/post"
 import * as entity_tweet from "./entity/tweet"
@@ -64,6 +65,7 @@ export interface NexusGenRootTypes {
   AuthData: { // root type
     token: string; // String!
   }
+  CorrectionGroup: entity_correction_group.CorrectionGroup;
   Language: { // root type
     id: any; // LanguageCode!
     name: string; // String!
@@ -77,7 +79,7 @@ export interface NexusGenRootTypes {
   Query: {};
   Tweet: entity_tweet.Tweet;
   User: entity_user.User;
-  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Post'] | NexusGenRootTypes['Line'] | NexusGenRootTypes['Tweet'] | NexusGenRootTypes['User'] | NexusGenRootTypes['CorrectionGroup'];
   String: string;
   Int: number;
   Float: number;
@@ -103,6 +105,15 @@ export interface NexusGenFieldTypes {
   AuthData: { // field return type
     token: string; // String!
   }
+  CorrectionGroup: { // field return type
+    corrections: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
+    createdAt: any | null; // Date
+    id: string; // ID!
+    post: NexusGenRootTypes['Post']; // Post!
+    postedBy: NexusGenRootTypes['User']; // User!
+    summaryComment: NexusGenRootTypes['Tweet'] | null; // Tweet
+    updatedAt: any | null; // Date
+  }
   Language: { // field return type
     id: any; // LanguageCode!
     name: string; // String!
@@ -113,6 +124,7 @@ export interface NexusGenFieldTypes {
     replies: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
   }
   Mutation: { // field return type
+    correctionGroupCreate: NexusGenRootTypes['CorrectionGroup']; // CorrectionGroup!
     logout: boolean; // Boolean!
     postCreate: NexusGenRootTypes['Post']; // Post!
     postLike: NexusGenRootTypes['Post']; // Post!
@@ -183,6 +195,10 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    correctionGroupCreate: { // args
+      corrections: NexusGenInputs['TweetInput'][]; // [TweetInput!]!
+      summaryComment?: NexusGenInputs['TweetInput'] | null; // TweetInput
+    }
     postCreate: { // args
       post: NexusGenInputs['PostInput']; // PostInput!
     }
@@ -240,12 +256,12 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   Repliable: "Line" | "Tweet"
-  Node: "Post" | "Line" | "Tweet" | "User"
+  Node: "Post" | "Line" | "Tweet" | "User" | "CorrectionGroup"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthData" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
+export type NexusGenObjectNames = "AuthData" | "CorrectionGroup" | "Language" | "Line" | "Mutation" | "PartialLine" | "Post" | "Query" | "Tweet" | "User";
 
 export type NexusGenInputNames = "LineInput" | "PartialLineInput" | "PostInput" | "SearchInput" | "TweetInput" | "UserInput" | "UserSettingInput";
 

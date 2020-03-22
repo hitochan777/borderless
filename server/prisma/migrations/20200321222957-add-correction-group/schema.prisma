@@ -1,6 +1,6 @@
 datasource development {
   provider = "sqlite"
-  url      = env("DB_URL")
+  url = "***"
 }
 
 generator photon {
@@ -54,11 +54,13 @@ model CorrectionGroup {
   id        String  @default(cuid()) @id
   post      Post
   user      User
-  summaryComment Tweet?
+  summaryComment Tweet
   corrections Tweet[] @relation(name: "CorrectionTweets")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
+
+
 
 model LineMarker {
   id        String  @default(cuid()) @id

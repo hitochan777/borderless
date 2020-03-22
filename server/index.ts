@@ -5,10 +5,13 @@ import cookie from "cookie";
 
 import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
 import { schema } from "./schema";
-import { UserRepository } from "./infra/persistent/prisma/user_repository";
-import { PostRepository } from "./infra/persistent/prisma/post_repository";
-import { TweetRepository } from "./infra/persistent/prisma/tweet_repository";
-import { LineMarkerRepository } from "./infra/persistent/prisma/line_marker_repository";
+import {
+  UserRepository,
+  PostRepository,
+  TweetRepository,
+  LineMarkerRepository,
+  CorrectionGroupRepository
+} from "./infra/persistent/prisma";
 import { SlateService } from "./infra/service/slate_service";
 import { PrismaClient } from "@prisma/client";
 
@@ -33,7 +36,8 @@ export const buildRepositoryContainer = (): RepositoryContainer => {
     userRepository: new UserRepository(driver),
     postRepository: new PostRepository(driver),
     tweetRepository: new TweetRepository(driver),
-    lineMarkerRepository: new LineMarkerRepository(driver)
+    lineMarkerRepository: new LineMarkerRepository(driver),
+    corretionGroupRepository: new CorrectionGroupRepository(driver)
   };
 };
 

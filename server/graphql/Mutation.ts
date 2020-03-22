@@ -4,8 +4,10 @@ import cookie from "cookie";
 import { Post } from "../entity/post";
 import { Line } from "../entity/line";
 import { User } from "../entity/user";
+import { Tweet } from "../entity/tweet";
 import { LineContent } from "../entity/line_content";
 import { Language } from "../value/language";
+import { CorrectionGroup } from "../entity/correction_group";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -269,11 +271,19 @@ export const Mutation = mutationType({
         ) {
           throw new Error("You cannot post empty tweet");
         }
-        const tweet = await tweetRepository.create({
-          ...tweetInput,
-          userId: uid as string
-        });
-        if (!tweet) {
+        const tweet = new Tweet(
+          null,
+          uid as string,
+          tweetInput.inReplyTo,
+          tweetInput.postId,
+          tweetInput.text,
+          tweetInput.correction ?? null,
+          null,
+          null
+        );
+
+        const createdTweet = await tweetRepository.create(tweet);
+        if (!createdTweet) {
           throw new Error("Failed to create a tweet");
         }
 
@@ -292,13 +302,72 @@ export const Mutation = mutationType({
         { uid, repositories: { tweetRepository } }
       ) {
         await tweetRepository.toggleLike(uid as string, tweetId);
-        const maybeTweet = await tweetRepository.findTweetById(tweetId);
+        const maybeTweet = await tweetRepository.findOneById(tweetId);
         if (!maybeTweet) {
           throw new Error("Tweet not found");
         }
         return maybeTweet;
       }
     });
+
+    t.field("correctionGroupCreate", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "CorrectionGroup",
+      args: {
+        corrections: arg({ type: "TweetInput", list: true, required: true }),
+        summaryComment: arg({ type: "TweetInput", required: false })
+      },
+      async resolve(
+        _,
+        { corrections: correctionsInput, summaryComment: summaryCommentInput },
+        { uid, repositories: { tweetRepository, corretionGroupRepository } }
+      ) {
+        const correctionTweets = correctionsInput.map(
+          correction =>
+            new Tweet(
+              null,
+              uid as string,
+              correction.inReplyTo,
+              correction.postId,
+              correction.text,
+              correction.correction ?? null,
+              null,
+              null
+            )
+        );
+        let maybeSummaryComment: Tweet | null = null;
+        if (summaryCommentInput) {
+          const summaryComment = new Tweet(
+            null,
+            uid as string,
+            summaryCommentInput.inReplyTo,
+            summaryCommentInput.postId,
+            summaryCommentInput.text,
+            summaryCommentInput.correction ?? null,
+            null,
+            null
+          );
+          maybeSummaryComment = await tweetRepository.create(summaryComment);
+          if (!maybeSummaryComment) {
+            throw new Error("Unexpected error occurred");
+          }
+        }
+        const maybeTweets = await tweetRepository.createMany(correctionTweets);
+        if (!maybeTweets) {
+          throw new Error("Unexpected error occurred");
+        }
+
+        const correctionGroup = CorrectionGroup.fromTweets(
+          maybeTweets,
+          maybeSummaryComment
+        );
+        const maybeCorrectionGroup = await corretionGroupRepository.create(
+          correctionGroup
+        );
+        return maybeCorrectionGroup;
+      }
+    });
+
     t.field("logout", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Boolean",

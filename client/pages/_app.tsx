@@ -4,7 +4,8 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "styled-components";
 
 import { appWithTranslation } from "@/i18n";
 import { theme } from "@/constant/theme";
@@ -66,13 +67,15 @@ class MyApp extends App<{ apolloClient: ApolloClient<any> }> {
     const { Component, pageProps, apolloClient } = this.props;
 
     return (
-      <ThemeProvider theme={theme}>
-        <ApolloProvider client={apolloClient}>
-          <AuthProvider>
-            <Component {...pageProps} />
-          </AuthProvider>
-        </ApolloProvider>
-      </ThemeProvider>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <ApolloProvider client={apolloClient}>
+            <AuthProvider>
+              <Component {...pageProps} />
+            </AuthProvider>
+          </ApolloProvider>
+        </ThemeProvider>
+      </MuiThemeProvider>
     );
   }
 }

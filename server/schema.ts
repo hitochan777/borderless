@@ -31,6 +31,10 @@ export const schema = makeSchema({
       {
         alias: "entity_line",
         source: path.join(__dirname, "entity", "line.ts")
+      },
+      {
+        alias: "entity_correction_group",
+        source: path.join(__dirname, "entity", "correction_group.ts")
       }
     ]
   }

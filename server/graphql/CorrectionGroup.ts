@@ -43,7 +43,7 @@ export const CorrectionGroup = objectType({
       },
     });
 
-    t.list.field("corrections", {
+    t.list.field("lineCorrections", {
       type: "Tweet",
       async resolve(root, _, { repositories: { tweetRepository } }) {
         const tweets = await tweetRepository.findManyByIds(root.correctionIds);

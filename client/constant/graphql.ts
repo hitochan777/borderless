@@ -243,7 +243,7 @@ export const CORRECTION_GROUP_CREATE_MUTATION = gql`
       summaryComment: $summaryComment
     ) {
       id
-      corrections {
+      lineCorrections {
         ...tweetField
       }
       summaryComment {

@@ -106,9 +106,9 @@ export interface NexusGenFieldTypes {
     token: string; // String!
   }
   CorrectionGroup: { // field return type
-    corrections: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     createdAt: any | null; // Date
     id: string; // ID!
+    lineCorrections: NexusGenRootTypes['Tweet'][]; // [Tweet!]!
     post: NexusGenRootTypes['Post']; // Post!
     postedBy: NexusGenRootTypes['User']; // User!
     summaryComment: NexusGenRootTypes['Tweet'] | null; // Tweet

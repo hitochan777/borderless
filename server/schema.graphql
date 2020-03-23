@@ -7,11 +7,11 @@ type AuthData {
 }
 
 type CorrectionGroup implements Node {
-  corrections: [Tweet!]!
   createdAt: Date
 
   """Unique identifier for the resource"""
   id: ID!
+  lineCorrections: [Tweet!]!
   post: Post!
   postedBy: User!
   summaryComment: Tweet

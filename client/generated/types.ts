@@ -25,7 +25,7 @@ export type CorrectionGroup = Node & {
   postedBy: User;
   post: Post;
   summaryComment?: Maybe<Tweet>;
-  corrections: Array<Tweet>;
+  lineCorrections: Array<Tweet>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
 };
@@ -139,6 +139,7 @@ export type Post = Node & {
   language: Language;
   isDraft: Scalars["Boolean"];
   replies: Array<Tweet>;
+  corrections: Array<CorrectionGroup>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
   likeCount: Scalars["Int"];
@@ -443,7 +444,7 @@ export type CorrectionGroupCreateMutation = { __typename?: "Mutation" } & {
     CorrectionGroup,
     "id" | "updatedAt" | "createdAt"
   > & {
-      corrections: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
+      lineCorrections: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
       summaryComment?: Maybe<{ __typename?: "Tweet" } & TweetFieldFragment>;
     };
 };
@@ -1351,7 +1352,7 @@ export const CorrectionGroupCreateDocument = gql`
       summaryComment: $summaryComment
     ) {
       id
-      corrections {
+      lineCorrections {
         ...tweetField
       }
       summaryComment {

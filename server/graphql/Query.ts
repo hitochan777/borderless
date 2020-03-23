@@ -20,6 +20,7 @@ export const Query = queryType({
         return posts;
       },
     });
+
     t.list.field("feed", {
       type: "Post",
       args: {
@@ -50,6 +51,7 @@ export const Query = queryType({
         return posts;
       },
     });
+
     t.list.field("posts", {
       type: "Post",
       args: {},
@@ -57,6 +59,7 @@ export const Query = queryType({
         return [];
       },
     });
+
     t.field("post", {
       type: "Post",
       args: {
@@ -93,6 +96,7 @@ export const Query = queryType({
         return tweets;
       },
     });
+
     t.list.field("langs", {
       type: "Language",
       args: { relatedOnly: booleanArg({ required: false, default: false }) },

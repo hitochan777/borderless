@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 
 import { CorrectionGroup } from "../../../entity/correction_group";
+import { ID } from "../../../types";
 
 export class CorrectionGroupRepository {
   private photon: PrismaClient;
@@ -15,7 +16,6 @@ export class CorrectionGroupRepository {
   }
 
   async create(correctionGroup: CorrectionGroup): Promise<CorrectionGroup> {
-    console.log(correctionGroup);
     const createdCorrectionGroup = await this.photon.correctionGroup.create({
       data: {
         user: {
@@ -48,6 +48,23 @@ export class CorrectionGroupRepository {
     });
 
     return this.createEntity(createdCorrectionGroup);
+  }
+
+  async findManyByPostId(postId: ID): Promise<CorrectionGroup[]> {
+    const correctionGroups = await this.photon.correctionGroup.findMany({
+      where: {
+        post: {
+          id: postId,
+        },
+      },
+      include: {
+        corrections: true,
+        summaryComment: true,
+        user: true,
+        post: true,
+      },
+    });
+    return correctionGroups.map((group) => this.createEntity(group));
   }
 
   createEntity(

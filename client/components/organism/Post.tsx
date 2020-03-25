@@ -1,12 +1,16 @@
 import React from "react";
+import styled from "styled-components";
 
 import { useFetchPostByIdQuery } from "@/generated/types";
 import {
   PostContent,
-  Props as PostContentProps,
+  Props as PostContentProps
 } from "@/components/organism/PostContent";
+import { CorrectionGroups } from "@/components/molecule/CorrectionGroups";
 
 type PresenterProps = PostContentProps;
+
+const PostAndCorrections = styled.div``;
 
 export const PostPresenter: React.FC<PresenterProps> = ({
   id,
@@ -17,7 +21,7 @@ export const PostPresenter: React.FC<PresenterProps> = ({
   user,
   updatedAt,
   likeCount,
-  likedByMe,
+  likedByMe
 }) => {
   return (
     <PostContent
@@ -52,20 +56,23 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
     throw new Error("data is empty");
   }
   return (
-    <PostPresenter
-      id={data.post.id}
-      focusedLineId={focusedLineId}
-      isDraft={data.post.isDraft}
-      lines={data.post.lines.map((line) => ({
-        id: line.id,
-        text: line.partialLines[0].text,
-        replies: line.replies.map(({ id, text }) => ({ id, text })),
-      }))}
-      language={data.post.language}
-      user={data.post.user}
-      updatedAt={new Date(data.post.updatedAt)}
-      likedByMe={data.post.likedByMe}
-      likeCount={data.post.likeCount}
-    />
+    <PostAndCorrections>
+      <PostPresenter
+        id={data.post.id}
+        focusedLineId={focusedLineId}
+        isDraft={data.post.isDraft}
+        lines={data.post.lines.map(line => ({
+          id: line.id,
+          text: line.partialLines[0].text,
+          replies: line.replies.map(({ id, text }) => ({ id, text }))
+        }))}
+        language={data.post.language}
+        user={data.post.user}
+        updatedAt={new Date(data.post.updatedAt)}
+        likedByMe={data.post.likedByMe}
+        likeCount={data.post.likeCount}
+      />
+      <CorrectionGroups corrections={data.post.corrections} />
+    </PostAndCorrections>
   );
 };

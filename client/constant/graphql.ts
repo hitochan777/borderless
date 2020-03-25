@@ -49,6 +49,22 @@ export const POST_FIELD_FRAGMENT = gql`
     user {
       username
     }
+    corrections {
+      id
+      postedBy {
+        id
+        username
+      }
+      summaryComment {
+        id
+        text
+        correction
+        updatedAt
+        likeCount
+        likedByMe
+      }
+      updatedAt
+    }
     isDraft
     updatedAt
     likedByMe

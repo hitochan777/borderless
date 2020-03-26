@@ -11,7 +11,7 @@ export const PostCorrections: React.FC<Props> = ({ corrections }) => {
   return (
     <section>
       <Typography variant="h4">Corrections</Typography>
-      {corrections.map(correction => (
+      {corrections.map((correction) => (
         <PostCorrection correction={correction} />
       ))}
     </section>

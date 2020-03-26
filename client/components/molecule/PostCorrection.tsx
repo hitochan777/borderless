@@ -6,7 +6,7 @@ import {
   // CardActions,
   Avatar,
   // IconButton,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import dayjs from "@/lib/time";
 
@@ -28,7 +28,7 @@ export const PostCorrection: React.FC<Props> = ({ correction }) => (
     />
     <CardContent>
       <Typography variant="body2" color="textSecondary" component="p">
-        {correction.lineCorrections.map(lineCorrection => (
+        {correction.lineCorrections.map((lineCorrection) => (
           <PrettyReply
             line={
               "hohoho" // TODO: use correct line text

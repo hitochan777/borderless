@@ -30,10 +30,10 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
         id={data.post.id}
         focusedLineId={focusedLineId}
         isDraft={data.post.isDraft}
-        lines={data.post.lines.map(line => ({
+        lines={data.post.lines.map((line) => ({
           id: line.id,
           text: line.partialLines[0].text,
-          replies: line.replies.map(({ id, text }) => ({ id, text }))
+          replies: line.replies.map(({ id, text }) => ({ id, text })),
         }))}
         language={data.post.language}
         user={data.post.user}

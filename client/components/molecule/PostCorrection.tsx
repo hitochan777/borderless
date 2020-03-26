@@ -3,12 +3,12 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
+  // CardActions,
   Avatar,
-  IconButton,
+  // IconButton,
   Typography
 } from "@material-ui/core";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 
 import { FetchPostByIdQuery } from "@/generated/types";
 import { PrettyReply } from "@/components/molecule/PrettyReply";

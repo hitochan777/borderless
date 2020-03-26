@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useFetchPostByIdQuery } from "@/generated/types";
-import { PostContent } from "@/components/organism/PostContent";
+import { PostContent } from "@/components/organism";
 import { PostCorrections } from "@/components/molecule";
 
 const PostAndCorrectionsContainer = styled.div``;

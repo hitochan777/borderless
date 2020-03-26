@@ -16,47 +16,46 @@ import {
   Toolbar,
   IconButton,
   Link as MuiLink,
-  useMediaQuery,
+  useMediaQuery
 } from "@material-ui/core";
 import Link from "next/link";
 
 import { useTranslation } from "@/i18n";
 import {
   FETCH_TWEETS_FOR_LINE_QUERY,
-  FETCH_POST_BY_ID_QUERY,
+  FETCH_POST_BY_ID_QUERY
 } from "@/constant/graphql";
 import dayjs from "@/lib/time";
-import { LikeIcon } from "@/components/molecule/LikeIcon";
 import { useTweetCreateMutation, usePostLikeMutation } from "@/generated/types";
-import { LineCommentList } from "@/components/organism/LineCommentList";
-import { CommentForm } from "@/components/molecule/CommentForm";
+import { LineCommentList } from "@/components/organism";
+import { CommentForm, LikeIcon } from "@/components/molecule";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
-    minHeight: "80vh",
+    minHeight: "80vh"
   },
   metaData: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   avatar: {
     width: 30,
-    height: 30,
+    height: 30
   },
   button: {
     height: theme.spacing(3),
-    padding: 0,
+    padding: 0
   },
   focusedLine: {
-    backgroundColor: "#eee",
+    backgroundColor: "#eee"
   },
   hoveredLine: {
-    backgroundColor: "#eee",
+    backgroundColor: "#eee"
   },
   commentAppBar: {
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 }));
 
 export interface Props {
@@ -89,7 +88,7 @@ export const PostContent: React.FC<Props> = ({
   isDraft,
   updatedAt,
   likeCount,
-  likedByMe,
+  likedByMe
 }) => {
   const { t } = useTranslation("common");
   const classes = useStyles();
@@ -98,7 +97,7 @@ export const PostContent: React.FC<Props> = ({
   const theme = useTheme();
   const isLargerThanSm = useMediaQuery(theme.breakpoints.up("sm"));
   const focusedLine = useMemo(() => {
-    const currentLines = lines.filter((line) => line.id === focusedLineId);
+    const currentLines = lines.filter(line => line.id === focusedLineId);
     if (currentLines.length === 0) {
       return null;
     }
@@ -137,19 +136,19 @@ export const PostContent: React.FC<Props> = ({
           text: commentWithoutCorrection,
           correction:
             corrections.length === 1 ? corrections[0][1].trim() : null,
-          inReplyTo: focusedLineId,
-        },
+          inReplyTo: focusedLineId
+        }
       },
       refetchQueries: [
         {
           query: FETCH_TWEETS_FOR_LINE_QUERY,
-          variables: { id: focusedLineId },
+          variables: { id: focusedLineId }
         },
         {
           query: FETCH_POST_BY_ID_QUERY,
-          variables: { id },
-        },
-      ],
+          variables: { id }
+        }
+      ]
     });
     setComment("");
   };
@@ -262,13 +261,13 @@ export const PostContent: React.FC<Props> = ({
 
           <div>
             {lines
-              .filter((line) => line.text.length > 0)
+              .filter(line => line.text.length > 0)
               .map((line, index) => (
                 <Link
                   key={index}
                   href={{
                     pathname: "/[username]/[postId]",
-                    query: { lid: line.id },
+                    query: { lid: line.id }
                   }}
                   as={`/${user.username}/${id}?lid=${line.id}`}
                 >
@@ -319,7 +318,7 @@ export const PostContent: React.FC<Props> = ({
           <Toolbar>
             <Link
               href={{
-                pathname: "/[username]/[postId]",
+                pathname: "/[username]/[postId]"
               }}
               as={`/${user.username}/${id}`}
             >

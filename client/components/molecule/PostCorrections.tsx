@@ -1,19 +1,19 @@
 import React from "react";
 
-import { PostCorrection } from "./PostCorrection";
-import { FetchPostByIdQuery } from "@/generated/types";
+import { PostCorrection, Correction } from "./PostCorrection";
+import { Typography } from "@material-ui/core";
 
 interface Props {
-  corrections: FetchPostByIdQuery["post"]["corrections"];
+  corrections: Correction[];
 }
 
 export const PostCorrections: React.FC<Props> = ({ corrections }) => {
-  // corrections.map(callbackfn)
-  corrections.return(
-    <>
+  return (
+    <section>
+      <Typography variant="h4">Corrections</Typography>
       {corrections.map(correction => (
         <PostCorrection correction={correction} />
       ))}
-    </>
+    </section>
   );
 };

@@ -285,12 +285,18 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
           summaryComment?: Maybe<
             { __typename?: "Tweet" } & Pick<
               Tweet,
+              "id" | "text" | "likeCount" | "likedByMe" | "updatedAt"
+            >
+          >;
+          lineCorrections: Array<
+            { __typename?: "Tweet" } & Pick<
+              Tweet,
               | "id"
               | "text"
               | "correction"
-              | "updatedAt"
               | "likeCount"
               | "likedByMe"
+              | "updatedAt"
             >
           >;
         }
@@ -560,10 +566,17 @@ export const PostFieldFragmentDoc = gql`
       summaryComment {
         id
         text
-        correction
-        updatedAt
         likeCount
         likedByMe
+        updatedAt
+      }
+      lineCorrections {
+        id
+        text
+        correction
+        likeCount
+        likedByMe
+        updatedAt
       }
       updatedAt
     }

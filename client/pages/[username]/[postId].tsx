@@ -1,9 +1,9 @@
 import React from "react";
 import { NextPage } from "next";
+import { Grid } from "@material-ui/core";
 
 import Layout from "@/layout/default";
 import { Post } from "@/components/organism/Post";
-import { Grid } from "@material-ui/core";
 
 interface Props {
   id: string;

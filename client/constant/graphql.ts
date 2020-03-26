@@ -58,10 +58,17 @@ export const POST_FIELD_FRAGMENT = gql`
       summaryComment {
         id
         text
-        correction
-        updatedAt
         likeCount
         likedByMe
+        updatedAt
+      }
+      lineCorrections {
+        id
+        text
+        correction
+        likeCount
+        likedByMe
+        updatedAt
       }
       updatedAt
     }

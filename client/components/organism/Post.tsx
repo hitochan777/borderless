@@ -24,24 +24,26 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
   if (!data) {
     throw new Error("data is empty");
   }
+  const lines = data.post.lines.map((line) => ({
+    id: line.id,
+    text: line.partialLines[0].text,
+    replies: line.replies.map(({ id, text }) => ({ id, text })),
+  }));
+
   return (
     <PostAndCorrectionsContainer>
       <PostContent
         id={data.post.id}
         focusedLineId={focusedLineId}
         isDraft={data.post.isDraft}
-        lines={data.post.lines.map((line) => ({
-          id: line.id,
-          text: line.partialLines[0].text,
-          replies: line.replies.map(({ id, text }) => ({ id, text })),
-        }))}
+        lines={lines}
         language={data.post.language}
         user={data.post.user}
         updatedAt={new Date(data.post.updatedAt)}
         likedByMe={data.post.likedByMe}
         likeCount={data.post.likeCount}
       />
-      <PostCorrections corrections={data.post.corrections} />
+      <PostCorrections corrections={data.post.corrections} lines={lines} />
     </PostAndCorrectionsContainer>
   );
 };

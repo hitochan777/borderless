@@ -34,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
-    minHeight: "80vh",
+  },
+  paperFooter: {
+    marginTop: theme.spacing(3),
+    display: "flex",
+    justifyContent: "flex-end",
   },
   metaData: {
     marginBottom: theme.spacing(2),
@@ -302,6 +306,16 @@ export const PostContent: React.FC<Props> = ({
                   </Grid>
                 </Link>
               ))}
+          </div>
+          <div className={classes.paperFooter}>
+            <Link
+              href={{
+                pathname: "/[username]/[postId]/correction",
+              }}
+              as={`/${user.username}/${id}/correction`}
+            >
+              <Button color="primary">Post Correction</Button>
+            </Link>
           </div>
         </Paper>
       </Grid>

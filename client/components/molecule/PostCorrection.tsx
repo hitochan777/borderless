@@ -3,9 +3,7 @@ import {
   Card,
   CardHeader,
   CardContent,
-  // CardActions,
   Avatar,
-  // IconButton,
   Typography,
 } from "@material-ui/core";
 import dayjs from "@/lib/time";
@@ -17,31 +15,38 @@ export type Correction = FetchPostByIdQuery["post"]["corrections"][number];
 
 interface Props {
   correction: Correction;
+  lines: { id: string; text: string }[];
 }
 
-export const PostCorrection: React.FC<Props> = ({ correction }) => (
-  <Card>
-    <CardHeader
-      avatar={<Avatar>R</Avatar>}
-      title={correction.postedBy.username}
-      subheader={dayjs(correction.updatedAt).fromNow()}
-    />
-    <CardContent>
-      <Typography variant="body2" color="textSecondary" component="p">
+export const PostCorrection: React.FC<Props> = ({ correction, lines }) => {
+  return (
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar
+            alt={correction.postedBy.username}
+            src={`https://api.adorable.io/avatars/30/${correction.postedBy.username}@borderless.png`}
+          />
+        }
+        title={correction.postedBy.username}
+        subheader={dayjs(correction.updatedAt).fromNow()}
+      />
+      <CardContent>
         {correction.lineCorrections.map((lineCorrection) => (
           <PrettyReply
+            key={lineCorrection.id}
             line={
-              "hohoho" // TODO: use correct line text
+              lines.filter((line) => line.id === lineCorrection.inReplyTo)[0]
+                .text || ""
             }
             correction={lineCorrection.correction || undefined}
             reply={lineCorrection.text}
           />
         ))}
-      </Typography>
-    </CardContent>
-    {/*<CardActions disableSpacing>
-      <IconButton aria-label="add to favorites"></IconButton>
-      <IconButton aria-label="share"></IconButton>
-    </CardActions>*/}
-  </Card>
-);
+        <Typography variant="body2" color="textSecondary" component="p">
+          {correction.summaryComment?.text}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};

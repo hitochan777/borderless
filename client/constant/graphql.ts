@@ -68,6 +68,7 @@ export const POST_FIELD_FRAGMENT = gql`
         correction
         likeCount
         likedByMe
+        inReplyTo
         updatedAt
       }
       updatedAt

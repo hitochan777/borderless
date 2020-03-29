@@ -207,7 +207,7 @@ export type Tweet = Node & {
   id: Scalars["ID"];
   text: Scalars["String"];
   correction?: Maybe<Scalars["String"]>;
-  inReplyTo?: Maybe<Scalars["Int"]>;
+  inReplyTo?: Maybe<Scalars["String"]>;
   postedBy: User;
   post: Post;
   replies: Array<Tweet>;
@@ -296,6 +296,7 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
               | "correction"
               | "likeCount"
               | "likedByMe"
+              | "inReplyTo"
               | "updatedAt"
             >
           >;
@@ -576,6 +577,7 @@ export const PostFieldFragmentDoc = gql`
         correction
         likeCount
         likedByMe
+        inReplyTo
         updatedAt
       }
       updatedAt

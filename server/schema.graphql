@@ -124,7 +124,7 @@ type Tweet implements Node {
 
   """Unique identifier for the resource"""
   id: ID!
-  inReplyTo: Int
+  inReplyTo: String
   likeCount: Int!
   likedByMe: Boolean!
   post: Post!

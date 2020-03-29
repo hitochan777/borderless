@@ -169,7 +169,7 @@ export interface NexusGenFieldTypes {
     correction: string | null; // String
     createdAt: any | null; // Date
     id: string; // ID!
-    inReplyTo: number | null; // Int
+    inReplyTo: string | null; // String
     likeCount: number; // Int!
     likedByMe: boolean; // Boolean!
     post: NexusGenRootTypes['Post']; // Post!

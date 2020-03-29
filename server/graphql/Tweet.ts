@@ -8,7 +8,7 @@ export const Tweet = objectType({
     t.string("correction", {
       nullable: true,
     });
-    t.int("inReplyTo", {
+    t.string("inReplyTo", {
       nullable: true,
     });
     t.field("postedBy", {

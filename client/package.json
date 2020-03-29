@@ -80,7 +80,7 @@
     "@graphql-codegen/typescript-operations": "1.13.1",
     "@graphql-codegen/typescript-react-apollo": "1.13.1",
     "babel-loader": "8.1.0",
-    "react-docgen-typescript-loader": "3.7.1",
+    "react-docgen-typescript-loader": "3.7.2",
     "ts-loader": "6.2.2"
   },
   "resolutions": {

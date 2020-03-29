@@ -1,7 +1,7 @@
 import React from "react";
 import * as jsdiff from "diff";
 import styled from "styled-components";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 interface Props {
   line: string;
@@ -89,7 +89,7 @@ export const PrettyReply: React.FC<Props> = ({ line, correction, reply }) => {
           <DiffPanel oldStr={line} newStr={correction} />
         </Box>
       )}
-      <span>{reply}</span>
+      <Typography variant="body1">{reply}</Typography>
     </div>
   );
 };

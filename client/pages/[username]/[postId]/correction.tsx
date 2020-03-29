@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { NextPage, NextPageContext } from "next";
+import { useRouter } from "next/router";
 import {
   Container,
   Button,
@@ -101,7 +102,8 @@ const reducer: React.Reducer<State, Action> = (state, action) => {
   }
 };
 
-const CorrectionPage: NextPage<Props> = ({ postId }) => {
+const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [
     createCorrectionGroup,
@@ -170,6 +172,7 @@ const CorrectionPage: NextPage<Props> = ({ postId }) => {
         }),
       },
     });
+    router.push("/[username]/[postId]", `/${username}/${postId}`);
   };
 
   assertIsDefined(data);

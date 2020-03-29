@@ -13,12 +13,11 @@ import {
 } from "@material-ui/core";
 
 import dayjs from "@/lib/time";
-import { LikeIcon } from "@/components/molecule/LikeIcon";
+import { LikeIcon, PrettyReply } from "@/components/molecule";
 import {
   useTweetLikeMutation,
   useFetchTweetsForLineQuery,
 } from "@/generated/types";
-import { PrettyReply } from "@/components/molecule/PrettyReply";
 
 interface Props {
   lineId: string;

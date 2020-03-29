@@ -1,38 +1,11 @@
 import React from "react";
+import styled from "styled-components";
 
 import { useFetchPostByIdQuery } from "@/generated/types";
-import {
-  PostContent,
-  Props as PostContentProps,
-} from "@/components/organism/PostContent";
+import { PostContent } from "@/components/organism";
+import { PostCorrections } from "@/components/molecule";
 
-type PresenterProps = PostContentProps;
-
-export const PostPresenter: React.FC<PresenterProps> = ({
-  id,
-  focusedLineId,
-  isDraft,
-  lines,
-  language,
-  user,
-  updatedAt,
-  likeCount,
-  likedByMe,
-}) => {
-  return (
-    <PostContent
-      id={id}
-      focusedLineId={focusedLineId}
-      isDraft={isDraft}
-      lines={lines}
-      language={language}
-      user={user}
-      updatedAt={updatedAt}
-      likeCount={likeCount}
-      likedByMe={likedByMe}
-    />
-  );
-};
+const PostAndCorrectionsContainer = styled.div``;
 
 export interface Props {
   id: string;
@@ -51,21 +24,26 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
   if (!data) {
     throw new Error("data is empty");
   }
+  const lines = data.post.lines.map((line) => ({
+    id: line.id,
+    text: line.partialLines[0].text,
+    replies: line.replies.map(({ id, text }) => ({ id, text })),
+  }));
+
   return (
-    <PostPresenter
-      id={data.post.id}
-      focusedLineId={focusedLineId}
-      isDraft={data.post.isDraft}
-      lines={data.post.lines.map((line) => ({
-        id: line.id,
-        text: line.partialLines[0].text,
-        replies: line.replies.map(({ id, text }) => ({ id, text })),
-      }))}
-      language={data.post.language}
-      user={data.post.user}
-      updatedAt={new Date(data.post.updatedAt)}
-      likedByMe={data.post.likedByMe}
-      likeCount={data.post.likeCount}
-    />
+    <PostAndCorrectionsContainer>
+      <PostContent
+        id={data.post.id}
+        focusedLineId={focusedLineId}
+        isDraft={data.post.isDraft}
+        lines={lines}
+        language={data.post.language}
+        user={data.post.user}
+        updatedAt={new Date(data.post.updatedAt)}
+        likedByMe={data.post.likedByMe}
+        likeCount={data.post.likeCount}
+      />
+      <PostCorrections corrections={data.post.corrections} lines={lines} />
+    </PostAndCorrectionsContainer>
   );
 };

@@ -207,7 +207,7 @@ export type Tweet = Node & {
   id: Scalars["ID"];
   text: Scalars["String"];
   correction?: Maybe<Scalars["String"]>;
-  inReplyTo?: Maybe<Scalars["Int"]>;
+  inReplyTo?: Maybe<Scalars["String"]>;
   postedBy: User;
   post: Post;
   replies: Array<Tweet>;
@@ -276,6 +276,32 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
     >;
     language: { __typename?: "Language" } & Pick<Language, "id" | "name">;
     user: { __typename?: "User" } & Pick<User, "username">;
+    corrections: Array<
+      { __typename?: "CorrectionGroup" } & Pick<
+        CorrectionGroup,
+        "id" | "updatedAt"
+      > & {
+          postedBy: { __typename?: "User" } & Pick<User, "id" | "username">;
+          summaryComment?: Maybe<
+            { __typename?: "Tweet" } & Pick<
+              Tweet,
+              "id" | "text" | "likeCount" | "likedByMe" | "updatedAt"
+            >
+          >;
+          lineCorrections: Array<
+            { __typename?: "Tweet" } & Pick<
+              Tweet,
+              | "id"
+              | "text"
+              | "correction"
+              | "likeCount"
+              | "likedByMe"
+              | "inReplyTo"
+              | "updatedAt"
+            >
+          >;
+        }
+    >;
   };
 
 export type FetchViewerQueryVariables = {};
@@ -531,6 +557,30 @@ export const PostFieldFragmentDoc = gql`
     }
     user {
       username
+    }
+    corrections {
+      id
+      postedBy {
+        id
+        username
+      }
+      summaryComment {
+        id
+        text
+        likeCount
+        likedByMe
+        updatedAt
+      }
+      lineCorrections {
+        id
+        text
+        correction
+        likeCount
+        likedByMe
+        inReplyTo
+        updatedAt
+      }
+      updatedAt
     }
     isDraft
     updatedAt

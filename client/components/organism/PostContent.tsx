@@ -26,16 +26,19 @@ import {
   FETCH_POST_BY_ID_QUERY,
 } from "@/constant/graphql";
 import dayjs from "@/lib/time";
-import { LikeIcon } from "@/components/molecule/LikeIcon";
 import { useTweetCreateMutation, usePostLikeMutation } from "@/generated/types";
-import { LineCommentList } from "@/components/organism/LineCommentList";
-import { CommentForm } from "@/components/molecule/CommentForm";
+import { LineCommentList } from "@/components/organism";
+import { CommentForm, LikeIcon } from "@/components/molecule";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
-    minHeight: "80vh",
+  },
+  paperFooter: {
+    marginTop: theme.spacing(3),
+    display: "flex",
+    justifyContent: "flex-end",
   },
   metaData: {
     marginBottom: theme.spacing(2),
@@ -303,6 +306,16 @@ export const PostContent: React.FC<Props> = ({
                   </Grid>
                 </Link>
               ))}
+          </div>
+          <div className={classes.paperFooter}>
+            <Link
+              href={{
+                pathname: "/[username]/[postId]/correction",
+              }}
+              as={`/${user.username}/${id}/correction`}
+            >
+              <Button color="primary">Post Correction</Button>
+            </Link>
           </div>
         </Paper>
       </Grid>

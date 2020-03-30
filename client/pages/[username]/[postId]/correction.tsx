@@ -8,6 +8,10 @@ import {
   Typography,
   TextField,
 } from "@material-ui/core";
+import {
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
+} from "@material-ui/icons";
 import styled from "styled-components";
 
 import Layout from "@/layout/default";
@@ -28,31 +32,23 @@ const StyledLine = styled.div`
   height: 2rem;
   border-left: 10px ${(props) => props.theme.palette.primary.main} solid;
   background-color: ${(props) => props.theme.palette.primary.light};
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 `;
 
 const Line: React.FC<{
   children: React.ReactNode;
   lineId: string;
-  onMouseOver: (lineId: string) => void;
-}> = ({ children, lineId, onMouseOver }) => {
-  const handleMouseOver = () => {
-    onMouseOver(lineId);
-  };
-  return <StyledLine onMouseOver={handleMouseOver}>{children}</StyledLine>;
-};
-
-const ToggleEditorButton: React.FC<{
   onClick: (lineId: string) => void;
-  currentLineId: string;
-}> = ({ onClick, currentLineId }) => {
+}> = ({ children, lineId, onClick }) => {
   const handleClick = () => {
-    onClick(currentLineId);
+    onClick(lineId);
   };
-  return <span onClick={handleClick}>✐</span>;
+  return <StyledLine onClick={handleClick}>{children}</StyledLine>;
 };
 
 interface State {
-  hoveredId: string | null;
   focusedId: string | null;
   comments: { [lineId: string]: { lineId: string; text: string } };
   overallComment: string | null;
@@ -60,12 +56,10 @@ interface State {
 
 type Action =
   | { type: "updateFocusedId"; focusedId: string | null }
-  | { type: "updateHoveredId"; hoveredId: string | null }
   | { type: "upsertComment"; id: string; comment: string }
   | { type: "updateOverallComment"; comment: string | null };
 
 const initialState: State = {
-  hoveredId: null,
   focusedId: null,
   comments: {},
   overallComment: null,
@@ -73,11 +67,6 @@ const initialState: State = {
 
 const reducer: React.Reducer<State, Action> = (state, action) => {
   switch (action.type) {
-    case "updateHoveredId":
-      return {
-        ...state,
-        hoveredId: action.hoveredId,
-      };
     case "updateFocusedId":
       return {
         ...state,
@@ -116,9 +105,6 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
     return <span>loading...</span>;
   }
 
-  const onMouseOver = (lineId: string) => {
-    dispatch({ type: "updateHoveredId", hoveredId: lineId });
-  };
   const toggleEditor = (lineId: string) => {
     if (lineId === state.focusedId) {
       dispatch({ type: "updateFocusedId", focusedId: null });
@@ -182,16 +168,15 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
         <Box marginBottom={2}>
           {data.post.lines.map((line) => (
             <div key={line.id}>
-              <Line onMouseOver={onMouseOver} lineId={line.id}>
+              <Line lineId={line.id} onClick={toggleEditor}>
                 <Typography variant="body1">
-                  {line.id === state.hoveredId && (
-                    <ToggleEditorButton
-                      onClick={toggleEditor}
-                      currentLineId={line.id}
-                    />
-                  )}
                   {line.partialLines.map((pl) => pl.text).join("")}
                 </Typography>
+                {line.id === state.focusedId ? (
+                  <ExpandMoreIcon />
+                ) : (
+                  <ExpandLessIcon />
+                )}
               </Line>
               {line.id === state.focusedId && (
                 <PreviewEditor
@@ -209,14 +194,16 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
             value={state.overallComment}
             placeholder="Overall comment here!"
           />
-          <Button
-            variant="contained"
-            onClick={submitCorrection}
-            disabled={loading || isSubmittingCorrection}
-            color="primary"
-          >
-            {loading ? "Submitting..." : "Publish"}
-          </Button>
+          <Box marginTop={2}>
+            <Button
+              variant="contained"
+              onClick={submitCorrection}
+              disabled={loading || isSubmittingCorrection}
+              color="primary"
+            >
+              {loading ? "Submitting..." : "Publish"}
+            </Button>
+          </Box>
         </Box>
       </Container>
     </Layout>

@@ -21,12 +21,11 @@ export const UserSetting: React.FC = () => {
   ] = useUserUpdateSettingMutation();
   const { viewer, loading: viewerQueryLoading } = useViewer();
   const { languages, loading: languageQueryLoading } = useLanguages();
-  // const { timezones, loading: timezoneLoading } = useTimezones();
   const formik = useFormik<FormValues>({
     initialValues: {
       learningLanguages: viewer?.learningLanguages.map((lang) => lang.id) ?? [],
       fluentLanguages: viewer?.fluentLanguages.map((lang) => lang.id) ?? [],
-      timezone: viewer?.timezone ?? "",
+      timezone: viewer?.timezone.id ?? "",
     },
     onSubmit: async (values) => {
       await updateUserSetting({

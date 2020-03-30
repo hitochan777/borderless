@@ -87,7 +87,10 @@ export const FETCH_VIEWER_QUERY = gql`
       id
       username
       email
-      timezone
+      timezone {
+        id
+        offset
+      }
       fluentLanguages {
         id
         name
@@ -235,7 +238,10 @@ export const USER_UPDATE_SETTING_MUTATION = gql`
         id
         name
       }
-      timezone
+      timezone {
+        id
+        offset
+      }
     }
   }
 `;

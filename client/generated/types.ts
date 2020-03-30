@@ -9,7 +9,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Timezone: any;
   LanguageCode: any;
   Date: any;
 };
@@ -162,6 +161,7 @@ export type Query = {
   posts: Array<Post>;
   replies: Array<Tweet>;
   search: Array<Post>;
+  timezones: Array<Timezone>;
   tweet: Tweet;
   user: User;
   viewer: User;
@@ -202,6 +202,12 @@ export type SearchInput = {
   language?: Maybe<Scalars["String"]>;
 };
 
+export type Timezone = Node & {
+  __typename?: "Timezone";
+  id: Scalars["ID"];
+  offset: Scalars["String"];
+};
+
 export type Tweet = Node & {
   __typename?: "Tweet";
   id: Scalars["ID"];
@@ -229,7 +235,7 @@ export type User = Node & {
   id: Scalars["ID"];
   username: Scalars["String"];
   email: Scalars["String"];
-  timezone: Scalars["Timezone"];
+  timezone: Timezone;
   fluentLanguages: Array<Language>;
   learningLanguages: Array<Language>;
   posts: Array<Post>;
@@ -247,7 +253,7 @@ export type UserInput = {
 export type UserSettingInput = {
   fluentLanguages: Array<Scalars["String"]>;
   learningLanguages: Array<Scalars["String"]>;
-  timezone?: Maybe<Scalars["Timezone"]>;
+  timezone?: Maybe<Scalars["String"]>;
 };
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
@@ -307,10 +313,8 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
 export type FetchViewerQueryVariables = {};
 
 export type FetchViewerQuery = { __typename?: "Query" } & {
-  viewer: { __typename?: "User" } & Pick<
-    User,
-    "id" | "username" | "email" | "timezone"
-  > & {
+  viewer: { __typename?: "User" } & Pick<User, "id" | "username" | "email"> & {
+      timezone: { __typename?: "Timezone" } & Pick<Timezone, "id" | "offset">;
       fluentLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
@@ -434,13 +438,14 @@ export type UserUpdateSettingMutationVariables = {
 };
 
 export type UserUpdateSettingMutation = { __typename?: "Mutation" } & {
-  userUpdateSetting: { __typename?: "User" } & Pick<User, "id" | "timezone"> & {
+  userUpdateSetting: { __typename?: "User" } & Pick<User, "id"> & {
       fluentLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
       learningLanguages: Array<
         { __typename?: "Language" } & Pick<Language, "id" | "name">
       >;
+      timezone: { __typename?: "Timezone" } & Pick<Timezone, "id" | "offset">;
     };
 };
 
@@ -595,7 +600,10 @@ export const FetchViewerDocument = gql`
       id
       username
       email
-      timezone
+      timezone {
+        id
+        offset
+      }
       fluentLanguages {
         id
         name
@@ -1244,7 +1252,10 @@ export const UserUpdateSettingDocument = gql`
         id
         name
       }
-      timezone
+      timezone {
+        id
+        offset
+      }
     }
   }
 `;

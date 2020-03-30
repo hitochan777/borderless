@@ -101,6 +101,7 @@ type Query {
     id: ID!
   ): [Tweet!]!
   search(query: SearchInput!): [Post!]!
+  timezones: [Timezone!]!
   tweet(
     """tweet id"""
     id: ID!
@@ -116,7 +117,11 @@ input SearchInput {
   language: String
 }
 
-scalar Timezone
+type Timezone implements Node {
+  """Unique identifier for the resource"""
+  id: ID!
+  offset: String!
+}
 
 type Tweet implements Node {
   correction: String
@@ -165,5 +170,5 @@ input UserInput {
 input UserSettingInput {
   fluentLanguages: [String!]!
   learningLanguages: [String!]!
-  timezone: Timezone
+  timezone: String
 }

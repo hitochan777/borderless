@@ -10,7 +10,7 @@ export class User extends Base {
     public username: string,
     public fluentLanguages: Language[],
     public learningLanguages: Language[],
-    public timezone: Timezone = "Etc/GMT",
+    public timezone: Timezone = new Timezone("Etc/GMT"),
     public createdAt: Date | null = null,
     public updatedAt: Date | null = null
   ) {

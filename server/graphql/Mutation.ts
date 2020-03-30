@@ -6,7 +6,7 @@ import { Line } from "../entity/line";
 import { User } from "../entity/user";
 import { Tweet } from "../entity/tweet";
 import { LineContent } from "../entity/line_content";
-import { Language } from "../value/language";
+import { Language, Timezone } from "../value";
 import { CorrectionGroup } from "../entity/correction_group";
 
 export const Mutation = mutationType({
@@ -51,7 +51,7 @@ export const Mutation = mutationType({
         user.learningLanguages = userSetting.learningLanguages.map(
           (language) => new Language(language)
         );
-        user.timezone = userSetting.timezone || "Etc/GMT";
+        user.timezone = new Timezone(userSetting.timezone || "Etc/GMT");
         const updatedUser = await userRepository.update(uid, user);
         return updatedUser;
       },

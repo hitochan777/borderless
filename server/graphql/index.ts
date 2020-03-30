@@ -15,6 +15,7 @@ export * from "./Tweet";
 export * from "./AuthData";
 export * from "./PartialLine";
 export * from "./CorrectionGroup";
+export * from "./Timezone";
 
 // Input Object
 export * from "./UserInput";
@@ -28,4 +29,3 @@ export * from "./SearchInput";
 // Scalar
 export * from "./DateScalar";
 export * from "./LanguageCodeScalar";
-export * from "./TimezoneScalar";

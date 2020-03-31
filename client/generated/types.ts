@@ -382,6 +382,14 @@ export type FetchLanguagesQuery = { __typename?: "Query" } & {
   langs: Array<{ __typename?: "Language" } & Pick<Language, "id" | "name">>;
 };
 
+export type FetchTimezonesQueryVariables = {};
+
+export type FetchTimezonesQuery = { __typename?: "Query" } & {
+  timezones: Array<
+    { __typename?: "Timezone" } & Pick<Timezone, "id" | "offset">
+  >;
+};
+
 export type FetchTweetsForLineQueryVariables = {
   id: Scalars["ID"];
 };
@@ -971,6 +979,62 @@ export type FetchLanguagesLazyQueryHookResult = ReturnType<
 export type FetchLanguagesQueryResult = ApolloReactCommon.QueryResult<
   FetchLanguagesQuery,
   FetchLanguagesQueryVariables
+>;
+export const FetchTimezonesDocument = gql`
+  query fetchTimezones {
+    timezones {
+      id
+      offset
+    }
+  }
+`;
+
+/**
+ * __useFetchTimezonesQuery__
+ *
+ * To run a query within a React component, call `useFetchTimezonesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchTimezonesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchTimezonesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchTimezonesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    FetchTimezonesQuery,
+    FetchTimezonesQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<
+    FetchTimezonesQuery,
+    FetchTimezonesQueryVariables
+  >(FetchTimezonesDocument, baseOptions);
+}
+export function useFetchTimezonesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    FetchTimezonesQuery,
+    FetchTimezonesQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    FetchTimezonesQuery,
+    FetchTimezonesQueryVariables
+  >(FetchTimezonesDocument, baseOptions);
+}
+export type FetchTimezonesQueryHookResult = ReturnType<
+  typeof useFetchTimezonesQuery
+>;
+export type FetchTimezonesLazyQueryHookResult = ReturnType<
+  typeof useFetchTimezonesLazyQuery
+>;
+export type FetchTimezonesQueryResult = ApolloReactCommon.QueryResult<
+  FetchTimezonesQuery,
+  FetchTimezonesQueryVariables
 >;
 export const FetchTweetsForLineDocument = gql`
   query fetchTweetsForLine($id: ID!) {

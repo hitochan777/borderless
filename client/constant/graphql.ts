@@ -173,6 +173,15 @@ export const FETCH_LANGUAGES_QUERY = gql`
   }
 `;
 
+export const FETCH_TIMEZONES_QUERY = gql`
+  query fetchTimezones {
+    timezones {
+      id
+      offset
+    }
+  }
+`;
+
 export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
   query fetchTweetsForLine($id: ID!) {
     replies(id: $id) {

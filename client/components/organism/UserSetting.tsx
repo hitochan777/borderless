@@ -1,11 +1,15 @@
 import React from "react";
 import { useFormik } from "formik";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
-import { useUserUpdateSettingMutation } from "@/generated/types";
+import {
+  useUserUpdateSettingMutation,
+  useFetchTimezonesQuery,
+} from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
 import { useLanguages } from "@/hooks/useLanguages";
-import { MultiSelect } from "@/components/molecule/MultiSelect";
+import { MultiSelect } from "@/components/molecule";
+import Select from "@/components/Select";
 import { assertIsDefined } from "@/lib/assert";
 
 interface FormValues {
@@ -21,6 +25,11 @@ export const UserSetting: React.FC = () => {
   ] = useUserUpdateSettingMutation();
   const { viewer, loading: viewerQueryLoading } = useViewer();
   const { languages, loading: languageQueryLoading } = useLanguages();
+  const {
+    data: timezoneData,
+    loading: timezoneQueryLoading,
+  } = useFetchTimezonesQuery();
+
   const formik = useFormik<FormValues>({
     initialValues: {
       learningLanguages: viewer?.learningLanguages.map((lang) => lang.id) ?? [],
@@ -40,7 +49,7 @@ export const UserSetting: React.FC = () => {
     },
   });
 
-  if (viewerQueryLoading || languageQueryLoading) {
+  if (viewerQueryLoading || languageQueryLoading || timezoneQueryLoading) {
     return <div>loading...</div>;
   }
 
@@ -64,16 +73,16 @@ export const UserSetting: React.FC = () => {
         options={languages}
         label="Learning Languages"
       />
-      <TextField
-        autoFocus
-        margin="dense"
-        id="timezone"
-        name="timezone"
+      <Select
         label="Timezone"
-        type="text"
+        onChange={(val) => formik.setFieldValue("timezone", val)}
+        options={
+          timezoneData?.timezones.map((tz) => ({
+            label: `${tz.id} (${tz.offset})`,
+            value: tz.id,
+          })) || []
+        }
         value={formik.values.timezone}
-        onChange={formik.handleChange}
-        fullWidth
       />
       <Button type="submit" color="primary" disabled={isUpdating}>
         {isUpdating ? "Updating..." : "Update"}

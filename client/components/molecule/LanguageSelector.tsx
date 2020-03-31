@@ -25,19 +25,14 @@ const LanguagSelector: React.FC<Props> = ({
     variables: { relatedOnly },
   });
 
-  const handleChange = (value: LanguageOption | null) => {
+  const handleChange = (value: string | null) => {
     if (value) {
-      onChange(value.value);
+      onChange(value);
     }
   };
   if (loading) {
     return (
-      <Select<string>
-        value={null}
-        onChange={handleChange}
-        options={[]}
-        label={label}
-      />
+      <Select value={null} onChange={handleChange} options={[]} label={label} />
     );
   }
   if (error) {
@@ -50,10 +45,9 @@ const LanguagSelector: React.FC<Props> = ({
     value: id,
     label: name,
   }));
-  const filtered = languageOptions.filter((option) => option.value === value);
   return (
     <Select
-      value={filtered[0]}
+      value={value}
       onChange={handleChange}
       options={languageOptions}
       label={label}

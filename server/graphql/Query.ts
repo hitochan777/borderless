@@ -1,6 +1,6 @@
 import { queryType, stringArg, idArg, arg, intArg, booleanArg } from "nexus";
 
-import * as value from "../value/language";
+import * as value from "../value";
 
 export const Query = queryType({
   definition(t) {
@@ -121,6 +121,17 @@ export const Query = queryType({
         }));
       },
     });
+
+    t.list.field("timezones", {
+      type: "Timezone",
+      resolve(root) {
+        return value.Timezone.getTimezoneList().map((tz) => ({
+          id: tz.timezone,
+          offset: tz.offset,
+        }));
+      },
+    });
+
     t.field("viewer", {
       authorize: (_, __, { uid }) => {
         return uid !== null;

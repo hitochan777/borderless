@@ -1,4 +1,5 @@
-export const timezoneInfos = [
+// TODO: replace name with proper english names
+const timezoneInfos = [
   {
     name: "Midway Island, American Samoa",
     timezone: "Etc/GMT+11",
@@ -33,7 +34,7 @@ export const timezoneInfos = [
     offset: "UTC-06:00",
   },
   {
-    name: "Central Time(US and Canada)",
+    name: "Central Time (US and Canada)",
     timezone: "America/Chicago",
     offset: "UTC-06:00",
   },
@@ -58,18 +59,18 @@ export const timezoneInfos = [
     offset: "UTC-05:00",
   },
   {
-    name: "東部標準時(米国およびカナダ)",
+    name: "Eastern Time (US and Canada)",
     timezone: "America/New_York",
     offset: "UTC-05:00",
   },
-  { name: "カラカス", timezone: "America/Caracas", offset: "UTC-04:30" },
+  { name: "Caracas", timezone: "America/Caracas", offset: "UTC-04:30" },
   {
     name: "大西洋標準時(カナダ)",
     timezone: "America/Halifax",
     offset: "UTC-04:00",
   },
   {
-    name: "アスンシオン",
+    name: "Asuncion",
     timezone: "America/Asuncion",
     offset: "UTC-04:00",
   },
@@ -78,9 +79,9 @@ export const timezoneInfos = [
     timezone: "America/La_Paz",
     offset: "UTC-04:00",
   },
-  { name: "クイアバ", timezone: "America/Cuiaba", offset: "UTC-04:00" },
+  { name: "Cuiaba", timezone: "America/Cuiaba", offset: "UTC-04:00" },
   {
-    name: "サンチアゴ",
+    name: "Santiago",
     timezone: "America/Santiago",
     offset: "UTC-04:00",
   },
@@ -95,22 +96,22 @@ export const timezoneInfos = [
     offset: "UTC-03:00",
   },
   {
-    name: "グリーンランド",
+    name: "Greenland",
     timezone: "America/Godthab",
     offset: "UTC-03:00",
   },
   {
-    name: "カイエンヌ、フォルタレザ",
+    name: "Cayenne, フォルタレザ",
     timezone: "America/Cayenne",
     offset: "UTC-03:00",
   },
   {
-    name: "ブエノスアイレス",
+    name: "Buenos Aires",
     timezone: "America/Argentina/Buenos_Aires",
     offset: "UTC-03:00",
   },
   {
-    name: "モンテビデオ",
+    name: "Montevideo",
     timezone: "America/Montevideo",
     offset: "UTC-03:00",
   },
@@ -120,19 +121,19 @@ export const timezoneInfos = [
     timezone: "Atlantic/Cape_Verde",
     offset: "UTC-01:00",
   },
-  { name: "アゾレス", timezone: "Atlantic/Azores", offset: "UTC-01:00" },
+  { name: "Azores", timezone: "Atlantic/Azores", offset: "UTC-01:00" },
   {
-    name: "カサブランカ",
+    name: "Casablanca",
     timezone: "Africa/Casablanca",
     offset: "UTC+00:00",
   },
   {
-    name: "モンロビア、レイキャビク",
+    name: "モンロビア、Reykjavik",
     timezone: "Atlantic/Reykjavik",
     offset: "UTC+00:00",
   },
   {
-    name: "ダブリン、エジンバラ、リスボン、ロンドン",
+    name: "ダブリン、エジンバラ、リスボン, London",
     timezone: "Europe/London",
     offset: "UTC+00:00",
   },
@@ -143,7 +144,7 @@ export const timezoneInfos = [
     offset: "UTC+01:00",
   },
   {
-    name: "ブリュッセル、コペンハーゲン、マドリード、パリ",
+    name: "ブリュッセル、コペンハーゲン、マドリード、Paris",
     timezone: "Europe/Paris",
     offset: "UTC+01:00",
   },
@@ -336,4 +337,47 @@ export const timezoneInfos = [
   { name: "Samoa", timezone: "Pacific/Apia", offset: "UTC+13:00" },
 ] as const;
 
-export type Timezone = typeof timezoneInfos[number]["timezone"];
+type TimezoneName = typeof timezoneInfos[number]["timezone"];
+
+export class Timezone {
+  public timezoneName: TimezoneName;
+
+  constructor(maybeTimezoneName: string) {
+    Timezone.assertStringIsTimezone(maybeTimezoneName);
+    this.timezoneName = maybeTimezoneName;
+  }
+  get id() {
+    return this.timezoneName;
+  }
+
+  get offset() {
+    const timezoneInfo = Timezone.findTimezoneInfo(this.timezoneName);
+    return timezoneInfo.offset;
+  }
+
+  static getTimezoneList() {
+    return timezoneInfos;
+  }
+
+  private static assertStringIsTimezone(
+    maybeTimezone: string
+  ): asserts maybeTimezone is TimezoneName {
+    if (
+      !timezoneInfos
+        .map((info) => info.timezone)
+        .includes(maybeTimezone as TimezoneName)
+    ) {
+      throw new Error(`${maybeTimezone} is not a valid timezone`);
+    }
+  }
+
+  private static findTimezoneInfo(
+    timezoneName: TimezoneName
+  ): typeof timezoneInfos[number] {
+    const index = timezoneInfos.findIndex((tz) => timezoneName === tz.timezone);
+    if (index < 0) {
+      throw new Error(`${timezoneName} not found`);
+    }
+    return timezoneInfos[index];
+  }
+}

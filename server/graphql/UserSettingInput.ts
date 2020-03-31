@@ -11,6 +11,6 @@ export const UserSettingInput = inputObjectType({
       type: "String",
       nullable: false,
     });
-    t.timezone("timezone");
+    t.string("timezone");
   },
 });

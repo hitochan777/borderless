@@ -2,32 +2,32 @@ import React from "react";
 import { FormControl, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
-type OptionValue = string | number;
+type OptionValue = string | null;
 
-type Option<T extends OptionValue> = {
-  value: T;
+type Option = {
+  value: OptionValue;
   label: string;
 };
 
-type Props<T extends OptionValue> = {
+type Props = {
+  name?: string;
   label: string;
-  value: Option<T> | null;
-  onChange: (value: Option<T> | null) => void;
-  options: Option<T>[];
+  value: OptionValue;
+  onChange: (value: OptionValue) => void;
+  options: Option[];
 };
 
-const Select = <T extends OptionValue>({
-  label,
-  value,
-  onChange,
-  options,
-}: Props<T>) => {
+const Select = ({ label, value, onChange, options }: Props) => {
+  const optionValue = React.useMemo(
+    () => options.filter((option) => value === option.value)[0] || null,
+    [options, value]
+  );
   return (
     <FormControl fullWidth>
       <Autocomplete
-        value={value}
-        onChange={(_event: object, newValue: Option<T> | null) => {
-          onChange(newValue);
+        value={optionValue}
+        onChange={(_event: object, newValue: Option | null) => {
+          onChange(newValue?.value || null);
         }}
         options={options}
         getOptionLabel={(option) => option.label}

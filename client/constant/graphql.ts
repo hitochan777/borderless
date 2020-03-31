@@ -87,7 +87,10 @@ export const FETCH_VIEWER_QUERY = gql`
       id
       username
       email
-      timezone
+      timezone {
+        id
+        offset
+      }
       fluentLanguages {
         id
         name
@@ -170,6 +173,15 @@ export const FETCH_LANGUAGES_QUERY = gql`
   }
 `;
 
+export const FETCH_TIMEZONES_QUERY = gql`
+  query fetchTimezones {
+    timezones {
+      id
+      offset
+    }
+  }
+`;
+
 export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
   query fetchTweetsForLine($id: ID!) {
     replies(id: $id) {
@@ -235,7 +247,10 @@ export const USER_UPDATE_SETTING_MUTATION = gql`
         id
         name
       }
-      timezone
+      timezone {
+        id
+        offset
+      }
     }
   }
 `;

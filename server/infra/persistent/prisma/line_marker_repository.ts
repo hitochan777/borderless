@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
 import { ID } from "../../../types";
+import { LineMarkerRepository } from "../../../domain/repository";
 
-export class LineMarkerRepository {
+export class PrismaLineMarkerRepository implements LineMarkerRepository {
   private photon: PrismaClient;
   constructor(driver: PrismaClient) {
     this.photon = driver;

@@ -3,8 +3,9 @@ import { PrismaClient, User as UserModel } from "@prisma/client";
 import { User } from "../../../entity/user";
 import { ID } from "../../../types";
 import { Language, Timezone } from "../../../value";
+import { UserRepository } from "../../../domain/repository";
 
-export class UserRepository {
+export class PrismaUserRepository implements UserRepository {
   private prismaClient: PrismaClient;
   constructor(driver: PrismaClient) {
     this.prismaClient = driver;

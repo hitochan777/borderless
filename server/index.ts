@@ -3,17 +3,18 @@ import { IncomingMessage, ServerResponse } from "http";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 
-import { GraphQLContext, RepositoryContainer, ServiceContainer } from "./types";
+import { GraphQLContext, ServiceContainer } from "./types";
 import { schema } from "./schema";
 import {
-  UserRepository,
-  PostRepository,
-  TweetRepository,
-  LineMarkerRepository,
-  CorrectionGroupRepository,
+  PrismaUserRepository,
+  PrismaPostRepository,
+  PrismaTweetRepository,
+  PrismaLineMarkerRepository,
+  PrismaCorrectionGroupRepository,
 } from "./infra/persistent/prisma";
 import { SlateService } from "./infra/service/slate_service";
 import { PrismaClient } from "@prisma/client";
+import { RepositoryContainer } from "./domain/repository";
 
 if (admin.apps.length === 0) {
   admin.initializeApp({
@@ -33,11 +34,11 @@ if (admin.apps.length === 0) {
 export const buildRepositoryContainer = (): RepositoryContainer => {
   const driver = new PrismaClient();
   return {
-    userRepository: new UserRepository(driver),
-    postRepository: new PostRepository(driver),
-    tweetRepository: new TweetRepository(driver),
-    lineMarkerRepository: new LineMarkerRepository(driver),
-    corretionGroupRepository: new CorrectionGroupRepository(driver),
+    userRepository: new PrismaUserRepository(driver),
+    postRepository: new PrismaPostRepository(driver),
+    tweetRepository: new PrismaTweetRepository(driver),
+    lineMarkerRepository: new PrismaLineMarkerRepository(driver),
+    corretionGroupRepository: new PrismaCorrectionGroupRepository(driver),
   };
 };
 

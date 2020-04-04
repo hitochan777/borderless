@@ -1,5 +1,5 @@
-export { UserRepository } from "./user_repository";
-export { PostRepository } from "./post_repository";
-export { TweetRepository } from "./tweet_repository";
-export { LineMarkerRepository } from "./line_marker_repository";
-export { CorrectionGroupRepository } from "./correction_group_repository";
+export { PrismaUserRepository } from "./user_repository";
+export { PrismaPostRepository } from "./post_repository";
+export { PrismaTweetRepository } from "./tweet_repository";
+export { PrismaLineMarkerRepository } from "./line_marker_repository";
+export { PrismaCorrectionGroupRepository } from "./correction_group_repository";

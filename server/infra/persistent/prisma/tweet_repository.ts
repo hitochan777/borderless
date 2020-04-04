@@ -8,8 +8,9 @@ import {
 
 import { Tweet } from "../../../entity/tweet";
 import { ID } from "../../../types";
+import { TweetRepository } from "../../../domain/repository";
 
-export class TweetRepository {
+export class PrismaTweetRepository implements TweetRepository {
   private photon: PrismaClient;
   constructor(driver: PrismaClient) {
     this.photon = driver;

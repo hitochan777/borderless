@@ -8,8 +8,10 @@ import {
 
 import { CorrectionGroup } from "../../../entity/correction_group";
 import { ID } from "../../../types";
+import { CorrectionGroupRepository } from "../../../domain/repository";
 
-export class CorrectionGroupRepository {
+export class PrismaCorrectionGroupRepository
+  implements CorrectionGroupRepository {
   private photon: PrismaClient;
   constructor(driver: PrismaClient) {
     this.photon = driver;

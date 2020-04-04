@@ -7,8 +7,9 @@ import {
 import { Post } from "../../../entity/post";
 import { ID } from "../../../types";
 import { Language } from "../../../value/language";
+import { PostRepository } from "../../../domain/repository";
 
-export class PostRepository {
+export class PrismaPostRepository implements PostRepository {
   private photon: PrismaClient;
   constructor(driver: PrismaClient) {
     this.photon = driver;

@@ -1,4 +1,4 @@
-import { inputObjectType } from "nexus";
+import { inputObjectType } from "@nexus/schema";
 
 export const LineInput = inputObjectType({
   name: "LineInput",

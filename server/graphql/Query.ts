@@ -1,4 +1,11 @@
-import { queryType, stringArg, idArg, arg, intArg, booleanArg } from "nexus";
+import {
+  queryType,
+  stringArg,
+  idArg,
+  arg,
+  intArg,
+  booleanArg,
+} from "@nexus/schema";
 
 import * as value from "../value";
 

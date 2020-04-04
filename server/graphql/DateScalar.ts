@@ -1,4 +1,4 @@
-import { scalarType } from "nexus";
+import { scalarType } from "@nexus/schema";
 
 export const DateScalar = scalarType({
   name: "Date",

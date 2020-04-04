@@ -1,4 +1,4 @@
-import { objectType } from "nexus";
+import { objectType } from "@nexus/schema";
 import { Timezone as TimezoneValue } from "../value/timezone";
 
 export const Timezone = objectType({

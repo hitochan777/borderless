@@ -1,4 +1,4 @@
-import { scalarType } from "nexus";
+import { scalarType } from "@nexus/schema";
 import { UserInputError } from "apollo-server-micro";
 
 import { Language } from "../value/language";

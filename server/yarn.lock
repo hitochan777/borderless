@@ -170,6 +170,14 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
+"@nexus/schema@^0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@nexus/schema/-/schema-0.13.1.tgz#02dadf66b121b3c270659479f2410b7023fcc4a6"
+  integrity sha512-V7fFhkPOcqQ7KwSaAkfSTAV/klY/NlL7aIHTuEZynAUNm2cG8S6QSU+TuVlbpj0L14B9tqgPrVeO+IOe0AV+yA==
+  dependencies:
+    iterall "^1.2.2"
+    tslib "^1.9.3"
+
 "@npmcli/ci-detect@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@npmcli/ci-detect/-/ci-detect-1.1.0.tgz#149cf9a1f21701ce889125ee22e6400a9eaed527"
@@ -3537,14 +3545,6 @@ nested-error-stacks@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.0.1.tgz#d2cc9fc5235ddb371fc44d506234339c8e4b0a4b"
   integrity sha512-SrQrok4CATudVzBS7coSz26QRSmlK9TzzoFbeKfcPBUFPjcQM9Rqvr/DlJkOrwI/0KcgvMub1n1g5Jt9EgRn4A==
-
-nexus@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.12.0.tgz#999d979844b5f8654265dfdce5683b3960f76c49"
-  integrity sha512-oH+z1wb2B4M/t67wSc/yEKYszyo9qXam+bQ05avSReu1LbNYTWLzuVjIwXD/MNOpdNqqAPLWvMhkA5gwaIxhSQ==
-  dependencies:
-    iterall "^1.2.2"
-    tslib "^1.9.3"
 
 nice-try@^1.0.4:
   version "1.0.5"

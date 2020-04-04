@@ -1,4 +1,4 @@
-import { mutationType, arg, idArg, stringArg } from "nexus";
+import { mutationType, arg, idArg, stringArg } from "@nexus/schema";
 import * as admin from "firebase-admin";
 import cookie from "cookie";
 import { Post } from "../entity/post";

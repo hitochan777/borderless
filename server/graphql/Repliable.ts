@@ -1,4 +1,4 @@
-import { unionType } from "nexus";
+import { unionType } from "@nexus/schema";
 
 export const Repliable = unionType({
   name: "Repliable",

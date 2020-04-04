@@ -5,6 +5,6 @@ export const Repliable = unionType({
   description: "Anything that can be replied",
   definition(t) {
     t.members("Tweet", "Line");
-    t.resolveType((_) => "Line");
+    t.resolveType(() => "Line");
   },
 });

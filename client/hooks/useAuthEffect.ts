@@ -40,7 +40,7 @@ export const useAuthEffect = () => {
   useEffect(() => {
     setLoading({ variables: { loading: true } });
     login()
-      .catch((_e) => {
+      .catch(() => {
         setErrorMessage({ variables: { errorMessage: "Failed to login" } });
       })
       .finally(() => {

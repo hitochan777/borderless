@@ -62,7 +62,7 @@ export const Query = queryType({
     t.list.field("posts", {
       type: "Post",
       args: {},
-      resolve(_, __, ___) {
+      resolve() {
         return [];
       },
     });
@@ -131,7 +131,7 @@ export const Query = queryType({
 
     t.list.field("timezones", {
       type: "Timezone",
-      resolve(root) {
+      resolve() {
         return value.Timezone.getTimezoneList().map((tz) => ({
           id: tz.timezone,
           offset: tz.offset,

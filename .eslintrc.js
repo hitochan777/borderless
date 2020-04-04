@@ -12,5 +12,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
     "react/prop-types": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { args: "after-used" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
   },
 };

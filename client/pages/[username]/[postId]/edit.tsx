@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NextPage, NextPageContext } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import Router from "next/router";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Container, Button, Box, Grid } from "@material-ui/core";
@@ -127,13 +127,14 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
   );
 };
 
-PostEditPage.getInitialProps = async (
-  ctx: NextPageContext
-): Promise<{ id: string; username: string }> => {
+export const getServerSideProps: GetServerSideProps<{
+  id: string;
+  username: string;
+}> = async (ctx) => {
   const { postId, username } = ctx.query;
   assert(typeof postId === "string");
   assert(typeof username === "string");
-  return { id: postId, username };
+  return { props: { id: postId, username } };
 };
 
 export default PostEditPage;

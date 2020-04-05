@@ -1,5 +1,5 @@
 import React from "react";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { Box, Grid, Button } from "@material-ui/core";
 import Layout from "@/layout/default";
 
@@ -65,7 +65,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
   );
 };
 
-UserIndexPage.getInitialProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { query } = ctx;
   const { username } = query;
   if (username === "") {
@@ -74,7 +74,7 @@ UserIndexPage.getInitialProps = async (ctx) => {
   if (typeof username !== "string") {
     throw new Error("username should be string");
   }
-  return { username };
+  return { props: { username } };
 };
 
 export default UserIndexPage;

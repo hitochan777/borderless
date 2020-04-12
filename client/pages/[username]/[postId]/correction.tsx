@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { NextPage, NextPageContext } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import {
   Container,
@@ -210,13 +210,14 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
   );
 };
 
-CorrectionPage.getInitialProps = async (
-  ctx: NextPageContext
-): Promise<{ postId: string; username: string }> => {
+export const getServerSideProps: GetServerSideProps<{
+  postId: string;
+  username: string;
+}> = async (ctx) => {
   const { postId, username } = ctx.query;
   assert(typeof postId === "string");
   assert(typeof username === "string");
-  return { postId, username };
+  return { props: { postId, username } };
 };
 
 export default CorrectionPage;

@@ -1,5 +1,5 @@
 import React from "react";
-import { NextPage, GetServerSideProps } from "next";
+import { NextPage } from "next";
 import { Grid } from "@material-ui/core";
 
 import Layout from "@/layout/default";
@@ -22,7 +22,7 @@ const PostIndexPage: NextPage<Props> = ({ id, focusedLineId }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+PostIndexPage.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const { postId, lid: lineId } = query;
   if (postId === "") {
@@ -37,9 +37,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (lineId !== undefined && typeof lineId !== "string") {
     throw new Error("You might have specified multiple post IDs");
   }
-  return {
-    props: { id: postId, focusedLineId: lineId === undefined ? null : lineId },
-  };
+  return { id: postId, focusedLineId: lineId === undefined ? null : lineId };
 };
 
 export default PostIndexPage;

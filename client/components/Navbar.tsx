@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 20,
       right: 20,
     },
+    toolbar: {
+      width: "1000px",
+      margin: "0 auto",
+    },
   })
 );
 
@@ -81,7 +85,7 @@ const Navbar: React.FC = () => {
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ marginBottom: 10 }}>
-        <Toolbar>
+        <Toolbar className={classes.toolbar} variant="dense">
           <Link href="/">
             <Typography variant="h6" className={classes.title}>
               Borderless

@@ -37,7 +37,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item xs={12} sm={8}>
+        <Grid item sm={12}>
           {data.search.length === 0 && <span>Sorry not results found!</span>}
           {data.search.map((post) => (
             <Box key={post.id} mb="1rem">

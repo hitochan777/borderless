@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ marginBottom: 10 }}>
-        <Toolbar className={classes.toolbar} variant="dense">
+        <Toolbar className={classes.toolbar}>
           <Link href="/">
             <Typography variant="h6" className={classes.title}>
               Borderless

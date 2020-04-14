@@ -83,7 +83,7 @@ const PostEditPage: NextPage<Props> = ({ id, username }) => {
 
   return (
     <Layout>
-      <Container maxWidth="sm">
+      <Container>
         <LanguageSelector
           relatedOnly
           label="Language"

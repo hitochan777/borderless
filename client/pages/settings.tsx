@@ -13,7 +13,7 @@ const UserSettingPage: NextPage<Props> = () => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item sm={4}>
+        <Grid item sm={12}>
           <Grid container justify="center">
             <Grid item sm={12}>
               <Typography variant="h3" align="center">

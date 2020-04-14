@@ -31,7 +31,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item sm={4}>
+        <Grid item sm={12}>
           <Grid container justify="center">
             <Grid item sm={12}>
               {uid && (

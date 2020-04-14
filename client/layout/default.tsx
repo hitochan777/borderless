@@ -79,7 +79,9 @@ const Layout: React.FC<{ title?: string }> = ({ children, title = "parc" }) => {
         }}
       />
       <Navbar />
-      <main style={{ minHeight: "90vh" }}>{children}</main>
+      <main style={{ minHeight: "90vh", width: "1000px", margin: "0 auto" }}>
+        {children}
+      </main>
       <Footer />
     </>
   );

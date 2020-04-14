@@ -8,7 +8,7 @@ const Index = () => {
   return (
     <Layout>
       <Grid container justify="center">
-        <Grid item xs={12} sm={4}>
+        <Grid item sm={12}>
           <Feed />
         </Grid>
       </Grid>

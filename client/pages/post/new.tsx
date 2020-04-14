@@ -53,7 +53,7 @@ const PostNewPage: NextPage = () => {
 
   return (
     <Layout>
-      <Container maxWidth="sm">
+      <Container>
         <LanguageSelector
           relatedOnly
           label="Language"

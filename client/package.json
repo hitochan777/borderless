@@ -75,10 +75,10 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
-    "@graphql-codegen/cli": "1.13.2",
-    "@graphql-codegen/typescript": "1.13.2",
-    "@graphql-codegen/typescript-operations": "1.13.2",
-    "@graphql-codegen/typescript-react-apollo": "1.13.2",
+    "@graphql-codegen/cli": "1.13.3",
+    "@graphql-codegen/typescript": "1.13.3",
+    "@graphql-codegen/typescript-operations": "1.13.3",
+    "@graphql-codegen/typescript-react-apollo": "1.13.3",
     "babel-loader": "8.1.0",
     "ts-loader": "7.0.0"
   },

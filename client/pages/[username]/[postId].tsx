@@ -37,7 +37,11 @@ PostIndexPage.getInitialProps = async (ctx) => {
   if (lineId !== undefined && typeof lineId !== "string") {
     throw new Error("You might have specified multiple post IDs");
   }
-  return { id: postId, focusedLineId: lineId === undefined ? null : lineId };
+  return {
+    id: postId,
+    focusedLineId: lineId === undefined ? null : lineId,
+    namespacesRequired: ["common"],
+  };
 };
 
 export default PostIndexPage;

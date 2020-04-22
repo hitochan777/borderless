@@ -1,6 +1,8 @@
 import React from "react";
 import { NextPage } from "next";
 import { Grid, Typography, Box } from "@material-ui/core";
+
+import { useTranslation } from "@/i18n";
 import Layout from "@/layout/default";
 
 import { UserSetting } from "@/components/organism/UserSetting";
@@ -10,6 +12,7 @@ interface Props {
 }
 
 const UserSettingPage: NextPage<Props> = () => {
+  const { t } = useTranslation();
   return (
     <Layout>
       <Grid container justify="center">
@@ -17,7 +20,7 @@ const UserSettingPage: NextPage<Props> = () => {
           <Grid container justify="center">
             <Grid item sm={12}>
               <Typography variant="h3" align="center">
-                User Setting
+                {t("user-setting")}
               </Typography>
               <Box marginBottom={3} />
             </Grid>

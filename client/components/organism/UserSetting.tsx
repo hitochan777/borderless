@@ -2,6 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import { Button } from "@material-ui/core";
 
+import i18n from "@/i18n";
 import {
   useUserUpdateSettingMutation,
   useFetchTimezonesQuery,
@@ -16,6 +17,7 @@ interface FormValues {
   learningLanguages: string[];
   fluentLanguages: string[];
   timezone: string;
+  language: string;
 }
 
 export const UserSetting: React.FC = () => {
@@ -35,6 +37,7 @@ export const UserSetting: React.FC = () => {
       learningLanguages: viewer?.learningLanguages.map((lang) => lang.id) ?? [],
       fluentLanguages: viewer?.fluentLanguages.map((lang) => lang.id) ?? [],
       timezone: viewer?.timezone.id ?? "",
+      language: i18n.i18n.language,
     },
     onSubmit: async (values) => {
       await updateUserSetting({
@@ -46,6 +49,7 @@ export const UserSetting: React.FC = () => {
           },
         },
       });
+      i18n.i18n.changeLanguage(values.language);
     },
   });
 
@@ -83,6 +87,15 @@ export const UserSetting: React.FC = () => {
           })) || []
         }
         value={formik.values.timezone}
+      />
+      <Select
+        label="Language"
+        onChange={(val) => formik.setFieldValue("language", val)}
+        options={[
+          { label: "日本語", value: "ja" },
+          { label: "English", value: "en" },
+        ]}
+        value={formik.values.language}
       />
       <Button type="submit" color="primary" disabled={isUpdating}>
         {isUpdating ? "Updating..." : "Update"}

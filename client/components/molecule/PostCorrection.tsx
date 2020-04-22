@@ -44,7 +44,7 @@ export const PostCorrection: React.FC<Props> = ({
       />
       <CardContent>
         {correction.lineCorrections.map((lineCorrection) => (
-          <>
+          <React.Fragment key={lineCorrection.id}>
             <PrettyReply
               key={lineCorrection.id}
               line={
@@ -55,7 +55,7 @@ export const PostCorrection: React.FC<Props> = ({
               reply={lineCorrection.text}
             />
             <Divider />
-          </>
+          </React.Fragment>
         ))}
         <OverallComment>
           <Typography variant="subtitle1">Overall comment</Typography>

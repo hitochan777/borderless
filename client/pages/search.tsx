@@ -9,14 +9,14 @@ import {
   FetchSearchResultQuery,
   FetchSearchResultQueryVariables,
 } from "@/generated/types";
-// import Loading from "@/components/Loading";
 import { PostCard } from "@/components/PostCard";
 
-interface Props {
+interface PageProps {
   language: string | string[] | undefined;
+  namespacesRequired: string[];
 }
 
-const SearchPage: NextPage<Props> = ({ language }) => {
+const SearchPage: NextPage<PageProps> = ({ language }) => {
   const { data, error, loading } = useQuery<
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
@@ -64,7 +64,7 @@ const SearchPage: NextPage<Props> = ({ language }) => {
 SearchPage.getInitialProps = async (ctx) => {
   const { query } = ctx;
   const { lang } = query;
-  return { language: lang };
+  return { language: lang, namespacesRequired: ["common"] };
 };
 
 export default SearchPage;

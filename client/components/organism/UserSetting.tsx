@@ -26,7 +26,7 @@ export const UserSetting: React.FC = () => {
     { loading: isUpdating },
   ] = useUserUpdateSettingMutation();
   const { viewer, loading: viewerQueryLoading } = useViewer();
-  const { languages, loading: languageQueryLoading } = useLanguages();
+  const { languages, loading: languageQueryLoading } = useLanguages(false);
   const {
     data: timezoneData,
     loading: timezoneQueryLoading,

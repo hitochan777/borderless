@@ -78,7 +78,7 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
     onChange(newCommentParts.join(""));
   };
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <Grid container justify="space-between">
         <div>
           <Tabs

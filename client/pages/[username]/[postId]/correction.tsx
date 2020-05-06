@@ -7,12 +7,11 @@ import {
   Box,
   Typography,
   TextField,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
 } from "@material-ui/core";
-import {
-  ExpandMore as ExpandMoreIcon,
-  ExpandLess as ExpandLessIcon,
-} from "@material-ui/icons";
-import styled from "styled-components";
+import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 
 import Layout from "@/layout/default";
 import { assert, assertIsDefined } from "@/lib/assert";
@@ -26,27 +25,6 @@ interface Props {
   postId: string;
   username: string;
 }
-
-const StyledLine = styled.div`
-  padding-left: 5px;
-  height: 2rem;
-  border-left: 10px ${(props) => props.theme.palette.primary.main} solid;
-  background-color: ${(props) => props.theme.palette.primary.light};
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-`;
-
-const Line: React.FC<{
-  children: React.ReactNode;
-  lineId: string;
-  onClick: (lineId: string) => void;
-}> = ({ children, lineId, onClick }) => {
-  const handleClick = () => {
-    onClick(lineId);
-  };
-  return <StyledLine onClick={handleClick}>{children}</StyledLine>;
-};
 
 interface State {
   focusedId: string | null;
@@ -112,6 +90,7 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
     }
     dispatch({ type: "updateFocusedId", focusedId: lineId });
   };
+
   const onChangeEditor = (comment: string) => {
     if (!state.focusedId) {
       throw new Error("no line is focused");
@@ -164,29 +143,37 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
   assertIsDefined(data);
   return (
     <Layout>
-      <Container maxWidth="sm">
+      <Container>
         <Box marginBottom={2}>
           {data.post.lines.map((line) => (
-            <div key={line.id}>
-              <Line lineId={line.id} onClick={toggleEditor}>
-                <Typography variant="body1">
+            <ExpansionPanel
+              key={line.id}
+              expanded={line.id === state.focusedId}
+              onChange={() => {
+                toggleEditor(line.id);
+              }}
+            >
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>
                   {line.partialLines.map((pl) => pl.text).join("")}
                 </Typography>
-                {line.id === state.focusedId ? (
-                  <ExpandMoreIcon />
-                ) : (
-                  <ExpandLessIcon />
-                )}
-              </Line>
-              {line.id === state.focusedId && (
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
                 <PreviewEditor
                   onChange={onChangeEditor}
                   line={line.partialLines.map((pl) => pl.text).join("")}
-                  value={state.comments[state.focusedId]?.text || ""}
+                  value={
+                    (state.focusedId &&
+                      state.comments[state.focusedId]?.text) ||
+                    ""
+                  }
                 />
-              )}
-              <Box marginBottom={2} />
-            </div>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           ))}
           <TextField
             fullWidth

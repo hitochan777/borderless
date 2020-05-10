@@ -4,12 +4,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  Avatar,
   Divider,
   Badge,
   IconButton,
   makeStyles,
-  Link as MuiLink,
 } from "@material-ui/core";
 
 import dayjs from "@/lib/time";
@@ -62,15 +60,10 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
           <ListItem>
             <ListItemText>
               <div>
-                <Avatar
-                  className={classes.avatar}
-                  alt={reply.postedBy.username}
-                  src={`https://api.adorable.io/avatars/30/${reply.postedBy.username}@borderless.png`}
-                />
                 <Link href="/[username]" as={`/${reply.postedBy.username}`}>
-                  <MuiLink>{reply.postedBy.username}</MuiLink>
-                </Link>{" "}
-                {dayjs(reply.updatedAt).fromNow()}
+                  <a>{reply.postedBy.username}</a>
+                </Link>
+                ・{dayjs(reply.updatedAt).fromNow()}
                 <IconButton onClick={() => handleLikeClick(reply.id)}>
                   <Badge color="primary" badgeContent={reply.likeCount}>
                     {" "}

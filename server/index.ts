@@ -16,6 +16,8 @@ import { SlateService } from "./infra/service/slate_service";
 import { PrismaClient } from "@prisma/client";
 import { RepositoryContainer } from "./domain/repository";
 
+const isDev = process.env.NODE_ENV !== "production";
+
 if (admin.apps.length === 0) {
   admin.initializeApp({
     credential: process.env.FIREBASE_CREDENTIAL
@@ -127,8 +129,8 @@ const createServer = async () => {
       console.info(response);
       return response;
     },
-    playground: process.env.NODE_ENV !== "production",
-    tracing: true,
+    playground: isDev,
+    tracing: false,
   });
   return server;
 };

@@ -48,7 +48,7 @@ const PostNewPage: NextPage = () => {
         },
       },
     });
-    Router.push(`/${viewer.username}`);
+    Router.push("/[username]", `/${viewer.username}`);
   };
 
   return (

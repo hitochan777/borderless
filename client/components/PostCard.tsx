@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Chip,
-  Typography,
-  Avatar,
-} from "@material-ui/core";
+import styled from "styled-components";
+import { Chip, Typography } from "@material-ui/core";
 import Link from "next/link";
 import dayjs from "@/lib/time";
 
@@ -20,7 +13,24 @@ interface Props {
   description: string;
 }
 
-const MAX_DESCRIPTION_LEN = 100;
+const MyLink = styled.a`
+  &:visited {
+    text-decorations: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const StyledPostCard = styled.div`
+  padding: 20px;
+  &:hover {
+    background-color: #e5e9f0;
+  }
+  transition: 0.3s;
+`;
+
+const MAX_DESCRIPTION_LEN = 200;
 
 export const PostCard: React.FC<Props> = ({
   id,
@@ -31,36 +41,27 @@ export const PostCard: React.FC<Props> = ({
   description,
 }) => {
   return (
-    <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar
-              alt={username}
-              src={`https://api.adorable.io/avatars/30/${username}@borderless.png`}
-            />
-          }
-          title={title}
-          subheader={`${username} ${dayjs(updatedAt).fromNow()}`}
-          action={
-            <Chip
-              label={language}
-              size="small"
-              onClick={(e) => {
-                e.preventDefault();
-                // TODO: To route to search result page
-              }}
-            />
-          }
-        ></CardHeader>
-        <CardContent>
-          <Typography color="textPrimary">
-            {description.substr(0, MAX_DESCRIPTION_LEN) +
-              (description.length > MAX_DESCRIPTION_LEN ? "..." : "")}
+    <StyledPostCard>
+      <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
+        <MyLink>
+          <Typography variant="h1" color="textPrimary">
+            {title}
           </Typography>
-        </CardContent>
-        <CardActions></CardActions>
-      </Card>
-    </Link>
+        </MyLink>
+      </Link>
+      <Chip
+        label={language}
+        size="small"
+        onClick={(e) => {
+          e.preventDefault();
+          // TODO: To route to search result page
+        }}
+      />
+      <Typography color="textPrimary">
+        {description.substr(0, MAX_DESCRIPTION_LEN) +
+          (description.length > MAX_DESCRIPTION_LEN ? "..." : "")}
+      </Typography>
+      {`${username}・${dayjs(updatedAt).fromNow()}`}
+    </StyledPostCard>
   );
 };

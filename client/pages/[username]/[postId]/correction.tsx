@@ -175,20 +175,28 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
               </ExpansionPanelDetails>
             </ExpansionPanel>
           ))}
-          <TextField
-            fullWidth
-            onChange={onOverallCommentChange}
-            value={state.overallComment}
-            placeholder="Overall comment here!"
-          />
+          <Box marginTop={3}>
+            <TextField
+              fullWidth
+              onChange={onOverallCommentChange}
+              value={state.overallComment}
+              placeholder="Overall comment here!"
+            />
+          </Box>
           <Box marginTop={2}>
+            <Button
+              disabled={loading || isSubmittingCorrection}
+              color="primary"
+            >
+              Cancel
+            </Button>
             <Button
               variant="contained"
               onClick={submitCorrection}
               disabled={loading || isSubmittingCorrection}
               color="primary"
             >
-              {loading ? "Submitting..." : "Publish"}
+              {loading ? "Posting..." : "Post"}
             </Button>
           </Box>
         </Box>

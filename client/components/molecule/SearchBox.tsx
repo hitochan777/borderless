@@ -79,11 +79,13 @@ const useFullSearchBoxStyles = makeStyles((theme: Theme) =>
 interface Props {
   executeSearch: (query: { language: string }) => Promise<void>;
   withTextSearch?: boolean;
+  placeholder?: string;
 }
 
 export const FullSearchBox: React.FC<Props> = ({
   executeSearch,
   withTextSearch = false,
+  placeholder,
 }) => {
   const [language, setLanguage] = useState<string | null>(null);
   const classes = useFullSearchBoxStyles();
@@ -97,13 +99,19 @@ export const FullSearchBox: React.FC<Props> = ({
   };
 
   return (
-    <Paper component="form" className={classes.root} onSubmit={onSubmit}>
+    <Paper
+      component="form"
+      className={classes.root}
+      onSubmit={onSubmit}
+      elevation={0}
+    >
       <LanguageSelector
         onChange={(value) => {
           setLanguage(value);
         }}
         label=""
         value={language}
+        placeholder={placeholder}
       />
       {withTextSearch && (
         <>

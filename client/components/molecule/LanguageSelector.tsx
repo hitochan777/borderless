@@ -13,6 +13,7 @@ interface Props {
   onChange: (value: string | null) => void;
   value: string | null;
   relatedOnly?: boolean;
+  placeholder?: string;
 }
 
 const LanguagSelector: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const LanguagSelector: React.FC<Props> = ({
   value,
   onChange,
   relatedOnly = false,
+  placeholder,
 }) => {
   const { data, error, loading } = useFetchLanguagesQuery({
     variables: { relatedOnly },
@@ -51,6 +53,7 @@ const LanguagSelector: React.FC<Props> = ({
       onChange={handleChange}
       options={languageOptions}
       label={label}
+      placeholder={placeholder}
     />
   );
 };

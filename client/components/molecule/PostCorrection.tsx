@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Avatar,
   Typography,
   Divider,
 } from "@material-ui/core";
@@ -33,12 +32,6 @@ export const PostCorrection: React.FC<Props> = ({
   return (
     <Card className={className}>
       <CardHeader
-        avatar={
-          <Avatar
-            alt={correction.postedBy.username}
-            src={`https://api.adorable.io/avatars/30/${correction.postedBy.username}@borderless.png`}
-          />
-        }
         title={correction.postedBy.username}
         subheader={dayjs(correction.updatedAt).fromNow()}
       />

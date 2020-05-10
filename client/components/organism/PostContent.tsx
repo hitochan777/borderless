@@ -3,7 +3,6 @@ import Router from "next/router";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Comment as CommentIcon, Close as CloseIcon } from "@material-ui/icons";
 import {
-  Avatar,
   Badge,
   Box,
   Chip,
@@ -15,7 +14,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Link as MuiLink,
   useMediaQuery,
 } from "@material-ui/core";
 import Link from "next/link";
@@ -183,13 +181,11 @@ export const PostContent: React.FC<Props> = ({
     </>
   );
 
-  const elevation = isLargerThanSm ? 1 : 0;
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12}>
-        <Paper className={classes.paper} elevation={elevation}>
-          <Typography gutterBottom variant="h4" align="center">
+        <Paper className={classes.paper} elevation={0}>
+          <Typography gutterBottom variant="h1" align="center">
             {lines[0].text}
           </Typography>
           <Grid
@@ -201,22 +197,9 @@ export const PostContent: React.FC<Props> = ({
           >
             <Grid item>
               <Link href="/[username]" as={`/${user.username}`}>
-                <Grid container spacing={1}>
-                  <Grid item>
-                    <Avatar
-                      alt={user.username}
-                      src={`https://api.adorable.io/avatars/30/${user.username}@borderless.png`}
-                      className={classes.avatar}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <MuiLink>
-                      <Typography variant="subtitle1">
-                        {user.username}
-                      </Typography>
-                    </MuiLink>
-                  </Grid>
-                </Grid>
+                <Typography variant="subtitle1">
+                  {user.username}・{dayjs(updatedAt).fromNow()}
+                </Typography>
               </Link>
             </Grid>
             <Grid item>
@@ -228,9 +211,9 @@ export const PostContent: React.FC<Props> = ({
                 }}
               />
             </Grid>
-            <Grid item>{dayjs(updatedAt).fromNow()}</Grid>
+            <Grid item></Grid>
             <Grid item>
-              {isDraft ? (
+              {isDraft && (
                 <Link
                   href="/[username]/[postId]/edit"
                   as={`/${user.username}/${id}/edit`}
@@ -243,15 +226,6 @@ export const PostContent: React.FC<Props> = ({
                     {t("edit")}
                   </Button>
                 </Link>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={true}
-                  className={classes.button}
-                >
-                  Published
-                </Button>
               )}
             </Grid>
             <Grid item>
@@ -314,7 +288,9 @@ export const PostContent: React.FC<Props> = ({
               }}
               as={`/${user.username}/${id}/correction`}
             >
-              <Button color="primary">Post Correction</Button>
+              <Button color="primary" variant="contained">
+                Post Correction
+              </Button>
             </Link>
           </div>
         </Paper>

@@ -15,9 +15,16 @@ type Props = {
   value: OptionValue;
   onChange: (value: OptionValue) => void;
   options: Option[];
+  placeholder?: string;
 };
 
-const Select = ({ label, value, onChange, options }: Props) => {
+const Select: React.FC<Props> = ({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder,
+}) => {
   const optionValue = React.useMemo(
     () => options.filter((option) => value === option.value)[0] || null,
     [options, value]
@@ -25,6 +32,7 @@ const Select = ({ label, value, onChange, options }: Props) => {
   return (
     <FormControl fullWidth>
       <Autocomplete
+        placeholder={placeholder}
         value={optionValue}
         onChange={(_event: object, newValue: Option | null) => {
           onChange(newValue?.value || null);

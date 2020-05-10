@@ -90,7 +90,12 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
             aria-label="scrollable prevent tabs example"
           >
             <Tab aria-label="write" label="write" value="write" />
-            <Tab aria-label="preview" label="preview" value="preview" />
+            <Tab
+              aria-label="preview"
+              label="preview"
+              value="preview"
+              disabled={value.length === 0}
+            />
           </Tabs>
         </div>
         <IconButton onClick={insertCorrectionSection}>
@@ -99,25 +104,29 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
           </Tooltip>
         </IconButton>
       </Grid>
-      {currentTab === "write" && (
-        <TextField
-          fullWidth
-          multiline
-          rows="4"
-          margin="normal"
-          variant="outlined"
-          placeholder={t("write-comment-here")}
-          onChange={handleChange}
-          value={value}
-        />
-      )}
-      {currentTab === "preview" && (
-        <PrettyReply
-          line={line}
-          correction={parsedReply.correction}
-          reply={parsedReply.text}
-        />
-      )}
+      <div style={{ minHeight: "120px" }}>
+        {currentTab === "write" && (
+          <TextField
+            fullWidth
+            multiline
+            rows="4"
+            margin="normal"
+            variant="outlined"
+            placeholder={t("write-comment-here")}
+            onChange={handleChange}
+            value={value}
+          />
+        )}
+        {currentTab === "preview" && (
+          <div style={{ padding: "20px" }}>
+            <PrettyReply
+              line={line}
+              correction={parsedReply.correction}
+              reply={parsedReply.text}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

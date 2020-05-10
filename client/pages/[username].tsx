@@ -1,6 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
-import { Box, Grid, Button } from "@material-ui/core";
+import { Grid, Button, Typography, Divider } from "@material-ui/core";
 import Layout from "@/layout/default";
 
 import { useFetchUserByUsernameQuery } from "@/generated/types";
@@ -34,28 +34,32 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
         <Grid item sm={12}>
           <Grid container justify="center">
             <Grid item sm={12}>
+              <Typography variant="h1">{username}</Typography>
               {uid && (
                 <Link href="/settings">
-                  <Button color="primary">Edit Setting</Button>
+                  <Button variant="contained" color="primary">
+                    Edit Setting
+                  </Button>
                 </Link>
               )}
             </Grid>
+            <Divider />
+
             <Grid item sm={12}>
               {data.user.posts.map((post) => (
-                <Box key={post.id} mb="1rem">
-                  <PostCard
-                    id={post.id}
-                    title={post.title}
-                    username={post.user.username}
-                    language={post.language.name}
-                    updatedAt={post.updatedAt}
-                    description={post.lines
-                      .map((line) =>
-                        line.partialLines.map((pl) => pl.text).join("")
-                      )
-                      .join("")}
-                  />
-                </Box>
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  username={post.user.username}
+                  language={post.language.name}
+                  updatedAt={post.updatedAt}
+                  description={post.lines
+                    .map((line) =>
+                      line.partialLines.map((pl) => pl.text).join("")
+                    )
+                    .join("")}
+                />
               ))}
             </Grid>
           </Grid>

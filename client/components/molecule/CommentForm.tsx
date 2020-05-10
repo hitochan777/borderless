@@ -33,6 +33,7 @@ export const CommentForm: React.FC<Props> = ({
               <Button
                 type="submit"
                 variant="contained"
+                color="primary"
                 onClick={onSubmit}
                 disabled={disabled}
               >

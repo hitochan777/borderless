@@ -7,6 +7,7 @@ import {
   booleanArg,
 } from "@nexus/schema";
 
+import { UserNotFoundError } from "../errors/user_not_found_error";
 import * as value from "../value";
 
 export const Query = queryType({
@@ -48,7 +49,7 @@ export const Query = queryType({
         }
         const user = await userRepository.findById(uid);
         if (!user) {
-          throw new Error("User not found");
+          throw new UserNotFoundError(uid);
         }
         const posts = await postRepository.findByLanguages(
           user.fluentLanguages,
@@ -115,7 +116,7 @@ export const Query = queryType({
         if (uid && relatedOnly) {
           const result = await userRepository.findById(uid as string);
           if (result === null) {
-            throw new Error("User not found");
+            throw new UserNotFoundError(uid);
           }
           return [
             ...result.fluentLanguages,
@@ -148,7 +149,7 @@ export const Query = queryType({
       async resolve(_, __, { uid, repositories: { userRepository } }) {
         const result = await userRepository.findById(uid as string);
         if (result === null) {
-          throw new Error("User not found");
+          throw new UserNotFoundError(uid);
         }
         return result;
       },
@@ -160,7 +161,7 @@ export const Query = queryType({
       async resolve(_, { username }, { repositories: { userRepository } }) {
         const result = await userRepository.findByUsername(username);
         if (result === null) {
-          throw new Error("User not found");
+          throw new UserNotFoundError(username);
         }
         return result;
       },

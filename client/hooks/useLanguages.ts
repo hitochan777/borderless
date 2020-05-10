@@ -1,6 +1,6 @@
 import { useFetchLanguagesQuery } from "@/generated/types";
 
-export const useLanguages = (relatedOnly: boolean = true) => {
+export const useLanguages = (relatedOnly = true) => {
   const { data, error, loading } = useFetchLanguagesQuery({
     variables: { relatedOnly },
   });

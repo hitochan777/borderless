@@ -136,7 +136,7 @@ migration ..20200510163045-initial
 +  post Post @relation(fields: [postId], references: [id])
 +  postId String
 +  summaryComment Tweet? @relation(fields: [summaryCommentId], references: [id])
-+  summaryCommentId String? 
++  summaryCommentId String?
 +  corrections Tweet[] @relation("CorrectionGroupTweet")
 +  createdAt DateTime  @default(now())
 +  updatedAt DateTime  @updatedAt
@@ -150,5 +150,3 @@ migration ..20200510163045-initial
 +  updatedAt DateTime  @updatedAt
 +}
 ```
-
-

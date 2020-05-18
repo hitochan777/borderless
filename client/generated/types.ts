@@ -290,6 +290,7 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
     >;
     language: { __typename?: "Language" } & Pick<Language, "id" | "name">;
     user: { __typename?: "User" } & Pick<User, "username">;
+    replies: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
     corrections: Array<
       { __typename?: "CorrectionGroup" } & Pick<
         CorrectionGroup,
@@ -584,6 +585,9 @@ export const PostFieldFragmentDoc = gql`
     }
     user {
       username
+    }
+    replies {
+      ...tweetField
     }
     corrections {
       id

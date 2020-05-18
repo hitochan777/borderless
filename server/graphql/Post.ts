@@ -48,6 +48,13 @@ export const Post = objectType({
         return await tweetRepository.findRepliesTo(root.id);
       },
     });
+    t.list.field("replies", {
+      type: "Tweet",
+      async resolve(root, _, { repositories: { tweetRepository } }) {
+        const replies = tweetRepository.findRepliesTo(root.id);
+        return replies;
+      },
+    });
     t.list.field("corrections", {
       type: "CorrectionGroup",
       resolve: async (

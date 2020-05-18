@@ -5,7 +5,7 @@ import { useFetchPostByIdQuery } from "@/generated/types";
 import { PostContent } from "@/components/organism";
 import { PostCorrections } from "@/components/molecule";
 
-const PostAndCorrectionsContainer = styled.div``;
+const Container = styled.div``;
 
 export interface Props {
   id: string;
@@ -31,7 +31,7 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
   }));
 
   return (
-    <PostAndCorrectionsContainer>
+    <Container>
       <PostContent
         id={data.post.id}
         focusedLineId={focusedLineId}
@@ -44,6 +44,11 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
         likeCount={data.post.likeCount}
       />
       <PostCorrections corrections={data.post.corrections} lines={lines} />
-    </PostAndCorrectionsContainer>
+      <div>
+        {data.post.replies.map((reply) => (
+          <div></div>
+        ))}
+      </div>
+    </Container>
   );
 };

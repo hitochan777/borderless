@@ -49,6 +49,9 @@ export const POST_FIELD_FRAGMENT = gql`
     user {
       username
     }
+    replies {
+      ...tweetField
+    }
     corrections {
       id
       postedBy {

@@ -8591,10 +8591,10 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slate-history@^0.57.2:
-  version "0.57.3"
-  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.57.3.tgz#22e8263610d53d5753c8ede2cc90394c93fb6727"
-  integrity sha512-8vqjLWAsX79117uhfMPqDPXgi7QnFXSZjjSJotzhMRnuqYUw9RneWf/VGVKmsJXZ8JliaQ+QFYEd3EctvmDOlQ==
+slate-history@^0.58.0:
+  version "0.58.1"
+  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.58.1.tgz#ffcfa99608bd725340ff57ece3016660c3144e47"
+  integrity sha512-a+6fk8B36virDLQeR33azOzJhXFuh7uEGBMXA7JMaX9yYT1I4bUuNu/hHQkzPiBPRUlFKKm2fIftsCBTE1lIig==
   dependencies:
     immer "^5.0.0"
     is-plain-object "^3.0.0"

@@ -1,6 +1,6 @@
 # Use the official lightweight Node.js 12 image.
 # https://hub.docker.com/_/node
-FROM node:12.16.3-slim
+FROM node:12.17.0-slim
 
 ENV PRODUCTION_DB_URL=""
 ENV DEVELOPMENT_DB_URL=""

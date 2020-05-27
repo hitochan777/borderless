@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@nexus/schema": "^0.13.1",
-    "@prisma/client": "2.0.0-beta.4",
+    "@prisma/client": "2.0.0-beta.5",
     "@types/cookie": "^0.4.0",
     "apollo-server-micro": "^2.13.0",
     "cookie": "^0.4.1",
@@ -14,7 +14,7 @@
     "iso-639-1": "^2.1.1"
   },
   "devDependencies": {
-    "@prisma/cli": "2.0.0-beta.4",
+    "@prisma/cli": "2.0.0-beta.5",
     "micro-dev": "3.0.0",
     "ts-loader": "7.0.4",
     "ts-node": "8.10.1",
@@ -28,6 +28,7 @@
     "generate:nexus": "ts-node -T schema.ts",
     "generate:prisma": "prisma generate",
     "format": "cd .. && yarn format && cd server",
-    "deploy": "gcloud builds submit && gcloud run deploy api --image gcr.io/borderless-260514/api --platform managed --allow-unauthenticated"
+    "deploy": "gcloud builds submit && gcloud run deploy api --image gcr.io/borderless-260514/api --platform managed --allow-unauthenticated",
+    "start:db-proxy": "cloud_sql_proxy --instances=borderless-260514:asia-northeast2:borderless-db=tcp:5432 -credential_file=$HOME/Downloads/borderless-260514-a14e1083953e.json"
   }
 }

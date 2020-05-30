@@ -7,14 +7,14 @@ import {
   Divider,
   Badge,
   IconButton,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 
 import dayjs from "@/lib/time";
 import { LikeIcon, PrettyReply } from "@/components/molecule";
 import {
   useTweetLikeMutation,
-  useFetchTweetsForLineQuery,
+  useFetchTweetsForLineQuery
 } from "@/generated/types";
 
 interface Props {
@@ -22,23 +22,23 @@ interface Props {
   line: string;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   avatar: {
     width: "30px",
     height: "auto",
-    display: "inline-block",
-  },
+    display: "inline-block"
+  }
 }));
 
 export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   const classes = useStyles();
   const { data, error, loading } = useFetchTweetsForLineQuery({
-    variables: { id: lineId },
+    variables: { id: lineId }
   });
-  const [tweetLike] = useTweetLikeMutation();
+  const [tweetLike, tweetLikeResult] = useTweetLikeMutation();
 
   const handleLikeClick = async (id: string) => {
     await tweetLike({ variables: { id } });
@@ -55,7 +55,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   }
   return (
     <List className={classes.root}>
-      {data.replies.map((reply) => (
+      {data.replies.map(reply => (
         <React.Fragment key={reply.id}>
           <ListItem>
             <ListItemText>
@@ -64,7 +64,10 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
                   <a>{reply.postedBy.username}</a>
                 </Link>
                 ・{dayjs(reply.updatedAt).fromNow()}
-                <IconButton onClick={() => handleLikeClick(reply.id)}>
+                <IconButton
+                  disabled={tweetLikeResult.loading}
+                  onClick={() => handleLikeClick(reply.id)}
+                >
                   <Badge color="primary" badgeContent={reply.likeCount}>
                     {" "}
                     <LikeIcon liked={reply.likedByMe} />

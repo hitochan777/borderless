@@ -34,7 +34,7 @@ const Select: React.FC<Props> = ({
       <Autocomplete
         placeholder={placeholder}
         value={optionValue}
-        onChange={(_event: object, newValue: Option | null) => {
+        onChange={(_event: unknown, newValue: Option | null) => {
           onChange(newValue?.value || null);
         }}
         options={options}

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const SearchBox: React.FC<{}> = () => {
+export const SearchBox: React.FC = () => {
   const classes = useStyles();
   return (
     <div className={classes.search}>

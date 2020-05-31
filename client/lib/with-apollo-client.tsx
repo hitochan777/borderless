@@ -15,7 +15,9 @@ function parseCookies(req?: IncomingMessage) {
 }
 
 const withApolloClient = (
-  App: React.ComponentType<any> & { getInitialProps?: Function }
+  App: React.ComponentType<any> & {
+    getInitialProps?: (ctx: AppContext) => Promise<Record<string, any>>;
+  }
 ) => {
   return class Apollo extends React.Component {
     static displayName = "withApollo(App)";

@@ -1,2 +1,3 @@
 **/node_modules/**
 server/typegen.ts
+client/generated/types.ts

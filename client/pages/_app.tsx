@@ -24,7 +24,9 @@ const auth = async (context: NextPageContext) => {
 };
 
 const withAuth = (
-  App: React.ComponentType<any> & { getInitialProps?: Function }
+  App: React.ComponentType<any> & {
+    getInitialProps?: (ctx: AppContext) => Promise<Record<string, any>>;
+  }
 ) => {
   const WithAuth = ({ ...props }) => {
     const [uid, setUid] = useState<string | null>(props.user);

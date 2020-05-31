@@ -60,7 +60,7 @@ export const PreviewEditor: React.FC<Props> = ({ onChange, line, value }) => {
       })
     );
   }, [currentTab]);
-  const handleTabChange = (_event: object, value: TabKey) => {
+  const handleTabChange = (_event: unknown, value: TabKey) => {
     setCurrentTab(value);
   };
 

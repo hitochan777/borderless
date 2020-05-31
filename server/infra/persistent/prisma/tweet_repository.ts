@@ -156,10 +156,9 @@ export class PrismaTweetRepository implements TweetRepository {
   }
 
   async countLike(tweetId: ID): Promise<number> {
-    const likes = await this.photon.like.findMany({
+    return await this.photon.like.count({
       where: { repliable: { id: tweetId } },
-    }); // FIXME: use count method when it becomes available
-    return likes.length;
+    });
   }
 
   async likedByMe(userId: ID, tweetId: ID): Promise<boolean> {

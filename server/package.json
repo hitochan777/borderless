@@ -16,7 +16,7 @@
   "devDependencies": {
     "@prisma/cli": "2.0.0-beta.7",
     "micro-dev": "3.0.0",
-    "ts-loader": "7.0.4",
+    "ts-loader": "7.0.5",
     "ts-node": "8.10.2",
     "typescript": "3.9.3"
   },

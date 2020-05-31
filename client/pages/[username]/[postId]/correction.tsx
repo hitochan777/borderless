@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { NextPage, NextPageContext } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   Container,
@@ -184,12 +185,14 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
             />
           </Box>
           <Box marginTop={2}>
-            <Button
-              disabled={loading || isSubmittingCorrection}
-              color="primary"
-            >
-              Cancel
-            </Button>
+            <Link href="/[username]/[postId]" as={`/${username}/${postId}`}>
+              <Button
+                disabled={loading || isSubmittingCorrection}
+                color="primary"
+              >
+                Cancel
+              </Button>
+            </Link>
             <Button
               variant="contained"
               onClick={submitCorrection}

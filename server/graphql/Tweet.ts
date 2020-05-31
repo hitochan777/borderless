@@ -58,7 +58,10 @@ export const Tweet = objectType({
     });
     t.boolean("likedByMe", {
       async resolve(tweet, _, { uid, repositories: { tweetRepository } }) {
-        return await tweetRepository.likedByMe(uid as string, tweet.id);
+        if (uid) {
+          return await tweetRepository.likedByMe(uid, tweet.id);
+        }
+        return false;
       },
     });
   },

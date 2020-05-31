@@ -81,7 +81,10 @@ export const Post = objectType({
     });
     t.boolean("likedByMe", {
       async resolve(post, _, { uid, repositories: { postRepository } }) {
-        return await postRepository.likedByMe(uid as string, post.id);
+        if (uid) {
+          return await postRepository.likedByMe(uid, post.id);
+        }
+        return false;
       },
     });
   },

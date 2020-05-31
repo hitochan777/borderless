@@ -175,7 +175,7 @@ export class PrismaPostRepository implements PostRepository {
         user: true,
       },
       skip: offset,
-      first: limit,
+      take: limit,
       orderBy: {
         updatedAt: "desc",
       },

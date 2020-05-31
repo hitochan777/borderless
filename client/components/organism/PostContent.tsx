@@ -106,7 +106,17 @@ export const PostContent: React.FC<Props> = ({
     return currentLines[0];
   }, [focusedLineId]);
 
-  const [postLike, postLikeResult] = usePostLikeMutation();
+  const [postLike, postLikeResult] = usePostLikeMutation({
+    optimisticResponse: {
+      __typename: "Mutation",
+      postLike: {
+        __typename: "Post",
+        id: id,
+        likeCount: likedByMe ? likeCount - 1 : likeCount + 1,
+        likedByMe: true,
+      },
+    },
+  });
 
   const handleLikeClick = async (id: string) => {
     await postLike({ variables: { id } });

@@ -211,7 +211,9 @@ export const POST_CREATE_MUTATION = gql`
 export const POST_LIKE_MUTATION = gql`
   mutation postLike($id: ID!) {
     postLike(id: $id) {
-      ...postField
+      id
+      likedByMe
+      likeCount
     }
   }
   ${POST_FIELD_FRAGMENT}
@@ -266,10 +268,11 @@ export const TWEET_CREATE_MUTATION = gql`
 export const TWEET_LIKE_MUTATION = gql`
   mutation tweetLike($id: ID!) {
     tweetLike(id: $id) {
-      ...tweetField
+      id
+      likedByMe
+      likeCount
     }
   }
-  ${TWEET_FIELD_FRAGMENT}
 `;
 
 export const CORRECTION_GROUP_CREATE_MUTATION = gql`

@@ -130,7 +130,7 @@ const createServer = async () => {
       return response;
     },
     playground: isDev,
-    tracing: false,
+    tracing: isDev,
   });
   return server;
 };

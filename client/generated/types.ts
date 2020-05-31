@@ -9,42 +9,53 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  LanguageCode: any;
   Date: any;
+  LanguageCode: any;
 };
 
-export type AuthData = {
-  __typename?: "AuthData";
-  token: Scalars["String"];
-};
-
-export type CorrectionGroup = Node & {
-  __typename?: "CorrectionGroup";
-  id: Scalars["ID"];
-  postedBy: User;
+export type Query = {
+  __typename?: "Query";
+  errorMessage?: Maybe<Scalars["String"]>;
+  feed: Array<Post>;
+  langs: Array<Language>;
+  loading: Scalars["Boolean"];
   post: Post;
-  summaryComment?: Maybe<Tweet>;
-  lineCorrections: Array<Tweet>;
-  createdAt?: Maybe<Scalars["Date"]>;
-  updatedAt?: Maybe<Scalars["Date"]>;
-};
-
-export type Language = {
-  __typename?: "Language";
-  id: Scalars["LanguageCode"];
-  name: Scalars["String"];
-};
-
-export type Line = Node & {
-  __typename?: "Line";
-  id: Scalars["ID"];
-  partialLines: Array<PartialLine>;
+  posts: Array<Post>;
   replies: Array<Tweet>;
+  search: Array<Post>;
+  timezones: Array<Timezone>;
+  tweet: Tweet;
+  user: User;
+  viewer: User;
 };
 
-export type LineInput = {
-  id?: Maybe<Scalars["ID"]>;
-  partialLines: Array<PartialLineInput>;
+export type QueryFeedArgs = {
+  offset?: Scalars["Int"];
+  limit?: Scalars["Int"];
+};
+
+export type QueryLangsArgs = {
+  relatedOnly?: Maybe<Scalars["Boolean"]>;
+};
+
+export type QueryPostArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryRepliesArgs = {
+  id: Scalars["ID"];
+};
+
+export type QuerySearchArgs = {
+  query: SearchInput;
+};
+
+export type QueryTweetArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryUserArgs = {
+  username: Scalars["String"];
 };
 
 export type Mutation = {
@@ -115,21 +126,30 @@ export type MutationUserUpdateSettingArgs = {
 };
 
 export type Node = {
+  /** Unique identifier for the resource */
   id: Scalars["ID"];
 };
 
-export type PartialLine = {
-  __typename?: "PartialLine";
-  text: Scalars["String"];
-};
+/** Anything that can be replied */
+export type Repliable = Tweet | Line;
 
-export type PartialLineInput = {
-  subtext: Scalars["String"];
-  referes?: Maybe<Array<Scalars["String"]>>;
+export type User = Node & {
+  __typename?: "User";
+  /** Unique identifier for the resource */
+  id: Scalars["ID"];
+  username: Scalars["String"];
+  email: Scalars["String"];
+  timezone: Timezone;
+  fluentLanguages: Array<Language>;
+  learningLanguages: Array<Language>;
+  posts: Array<Post>;
+  createdAt?: Maybe<Scalars["Date"]>;
+  updatedAt?: Maybe<Scalars["Date"]>;
 };
 
 export type Post = Node & {
   __typename?: "Post";
+  /** Unique identifier for the resource */
   id: Scalars["ID"];
   json: Scalars["String"];
   title: Scalars["String"];
@@ -145,71 +165,23 @@ export type Post = Node & {
   likedByMe: Scalars["Boolean"];
 };
 
-export type PostInput = {
-  language: Scalars["String"];
-  lines: Array<LineInput>;
-  isDraft: Scalars["Boolean"];
-};
-
-export type Query = {
-  __typename?: "Query";
-  errorMessage?: Maybe<Scalars["String"]>;
-  feed: Array<Post>;
-  langs: Array<Language>;
-  loading: Scalars["Boolean"];
-  post: Post;
-  posts: Array<Post>;
+export type Line = Node & {
+  __typename?: "Line";
+  /** Unique identifier for the resource */
+  id: Scalars["ID"];
+  partialLines: Array<PartialLine>;
   replies: Array<Tweet>;
-  search: Array<Post>;
-  timezones: Array<Timezone>;
-  tweet: Tweet;
-  user: User;
-  viewer: User;
 };
 
-export type QueryFeedArgs = {
-  offset?: Scalars["Int"];
-  limit?: Scalars["Int"];
-};
-
-export type QueryLangsArgs = {
-  relatedOnly?: Maybe<Scalars["Boolean"]>;
-};
-
-export type QueryPostArgs = {
-  id: Scalars["ID"];
-};
-
-export type QueryRepliesArgs = {
-  id: Scalars["ID"];
-};
-
-export type QuerySearchArgs = {
-  query: SearchInput;
-};
-
-export type QueryTweetArgs = {
-  id: Scalars["ID"];
-};
-
-export type QueryUserArgs = {
-  username: Scalars["String"];
-};
-
-export type Repliable = Tweet | Line;
-
-export type SearchInput = {
-  language?: Maybe<Scalars["String"]>;
-};
-
-export type Timezone = Node & {
-  __typename?: "Timezone";
-  id: Scalars["ID"];
-  offset: Scalars["String"];
+export type Language = {
+  __typename?: "Language";
+  id: Scalars["LanguageCode"];
+  name: Scalars["String"];
 };
 
 export type Tweet = Node & {
   __typename?: "Tweet";
+  /** Unique identifier for the resource */
   id: Scalars["ID"];
   text: Scalars["String"];
   correction?: Maybe<Scalars["String"]>;
@@ -223,24 +195,33 @@ export type Tweet = Node & {
   likedByMe: Scalars["Boolean"];
 };
 
-export type TweetInput = {
-  inReplyTo: Scalars["ID"];
-  postId: Scalars["ID"];
-  text: Scalars["String"];
-  correction?: Maybe<Scalars["String"]>;
+export type AuthData = {
+  __typename?: "AuthData";
+  token: Scalars["String"];
 };
 
-export type User = Node & {
-  __typename?: "User";
+export type PartialLine = {
+  __typename?: "PartialLine";
+  text: Scalars["String"];
+};
+
+export type CorrectionGroup = Node & {
+  __typename?: "CorrectionGroup";
+  /** Unique identifier for the resource */
   id: Scalars["ID"];
-  username: Scalars["String"];
-  email: Scalars["String"];
-  timezone: Timezone;
-  fluentLanguages: Array<Language>;
-  learningLanguages: Array<Language>;
-  posts: Array<Post>;
+  postedBy: User;
+  post: Post;
+  summaryComment?: Maybe<Tweet>;
+  lineCorrections: Array<Tweet>;
   createdAt?: Maybe<Scalars["Date"]>;
   updatedAt?: Maybe<Scalars["Date"]>;
+};
+
+export type Timezone = Node & {
+  __typename?: "Timezone";
+  /** Unique identifier for the resource */
+  id: Scalars["ID"];
+  offset: Scalars["String"];
 };
 
 export type UserInput = {
@@ -254,6 +235,33 @@ export type UserSettingInput = {
   fluentLanguages: Array<Scalars["String"]>;
   learningLanguages: Array<Scalars["String"]>;
   timezone?: Maybe<Scalars["String"]>;
+};
+
+export type PostInput = {
+  language: Scalars["String"];
+  lines: Array<LineInput>;
+  isDraft: Scalars["Boolean"];
+};
+
+export type LineInput = {
+  id?: Maybe<Scalars["ID"]>;
+  partialLines: Array<PartialLineInput>;
+};
+
+export type PartialLineInput = {
+  subtext: Scalars["String"];
+  referes?: Maybe<Array<Scalars["String"]>>;
+};
+
+export type TweetInput = {
+  inReplyTo: Scalars["ID"];
+  postId: Scalars["ID"];
+  text: Scalars["String"];
+  correction?: Maybe<Scalars["String"]>;
+};
+
+export type SearchInput = {
+  language?: Maybe<Scalars["String"]>;
 };
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
@@ -420,7 +428,10 @@ export type PostLikeMutationVariables = {
 };
 
 export type PostLikeMutation = { __typename?: "Mutation" } & {
-  postLike: { __typename?: "Post" } & PostFieldFragment;
+  postLike: { __typename?: "Post" } & Pick<
+    Post,
+    "id" | "likedByMe" | "likeCount"
+  >;
 };
 
 export type UserUpdateMutationVariables = {
@@ -470,7 +481,10 @@ export type TweetLikeMutationVariables = {
 };
 
 export type TweetLikeMutation = { __typename?: "Mutation" } & {
-  tweetLike: { __typename?: "Tweet" } & TweetFieldFragment;
+  tweetLike: { __typename?: "Tweet" } & Pick<
+    Tweet,
+    "id" | "likedByMe" | "likeCount"
+  >;
 };
 
 export type CorrectionGroupCreateMutationVariables = {
@@ -1198,10 +1212,11 @@ export type PostCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
 export const PostLikeDocument = gql`
   mutation postLike($id: ID!) {
     postLike(id: $id) {
-      ...postField
+      id
+      likedByMe
+      likeCount
     }
   }
-  ${PostFieldFragmentDoc}
 `;
 export type PostLikeMutationFn = ApolloReactCommon.MutationFunction<
   PostLikeMutation,
@@ -1419,10 +1434,11 @@ export type TweetCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
 export const TweetLikeDocument = gql`
   mutation tweetLike($id: ID!) {
     tweetLike(id: $id) {
-      ...tweetField
+      id
+      likedByMe
+      likeCount
     }
   }
-  ${TweetFieldFragmentDoc}
 `;
 export type TweetLikeMutationFn = ApolloReactCommon.MutationFunction<
   TweetLikeMutation,

@@ -15,6 +15,6 @@ export class Language {
     return this.underlyingCode;
   }
   get name(): string {
-    return ISO6391.getName(this.underlyingCode);
+    return ISO6391.getNativeName(this.underlyingCode);
   }
 }

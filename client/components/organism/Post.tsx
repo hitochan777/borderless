@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useFetchPostByIdQuery } from "@/generated/types";
 import { PostContent } from "@/components/organism";
 import { PostCorrections } from "@/components/molecule";
-import { TextField, Button, makeStyles } from "@material-ui/core";
+import { PostCommentForm } from "@/components/molecule/PostCommentForm";
 
 const Container = styled.div``;
 
@@ -13,16 +13,7 @@ export interface Props {
   focusedLineId: string | null;
 }
 
-const useStyles = makeStyles((theme) => ({
-  commentPostButton: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-}));
-
 export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
-  const classes = useStyles();
   const { data, error, loading } = useFetchPostByIdQuery({ variables: { id } });
 
   if (loading) {
@@ -59,16 +50,7 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
           <div>{reply.text}</div>
         ))}
       </div>
-      <TextField
-        fullWidth
-        variant="outlined"
-        placeholder="Write any comment to this post!"
-      />
-      <div className={classes.commentPostButton}>
-        <Button color="primary" variant="contained">
-          Post Comment
-        </Button>
-      </div>
+      <PostCommentForm postId={id} />
     </Container>
   );
 };

@@ -34,6 +34,7 @@ export const PostCommentForm: React.FC<Props> = ({ postId }) => {
         tweet: { inReplyTo: postId, postId: postId, text: comment },
       },
     });
+    setComment("");
   };
 
   return (

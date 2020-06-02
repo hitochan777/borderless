@@ -1,21 +1,14 @@
 import React from "react";
-import Link from "next/link";
 import {
   List,
   ListItem,
   ListItemText,
   Divider,
-  Badge,
-  IconButton,
   makeStyles,
 } from "@material-ui/core";
 
-import dayjs from "@/lib/time";
-import { LikeIcon, PrettyReply } from "@/components/molecule";
-import {
-  useTweetLikeMutation,
-  useFetchTweetsForLineQuery,
-} from "@/generated/types";
+import { ReplyCard } from "@/components/molecule";
+import { useFetchTweetsForLineQuery } from "@/generated/types";
 
 interface Props {
   lineId: string;
@@ -38,11 +31,6 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   const { data, error, loading } = useFetchTweetsForLineQuery({
     variables: { id: lineId },
   });
-  const [tweetLike, tweetLikeResult] = useTweetLikeMutation();
-
-  const handleLikeClick = async (id: string) => {
-    await tweetLike({ variables: { id } });
-  };
 
   if (loading) {
     return <></>;
@@ -59,28 +47,16 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
         <React.Fragment key={reply.id}>
           <ListItem>
             <ListItemText>
-              <div>
-                <Link href="/[username]" as={`/${reply.postedBy.username}`}>
-                  <a>{reply.postedBy.username}</a>
-                </Link>
-                ・{dayjs(reply.updatedAt).fromNow()}
-                <IconButton
-                  disabled={tweetLikeResult.loading}
-                  onClick={() => handleLikeClick(reply.id)}
-                >
-                  <Badge color="primary" badgeContent={reply.likeCount}>
-                    {" "}
-                    <LikeIcon liked={reply.likedByMe} />
-                  </Badge>
-                </IconButton>
-              </div>
-              <div>
-                <PrettyReply
-                  line={line}
-                  correction={reply.correction || undefined}
-                  reply={reply.text}
-                />
-              </div>
+              <ReplyCard
+                tweetId={reply.id}
+                line={line}
+                correction={reply.correction || undefined}
+                replyText={reply.text}
+                likeCount={reply.likeCount}
+                likedByMe={reply.likedByMe}
+                updatedAt={reply.updatedAt}
+                username={reply.postedBy.username}
+              />
             </ListItemText>
           </ListItem>
           <Divider />

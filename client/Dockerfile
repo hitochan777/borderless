@@ -1,4 +1,4 @@
-FROM node:12.17.0-alpine3.11
+FROM node:12.18.0-alpine3.11
 ARG GRAPHQL_ENDPOINT=""
 WORKDIR /app
 COPY package.json .

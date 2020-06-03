@@ -83,6 +83,6 @@
     "ts-loader": "7.0.5"
   },
   "resolutions": {
-    "jss": "10.1.1"
+    "jss": "10.2.0"
   }
 }

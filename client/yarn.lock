@@ -6446,10 +6446,10 @@ jss-plugin-vendor-prefixer@^10.0.3:
     css-vendor "^2.0.7"
     jss "10.1.1"
 
-jss@10.1.1, jss@^10.0.3:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/jss/-/jss-10.1.1.tgz#450b27d53761af3e500b43130a54cdbe157ea332"
-  integrity sha512-Xz3qgRUFlxbWk1czCZibUJqhVPObrZHxY3FPsjCXhDld4NOj1BgM14Ir5hVm+Qr6OLqVljjGvoMcCdXNOAbdkQ==
+jss@10.1.1, jss@10.2.0, jss@^10.0.3:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/jss/-/jss-10.2.0.tgz#5f0b18dc506172ca0306f49d9222ee333800cf34"
+  integrity sha512-WyG2Jm8nEbYHIVx0UIitgS7R1SXwWpQ1p+SHeI2HNrNR/DSEBXR8l0XYqNdVOCvKnFDPwVWVW7EFlhPh0tYA2w==
   dependencies:
     "@babel/runtime" "^7.3.1"
     csstype "^2.6.5"

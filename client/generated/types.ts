@@ -290,6 +290,7 @@ export type PostFieldFragment = { __typename?: "Post" } & Pick<
     >;
     language: { __typename?: "Language" } & Pick<Language, "id" | "name">;
     user: { __typename?: "User" } & Pick<User, "username">;
+    replies: Array<{ __typename?: "Tweet" } & TweetFieldFragment>;
     corrections: Array<
       { __typename?: "CorrectionGroup" } & Pick<
         CorrectionGroup,
@@ -473,7 +474,7 @@ export type TweetCreateMutationVariables = {
 };
 
 export type TweetCreateMutation = { __typename?: "Mutation" } & {
-  tweetCreate: { __typename?: "Tweet" } & Pick<Tweet, "id">;
+  tweetCreate: { __typename?: "Tweet" } & TweetFieldFragment;
 };
 
 export type TweetLikeMutationVariables = {
@@ -584,6 +585,9 @@ export const PostFieldFragmentDoc = gql`
     }
     user {
       username
+    }
+    replies {
+      ...tweetField
     }
     corrections {
       id
@@ -1384,9 +1388,10 @@ export type UserUpdateSettingMutationOptions = ApolloReactCommon.BaseMutationOpt
 export const TweetCreateDocument = gql`
   mutation tweetCreate($tweet: TweetInput!) {
     tweetCreate(tweet: $tweet) {
-      id
+      ...tweetField
     }
   }
+  ${TweetFieldFragmentDoc}
 `;
 export type TweetCreateMutationFn = ApolloReactCommon.MutationFunction<
   TweetCreateMutation,

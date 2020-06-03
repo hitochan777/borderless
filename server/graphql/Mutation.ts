@@ -288,7 +288,7 @@ export const Mutation = mutationType({
           throw new Error("Failed to create a tweet");
         }
 
-        return tweet;
+        return createdTweet;
       },
     });
     t.field("tweetLike", {

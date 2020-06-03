@@ -3,9 +3,10 @@ import styled from "styled-components";
 
 import { useFetchPostByIdQuery } from "@/generated/types";
 import { PostContent } from "@/components/organism";
-import { PostCorrections } from "@/components/molecule";
+import { PostCorrections, ReplyCard } from "@/components/molecule";
+import { PostCommentForm } from "@/components/molecule/PostCommentForm";
 
-const PostAndCorrectionsContainer = styled.div``;
+const Container = styled.div``;
 
 export interface Props {
   id: string;
@@ -31,7 +32,7 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
   }));
 
   return (
-    <PostAndCorrectionsContainer>
+    <Container>
       <PostContent
         id={data.post.id}
         focusedLineId={focusedLineId}
@@ -44,6 +45,20 @@ export const Post: React.FC<Props> = ({ id, focusedLineId }) => {
         likeCount={data.post.likeCount}
       />
       <PostCorrections corrections={data.post.corrections} lines={lines} />
-    </PostAndCorrectionsContainer>
+      <div>
+        {data.post.replies.map((reply) => (
+          <ReplyCard
+            key={reply.id}
+            tweetId={reply.id}
+            replyText={reply.text}
+            likeCount={reply.likeCount}
+            likedByMe={reply.likedByMe}
+            updatedAt={reply.updatedAt}
+            username={reply.postedBy.username}
+          />
+        ))}
+      </div>
+      <PostCommentForm postId={id} />
+    </Container>
   );
 };

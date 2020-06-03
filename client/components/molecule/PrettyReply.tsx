@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Box, Typography } from "@material-ui/core";
 
 interface Props {
-  line: string;
+  line?: string;
   correction?: string;
   reply: string;
 }
@@ -84,7 +84,7 @@ const DiffPanel: React.FC<{ oldStr: string; newStr: string }> = ({
 export const PrettyReply: React.FC<Props> = ({ line, correction, reply }) => {
   return (
     <div>
-      {correction && (
+      {correction && line && (
         <Box marginY={1}>
           <DiffPanel oldStr={line} newStr={correction} />
         </Box>

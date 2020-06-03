@@ -49,6 +49,9 @@ export const POST_FIELD_FRAGMENT = gql`
     user {
       username
     }
+    replies {
+      ...tweetField
+    }
     corrections {
       id
       postedBy {
@@ -260,9 +263,10 @@ export const USER_UPDATE_SETTING_MUTATION = gql`
 export const TWEET_CREATE_MUTATION = gql`
   mutation tweetCreate($tweet: TweetInput!) {
     tweetCreate(tweet: $tweet) {
-      id
+      ...tweetField
     }
   }
+  ${TWEET_FIELD_FRAGMENT}
 `;
 
 export const TWEET_LIKE_MUTATION = gql`

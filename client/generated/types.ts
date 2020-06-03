@@ -474,7 +474,7 @@ export type TweetCreateMutationVariables = {
 };
 
 export type TweetCreateMutation = { __typename?: "Mutation" } & {
-  tweetCreate: { __typename?: "Tweet" } & Pick<Tweet, "id">;
+  tweetCreate: { __typename?: "Tweet" } & TweetFieldFragment;
 };
 
 export type TweetLikeMutationVariables = {
@@ -1388,9 +1388,10 @@ export type UserUpdateSettingMutationOptions = ApolloReactCommon.BaseMutationOpt
 export const TweetCreateDocument = gql`
   mutation tweetCreate($tweet: TweetInput!) {
     tweetCreate(tweet: $tweet) {
-      id
+      ...tweetField
     }
   }
+  ${TweetFieldFragmentDoc}
 `;
 export type TweetCreateMutationFn = ApolloReactCommon.MutationFunction<
   TweetCreateMutation,

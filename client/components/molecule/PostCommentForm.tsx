@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { TextField, Button, makeStyles } from "@material-ui/core";
 
-import { useTweetCreateMutation } from "@/generated/types";
+import {
+  useTweetCreateMutation,
+  FetchPostByIdQueryResult,
+} from "@/generated/types";
+import { FETCH_POST_BY_ID_QUERY } from "@/constant/graphql";
 
 interface Props {
   postId: string;
@@ -20,16 +24,44 @@ export const PostCommentForm: React.FC<Props> = ({ postId }) => {
   const [comment, setComment] = useState("");
 
   const [
-    createPostMutation,
-    createPostMutationResult,
-  ] = useTweetCreateMutation();
+    createCommentMutation,
+    createCommentMutationResult,
+  ] = useTweetCreateMutation({
+    update(cache, { data }) {
+      if (!data) {
+        return;
+      }
+      const { tweetCreate: tweet } = data;
+      const currentData:
+        | FetchPostByIdQueryResult["data"]
+        | null = cache.readQuery({
+        query: FETCH_POST_BY_ID_QUERY,
+        variables: { id: postId },
+      });
+      if (!currentData) {
+        return;
+      }
+      console.log(currentData, tweet);
+      cache.writeQuery({
+        query: FETCH_POST_BY_ID_QUERY,
+        variables: { id: postId },
+        data: {
+          ...currentData,
+          post: {
+            ...currentData.post,
+            replies: [tweet, ...currentData.post.replies],
+          },
+        },
+      });
+    },
+  });
 
   const postComment = async () => {
     if (comment.trim() === "") {
       alert("Comment should not be empty");
       return;
     }
-    await createPostMutation({
+    await createCommentMutation({
       variables: {
         tweet: { inReplyTo: postId, postId: postId, text: comment },
       },
@@ -52,7 +84,7 @@ export const PostCommentForm: React.FC<Props> = ({ postId }) => {
         <Button
           color="primary"
           variant="contained"
-          disabled={createPostMutationResult.loading}
+          disabled={createCommentMutationResult.loading}
           onClick={postComment}
         >
           Post Comment

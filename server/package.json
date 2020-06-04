@@ -18,7 +18,7 @@
     "micro-dev": "3.0.0",
     "ts-loader": "7.0.5",
     "ts-node": "8.10.2",
-    "typescript": "3.9.3"
+    "typescript": "3.9.5"
   },
   "scripts": {
     "start": "NODE_ENV=production TS_NODE_FILES=true node -r ts-node/register/transpile-only node_modules/.bin/micro",

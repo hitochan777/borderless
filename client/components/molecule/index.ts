@@ -10,3 +10,4 @@ export * from "./ReplyCard";
 export * from "./PrettyReply";
 export * from "./PreviewEditor";
 export * from "./SearchBox";
+export * from "./UsernameLink";

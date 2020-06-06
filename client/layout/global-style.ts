@@ -6,4 +6,9 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0;
       font-family: sans-serif;
   }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;

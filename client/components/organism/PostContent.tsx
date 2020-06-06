@@ -206,11 +206,12 @@ export const PostContent: React.FC<Props> = ({
             justify="center"
           >
             <Grid item>
-              <Link href="/[username]" as={`/${user.username}`}>
-                <Typography variant="subtitle1">
-                  {user.username}・{dayjs(updatedAt).fromNow()}
-                </Typography>
-              </Link>
+              <Typography variant="subtitle1">
+                <Link href="/[username]" as={`/${user.username}`}>
+                  <a>{user.username}</a>
+                </Link>
+                ・{dayjs(updatedAt).fromNow()}
+              </Typography>
             </Grid>
             <Grid item>
               <Chip

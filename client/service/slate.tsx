@@ -2,7 +2,7 @@ import { LineFieldFragment, LineInput } from "../generated/types";
 import { Node } from "slate";
 
 export function transformToGql(nodes: Node[]): LineInput[] {
-  return nodes.map((lineNode) => ({
+  return nodes.map((lineNode: any) => ({
     id: lineNode.id,
     partialLines: lineNode.children.map((sublineNode: any) => ({
       subtext: sublineNode.text,

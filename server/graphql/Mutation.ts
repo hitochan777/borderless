@@ -4,7 +4,7 @@ import cookie from "cookie";
 import { Post } from "../entity/post";
 import { Line } from "../entity/line";
 import { User } from "../entity/user";
-import { Tweet } from "../entity/tweet";
+import { Tweet, TweetNoContentError } from "../entity/tweet";
 import { LineContent } from "../entity/line_content";
 import { Language, Timezone } from "../value";
 import { CorrectionGroup } from "../entity/correction_group";
@@ -338,19 +338,25 @@ export const Mutation = mutationType({
         );
         let maybeSummaryComment: Tweet | null = null;
         if (summaryCommentInput) {
-          const summaryComment = new Tweet(
-            null,
-            uid as string,
-            summaryCommentInput.inReplyTo,
-            summaryCommentInput.postId,
-            summaryCommentInput.text,
-            summaryCommentInput.correction ?? null,
-            null,
-            null
-          );
-          maybeSummaryComment = await tweetRepository.create(summaryComment);
-          if (!maybeSummaryComment) {
-            throw new Error("Unexpected error occurred");
+          try {
+            const summaryComment = new Tweet(
+              null,
+              uid as string,
+              summaryCommentInput.inReplyTo,
+              summaryCommentInput.postId,
+              summaryCommentInput.text,
+              summaryCommentInput.correction ?? null,
+              null,
+              null
+            );
+            maybeSummaryComment = await tweetRepository.create(summaryComment);
+            if (!maybeSummaryComment) {
+              throw new Error("Unexpected error occurred");
+            }
+          } catch (e) {
+            if (e instanceof TweetNoContentError) {
+              maybeSummaryComment = null;
+            }
           }
         }
         const maybeTweets = await tweetRepository.createMany(correctionTweets);

@@ -30,11 +30,13 @@ export class PrismaCorrectionGroupRepository
             id: correctionGroup.postId,
           },
         },
-        summaryComment: {
-          connect: {
-            id: correctionGroup.summaryCommentId,
+        ...(correctionGroup.summaryCommentId && {
+          summaryComment: {
+            connect: {
+              id: correctionGroup.summaryCommentId,
+            },
           },
-        },
+        }),
         corrections: {
           connect: correctionGroup.correctionIds.map((id) => ({
             id,

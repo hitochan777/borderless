@@ -2,6 +2,14 @@ import React, { useMemo, useState } from "react";
 import { createEditor, Node, Editor as SlateEditor, Transforms } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
+import styled from "styled-components";
+
+const StyledEditor = styled.div`
+  border: 1px solid grey;
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 200px;
+`;
 
 const defaultValue: Node[] = [
   {
@@ -54,11 +62,15 @@ export const Editor: React.FC<EditorProps> = ({ value, setValue }) => {
   };
 
   return (
-    <Slate key={"slate-key"} editor={editor} value={value} onChange={onChange}>
-      <Editable
-        onKeyDown={onKeyDown}
-        placeholder={"Start your writing journey here!"}
-      />
-    </Slate>
+    <StyledEditor>
+      <Slate
+        key={"slate-key"}
+        editor={editor}
+        value={value}
+        onChange={onChange}
+      >
+        <Editable onKeyDown={onKeyDown} />
+      </Slate>
+    </StyledEditor>
   );
 };

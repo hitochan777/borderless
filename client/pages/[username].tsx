@@ -58,7 +58,7 @@ const UserIndexPage: NextPage<Props> = ({ username }) => {
                     .map((line) =>
                       line.partialLines.map((pl) => pl.text).join("")
                     )
-                    .join("")}
+                    .join("  ")}
                 />
               ))}
             </Grid>

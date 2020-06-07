@@ -51,7 +51,7 @@ const SearchPage: NextPage<PageProps> = ({ language }) => {
                   .map((line) =>
                     line.partialLines.map((pl) => pl.text).join("")
                   )
-                  .join("")}
+                  .join("  ")}
               />
             </Box>
           ))}

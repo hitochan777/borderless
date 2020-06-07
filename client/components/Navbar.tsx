@@ -112,22 +112,24 @@ const Navbar: React.FC = () => {
           <a>Profile</a>
         </Link>
       </MenuItem>
+      {viewer && (
+        <MenuItem>
+          <Link href="/settings">
+            <a>Settings</a>
+          </Link>
+        </MenuItem>
+      )}
       <MenuItem onClick={signOut}>Sign Out</MenuItem>
     </Menu>
   );
 
   return (
     <div className={classes.root}>
-      <AppBar
-        className={classes.appbar}
-        position="static"
-        color="transparent"
-        elevation={0}
-      >
+      <AppBar className={classes.appbar} position="static" elevation={0}>
         <Toolbar className={classes.toolbar}>
           <Link href="/">
             <Typography variant="h6" className={classes.title}>
-              Borderless
+              <a>Borderless</a>
             </Typography>
           </Link>
           <Box marginRight={1}>

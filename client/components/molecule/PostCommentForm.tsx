@@ -41,7 +41,6 @@ export const PostCommentForm: React.FC<Props> = ({ postId }) => {
       if (!currentData) {
         return;
       }
-      console.log(currentData, tweet);
       cache.writeQuery({
         query: FETCH_POST_BY_ID_QUERY,
         variables: { id: postId },

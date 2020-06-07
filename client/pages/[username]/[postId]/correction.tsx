@@ -19,7 +19,9 @@ import { assert, assertIsDefined } from "@/lib/assert";
 import {
   useFetchPostByIdQuery,
   useCorrectionGroupCreateMutation,
+  FetchPostByIdQueryResult,
 } from "@/generated/types";
+import { FETCH_POST_BY_ID_QUERY } from "@/constant/graphql";
 import { PreviewEditor } from "@/components/molecule/PreviewEditor";
 
 interface Props {
@@ -76,7 +78,34 @@ const CorrectionPage: NextPage<Props> = ({ postId, username }) => {
   const [
     createCorrectionGroup,
     { loading: isSubmittingCorrection },
-  ] = useCorrectionGroupCreateMutation();
+  ] = useCorrectionGroupCreateMutation({
+    update(cache, { data }) {
+      if (!data) {
+        return;
+      }
+      const { correctionGroupCreate: correction } = data;
+      const currentData:
+        | FetchPostByIdQueryResult["data"]
+        | null = cache.readQuery({
+        query: FETCH_POST_BY_ID_QUERY,
+        variables: { id: postId },
+      });
+      if (!currentData) {
+        return;
+      }
+      cache.writeQuery({
+        query: FETCH_POST_BY_ID_QUERY,
+        variables: { id: postId },
+        data: {
+          ...currentData,
+          post: {
+            ...currentData.post,
+            corrections: [correction, ...currentData.post.corrections],
+          },
+        },
+      });
+    },
+  });
   const { data, loading } = useFetchPostByIdQuery({
     variables: { id: postId },
   });

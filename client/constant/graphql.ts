@@ -269,6 +269,12 @@ export const TWEET_CREATE_MUTATION = gql`
   ${TWEET_FIELD_FRAGMENT}
 `;
 
+export const TWEET_DELETE_MUTATION = gql`
+  mutation tweetDelete($id: String!) {
+    tweetDelete(id: $id)
+  }
+`;
+
 export const TWEET_LIKE_MUTATION = gql`
   mutation tweetLike($id: ID!) {
     tweetLike(id: $id) {

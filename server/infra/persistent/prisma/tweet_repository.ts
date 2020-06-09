@@ -39,7 +39,7 @@ export class PrismaTweetRepository implements TweetRepository {
         },
         inReplyTo: {
           connect: {
-            id: tweet.inReplyTo,
+            id: tweet.inReplyTo ?? undefined,
           },
         },
         content: tweet.text,

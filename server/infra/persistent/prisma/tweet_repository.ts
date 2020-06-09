@@ -55,6 +55,11 @@ export class PrismaTweetRepository implements TweetRepository {
     return this.createEntity(createdTweet);
   }
 
+  async delete(tweetId: ID): Promise<void> {
+    this.photon.repliable.delete({ where: { id: tweetId } });
+    this.photon.tweet.delete({ where: { id: tweetId } });
+  }
+
   async createMany(tweets: Tweet[]): Promise<Tweet[]> {
     const promises = [];
     for (const tweet of tweets) {

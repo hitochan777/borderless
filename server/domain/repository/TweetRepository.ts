@@ -4,6 +4,7 @@ import { ID } from "../../types";
 export interface TweetRepository {
   create(tweet: Tweet): Promise<Tweet>;
   createMany(tweets: Tweet[]): Promise<Tweet[]>;
+  delete(tweetId: ID): Promise<void>;
   findOneById(id: ID): Promise<Tweet | null>;
   findManyByIds(ids: ID[]): Promise<Tweet[]>;
   findRepliesTo(repliableId: ID): Promise<Tweet[]>;

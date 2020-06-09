@@ -47,6 +47,7 @@ type Mutation {
   postUpdate(id: ID!, post: PostInput!): Post!
   signin(token: String!): AuthData!
   tweetCreate(tweet: TweetInput!): Tweet!
+  tweetDelete(id: String!): Boolean!
   tweetLike(id: ID!): Tweet!
   userCreate(id: ID!): User!
   userUpdate(user: UserInput!): User!

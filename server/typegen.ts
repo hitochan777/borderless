@@ -140,6 +140,7 @@ export interface NexusGenFieldTypes {
     postUpdate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
     tweetCreate: NexusGenRootTypes['Tweet']; // Tweet!
+    tweetDelete: boolean; // Boolean!
     tweetLike: NexusGenRootTypes['Tweet']; // Tweet!
     userCreate: NexusGenRootTypes['User']; // User!
     userUpdate: NexusGenRootTypes['User']; // User!
@@ -229,6 +230,9 @@ export interface NexusGenArgTypes {
     }
     tweetCreate: { // args
       tweet: NexusGenInputs['TweetInput']; // TweetInput!
+    }
+    tweetDelete: { // args
+      id: string; // String!
     }
     tweetLike: { // args
       id: string; // ID!

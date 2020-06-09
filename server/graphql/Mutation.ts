@@ -325,10 +325,10 @@ export const Mutation = mutationType({
       ) => {
         const tweet = await tweetRepository.findOneById(id);
         if (!tweet) {
-          return new UserInputError("tweet does not exist");
+          throw new UserInputError("tweet does not exist");
         }
         if (tweet.userId !== uid) {
-          return new AuthenticationError("Not authorized to delete this tweet");
+          throw new AuthenticationError("Not authorized to delete this tweet");
         }
         try {
           await tweetRepository.delete(id);

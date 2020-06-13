@@ -1,10 +1,13 @@
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
-import { setContext } from "apollo-link-context";
-import { onError } from "apollo-link-error";
-import { ApolloLink } from "apollo-link";
-import ApolloClient from "apollo-client";
-import gql from "graphql-tag";
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+  createHttpLink,
+  ApolloLink,
+  gql,
+} from "@apollo/client";
+import { onError } from "@apollo/link-error";
+import { setContext } from "@apollo/link-context";
 import fetch from "isomorphic-unfetch";
 
 interface ApolloInitOptions {
@@ -52,11 +55,20 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
         if (graphQLErrors) {
           graphQLErrors.map(({ message, locations, path }) =>
             console.error(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+              `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+                locations
+              )}, Path: ${path}`
             )
           );
-          client.writeData({
-            data: { errorMessage: graphQLErrors[0].message },
+          cache.writeQuery({
+            query: gql`
+              query setErrorMessage {
+                errorMessage @client
+              }
+            `,
+            data: {
+              errorMessage: graphQLErrors[0].message,
+            },
           });
         }
         if (networkError) {
@@ -71,11 +83,29 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
     resolvers: {
       Mutation: {
         setLoading: (_root, { loading }, { cache }) => {
-          cache.writeData({ data: { loading } });
+          cache.writeQuery({
+            query: gql`
+              query setLoading {
+                loading @client
+              }
+            `,
+            data: {
+              loading,
+            },
+          });
           return null;
         },
         setErrorMessage: (_root, { errorMessage }, { cache }) => {
-          cache.writeData({ data: { errorMessage } });
+          cache.writeQuery({
+            query: gql`
+              query setErrorMessage {
+                errorMessage @client
+              }
+            `,
+            data: {
+              errorMessage,
+            },
+          });
           return null;
         },
       },

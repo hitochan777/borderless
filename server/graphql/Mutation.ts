@@ -230,6 +230,31 @@ export const Mutation = mutationType({
         return updatedPost;
       },
     });
+
+    t.field("postDelete", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "Boolean",
+      args: {
+        id: arg({ type: "String", required: true }),
+      },
+      resolve: async (_, { id }, { repositories: { postRepository }, uid }) => {
+        const post = await postRepository.findById(id);
+        if (!post) {
+          throw new UserInputError("post does not exist");
+        }
+        if (post.userId !== uid) {
+          throw new AuthenticationError("Not authorized to delete this post");
+        }
+        try {
+          await postRepository.delete(id);
+          return true;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
+      },
+    });
+
     t.field("postLike", {
       authorize: (_, __, { uid }) => uid !== null,
       type: "Post",

@@ -5,6 +5,7 @@ import { Language } from "../../value/language";
 export interface PostRepository {
   create(postInput: Post): Promise<Post | null>;
   update(post: Post): Promise<Post>;
+  delete(postId: ID): Promise<void>;
   findByUser(userId: ID): Promise<Post[]>;
   findById(id: ID): Promise<Post | null>;
   findAll(currentUserId?: ID): Promise<Post[]>;

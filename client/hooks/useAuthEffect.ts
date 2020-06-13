@@ -1,8 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useEffect, useContext } from "react";
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 
 import {

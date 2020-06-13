@@ -12,7 +12,6 @@ import {
   useSetErrorMessageMutation,
 } from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
-import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
 
 interface Props {
   tweetId: string;

@@ -2,14 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { Badge, IconButton } from "@material-ui/core";
 import dayjs from "dayjs";
+import { Delete as DeleteIcon } from "@material-ui/icons";
 
 import { LikeIcon } from "@/components/molecule";
 import { PrettyReply } from "./PrettyReply";
-import { useTweetLikeMutation } from "@/generated/types";
+import {
+  useTweetLikeMutation,
+  useTweetDeleteMutation,
+} from "@/generated/types";
+import { useViewer } from "@/hooks/useViewer";
+import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
 
 interface Props {
   tweetId: string;
   line?: string;
+  inReplyTo?: string | null;
   correction?: string;
   replyText: string;
   updatedAt: Date;
@@ -21,6 +28,7 @@ interface Props {
 export const ReplyCard: React.FC<Props> = ({
   tweetId,
   line,
+  inReplyTo,
   correction,
   replyText,
   updatedAt,
@@ -29,8 +37,27 @@ export const ReplyCard: React.FC<Props> = ({
   likedByMe,
 }) => {
   const [tweetLike, tweetLikeResult] = useTweetLikeMutation();
+  const [tweetDelete, tweetDeleteResult] = useTweetDeleteMutation();
+  const { viewer } = useViewer();
+
   const handleLikeClick = async (id: string) => {
     await tweetLike({ variables: { id } });
+  };
+
+  const handleDeleteClick = async (id: string) => {
+    if (confirm("Are you sure you want to delete this tweet?")) {
+      const refetchQueries = [];
+      if (inReplyTo) {
+        refetchQueries.push({
+          query: FETCH_TWEETS_FOR_LINE_QUERY,
+          variables: { id: inReplyTo },
+        });
+      }
+      await tweetDelete({
+        variables: { id },
+        refetchQueries,
+      });
+    }
   };
   return (
     <div>
@@ -38,15 +65,25 @@ export const ReplyCard: React.FC<Props> = ({
         <a>{username}</a>
       </Link>
       ・{dayjs(updatedAt).fromNow()}
-      <IconButton
-        disabled={tweetLikeResult.loading}
-        onClick={() => handleLikeClick(tweetId)}
-      >
-        <Badge color="primary" badgeContent={likeCount}>
-          {" "}
-          <LikeIcon liked={likedByMe} />
-        </Badge>
-      </IconButton>
+      {viewer && (
+        <IconButton
+          disabled={tweetLikeResult.loading}
+          onClick={() => handleLikeClick(tweetId)}
+        >
+          <Badge color="primary" badgeContent={likeCount}>
+            {" "}
+            <LikeIcon liked={likedByMe} />
+          </Badge>
+        </IconButton>
+      )}
+      {viewer && viewer.username === username && (
+        <IconButton
+          disabled={tweetDeleteResult.loading}
+          onClick={() => handleDeleteClick(tweetId)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      )}
       <PrettyReply line={line} correction={correction} reply={replyText} />
     </div>
   );

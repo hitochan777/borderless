@@ -8,6 +8,7 @@ import { Tweet, TweetNoContentError } from "../entity/tweet";
 import { LineContent } from "../entity/line_content";
 import { Language, Timezone } from "../value";
 import { CorrectionGroup } from "../entity/correction_group";
+import { UserInputError, AuthenticationError } from "apollo-server-micro";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -308,6 +309,34 @@ export const Mutation = mutationType({
           throw new Error("Tweet not found");
         }
         return maybeTweet;
+      },
+    });
+
+    t.field("tweetDelete", {
+      authorize: (_, __, { uid }) => uid !== null,
+      type: "Boolean",
+      args: {
+        id: arg({ type: "String", required: true }),
+      },
+      resolve: async (
+        _,
+        { id },
+        { repositories: { tweetRepository }, uid }
+      ) => {
+        const tweet = await tweetRepository.findOneById(id);
+        if (!tweet) {
+          throw new UserInputError("tweet does not exist");
+        }
+        if (tweet.userId !== uid) {
+          throw new AuthenticationError("Not authorized to delete this tweet");
+        }
+        try {
+          await tweetRepository.delete(id);
+          return true;
+        } catch (e) {
+          console.error(e);
+          return false;
+        }
       },
     });
 

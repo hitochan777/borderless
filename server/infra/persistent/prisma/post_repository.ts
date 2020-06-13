@@ -31,10 +31,8 @@ export class PrismaPostRepository implements PostRepository {
     if (postInput.userId === null) {
       throw new Error("You cannot set userId to null");
     }
-    const repliable = await this.photon.repliable.create({ data: {} });
     const newPost = await this.photon.post.create({
       data: {
-        id: repliable.id,
         user: {
           connect: {
             id: postInput.userId,
@@ -43,6 +41,7 @@ export class PrismaPostRepository implements PostRepository {
         language: postInput.language.code,
         published: !postInput.isDraft,
         content: "{}",
+        repliable: { create: {} },
       },
       include: {
         user: true,

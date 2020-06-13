@@ -69,6 +69,7 @@ export type Mutation = {
   setLoading: Scalars["Boolean"];
   signin: AuthData;
   tweetCreate: Tweet;
+  tweetDelete: Scalars["Boolean"];
   tweetLike: Tweet;
   userCreate: User;
   userUpdate: User;
@@ -107,6 +108,10 @@ export type MutationSigninArgs = {
 
 export type MutationTweetCreateArgs = {
   tweet: TweetInput;
+};
+
+export type MutationTweetDeleteArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationTweetLikeArgs = {
@@ -266,7 +271,13 @@ export type SearchInput = {
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
-  "id" | "text" | "correction" | "updatedAt" | "likeCount" | "likedByMe"
+  | "id"
+  | "text"
+  | "correction"
+  | "updatedAt"
+  | "likeCount"
+  | "likedByMe"
+  | "inReplyTo"
 > & { postedBy: { __typename?: "User" } & Pick<User, "id" | "username"> };
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -477,6 +488,15 @@ export type TweetCreateMutation = { __typename?: "Mutation" } & {
   tweetCreate: { __typename?: "Tweet" } & TweetFieldFragment;
 };
 
+export type TweetDeleteMutationVariables = {
+  id: Scalars["String"];
+};
+
+export type TweetDeleteMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "tweetDelete"
+>;
+
 export type TweetLikeMutationVariables = {
   id: Scalars["ID"];
 };
@@ -547,6 +567,7 @@ export const TweetFieldFragmentDoc = gql`
     updatedAt
     likeCount
     likedByMe
+    inReplyTo
     postedBy {
       id
       username
@@ -1435,6 +1456,54 @@ export type TweetCreateMutationResult = ApolloReactCommon.MutationResult<
 export type TweetCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TweetCreateMutation,
   TweetCreateMutationVariables
+>;
+export const TweetDeleteDocument = gql`
+  mutation tweetDelete($id: String!) {
+    tweetDelete(id: $id)
+  }
+`;
+export type TweetDeleteMutationFn = ApolloReactCommon.MutationFunction<
+  TweetDeleteMutation,
+  TweetDeleteMutationVariables
+>;
+
+/**
+ * __useTweetDeleteMutation__
+ *
+ * To run a mutation, you first call `useTweetDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTweetDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tweetDeleteMutation, { data, loading, error }] = useTweetDeleteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTweetDeleteMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TweetDeleteMutation,
+    TweetDeleteMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    TweetDeleteMutation,
+    TweetDeleteMutationVariables
+  >(TweetDeleteDocument, baseOptions);
+}
+export type TweetDeleteMutationHookResult = ReturnType<
+  typeof useTweetDeleteMutation
+>;
+export type TweetDeleteMutationResult = ApolloReactCommon.MutationResult<
+  TweetDeleteMutation
+>;
+export type TweetDeleteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TweetDeleteMutation,
+  TweetDeleteMutationVariables
 >;
 export const TweetLikeDocument = gql`
   mutation tweetLike($id: ID!) {

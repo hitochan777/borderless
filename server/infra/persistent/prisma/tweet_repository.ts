@@ -23,10 +23,8 @@ export class PrismaTweetRepository implements TweetRepository {
     if (tweet.postId === null) {
       throw new Error("post ID is not set");
     }
-    const repliable = await this.photon.repliable.create({ data: {} });
     const createdTweet = await this.photon.tweet.create({
       data: {
-        id: repliable.id,
         user: {
           connect: {
             id: tweet.userId,
@@ -44,6 +42,7 @@ export class PrismaTweetRepository implements TweetRepository {
         },
         content: tweet.text,
         correction: tweet.correction,
+        repliable: { create: {} },
       },
       include: {
         user: true,
@@ -56,8 +55,8 @@ export class PrismaTweetRepository implements TweetRepository {
   }
 
   async delete(tweetId: ID): Promise<void> {
-    this.photon.repliable.delete({ where: { id: tweetId } });
-    this.photon.tweet.delete({ where: { id: tweetId } });
+    await this.photon.tweet.delete({ where: { id: tweetId } });
+    await this.photon.repliable.delete({ where: { id: tweetId } });
   }
 
   async createMany(tweets: Tweet[]): Promise<Tweet[]> {
@@ -72,7 +71,7 @@ export class PrismaTweetRepository implements TweetRepository {
   async findOneById(id: ID): Promise<Tweet | null> {
     const tweet = await this.photon.tweet.findOne({
       where: { id },
-      include: { post: true, inReplyTo: true, user: true },
+      include: { post: true, inReplyTo: true, user: true, repliable: true },
     });
     if (tweet === null) {
       return null;
@@ -92,13 +91,13 @@ export class PrismaTweetRepository implements TweetRepository {
     tweet: TweetModel & {
       user: UserModel;
       post: PostModel;
-      inReplyTo: RepliableModel;
+      inReplyTo: RepliableModel | null;
     }
   ): Tweet {
     return new Tweet(
       tweet.id,
       tweet.user.id,
-      tweet.inReplyTo.id,
+      tweet.inReplyTo?.id ?? null,
       tweet.post.id,
       tweet.content,
       tweet.correction,

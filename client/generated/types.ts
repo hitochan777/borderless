@@ -271,7 +271,13 @@ export type SearchInput = {
 
 export type TweetFieldFragment = { __typename?: "Tweet" } & Pick<
   Tweet,
-  "id" | "text" | "correction" | "updatedAt" | "likeCount" | "likedByMe"
+  | "id"
+  | "text"
+  | "correction"
+  | "updatedAt"
+  | "likeCount"
+  | "likedByMe"
+  | "inReplyTo"
 > & { postedBy: { __typename?: "User" } & Pick<User, "id" | "username"> };
 
 export type LineFieldFragment = { __typename?: "Line" } & Pick<Line, "id"> & {
@@ -561,6 +567,7 @@ export const TweetFieldFragmentDoc = gql`
     updatedAt
     likeCount
     likedByMe
+    inReplyTo
     postedBy {
       id
       username

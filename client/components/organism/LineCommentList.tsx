@@ -41,6 +41,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
   if (!data) {
     throw new Error("unexpected error");
   }
+
   return (
     <List className={classes.root}>
       {data.replies.map((reply) => (
@@ -50,6 +51,7 @@ export const LineCommentList: React.FC<Props> = ({ lineId, line }) => {
               <ReplyCard
                 tweetId={reply.id}
                 line={line}
+                inReplyTo={reply.inReplyTo}
                 correction={reply.correction || undefined}
                 replyText={reply.text}
                 likeCount={reply.likeCount}

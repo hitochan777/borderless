@@ -11,10 +11,12 @@ import {
   useTweetDeleteMutation,
 } from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
+import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
 
 interface Props {
   tweetId: string;
   line?: string;
+  inReplyTo?: string;
   correction?: string;
   replyText: string;
   updatedAt: Date;
@@ -26,6 +28,7 @@ interface Props {
 export const ReplyCard: React.FC<Props> = ({
   tweetId,
   line,
+  inReplyTo,
   correction,
   replyText,
   updatedAt,
@@ -40,8 +43,21 @@ export const ReplyCard: React.FC<Props> = ({
   const handleLikeClick = async (id: string) => {
     await tweetLike({ variables: { id } });
   };
+
   const handleDeleteClick = async (id: string) => {
-    await tweetDelete({ variables: { id } });
+    if (confirm("Are you sure you want to delete this tweet?")) {
+      const refetchQueries = [];
+      if (inReplyTo) {
+        refetchQueries.push({
+          query: FETCH_TWEETS_FOR_LINE_QUERY,
+          variables: { id: inReplyTo },
+        });
+      }
+      await tweetDelete({
+        variables: { id },
+        refetchQueries,
+      });
+    }
   };
   return (
     <div>
@@ -49,15 +65,17 @@ export const ReplyCard: React.FC<Props> = ({
         <a>{username}</a>
       </Link>
       ・{dayjs(updatedAt).fromNow()}
-      <IconButton
-        disabled={tweetLikeResult.loading}
-        onClick={() => handleLikeClick(tweetId)}
-      >
-        <Badge color="primary" badgeContent={likeCount}>
-          {" "}
-          <LikeIcon liked={likedByMe} />
-        </Badge>
-      </IconButton>
+      {viewer && (
+        <IconButton
+          disabled={tweetLikeResult.loading}
+          onClick={() => handleLikeClick(tweetId)}
+        >
+          <Badge color="primary" badgeContent={likeCount}>
+            {" "}
+            <LikeIcon liked={likedByMe} />
+          </Badge>
+        </IconButton>
+      )}
       {viewer && viewer.username === username && (
         <IconButton
           disabled={tweetDeleteResult.loading}

@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Chip, Typography } from "@material-ui/core";
+import { Chip, Grid, Typography, IconButton } from "@material-ui/core";
+import { Delete as DeleteIcon } from "@material-ui/icons";
+
 import Link from "next/link";
 import dayjs from "@/lib/time";
+
+import { useViewer } from "@/hooks/useViewer";
+import { usePostDeleteMutation } from "@/generated/types";
 
 interface Props {
   id: string;
@@ -40,15 +45,40 @@ export const PostCard: React.FC<Props> = ({
   updatedAt,
   description,
 }) => {
+  const [postDelete, postDeleteResult] = usePostDeleteMutation();
+  const handleDeleteClick = async (id: string) => {
+    if (confirm("Are you sure you want to delete this tweet?")) {
+      await postDelete({
+        variables: { id },
+      });
+    }
+  };
+
+  const { viewer } = useViewer();
   return (
     <StyledPostCard>
-      <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
-        <MyLink>
-          <Typography variant="h1" color="textPrimary">
-            {title}
-          </Typography>
-        </MyLink>
-      </Link>
+      <Grid container>
+        <Grid item>
+          <Link href="/[username]/[postId]" as={`/${username}/${id}`}>
+            <MyLink>
+              <Typography variant="h1" color="textPrimary">
+                {title}
+              </Typography>
+            </MyLink>
+          </Link>
+        </Grid>
+        <Grid>
+          {viewer && viewer.username === username && (
+            <IconButton
+              disabled={postDeleteResult.loading}
+              onClick={() => handleDeleteClick(id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        </Grid>
+      </Grid>
+
       <Chip
         label={language}
         size="small"

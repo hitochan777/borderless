@@ -195,6 +195,14 @@ export const FETCH_TWEETS_FOR_LINE_QUERY = gql`
   ${TWEET_FIELD_FRAGMENT}
 `;
 
+export const POST_CREATE_MUTATION = gql`
+  mutation postCreate($post: PostInput!) {
+    postCreate(post: $post) {
+      id
+    }
+  }
+`;
+
 export const POST_UPDATE_MUTATION = gql`
   mutation postUpdate($id: ID!, $post: PostInput!) {
     postUpdate(id: $id, post: $post) {
@@ -204,11 +212,9 @@ export const POST_UPDATE_MUTATION = gql`
   ${POST_FIELD_FRAGMENT}
 `;
 
-export const POST_CREATE_MUTATION = gql`
-  mutation postCreate($post: PostInput!) {
-    postCreate(post: $post) {
-      id
-    }
+export const POST_DELETE_MUTATION = gql`
+  mutation postDelete($id: String!) {
+    postDelete(id: $id)
   }
 `;
 

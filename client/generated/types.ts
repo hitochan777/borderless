@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/react-common";
-import * as ApolloReactHooks from "@apollo/react-hooks";
+import * as ApolloReact from "@apollo/client";
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -705,32 +704,32 @@ export const FetchViewerDocument = gql`
  * });
  */
 export function useFetchViewerQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchViewerQuery,
     FetchViewerQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<FetchViewerQuery, FetchViewerQueryVariables>(
+  return ApolloReact.useQuery<FetchViewerQuery, FetchViewerQueryVariables>(
     FetchViewerDocument,
     baseOptions
   );
 }
 export function useFetchViewerLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchViewerQuery,
     FetchViewerQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    FetchViewerQuery,
-    FetchViewerQueryVariables
-  >(FetchViewerDocument, baseOptions);
+  return ApolloReact.useLazyQuery<FetchViewerQuery, FetchViewerQueryVariables>(
+    FetchViewerDocument,
+    baseOptions
+  );
 }
 export type FetchViewerQueryHookResult = ReturnType<typeof useFetchViewerQuery>;
 export type FetchViewerLazyQueryHookResult = ReturnType<
   typeof useFetchViewerLazyQuery
 >;
-export type FetchViewerQueryResult = ApolloReactCommon.QueryResult<
+export type FetchViewerQueryResult = ApolloReact.QueryResult<
   FetchViewerQuery,
   FetchViewerQueryVariables
 >;
@@ -773,23 +772,23 @@ export const FetchUserByUsernameDocument = gql`
  * });
  */
 export function useFetchUserByUsernameQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchUserByUsernameQuery,
     FetchUserByUsernameQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchUserByUsernameQuery,
     FetchUserByUsernameQueryVariables
   >(FetchUserByUsernameDocument, baseOptions);
 }
 export function useFetchUserByUsernameLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchUserByUsernameQuery,
     FetchUserByUsernameQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchUserByUsernameQuery,
     FetchUserByUsernameQueryVariables
   >(FetchUserByUsernameDocument, baseOptions);
@@ -800,7 +799,7 @@ export type FetchUserByUsernameQueryHookResult = ReturnType<
 export type FetchUserByUsernameLazyQueryHookResult = ReturnType<
   typeof useFetchUserByUsernameLazyQuery
 >;
-export type FetchUserByUsernameQueryResult = ApolloReactCommon.QueryResult<
+export type FetchUserByUsernameQueryResult = ApolloReact.QueryResult<
   FetchUserByUsernameQuery,
   FetchUserByUsernameQueryVariables
 >;
@@ -830,23 +829,23 @@ export const FetchPostByIdDocument = gql`
  * });
  */
 export function useFetchPostByIdQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchPostByIdQuery,
     FetchPostByIdQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
-    FetchPostByIdQuery,
-    FetchPostByIdQueryVariables
-  >(FetchPostByIdDocument, baseOptions);
+  return ApolloReact.useQuery<FetchPostByIdQuery, FetchPostByIdQueryVariables>(
+    FetchPostByIdDocument,
+    baseOptions
+  );
 }
 export function useFetchPostByIdLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchPostByIdQuery,
     FetchPostByIdQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchPostByIdQuery,
     FetchPostByIdQueryVariables
   >(FetchPostByIdDocument, baseOptions);
@@ -857,7 +856,7 @@ export type FetchPostByIdQueryHookResult = ReturnType<
 export type FetchPostByIdLazyQueryHookResult = ReturnType<
   typeof useFetchPostByIdLazyQuery
 >;
-export type FetchPostByIdQueryResult = ApolloReactCommon.QueryResult<
+export type FetchPostByIdQueryResult = ApolloReact.QueryResult<
   FetchPostByIdQuery,
   FetchPostByIdQueryVariables
 >;
@@ -888,23 +887,23 @@ export const FetchFeedForUserDocument = gql`
  * });
  */
 export function useFetchFeedForUserQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchFeedForUserQuery,
     FetchFeedForUserQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchFeedForUserQuery,
     FetchFeedForUserQueryVariables
   >(FetchFeedForUserDocument, baseOptions);
 }
 export function useFetchFeedForUserLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchFeedForUserQuery,
     FetchFeedForUserQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchFeedForUserQuery,
     FetchFeedForUserQueryVariables
   >(FetchFeedForUserDocument, baseOptions);
@@ -915,7 +914,7 @@ export type FetchFeedForUserQueryHookResult = ReturnType<
 export type FetchFeedForUserLazyQueryHookResult = ReturnType<
   typeof useFetchFeedForUserLazyQuery
 >;
-export type FetchFeedForUserQueryResult = ApolloReactCommon.QueryResult<
+export type FetchFeedForUserQueryResult = ApolloReact.QueryResult<
   FetchFeedForUserQuery,
   FetchFeedForUserQueryVariables
 >;
@@ -945,23 +944,23 @@ export const FetchSearchResultDocument = gql`
  * });
  */
 export function useFetchSearchResultQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >(FetchSearchResultDocument, baseOptions);
 }
 export function useFetchSearchResultLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchSearchResultQuery,
     FetchSearchResultQueryVariables
   >(FetchSearchResultDocument, baseOptions);
@@ -972,7 +971,7 @@ export type FetchSearchResultQueryHookResult = ReturnType<
 export type FetchSearchResultLazyQueryHookResult = ReturnType<
   typeof useFetchSearchResultLazyQuery
 >;
-export type FetchSearchResultQueryResult = ApolloReactCommon.QueryResult<
+export type FetchSearchResultQueryResult = ApolloReact.QueryResult<
   FetchSearchResultQuery,
   FetchSearchResultQueryVariables
 >;
@@ -1002,23 +1001,23 @@ export const FetchLanguagesDocument = gql`
  * });
  */
 export function useFetchLanguagesQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchLanguagesQuery,
     FetchLanguagesQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchLanguagesQuery,
     FetchLanguagesQueryVariables
   >(FetchLanguagesDocument, baseOptions);
 }
 export function useFetchLanguagesLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchLanguagesQuery,
     FetchLanguagesQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchLanguagesQuery,
     FetchLanguagesQueryVariables
   >(FetchLanguagesDocument, baseOptions);
@@ -1029,7 +1028,7 @@ export type FetchLanguagesQueryHookResult = ReturnType<
 export type FetchLanguagesLazyQueryHookResult = ReturnType<
   typeof useFetchLanguagesLazyQuery
 >;
-export type FetchLanguagesQueryResult = ApolloReactCommon.QueryResult<
+export type FetchLanguagesQueryResult = ApolloReact.QueryResult<
   FetchLanguagesQuery,
   FetchLanguagesQueryVariables
 >;
@@ -1058,23 +1057,23 @@ export const FetchTimezonesDocument = gql`
  * });
  */
 export function useFetchTimezonesQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchTimezonesQuery,
     FetchTimezonesQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchTimezonesQuery,
     FetchTimezonesQueryVariables
   >(FetchTimezonesDocument, baseOptions);
 }
 export function useFetchTimezonesLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchTimezonesQuery,
     FetchTimezonesQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchTimezonesQuery,
     FetchTimezonesQueryVariables
   >(FetchTimezonesDocument, baseOptions);
@@ -1085,7 +1084,7 @@ export type FetchTimezonesQueryHookResult = ReturnType<
 export type FetchTimezonesLazyQueryHookResult = ReturnType<
   typeof useFetchTimezonesLazyQuery
 >;
-export type FetchTimezonesQueryResult = ApolloReactCommon.QueryResult<
+export type FetchTimezonesQueryResult = ApolloReact.QueryResult<
   FetchTimezonesQuery,
   FetchTimezonesQueryVariables
 >;
@@ -1115,23 +1114,23 @@ export const FetchTweetsForLineDocument = gql`
  * });
  */
 export function useFetchTweetsForLineQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
   >(FetchTweetsForLineDocument, baseOptions);
 }
 export function useFetchTweetsForLineLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     FetchTweetsForLineQuery,
     FetchTweetsForLineQueryVariables
   >(FetchTweetsForLineDocument, baseOptions);
@@ -1142,7 +1141,7 @@ export type FetchTweetsForLineQueryHookResult = ReturnType<
 export type FetchTweetsForLineLazyQueryHookResult = ReturnType<
   typeof useFetchTweetsForLineLazyQuery
 >;
-export type FetchTweetsForLineQueryResult = ApolloReactCommon.QueryResult<
+export type FetchTweetsForLineQueryResult = ApolloReact.QueryResult<
   FetchTweetsForLineQuery,
   FetchTweetsForLineQueryVariables
 >;
@@ -1153,7 +1152,7 @@ export const PostCreateDocument = gql`
     }
   }
 `;
-export type PostCreateMutationFn = ApolloReactCommon.MutationFunction<
+export type PostCreateMutationFn = ApolloReact.MutationFunction<
   PostCreateMutation,
   PostCreateMutationVariables
 >;
@@ -1176,12 +1175,12 @@ export type PostCreateMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function usePostCreateMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     PostCreateMutation,
     PostCreateMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     PostCreateMutation,
     PostCreateMutationVariables
   >(PostCreateDocument, baseOptions);
@@ -1189,10 +1188,10 @@ export function usePostCreateMutation(
 export type PostCreateMutationHookResult = ReturnType<
   typeof usePostCreateMutation
 >;
-export type PostCreateMutationResult = ApolloReactCommon.MutationResult<
+export type PostCreateMutationResult = ApolloReact.MutationResult<
   PostCreateMutation
 >;
-export type PostCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type PostCreateMutationOptions = ApolloReact.BaseMutationOptions<
   PostCreateMutation,
   PostCreateMutationVariables
 >;
@@ -1204,7 +1203,7 @@ export const PostUpdateDocument = gql`
   }
   ${PostFieldFragmentDoc}
 `;
-export type PostUpdateMutationFn = ApolloReactCommon.MutationFunction<
+export type PostUpdateMutationFn = ApolloReact.MutationFunction<
   PostUpdateMutation,
   PostUpdateMutationVariables
 >;
@@ -1228,12 +1227,12 @@ export type PostUpdateMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function usePostUpdateMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     PostUpdateMutation,
     PostUpdateMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     PostUpdateMutation,
     PostUpdateMutationVariables
   >(PostUpdateDocument, baseOptions);
@@ -1241,10 +1240,10 @@ export function usePostUpdateMutation(
 export type PostUpdateMutationHookResult = ReturnType<
   typeof usePostUpdateMutation
 >;
-export type PostUpdateMutationResult = ApolloReactCommon.MutationResult<
+export type PostUpdateMutationResult = ApolloReact.MutationResult<
   PostUpdateMutation
 >;
-export type PostUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type PostUpdateMutationOptions = ApolloReact.BaseMutationOptions<
   PostUpdateMutation,
   PostUpdateMutationVariables
 >;
@@ -1253,7 +1252,7 @@ export const PostDeleteDocument = gql`
     postDelete(id: $id)
   }
 `;
-export type PostDeleteMutationFn = ApolloReactCommon.MutationFunction<
+export type PostDeleteMutationFn = ApolloReact.MutationFunction<
   PostDeleteMutation,
   PostDeleteMutationVariables
 >;
@@ -1276,12 +1275,12 @@ export type PostDeleteMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function usePostDeleteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     PostDeleteMutation,
     PostDeleteMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     PostDeleteMutation,
     PostDeleteMutationVariables
   >(PostDeleteDocument, baseOptions);
@@ -1289,10 +1288,10 @@ export function usePostDeleteMutation(
 export type PostDeleteMutationHookResult = ReturnType<
   typeof usePostDeleteMutation
 >;
-export type PostDeleteMutationResult = ApolloReactCommon.MutationResult<
+export type PostDeleteMutationResult = ApolloReact.MutationResult<
   PostDeleteMutation
 >;
-export type PostDeleteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type PostDeleteMutationOptions = ApolloReact.BaseMutationOptions<
   PostDeleteMutation,
   PostDeleteMutationVariables
 >;
@@ -1305,7 +1304,7 @@ export const PostLikeDocument = gql`
     }
   }
 `;
-export type PostLikeMutationFn = ApolloReactCommon.MutationFunction<
+export type PostLikeMutationFn = ApolloReact.MutationFunction<
   PostLikeMutation,
   PostLikeMutationVariables
 >;
@@ -1328,21 +1327,21 @@ export type PostLikeMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function usePostLikeMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     PostLikeMutation,
     PostLikeMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    PostLikeMutation,
-    PostLikeMutationVariables
-  >(PostLikeDocument, baseOptions);
+  return ApolloReact.useMutation<PostLikeMutation, PostLikeMutationVariables>(
+    PostLikeDocument,
+    baseOptions
+  );
 }
 export type PostLikeMutationHookResult = ReturnType<typeof usePostLikeMutation>;
-export type PostLikeMutationResult = ApolloReactCommon.MutationResult<
+export type PostLikeMutationResult = ApolloReact.MutationResult<
   PostLikeMutation
 >;
-export type PostLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type PostLikeMutationOptions = ApolloReact.BaseMutationOptions<
   PostLikeMutation,
   PostLikeMutationVariables
 >;
@@ -1363,7 +1362,7 @@ export const UserUpdateDocument = gql`
     }
   }
 `;
-export type UserUpdateMutationFn = ApolloReactCommon.MutationFunction<
+export type UserUpdateMutationFn = ApolloReact.MutationFunction<
   UserUpdateMutation,
   UserUpdateMutationVariables
 >;
@@ -1386,12 +1385,12 @@ export type UserUpdateMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUserUpdateMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     UserUpdateMutation,
     UserUpdateMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     UserUpdateMutation,
     UserUpdateMutationVariables
   >(UserUpdateDocument, baseOptions);
@@ -1399,10 +1398,10 @@ export function useUserUpdateMutation(
 export type UserUpdateMutationHookResult = ReturnType<
   typeof useUserUpdateMutation
 >;
-export type UserUpdateMutationResult = ApolloReactCommon.MutationResult<
+export type UserUpdateMutationResult = ApolloReact.MutationResult<
   UserUpdateMutation
 >;
-export type UserUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type UserUpdateMutationOptions = ApolloReact.BaseMutationOptions<
   UserUpdateMutation,
   UserUpdateMutationVariables
 >;
@@ -1425,7 +1424,7 @@ export const UserUpdateSettingDocument = gql`
     }
   }
 `;
-export type UserUpdateSettingMutationFn = ApolloReactCommon.MutationFunction<
+export type UserUpdateSettingMutationFn = ApolloReact.MutationFunction<
   UserUpdateSettingMutation,
   UserUpdateSettingMutationVariables
 >;
@@ -1448,12 +1447,12 @@ export type UserUpdateSettingMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUserUpdateSettingMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     UserUpdateSettingMutation,
     UserUpdateSettingMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     UserUpdateSettingMutation,
     UserUpdateSettingMutationVariables
   >(UserUpdateSettingDocument, baseOptions);
@@ -1461,10 +1460,10 @@ export function useUserUpdateSettingMutation(
 export type UserUpdateSettingMutationHookResult = ReturnType<
   typeof useUserUpdateSettingMutation
 >;
-export type UserUpdateSettingMutationResult = ApolloReactCommon.MutationResult<
+export type UserUpdateSettingMutationResult = ApolloReact.MutationResult<
   UserUpdateSettingMutation
 >;
-export type UserUpdateSettingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type UserUpdateSettingMutationOptions = ApolloReact.BaseMutationOptions<
   UserUpdateSettingMutation,
   UserUpdateSettingMutationVariables
 >;
@@ -1476,7 +1475,7 @@ export const TweetCreateDocument = gql`
   }
   ${TweetFieldFragmentDoc}
 `;
-export type TweetCreateMutationFn = ApolloReactCommon.MutationFunction<
+export type TweetCreateMutationFn = ApolloReact.MutationFunction<
   TweetCreateMutation,
   TweetCreateMutationVariables
 >;
@@ -1499,12 +1498,12 @@ export type TweetCreateMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useTweetCreateMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     TweetCreateMutation,
     TweetCreateMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     TweetCreateMutation,
     TweetCreateMutationVariables
   >(TweetCreateDocument, baseOptions);
@@ -1512,10 +1511,10 @@ export function useTweetCreateMutation(
 export type TweetCreateMutationHookResult = ReturnType<
   typeof useTweetCreateMutation
 >;
-export type TweetCreateMutationResult = ApolloReactCommon.MutationResult<
+export type TweetCreateMutationResult = ApolloReact.MutationResult<
   TweetCreateMutation
 >;
-export type TweetCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type TweetCreateMutationOptions = ApolloReact.BaseMutationOptions<
   TweetCreateMutation,
   TweetCreateMutationVariables
 >;
@@ -1524,7 +1523,7 @@ export const TweetDeleteDocument = gql`
     tweetDelete(id: $id)
   }
 `;
-export type TweetDeleteMutationFn = ApolloReactCommon.MutationFunction<
+export type TweetDeleteMutationFn = ApolloReact.MutationFunction<
   TweetDeleteMutation,
   TweetDeleteMutationVariables
 >;
@@ -1547,12 +1546,12 @@ export type TweetDeleteMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useTweetDeleteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     TweetDeleteMutation,
     TweetDeleteMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     TweetDeleteMutation,
     TweetDeleteMutationVariables
   >(TweetDeleteDocument, baseOptions);
@@ -1560,10 +1559,10 @@ export function useTweetDeleteMutation(
 export type TweetDeleteMutationHookResult = ReturnType<
   typeof useTweetDeleteMutation
 >;
-export type TweetDeleteMutationResult = ApolloReactCommon.MutationResult<
+export type TweetDeleteMutationResult = ApolloReact.MutationResult<
   TweetDeleteMutation
 >;
-export type TweetDeleteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type TweetDeleteMutationOptions = ApolloReact.BaseMutationOptions<
   TweetDeleteMutation,
   TweetDeleteMutationVariables
 >;
@@ -1576,7 +1575,7 @@ export const TweetLikeDocument = gql`
     }
   }
 `;
-export type TweetLikeMutationFn = ApolloReactCommon.MutationFunction<
+export type TweetLikeMutationFn = ApolloReact.MutationFunction<
   TweetLikeMutation,
   TweetLikeMutationVariables
 >;
@@ -1599,23 +1598,23 @@ export type TweetLikeMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useTweetLikeMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     TweetLikeMutation,
     TweetLikeMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    TweetLikeMutation,
-    TweetLikeMutationVariables
-  >(TweetLikeDocument, baseOptions);
+  return ApolloReact.useMutation<TweetLikeMutation, TweetLikeMutationVariables>(
+    TweetLikeDocument,
+    baseOptions
+  );
 }
 export type TweetLikeMutationHookResult = ReturnType<
   typeof useTweetLikeMutation
 >;
-export type TweetLikeMutationResult = ApolloReactCommon.MutationResult<
+export type TweetLikeMutationResult = ApolloReact.MutationResult<
   TweetLikeMutation
 >;
-export type TweetLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type TweetLikeMutationOptions = ApolloReact.BaseMutationOptions<
   TweetLikeMutation,
   TweetLikeMutationVariables
 >;
@@ -1641,7 +1640,7 @@ export const CorrectionGroupCreateDocument = gql`
   }
   ${TweetFieldFragmentDoc}
 `;
-export type CorrectionGroupCreateMutationFn = ApolloReactCommon.MutationFunction<
+export type CorrectionGroupCreateMutationFn = ApolloReact.MutationFunction<
   CorrectionGroupCreateMutation,
   CorrectionGroupCreateMutationVariables
 >;
@@ -1665,12 +1664,12 @@ export type CorrectionGroupCreateMutationFn = ApolloReactCommon.MutationFunction
  * });
  */
 export function useCorrectionGroupCreateMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     CorrectionGroupCreateMutation,
     CorrectionGroupCreateMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     CorrectionGroupCreateMutation,
     CorrectionGroupCreateMutationVariables
   >(CorrectionGroupCreateDocument, baseOptions);
@@ -1678,10 +1677,10 @@ export function useCorrectionGroupCreateMutation(
 export type CorrectionGroupCreateMutationHookResult = ReturnType<
   typeof useCorrectionGroupCreateMutation
 >;
-export type CorrectionGroupCreateMutationResult = ApolloReactCommon.MutationResult<
+export type CorrectionGroupCreateMutationResult = ApolloReact.MutationResult<
   CorrectionGroupCreateMutation
 >;
-export type CorrectionGroupCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type CorrectionGroupCreateMutationOptions = ApolloReact.BaseMutationOptions<
   CorrectionGroupCreateMutation,
   CorrectionGroupCreateMutationVariables
 >;
@@ -1690,7 +1689,7 @@ export const LogoutDocument = gql`
     logout
   }
 `;
-export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
+export type LogoutMutationFn = ApolloReact.MutationFunction<
   LogoutMutation,
   LogoutMutationVariables
 >;
@@ -1712,21 +1711,19 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useLogoutMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     LogoutMutation,
     LogoutMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(
+  return ApolloReact.useMutation<LogoutMutation, LogoutMutationVariables>(
     LogoutDocument,
     baseOptions
   );
 }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
-export type LogoutMutationResult = ApolloReactCommon.MutationResult<
-  LogoutMutation
->;
-export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type LogoutMutationResult = ApolloReact.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = ApolloReact.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
 >;
@@ -1735,7 +1732,7 @@ export const SetLoadingDocument = gql`
     setLoading(loading: $loading) @client
   }
 `;
-export type SetLoadingMutationFn = ApolloReactCommon.MutationFunction<
+export type SetLoadingMutationFn = ApolloReact.MutationFunction<
   SetLoadingMutation,
   SetLoadingMutationVariables
 >;
@@ -1758,12 +1755,12 @@ export type SetLoadingMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useSetLoadingMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     SetLoadingMutation,
     SetLoadingMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     SetLoadingMutation,
     SetLoadingMutationVariables
   >(SetLoadingDocument, baseOptions);
@@ -1771,10 +1768,10 @@ export function useSetLoadingMutation(
 export type SetLoadingMutationHookResult = ReturnType<
   typeof useSetLoadingMutation
 >;
-export type SetLoadingMutationResult = ApolloReactCommon.MutationResult<
+export type SetLoadingMutationResult = ApolloReact.MutationResult<
   SetLoadingMutation
 >;
-export type SetLoadingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type SetLoadingMutationOptions = ApolloReact.BaseMutationOptions<
   SetLoadingMutation,
   SetLoadingMutationVariables
 >;
@@ -1783,7 +1780,7 @@ export const SetErrorMessageDocument = gql`
     setErrorMessage(errorMessage: $errorMessage) @client
   }
 `;
-export type SetErrorMessageMutationFn = ApolloReactCommon.MutationFunction<
+export type SetErrorMessageMutationFn = ApolloReact.MutationFunction<
   SetErrorMessageMutation,
   SetErrorMessageMutationVariables
 >;
@@ -1806,12 +1803,12 @@ export type SetErrorMessageMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useSetErrorMessageMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: ApolloReact.MutationHookOptions<
     SetErrorMessageMutation,
     SetErrorMessageMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
+  return ApolloReact.useMutation<
     SetErrorMessageMutation,
     SetErrorMessageMutationVariables
   >(SetErrorMessageDocument, baseOptions);
@@ -1819,10 +1816,10 @@ export function useSetErrorMessageMutation(
 export type SetErrorMessageMutationHookResult = ReturnType<
   typeof useSetErrorMessageMutation
 >;
-export type SetErrorMessageMutationResult = ApolloReactCommon.MutationResult<
+export type SetErrorMessageMutationResult = ApolloReact.MutationResult<
   SetErrorMessageMutation
 >;
-export type SetErrorMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+export type SetErrorMessageMutationOptions = ApolloReact.BaseMutationOptions<
   SetErrorMessageMutation,
   SetErrorMessageMutationVariables
 >;
@@ -1848,32 +1845,32 @@ export const GetLoadingDocument = gql`
  * });
  */
 export function useGetLoadingQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     GetLoadingQuery,
     GetLoadingQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<GetLoadingQuery, GetLoadingQueryVariables>(
+  return ApolloReact.useQuery<GetLoadingQuery, GetLoadingQueryVariables>(
     GetLoadingDocument,
     baseOptions
   );
 }
 export function useGetLoadingLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     GetLoadingQuery,
     GetLoadingQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    GetLoadingQuery,
-    GetLoadingQueryVariables
-  >(GetLoadingDocument, baseOptions);
+  return ApolloReact.useLazyQuery<GetLoadingQuery, GetLoadingQueryVariables>(
+    GetLoadingDocument,
+    baseOptions
+  );
 }
 export type GetLoadingQueryHookResult = ReturnType<typeof useGetLoadingQuery>;
 export type GetLoadingLazyQueryHookResult = ReturnType<
   typeof useGetLoadingLazyQuery
 >;
-export type GetLoadingQueryResult = ApolloReactCommon.QueryResult<
+export type GetLoadingQueryResult = ApolloReact.QueryResult<
   GetLoadingQuery,
   GetLoadingQueryVariables
 >;
@@ -1899,23 +1896,23 @@ export const GetErrorMessageDocument = gql`
  * });
  */
 export function useGetErrorMessageQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: ApolloReact.QueryHookOptions<
     GetErrorMessageQuery,
     GetErrorMessageQueryVariables
   >
 ) {
-  return ApolloReactHooks.useQuery<
+  return ApolloReact.useQuery<
     GetErrorMessageQuery,
     GetErrorMessageQueryVariables
   >(GetErrorMessageDocument, baseOptions);
 }
 export function useGetErrorMessageLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: ApolloReact.LazyQueryHookOptions<
     GetErrorMessageQuery,
     GetErrorMessageQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return ApolloReact.useLazyQuery<
     GetErrorMessageQuery,
     GetErrorMessageQueryVariables
   >(GetErrorMessageDocument, baseOptions);
@@ -1926,7 +1923,7 @@ export type GetErrorMessageQueryHookResult = ReturnType<
 export type GetErrorMessageLazyQueryHookResult = ReturnType<
   typeof useGetErrorMessageLazyQuery
 >;
-export type GetErrorMessageQueryResult = ApolloReactCommon.QueryResult<
+export type GetErrorMessageQueryResult = ApolloReact.QueryResult<
   GetErrorMessageQuery,
   GetErrorMessageQueryVariables
 >;

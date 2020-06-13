@@ -1,10 +1,13 @@
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
-import { setContext } from "apollo-link-context";
-import { onError } from "apollo-link-error";
-import { ApolloLink } from "apollo-link";
-import ApolloClient from "apollo-client";
-import gql from "graphql-tag";
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+  createHttpLink,
+  ApolloLink,
+  gql,
+} from "@apollo/client";
+import { onError } from "@apollo/link-error";
+import { setContext } from "@apollo/link-context";
 import fetch from "isomorphic-unfetch";
 
 interface ApolloInitOptions {
@@ -57,9 +60,10 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
               )}, Path: ${path}`
             )
           );
-          client.writeData({
-            data: { errorMessage: graphQLErrors[0].message },
-          });
+          // TODO: migrate to apollo client 3
+          // client.writeData({
+          //   data: { errorMessage: graphQLErrors[0].message }
+          // });
         }
         if (networkError) {
           console.error(`[Network error]: ${networkError}`);
@@ -73,11 +77,11 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
     resolvers: {
       Mutation: {
         setLoading: (_root, { loading }, { cache }) => {
-          cache.writeData({ data: { loading } });
+          // cache.writeData({ data: { loading } });
           return null;
         },
         setErrorMessage: (_root, { errorMessage }, { cache }) => {
-          cache.writeData({ data: { errorMessage } });
+          // cache.writeData({ data: { errorMessage } });
           return null;
         },
       },

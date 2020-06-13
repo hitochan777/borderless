@@ -20,7 +20,7 @@ import {
 import { Add as AddIcon, AccountCircle } from "@material-ui/icons";
 import "firebase/auth";
 import firebase from "firebase/app";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/client";
 
 import { UidContext } from "@/context";
 import { useViewer } from "@/hooks/useViewer";

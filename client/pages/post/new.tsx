@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
 import Router from "next/router";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";

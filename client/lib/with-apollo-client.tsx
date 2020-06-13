@@ -1,8 +1,8 @@
 import React from "react";
 import { AppContext } from "next/app";
 import Head from "next/head";
+import { ApolloClient } from "@apollo/client";
 import { getDataFromTree } from "@apollo/react-ssr";
-import ApolloClient from "apollo-client";
 import cookie from "cookie";
 
 import initApollo from "./init-apollo";

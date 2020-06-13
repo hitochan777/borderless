@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import App, { AppContext } from "next/app";
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient from "apollo-client";
+import { ApolloProvider, ApolloClient } from "@apollo/client";
 import { NextPageContext } from "next";
 import nextCookie from "next-cookies";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core";

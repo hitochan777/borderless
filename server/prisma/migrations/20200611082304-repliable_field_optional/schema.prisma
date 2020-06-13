@@ -1,6 +1,6 @@
 datasource development {
   provider = "postgres"
-  url      = env("DB_URL")
+  url = "***"
 }
 
 generator photon {

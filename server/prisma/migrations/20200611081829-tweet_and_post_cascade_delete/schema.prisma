@@ -1,6 +1,6 @@
 datasource development {
   provider = "postgres"
-  url      = env("DB_URL")
+  url = "***"
 }
 
 generator photon {
@@ -9,8 +9,8 @@ generator photon {
 
 model Repliable {
   id String @default(cuid()) @id
-  tweet Tweet? @relation("tweet_repliable")
-  tweetInReplyTo Tweet? @relation("tweet_in_reply_to")
+  tweet Tweet @relation("tweet_repliable")
+  tweetInReplyTo Tweet @relation("tweet_in_reply_to")
 }
 
 model Like {

@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Repliable",
+      "field": "tweet",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Repliable",
+      "field": "tweetInReplyTo",
+      "arity": "Optional"
+    }
+  ]
+}

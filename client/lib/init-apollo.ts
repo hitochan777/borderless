@@ -60,10 +60,16 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
               )}, Path: ${path}`
             )
           );
-          // TODO: migrate to apollo client 3
-          // client.writeData({
-          //   data: { errorMessage: graphQLErrors[0].message }
-          // });
+          cache.writeQuery({
+            query: gql`
+              query setErrorMessage {
+                errorMessage @client
+              }
+            `,
+            data: {
+              errorMessage: graphQLErrors[0].message,
+            },
+          });
         }
         if (networkError) {
           console.error(`[Network error]: ${networkError}`);
@@ -77,11 +83,29 @@ const create = (initialState: any = {}, options: ApolloInitOptions) => {
     resolvers: {
       Mutation: {
         setLoading: (_root, { loading }, { cache }) => {
-          // cache.writeData({ data: { loading } });
+          cache.writeQuery({
+            query: gql`
+              query setLoading {
+                loading @client
+              }
+            `,
+            data: {
+              loading,
+            },
+          });
           return null;
         },
         setErrorMessage: (_root, { errorMessage }, { cache }) => {
-          // cache.writeData({ data: { errorMessage } });
+          cache.writeQuery({
+            query: gql`
+              query setErrorMessage {
+                errorMessage @client
+              }
+            `,
+            data: {
+              errorMessage,
+            },
+          });
           return null;
         },
       },

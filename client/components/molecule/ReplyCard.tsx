@@ -16,7 +16,7 @@ import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
 interface Props {
   tweetId: string;
   line?: string;
-  inReplyTo?: string;
+  inReplyTo?: string | null;
   correction?: string;
   replyText: string;
   updatedAt: Date;

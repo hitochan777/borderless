@@ -136,6 +136,7 @@ export interface NexusGenFieldTypes {
     correctionGroupCreate: NexusGenRootTypes['CorrectionGroup']; // CorrectionGroup!
     logout: boolean; // Boolean!
     postCreate: NexusGenRootTypes['Post']; // Post!
+    postDelete: boolean; // Boolean!
     postLike: NexusGenRootTypes['Post']; // Post!
     postUpdate: NexusGenRootTypes['Post']; // Post!
     signin: NexusGenRootTypes['AuthData']; // AuthData!
@@ -217,6 +218,9 @@ export interface NexusGenArgTypes {
     }
     postCreate: { // args
       post: NexusGenInputs['PostInput']; // PostInput!
+    }
+    postDelete: { // args
+      id: string; // String!
     }
     postLike: { // args
       id: string; // ID!

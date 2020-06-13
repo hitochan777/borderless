@@ -84,6 +84,11 @@ export class PrismaPostRepository implements PostRepository {
     return this.createEntity(updatedPost);
   }
 
+  async delete(postId: ID): Promise<void> {
+    await this.photon.post.delete({ where: { id: postId } });
+    await this.photon.repliable.delete({ where: { id: postId } });
+  }
+
   async findByUser(userId: ID): Promise<Post[]> {
     const posts = await this.photon.post.findMany({
       where: {

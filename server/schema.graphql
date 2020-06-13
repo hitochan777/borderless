@@ -43,6 +43,7 @@ type Mutation {
   correctionGroupCreate(corrections: [TweetInput!]!, summaryComment: TweetInput): CorrectionGroup!
   logout: Boolean!
   postCreate(post: PostInput!): Post!
+  postDelete(id: String!): Boolean!
   postLike(id: ID!): Post!
   postUpdate(id: ID!, post: PostInput!): Post!
   signin(token: String!): AuthData!

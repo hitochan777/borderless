@@ -50,6 +50,9 @@ export const PostCard: React.FC<Props> = ({
     if (confirm("Are you sure you want to delete this tweet?")) {
       await postDelete({
         variables: { id },
+        update(cache) {
+          cache.evict({ id });
+        },
       });
     }
   };

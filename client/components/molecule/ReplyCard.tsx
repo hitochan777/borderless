@@ -46,16 +46,19 @@ export const ReplyCard: React.FC<Props> = ({
 
   const handleDeleteClick = async (id: string) => {
     if (confirm("Are you sure you want to delete this tweet?")) {
-      const refetchQueries = [];
-      if (inReplyTo) {
-        refetchQueries.push({
-          query: FETCH_TWEETS_FOR_LINE_QUERY,
-          variables: { id: inReplyTo },
-        });
-      }
+      // const refetchQueries = [];
+      // if (inReplyTo) {
+      //   refetchQueries.push({
+      //     query: FETCH_TWEETS_FOR_LINE_QUERY,
+      //     variables: { id: inReplyTo },
+      //   });
+      // }
       await tweetDelete({
         variables: { id },
-        refetchQueries,
+        update(cache) {
+          cache.evict({ id });
+        },
+        // refetchQueries,
       });
     }
   };

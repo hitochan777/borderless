@@ -9,7 +9,9 @@ export const useViewer = () => {
   if (uid === null) {
     return { viewer: null, loading: false };
   }
-  if (loading) {
+  // Due to bug in apollo client 3.x `!data` part is added
+  // https://github.com/apollographql/apollo-client/issues/6174
+  if (loading && !data) {
     return { viewer: null, loading: true };
   }
   if (error) {

@@ -9,6 +9,7 @@ import { PrettyReply } from "./PrettyReply";
 import {
   useTweetLikeMutation,
   useTweetDeleteMutation,
+  useSetErrorMessageMutation,
 } from "@/generated/types";
 import { useViewer } from "@/hooks/useViewer";
 import { FETCH_TWEETS_FOR_LINE_QUERY } from "@/constant/graphql";
@@ -28,7 +29,6 @@ interface Props {
 export const ReplyCard: React.FC<Props> = ({
   tweetId,
   line,
-  inReplyTo,
   correction,
   replyText,
   updatedAt,
@@ -38,6 +38,7 @@ export const ReplyCard: React.FC<Props> = ({
 }) => {
   const [tweetLike, tweetLikeResult] = useTweetLikeMutation();
   const [tweetDelete, tweetDeleteResult] = useTweetDeleteMutation();
+  const [setErrorMessage] = useSetErrorMessageMutation();
   const { viewer } = useViewer();
 
   const handleLikeClick = async (id: string) => {
@@ -46,22 +47,22 @@ export const ReplyCard: React.FC<Props> = ({
 
   const handleDeleteClick = async (id: string) => {
     if (confirm("Are you sure you want to delete this tweet?")) {
-      // const refetchQueries = [];
-      // if (inReplyTo) {
-      //   refetchQueries.push({
-      //     query: FETCH_TWEETS_FOR_LINE_QUERY,
-      //     variables: { id: inReplyTo },
-      //   });
-      // }
-      await tweetDelete({
+      const response = await tweetDelete({
         variables: { id },
         update(cache) {
-          cache.evict({ id });
+          cache.evict({ id: `Tweet:${id}` });
         },
-        // refetchQueries,
       });
+      if (!response.data?.tweetDelete) {
+        setErrorMessage({
+          variables: {
+            errorMessage: "Could not delete message. Please try again...",
+          },
+        });
+      }
     }
   };
+
   return (
     <div>
       <Link href="/[username]" as={`/${username}`}>

@@ -7,7 +7,10 @@ import Link from "next/link";
 import dayjs from "@/lib/time";
 
 import { useViewer } from "@/hooks/useViewer";
-import { usePostDeleteMutation } from "@/generated/types";
+import {
+  usePostDeleteMutation,
+  useSetErrorMessageMutation,
+} from "@/generated/types";
 
 interface Props {
   id: string;
@@ -46,14 +49,22 @@ export const PostCard: React.FC<Props> = ({
   description,
 }) => {
   const [postDelete, postDeleteResult] = usePostDeleteMutation();
+  const [setErrorMessage] = useSetErrorMessageMutation();
   const handleDeleteClick = async (id: string) => {
-    if (confirm("Are you sure you want to delete this tweet?")) {
-      await postDelete({
+    if (confirm("Are you sure you want to delete this post?")) {
+      const response = await postDelete({
         variables: { id },
         update(cache) {
-          cache.evict({ id });
+          cache.evict({ id: `Post:${id}` });
         },
       });
+      if (!response.data?.postDelete) {
+        setErrorMessage({
+          variables: {
+            errorMessage: "Could not delete post. Please try again...",
+          },
+        });
+      }
     }
   };
 

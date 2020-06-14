@@ -9,6 +9,7 @@ import {
   useSetErrorMessageMutation,
 } from "@/generated/types";
 import { UidContext } from "@/context";
+import { useUid } from "@/store";
 
 const SIGNIN = gql`
   mutation signin($token: String!) {
@@ -19,6 +20,7 @@ const SIGNIN = gql`
 `;
 
 export const useAuthEffect = () => {
+  const uid = useUid();
   const { setUid } = useContext(UidContext);
   const [setLoading] = useSetLoadingMutation();
   const [setErrorMessage] = useSetErrorMessageMutation();
@@ -37,13 +39,15 @@ export const useAuthEffect = () => {
   };
 
   useEffect(() => {
-    setLoading({ variables: { loading: true } });
-    login()
-      .catch(() => {
-        setErrorMessage({ variables: { errorMessage: "Failed to login" } });
-      })
-      .finally(() => {
-        setLoading({ variables: { loading: false } });
-      });
+    if (!uid) {
+      setLoading({ variables: { loading: true } });
+      login()
+        .catch(() => {
+          setErrorMessage({ variables: { errorMessage: "Failed to login" } });
+        })
+        .finally(() => {
+          setLoading({ variables: { loading: false } });
+        });
+    }
   }, []);
 };

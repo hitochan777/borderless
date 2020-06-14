@@ -52,7 +52,6 @@ export const UserSetting: React.FC = () => {
       i18n.i18n.changeLanguage(values.language);
     },
   });
-  console.log(viewer, formik.values);
 
   if (viewerQueryLoading || languageQueryLoading || timezoneQueryLoading) {
     return <div>loading...</div>;

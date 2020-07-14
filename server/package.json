@@ -9,7 +9,7 @@
     "@types/cookie": "^0.4.0",
     "apollo-server-micro": "^2.13.0",
     "cookie": "^0.4.1",
-    "firebase-admin": "^8.12.1",
+    "firebase-admin": "^9.0.0",
     "graphql": "^15.0.0",
     "iso-639-1": "^2.1.1"
   },

@@ -79,6 +79,6 @@
     "ts-loader": "7.0.5"
   },
   "resolutions": {
-    "jss": "10.3.0"
+    "jss": "10.4.0"
   }
 }

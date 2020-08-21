@@ -66,7 +66,7 @@
     "slate-history": "^0.58.3",
     "slate-react": "^0.58.3",
     "styled-components": "^5.1.1",
-    "ts-node": "^8.10.2",
+    "ts-node": "^9.0.0",
     "typescript": "^3.9.5"
   },
   "devDependencies": {

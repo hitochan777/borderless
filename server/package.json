@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "dependencies": {
-    "@nexus/schema": "^0.14.0",
+    "@nexus/schema": "^0.15.0",
     "@prisma/client": "2.6.2",
     "@types/cookie": "^0.4.0",
     "apollo-server-micro": "^2.13.0",
